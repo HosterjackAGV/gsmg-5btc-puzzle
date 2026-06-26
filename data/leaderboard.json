@@ -1,11 +1,19 @@
 {
- "updated": 1782478599,
+ "updated": 1782490693,
  "solved": false,
- "rows": [],
+ "rows": [
+  {
+   "handle": "anon",
+   "tries": 1,
+   "frontier": 1,
+   "novel": 1,
+   "last": 1782490693
+  }
+ ],
  "totals": {
-  "attempts": 0,
-  "unique": 0,
-  "frontier_unique": 0,
-  "solvers": 0
+  "attempts": 1,
+  "unique": 1,
+  "frontier_unique": 1,
+  "solvers": 1
  }
 }
