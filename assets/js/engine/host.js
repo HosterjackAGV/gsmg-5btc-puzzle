@@ -7,11 +7,13 @@ import { createLoop } from './loop.js';
 import { rngFrom } from './rng.js';
 import { toast, confetti } from '../util.js';
 
-export function createHost({ el, game, navigate }) {
+export function createHost({ el, game, navigate, challenge }) {
   return {
     el,                       // the DOM container the game renders into
     game,                     // the game's meta object
     navigate,
+    // when set, the game is a ranked tournament round: { seed, level, division, week, label }
+    challenge: challenge || null,
     toast,
     confetti,
 

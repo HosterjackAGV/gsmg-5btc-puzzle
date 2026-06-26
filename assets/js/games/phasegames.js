@@ -220,9 +220,10 @@ function spiralGame(p) {
     grid.querySelectorAll('.mcell').forEach(el => { cellAt[el.dataset.rc] = el; });
 
     function update(n) {
-      grid.querySelectorAll('.mcell.lit').forEach(el => el.classList.remove('lit'));
+      grid.querySelectorAll('.mcell.lit, .mcell.head').forEach(el => el.classList.remove('lit', 'head'));
       let bits = '';
       for (let i = 0; i < n; i++) { const [r, c] = MATRIX.spiral[i]; const el = cellAt[r + ',' + c]; if (el) el.classList.add('lit'); bits += MATRIX.grid[r][c]; }
+      if (n > 0) { const [hr, hc] = MATRIX.spiral[n - 1]; const he = cellAt[hr + ',' + hc]; if (he) he.classList.add('head'); }
       bitsEl.textContent = bits;
       let s = '';
       for (let k = 0; k + 8 <= bits.length; k += 8) s += String.fromCharCode(parseInt(bits.slice(k, k + 8), 2));

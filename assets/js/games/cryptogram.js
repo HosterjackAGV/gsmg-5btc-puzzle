@@ -8,18 +8,20 @@ import { makePuzzle, simulate, ALPHABET } from './sim/cryptogram.js';
 import { draggable } from '../engine/drag.js';
 import { esc } from '../util.js';
 
-const MAX_LEVEL = 8;
+const MAX_LEVEL = 12;
 const pad2 = (n) => String(n).padStart(2, '0');
 function todaySeed() { const d = new Date(); return `daily-${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}`; }
 function randSeed() { return 'p-' + Math.floor((Date.now() % 1e7) + Math.random() * 1e7).toString(36); }
 
 export function start(host) {
   const el = host.el;
-  let level = 1, mode = 'daily', seed = todaySeed();
+  const ch = host.challenge;                       // tournament round (fixed seed/level) or null
+  let level = ch ? ch.level : 1, mode = 'daily', seed = ch ? ch.seed : todaySeed();
   let puzzle, map, moves, selectedC, solved;
+  const showFreq = () => !ch && level < 5;          // frequency aid only at low practice levels
 
   function reset() {
-    seed = mode === 'daily' ? todaySeed() : randSeed();
+    if (!ch) seed = mode === 'daily' ? todaySeed() : randSeed();
     puzzle = makePuzzle(seed, level);
     map = {}; moves = []; selectedC = null; solved = false;
     render();
@@ -71,8 +73,9 @@ export function start(host) {
     const total = puzzle.distinct.length;
     const got = puzzle.distinct.filter(c => map[c] === puzzle.c2p[c]).length;
     const hintsUsed = moves.filter(m => m.hint).length;
-    const top = Object.entries(f).sort((a, b) => b[1] - a[1]).slice(0, 6)
-      .map(([c, n]) => `<span class="cg-fchip"><b>${c}</b>×${n}</span>`).join('');
+    const top = showFreq()
+      ? Object.entries(f).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c, n]) => `<span class="cg-fchip"><b>${c}</b>×${n}</span>`).join('')
+      : `<span class="faint" style="font-size:11px">🔒 no frequency aid at this level — read it by hand</span>`;
     return `<div class="cg-stats">
       <span class="pill">solved letters <b>${got}/${total}</b></span>
       <span class="pill">hints <b>${hintsUsed}</b>/${puzzle.hintBudget} free</span>
@@ -91,12 +94,13 @@ export function start(host) {
     el.innerHTML = `
     <div class="cg">
       <div class="cg-top">
+        ${ch ? `<span class="pill gold">${esc(ch.label || 'Tournament')}</span>` : `
         <div class="cg-modes">
           <button type="button" class="cg-mode${mode === 'daily' ? ' on' : ''}" data-mode="daily">☀ Daily</button>
           <button type="button" class="cg-mode${mode === 'practice' ? ' on' : ''}" data-mode="practice">∞ Practice</button>
         </div>
         <div class="cg-levels"><span class="faint">level</span>${levelPills()}</div>
-        <button type="button" class="btn ghost sm" id="cg-new">↻ New</button>
+        <button type="button" class="btn ghost sm" id="cg-new">↻ New</button>`}
       </div>
       ${statsHTML()}
       <div class="cg-board" id="cg-board">${boardHTML()}</div>
@@ -148,11 +152,11 @@ export function start(host) {
       box.hidden = false;
       box.innerHTML = `<div class="note gold"><h4>✅ Cracked it — ${res.score} pts</h4>
         <p>“${esc(puzzle.plaintext)}”</p>
-        <p class="faint">${res.hints} hint(s), ${res.wrong} wrong guess(es). ${res.score > host._priorBest ? 'New personal best! ' : ''}Submit your best on the <b>Games board</b> tab.</p>
-        <div class="row">
+        <p class="faint">${res.hints} hint(s), ${res.wrong} wrong guess(es). ${res.score > host._priorBest ? 'New personal best! ' : ''}${ch ? 'Submit it on the <b>Tournament</b> tab.' : 'Submit your best on the <b>Games board</b> tab.'}</p>
+        ${ch ? '' : `<div class="row">
           ${level < MAX_LEVEL ? `<button type="button" class="btn gold sm" id="cg-next">▶ Level ${level + 1}</button>` : ''}
           <button type="button" class="btn ghost sm" id="cg-again">↻ Another</button>
-        </div></div>`;
+        </div>`}</div>`;
       const nx = box.querySelector('#cg-next'); if (nx) nx.onclick = () => { level++; reset(); };
       const ag = box.querySelector('#cg-again'); if (ag) ag.onclick = () => reset();
     }
@@ -187,7 +191,7 @@ export function start(host) {
 
   function wire() {
     host._priorBest = host.bestScore();
-    el.querySelector('#cg-new').onclick = () => reset();
+    const nw = el.querySelector('#cg-new'); if (nw) nw.onclick = () => reset();
     el.querySelector('#cg-hint').onclick = () => doHint();
     el.querySelector('#cg-clear').onclick = () => { puzzle.distinct.forEach(c => { if (map[c]) { delete map[c]; moves.push({ c, g: '' }); } }); refresh(); };
     el.querySelectorAll('.cg-lvl').forEach(b => b.onclick = () => { level = +b.dataset.lvl; reset(); });

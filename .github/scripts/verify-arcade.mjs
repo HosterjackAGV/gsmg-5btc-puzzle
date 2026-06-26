@@ -1,18 +1,21 @@
-// verify-arcade.mjs — re-verifies submitted MINI-GAME scores by RE-SIMULATING
-// the player's move-log with the exact same deterministic logic the browser ran
-// (assets/js/games/sim/*), then rebuilds data/arcade-leaderboard.json.
+// verify-arcade.mjs — re-verifies submitted MINI-GAME scores by RE-SIMULATING the
+// player's move-log with the exact deterministic logic the browser ran (games/sim/*),
+// then rebuilds data/arcade-leaderboard.json AND data/tournaments.json.
 //
 // Trust nothing: a claimed score only counts if this script reproduces it from
-// (seed, level, moves). The competitive board ranks each player's BEST verified
-// score per game, summed into an arcade total. Idle games are not submitted here.
+// (seed, level, moves). Weekly-tournament scores (seed = "tourney|game|week|div")
+// are bucketed by (game, week, division) so close-level players compete; the level
+// must match the division's level or the score is rejected.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { simulate as cryptogram } from '../../assets/js/games/sim/cryptogram.js';
+import { simulate as fielddecode } from '../../assets/js/games/sim/fielddecode.js';
+import { simulate as hashhunt } from '../../assets/js/games/sim/hashhunt.js';
+import { parseWeeklySeed, levelForDivision, divisionFor } from '../../assets/js/games/divisions.js';
 
-// Hard-coded set of replay-verifiable games. Keep aligned with games/registry.js
-// (the `verifiable: true` entries) and games/sim/*.
-const SIMS = { cryptogram };
-const MAX_SCORES = 200, MAX_MOVES = 2000;
+// Keep aligned with games/registry.js (`verifiable: true`) and games/sim/*.
+const SIMS = { cryptogram, fielddecode, hashhunt };
+const MAX_SCORES = 200, MAX_MOVES = 3000;
 
 const sha256hex = (s) => createHash('sha256').update(String(s)).digest('hex');
 function readJSONL(p) {
@@ -22,17 +25,35 @@ function readJSONL(p) {
 
 function rebuild() {
   const all = readJSONL('data/arcade-scores.jsonl');
-  const bestHG = new Map();                     // handle|game -> best record
+
+  // ---- overall arcade board: best per (handle, game), summed ----
+  const bestHG = new Map();
   for (const r of all) { const k = r.by + '|' + r.game; const cur = bestHG.get(k); if (!cur || r.score > cur.score) bestHG.set(k, r); }
-  const byH = new Map();                         // handle -> totals
+  const byH = new Map();
   for (const r of bestHG.values()) {
     if (!byH.has(r.by)) byH.set(r.by, { handle: r.by, total: 0, games: {}, last: 0 });
     const h = byH.get(r.by); h.games[r.game] = r.score; h.total += r.score; h.last = Math.max(h.last, r.ts || 0);
   }
-  const rows = [...byH.values()].sort((a, b) => (b.total - a.total) || (b.last - a.last));
-  const lb = { updated: Math.floor(Date.now() / 1000), rows, totals: { players: rows.length, scores: all.length, games: Object.keys(SIMS) } };
-  writeFileSync('data/arcade-leaderboard.json', JSON.stringify(lb, null, 1));
-  return lb;
+  const rows = [...byH.values()].map(h => ({ ...h, division: divisionFor(h.total).key }));
+  rows.sort((a, b) => (b.total - a.total) || (b.last - a.last));
+  writeFileSync('data/arcade-leaderboard.json', JSON.stringify({ updated: Math.floor(Date.now() / 1000), rows, totals: { players: rows.length, scores: all.length, games: Object.keys(SIMS) } }, null, 1));
+
+  // ---- weekly tournaments: best per handle within each (game, week, division) ----
+  const tg = new Map(); // "game|week|div" -> Map(handle -> bestScore)
+  for (const r of all) {
+    if (!r.week || !r.division) continue;
+    const k = `${r.game}|${r.week}|${r.division}`;
+    if (!tg.has(k)) tg.set(k, new Map());
+    const m = tg.get(k); if (!m.has(r.by) || r.score > m.get(r.by)) m.set(r.by, r.score);
+  }
+  const boards = [...tg.entries()].map(([k, m]) => {
+    const [game, week, division] = k.split('|');
+    const players = [...m.entries()].map(([handle, score]) => ({ handle, score })).sort((a, b) => b.score - a.score);
+    return { game, week, division, players };
+  });
+  writeFileSync('data/tournaments.json', JSON.stringify({ updated: Math.floor(Date.now() / 1000), boards }, null, 1));
+
+  return { rows, boards };
 }
 
 let ev = {}; try { if (existsSync(process.env.GITHUB_EVENT_PATH || '')) { const t = readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8').trim(); if (t) ev = JSON.parse(t); } } catch { ev = {}; }
@@ -52,11 +73,19 @@ if (m) {
       const seed = String(s.seed || ''); const level = s.level | 0;
       const moves = Array.isArray(s.moves) ? s.moves.slice(0, MAX_MOVES) : [];
       if (!sim || !seed || !level) { bad++; continue; }
+
+      // weekly-tournament scores must use the division's level (anti-sandbagging)
+      const wk = parseWeeklySeed(seed);
+      if (wk && (wk.game !== game || level !== levelForDivision(wk.division))) { bad++; continue; }
+
       let res; try { res = sim(seed, level, moves); } catch { bad++; continue; }
-      if (!res || !res.solved || !(res.score > 0)) { bad++; continue; }   // only real solves count
+      if (!res || !res.solved || !(res.score > 0)) { bad++; continue; }
       const id = sha256hex(`${game}|${seed}|${level}|${JSON.stringify(moves)}`);
       if (seen.has(id)) { dup++; continue; }
-      seen.add(id); add.push({ id, by: handle, gh: ghUser, game, seed, level, score: res.score, ts: Math.floor(Date.now() / 1000) }); ok++;
+      seen.add(id);
+      const rec = { id, by: handle, gh: ghUser, game, seed, level, score: res.score, ts: Math.floor(Date.now() / 1000) };
+      if (wk) { rec.week = wk.week; rec.division = wk.division; }
+      add.push(rec); ok++;
     }
     if (add.length) writeFileSync('data/arcade-scores.jsonl', existing.concat(add).map(o => JSON.stringify(o)).join('\n') + '\n');
     summary = `**Verified ${ok} new score(s)** from \`${handle}\` (GitHub: @${ghUser}).\n\n- new & counted: **${ok}**\n- duplicates already logged: ${dup}\n- invalid/unverifiable/skipped: ${bad}\n`;
@@ -64,5 +93,5 @@ if (m) {
 } else summary = 'No `json gsmg-arcade` block found.';
 
 const lb = rebuild();
-summary += `\nArcade board rebuilt: ${lb.rows.length} players, ${lb.totals.scores} verified scores.`;
+summary += `\nArcade board rebuilt: ${lb.rows.length} players, ${lb.boards.length} active tournament bracket(s).`;
 writeFileSync('arcade-summary.txt', summary); console.log(summary);
