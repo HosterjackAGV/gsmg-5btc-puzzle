@@ -2,6 +2,7 @@
 // Persists to localStorage; notifies subscribers (UI) and hooks (achievements).
 
 import { xfnv1a } from './engine/rng.js';
+import { divisionFor } from './games/divisions.js';
 
 const NS = 'gsmg.v2.';
 
@@ -117,6 +118,8 @@ export function logArcadeResult({ game, seed, level, moves, score, solved }) {
 }
 
 export const arcadeBest = (game) => (state.arcade.best && state.arcade.best[game]) || 0;
+export const arcadePoints = () => Object.values(state.arcade.best || {}).reduce((a, b) => a + (b || 0), 0);
+export const arcadeDivision = () => divisionFor(arcadePoints());
 export const arcadeUnsubmitted = () => state.arcade.results.filter(r => r.solved && !state.arcade.submitted[r.id]);
 export function markArcadeSubmitted(ids) { for (const id of ids) state.arcade.submitted[id] = true; commit(); }
 

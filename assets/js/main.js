@@ -75,6 +75,7 @@ router
   .add('/workbench', () => import('./views/workbench.js'))
   .add('/arcade', () => import('./views/arcade.js'))
   .add('/arcade/:game', () => import('./views/arcade.js'))
+  .add('/arcade/:game/:mode', () => import('./views/arcade.js'))
   .add('/learn', () => import('./views/learn.js'))
   .add('/leaderboard', () => import('./views/leaderboard.js'))
   .add('/profile', () => import('./views/profile.js'))

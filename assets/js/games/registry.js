@@ -10,10 +10,24 @@
 export const GAMES = [
   {
     id: 'cryptogram', title: 'Substitution', kind: 'skill', icon: '🔡',
-    verifiable: true, difficulty: 'scales 1–8',
+    verifiable: true, tournament: true, difficulty: 'scales 1–12',
     concept: 'Monoalphabetic substitution — the exact attack family run against the dbbi & faed blocks.',
-    blurb: 'Drag letters to break a secret code. Each cipher letter always stands for the same real letter — find the whole mapping. Longer quotes and fewer hints as you level up.',
+    blurb: 'Drag letters to break a secret code. Each cipher letter always stands for the same real letter — find the whole mapping. Higher levels strip away the frequency aid.',
     load: () => import('./cryptogram.js'),
+  },
+  {
+    id: 'fielddecode', title: 'Field Decoder', kind: 'skill', icon: '🔢',
+    verifiable: true, tournament: true, difficulty: 'scales 1–12',
+    concept: 'Base-9 field decode — the REAL method that cracked the SalPhaseIon chunks (symbols → number → hex → ASCII).',
+    blurb: 'Assign each symbol a digit so the big number decodes to a real word. Standard mapping at first; scrambled higher up, so you must deduce it. This is the actual puzzle technique.',
+    load: () => import('./fielddecode.js'),
+  },
+  {
+    id: 'hashhunt', title: 'Hash Hunter', kind: 'skill', icon: '🎯',
+    verifiable: true, tournament: true, difficulty: 'scales 1–9',
+    concept: 'One-wayness — you cannot reverse SHA-256, only guess inputs and check. Exactly how every GSMG door works.',
+    blurb: 'A secret word was hashed. Solve the riddle and guess it — the hash confirms only an exact match, no “warmer/colder”. Riddles get harder and more obscure as you climb.',
+    load: () => import('./hashhunt.js'),
   },
   {
     id: 'hashminer', title: 'Hash Miner', kind: 'idle', icon: '⛏️',
