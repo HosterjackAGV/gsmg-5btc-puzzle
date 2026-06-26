@@ -1,0 +1,13 @@
+{
+  "name": "gsmg-5btc-puzzle",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive lab + game + verified community effort around the unsolved GSMG.io 5 BTC puzzle. No build step, no dependencies — this file only declares ES-module semantics so the CI verifiers can import the same game logic the browser runs.",
+  "license": "CC0-1.0",
+  "scripts": {
+    "serve": "python3 -m http.server 8000",
+    "verify:puzzle": "node .github/scripts/verify.mjs",
+    "verify:arcade": "node .github/scripts/verify-arcade.mjs"
+  }
+}

@@ -4,6 +4,7 @@
 import * as store from '../store.js';
 import { attemptId } from '../crypto.js';
 import { esc, qs, on, ago, toast, copy } from '../util.js';
+import { mergeOverall, overallTableHTML } from '../leaderboards.js';
 
 const REPO = 'HosterjackAGV/gsmg-5btc-puzzle';
 const FRONTIER = ['cosmic', 'salphaseion'];
@@ -11,8 +12,10 @@ const MAX_INLINE = 40; // keep the prefilled issue URL under length limits
 
 export default async function leaderboardView() {
   const s = store.state;
-  let board = null;
+  let board = null, arcadeBoard = null;
   try { const r = await fetch('data/leaderboard.json', { cache: 'no-store' }); if (r.ok) board = await r.json(); } catch {}
+  try { const r = await fetch('data/arcade-leaderboard.json', { cache: 'no-store' }); if (r.ok) arcadeBoard = await r.json(); } catch {}
+  const overall = mergeOverall(board, arcadeBoard);
 
   const unsub = s.attempts.filter(a => !s.submitted[a.id]);
   const myFrontier = new Set(s.attempts.filter(a => FRONTIER.includes(a.blob)).map(a => a.id)).size;
@@ -31,6 +34,12 @@ export default async function leaderboardView() {
       <p>The endgame is a <b>search problem</b>: somewhere there is a recipe that opens Cosmic Duality. This turns that search into a <b>shared, deduplicated, self-verifying effort</b> — so no two people waste time on the same idea, and a winning attempt is impossible to miss.</p></div>
 
     ${solved ? `<div class="note gold"><h4>🏆 SOLVED</h4><p>A verified valid decryption of the Cosmic blob has been recorded. Verify the recovered key on-chain before celebrating — but this is the moment.</p></div>` : ''}
+
+    <details class="eli5" open><summary>★ Overall champions — puzzle + arcade combined <span class="chev">+</span></summary>
+      <div class="body">
+        <p class="cnote" style="margin-top:0">One combined standing: real-puzzle frontier work (weighted heavily) plus <a href="#/arcade">Arcade</a> points, merged by handle. The detailed puzzle board is just below; the Arcade board lives on its own page — this only ranks them together.</p>
+        ${overallTableHTML(overall)}
+      </div></details>
 
     <details class="eli5"><summary>How this helps — and why the scores are trustworthy <span class="chev">+</span></summary>
       <div class="body">

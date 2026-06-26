@@ -1,6 +1,8 @@
 // store.js — game state: XP/level, phase progress, achievements, attempt log.
 // Persists to localStorage; notifies subscribers (UI) and hooks (achievements).
 
+import { xfnv1a } from './engine/rng.js';
+
 const NS = 'gsmg.v2.';
 
 function read(k, d) { try { const v = localStorage.getItem(NS + k); return v == null ? d : JSON.parse(v); } catch { return d; } }
@@ -17,9 +19,10 @@ export const state = {
   quiz:         read('quiz', {}),         // quizId -> {correct, ts}
   lessons:      read('lessons', {}),      // lessonId -> timestamp
   notes:        read('notes', {}),        // phaseId -> free text scratch notes
+  arcade:       read('arcade', { results: [], submitted: {}, best: {}, idle: {} }), // mini-game scores + idle state
 };
 
-const PERSIST = ['handle', 'xp', 'cracked', 'visited', 'achievements', 'attempts', 'submitted', 'quiz', 'lessons', 'notes'];
+const PERSIST = ['handle', 'xp', 'cracked', 'visited', 'achievements', 'attempts', 'submitted', 'quiz', 'lessons', 'notes', 'arcade'];
 function persistAll() { for (const k of PERSIST) write(k, state[k]); }
 
 // ---- subscribers (UI) and hooks (cross-cutting, e.g. achievement checks) ----
@@ -85,6 +88,41 @@ export function logAttempt({ blob, recipe, prehash, result, id }) {
 }
 
 export function markSubmitted(ids) { for (const id of ids) state.submitted[id] = true; commit(); }
+
+// ---- arcade (mini-games) ----
+// A local id good enough to dedup the same replay; the CI verifier computes its
+// own canonical sha256 id independently.
+function arcadeLocalId(r) {
+  return `${r.game}|${r.seed}|${r.level}|${xfnv1a(JSON.stringify(r.moves || []))}`;
+}
+
+/** Record a finished skill-game round. Keeps the personal best per game,
+ *  awards XP only when a new personal best is set. Returns the stored record. */
+export function logArcadeResult({ game, seed, level, moves, score, solved }) {
+  const a = state.arcade;
+  const rec = { id: '', game, seed: String(seed), level: level | 0, moves: moves || [], score: score | 0, solved: !!solved, ts: Date.now() };
+  rec.id = arcadeLocalId(rec);
+  if (!a.results.some(x => x.id === rec.id)) {
+    a.results.push(rec);
+    if (a.results.length > 500) a.results = a.results.slice(-500);
+  }
+  const prevBest = a.best[game] || 0;
+  if (rec.score > prevBest) {
+    a.best[game] = rec.score;
+    addXp(Math.max(5, Math.round((rec.score - prevBest) / 20))); // commits
+  } else {
+    commit();
+  }
+  return rec;
+}
+
+export const arcadeBest = (game) => (state.arcade.best && state.arcade.best[game]) || 0;
+export const arcadeUnsubmitted = () => state.arcade.results.filter(r => r.solved && !state.arcade.submitted[r.id]);
+export function markArcadeSubmitted(ids) { for (const id of ids) state.arcade.submitted[id] = true; commit(); }
+
+/** idle-game persistence (offline progress, upgrades, currency). */
+export const getIdleState = (game) => (state.arcade.idle && state.arcade.idle[game]) || null;
+export function setIdleState(game, obj) { state.arcade.idle = state.arcade.idle || {}; state.arcade.idle[game] = obj; commit(); }
 
 export function reset() {
   for (const k of PERSIST) { try { localStorage.removeItem(NS + k); } catch {} }

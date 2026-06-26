@@ -1,0 +1,22 @@
+# CODEOWNERS — who must approve changes to each path.
+#
+# Enforced by GitHub when branch protection on `main` has
+# "Require review from Code Owners" enabled (see docs/GOVERNANCE.md).
+# The hard guard in .github/workflows/protect-paths.yml backs this up even
+# before branch protection is configured.
+#
+# The maintainer owns everything by default, and EXCLUSIVELY owns the
+# machine-written community data and the automation that writes it.
+
+# Default: the maintainer reviews all changes.
+*                       @HosterjackAGV
+
+# Community / leaderboard / user data — maintainer ONLY. These files are
+# written by the verified-Action pipeline; humans never hand-edit them.
+/data/                  @HosterjackAGV
+/data/**                @HosterjackAGV
+
+# CI, verifiers, governance and identity config — security-critical, maintainer ONLY.
+/.github/               @HosterjackAGV
+/.github/**             @HosterjackAGV
+/content/config.js      @HosterjackAGV

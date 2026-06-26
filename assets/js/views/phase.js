@@ -44,6 +44,10 @@ export default async function phaseView({ params, navigate }) {
 
     ${p.lab ? `<h3 style="margin-top:22px">${p.lab === 'matrix' ? '🧩 The genesis grid — trace it yourself' : '🔤 Cipher lab'}</h3><div id="lab-host">loading…</div>` : ''}
 
+    ${p.play ? `<h3 style="margin-top:24px">🎮 Play this door</h3>
+      <p class="muted" style="font-size:13.5px">${p.door.type === 'open' ? 'A hands-on recipe builder — every run hits the real blob and is logged to the frontier.' : 'Solve it by hand and the door opens itself.'}</p>
+      <div id="game-host" class="game-host"><div class="faint" style="padding:20px">loading…</div></div>` : ''}
+
     ${renderDoor(p, cracked)}
 
     <details class="eli5"><summary>Reference values for this phase <span class="chev">+</span></summary>
@@ -73,6 +77,19 @@ export default async function phaseView({ params, navigate }) {
 
     wireDoor(root, p);
 
+    // interactive per-phase game (assemble / spiral), lazy-loaded
+    const gameHost = qs('#game-host', root);
+    if (gameHost && p.play) {
+      import('../games/phasegames.js')
+        .then(m => {
+          const g = m.phaseGame(p);
+          if (!g) { gameHost.innerHTML = ''; return; }
+          gameHost.innerHTML = g.html;
+          g.mount(gameHost, { crack: () => crackPhaseUI(root, p) });
+        })
+        .catch(e => { console.error(e); gameHost.innerHTML = '<p class="faint">Game failed to load.</p>'; });
+    }
+
     // interactive lab (matrix / cipher), lazy-loaded
     const labHost = qs('#lab-host', root);
     if (labHost && p.lab) {
@@ -92,6 +109,15 @@ export default async function phaseView({ params, navigate }) {
   }
 
   return { title: p.codename, html, mount };
+}
+
+// Mark a phase cracked and celebrate (shared by the door and the per-phase game).
+function crackPhaseUI(root, p) {
+  if (store.crackPhase(p.id, p.xp)) {
+    confetti();
+    toast({ ico: '🔓', title: `Cracked: ${p.codename}`, desc: `+${p.xp} XP`, kind: 'gold' });
+    const pill = qs('#crack-pill', root); if (pill) { pill.textContent = '🔓 cracked'; pill.classList.add('teal'); }
+  }
 }
 
 // ---------- the door (3 flavors) ----------
@@ -144,13 +170,7 @@ function wireDoor(root, p) {
   if (!input || !out) return;
 
   const show = (cls, text) => { out.className = 'cout show ' + cls; out.textContent = text; };
-  const celebrate = () => {
-    if (store.crackPhase(p.id, p.xp)) {
-      confetti();
-      toast({ ico: '🔓', title: `Cracked: ${p.codename}`, desc: `+${p.xp} XP`, kind: 'gold' });
-      const pill = qs('#crack-pill', root); if (pill) { pill.textContent = '🔓 cracked'; pill.classList.add('teal'); }
-    }
-  };
+  const celebrate = () => crackPhaseUI(root, p);
 
   const reveal = qs('#door-reveal', root);
   if (reveal) reveal.addEventListener('click', () => { input.value = d.answer || ''; input.focus(); });
