@@ -51,9 +51,15 @@ store.onChange((s) => {
 // ---------- boot ----------
 store.subscribe(renderXp);
 
+// active mini-game teardown: games register an instance here; the router stops
+// the previous one (RAF loop, key listeners) before the next view mounts.
+let activeGame = null;
+window.__gsmgMountGame = (inst) => { activeGame = inst; };
+function teardownGame() { if (activeGame && activeGame.destroy) { try { activeGame.destroy(); } catch (e) {} } activeGame = null; }
+
 const router = createRouter({
   outlet: qs('#app'),
-  onBefore: () => {},
+  onBefore: () => { teardownGame(); },
   onAfter: (path) => { highlightNav(path); },
   notFound: () => import('./views/placeholder.js'),
 });
@@ -67,6 +73,8 @@ router
   .add('/phase/:id', () => import('./views/phase.js'))
   .add('/frontier', frontierAlias)
   .add('/workbench', () => import('./views/workbench.js'))
+  .add('/arcade', () => import('./views/arcade.js'))
+  .add('/arcade/:game', () => import('./views/arcade.js'))
   .add('/learn', () => import('./views/learn.js'))
   .add('/leaderboard', () => import('./views/leaderboard.js'))
   .add('/profile', () => import('./views/profile.js'))

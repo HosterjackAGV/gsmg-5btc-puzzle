@@ -7,5 +7,21 @@ desktop.ini
 .vscode/
 .idea/
 
-# transient artifact written by the leaderboard Action at runtime
+# transient artifacts written by the leaderboard Actions at runtime
 verify-summary.txt
+arcade-summary.txt
+
+# ── Claude / AI tooling — never tracked or pushed ────────────────────────────
+# Everything relating to Claude Code stays local to the maintainer's machine.
+CLAUDE.md
+CLAUDE.local.md
+**/CLAUDE.md
+.claude/
+.claude*/
+**/.claude/
+.cursor/
+.cursorrules
+.aider*
+.mcp.json
+.anthropic/
+claude-*.local.*
