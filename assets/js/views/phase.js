@@ -5,8 +5,20 @@ import { getPhase, PHASES, phaseIndex, isUnlocked } from '../../../content/phase
 import * as store from '../store.js';
 import { sha256Hex, decryptBlob, tryBlob, passFor, attemptId, looksLikeWif, hasSecureCrypto } from '../crypto.js';
 import { esc, on, qs, toast, confetti, norm, refTable, copy } from '../util.js';
+import { byId as gameById } from '../games/registry.js';
 
 const STATUS_LABEL = { solved: '✓ solved', frontier: '◐ frontier', open: '◆ open' };
+
+// which scaling Arcade games train each door's real technique (the "hard challenge")
+const TRAINERS = {
+  'phase-0': ['spiralcipher'],
+  'phase-1': ['hashhunt'],
+  'phase-2': ['hashhunt', 'cryptogram'],
+  'phase-3': ['hashhunt'],
+  'phase-3-2': ['vigenere', 'cryptogram'],
+  'salphaseion': ['fielddecode', 'binarydecode'],
+  'cosmic': ['hashhunt', 'fielddecode'],
+};
 
 export default async function phaseView({ params, navigate }) {
   const p = getPhase(params.id);
@@ -17,6 +29,7 @@ export default async function phaseView({ params, navigate }) {
   const prev = PHASES[i - 1], next = PHASES[i + 1];
   const cracked = store.isCracked(p.id);
   const needsCrypto = p.door.type === 'decrypt' || p.door.type === 'open';
+  const trainers = (TRAINERS[p.id] || []).map(gameById).filter(Boolean);
 
   const html = `
   <section class="phase-hero"><div class="wrap">
@@ -47,6 +60,11 @@ export default async function phaseView({ params, navigate }) {
     ${p.play ? `<h3 style="margin-top:24px">🎮 Play this door</h3>
       <p class="muted" style="font-size:13.5px">${p.door.type === 'open' ? 'A hands-on recipe builder — every run hits the real blob and is logged to the frontier.' : 'Solve it by hand and the door opens itself.'}</p>
       <div id="game-host" class="game-host"><div class="faint" style="padding:20px">loading…</div></div>` : ''}
+
+    ${trainers.length ? `<div class="phase-train">
+      <span>🎯 <b>Want a real challenge?</b> Train this door’s technique — it scales from easy to brutal and feeds the weekly <a href="#/arcade">tournaments</a>:</span>
+      <div class="phase-train-row">${trainers.map(g => `<a class="btn ghost sm" href="#/arcade/${g.id}">${g.icon} ${esc(g.title)}</a>`).join('')}</div>
+    </div>` : ''}
 
     ${renderDoor(p, cracked)}
 

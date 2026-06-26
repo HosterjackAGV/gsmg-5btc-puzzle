@@ -11,10 +11,13 @@ import { createHash } from 'node:crypto';
 import { simulate as cryptogram } from '../../assets/js/games/sim/cryptogram.js';
 import { simulate as fielddecode } from '../../assets/js/games/sim/fielddecode.js';
 import { simulate as hashhunt } from '../../assets/js/games/sim/hashhunt.js';
+import { simulate as spiralcipher } from '../../assets/js/games/sim/spiralcipher.js';
+import { simulate as vigenere } from '../../assets/js/games/sim/vigenere.js';
+import { simulate as binarydecode } from '../../assets/js/games/sim/binarydecode.js';
 import { parseWeeklySeed, levelForDivision, divisionFor } from '../../assets/js/games/divisions.js';
 
 // Keep aligned with games/registry.js (`verifiable: true`) and games/sim/*.
-const SIMS = { cryptogram, fielddecode, hashhunt };
+const SIMS = { cryptogram, fielddecode, hashhunt, spiralcipher, vigenere, binarydecode };
 const MAX_SCORES = 200, MAX_MOVES = 3000;
 
 const sha256hex = (s) => createHash('sha256').update(String(s)).digest('hex');

@@ -30,6 +30,27 @@ export const GAMES = [
     load: () => import('./hashhunt.js'),
   },
   {
+    id: 'spiralcipher', title: 'Spiral Cipher', kind: 'skill', icon: '🌀',
+    verifiable: true, tournament: true, difficulty: 'scales 1–9',
+    concept: 'Phase 0’s move — read a bit-grid in a counter-clockwise spiral, group into bytes, decode to letters.',
+    blurb: 'A word is hidden in a grid of filled/empty cells. Read the spiral, turn the bits into bytes, and recover the word. Bigger grids as you climb.',
+    load: () => import('./spiralcipher.js'),
+  },
+  {
+    id: 'vigenere', title: 'Vigenère', kind: 'skill', icon: '🔑',
+    verifiable: true, tournament: true, difficulty: 'scales 1–12',
+    concept: 'Polyalphabetic key-finding — the family the Architect used (Beaufort keyed THEMATRIXHASYOU).',
+    blurb: 'A repeating key shifts every letter. Recover the key so the gibberish becomes a sentence — longer keys higher up, and no frequency aid.',
+    load: () => import('./vigenere.js'),
+  },
+  {
+    id: 'binarydecode', title: 'Binary Decoder', kind: 'skill', icon: '⚌',
+    verifiable: true, tournament: true, difficulty: 'scales 1–9',
+    concept: 'The SalPhaseIon a/b chunks — two symbols are one bit each; 8 bits per ASCII letter.',
+    blurb: 'Two symbols, two bits. Assign each one so the string decodes to a real word. Which symbol is 0 gets scrambled higher up — deduce it.',
+    load: () => import('./binarydecode.js'),
+  },
+  {
     id: 'hashminer', title: 'Hash Miner', kind: 'idle', icon: '⛏️',
     verifiable: false, difficulty: 'endless',
     concept: 'SHA-256 proof-of-work — why "mining" means guessing trillions of inputs to hit a rare output.',

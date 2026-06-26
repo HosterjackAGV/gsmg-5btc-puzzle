@@ -336,3 +336,31 @@ table.board td.bh{background:var(--panel2);color:var(--gold);font-weight:700}
 .trn-g-h b{flex:1}
 .trn-standings{display:flex;flex-direction:column;gap:2px;font-family:var(--mono);font-size:11.5px;color:var(--muted);min-height:42px}
 .trn-standings b{color:var(--gold)}
+
+/* =========================================================================
+   Vigenère · Binary Decoder · Spiral Cipher · per-phase trainer callout
+   ========================================================================= */
+.vg-ct{font-family:var(--mono);font-size:14px;letter-spacing:1px;word-break:break-word;padding:14px;background:#05070c;border:1px solid var(--line2);border-radius:var(--r);margin-bottom:12px;color:var(--rust)}
+.vg-key{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.vg-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;width:46px;height:48px;border-radius:8px;background:var(--panel);border:1px solid var(--line2);cursor:pointer;transition:all .12s}
+.vg-slot b{font-family:var(--disp);font-weight:700;font-size:18px;color:var(--paper);line-height:1}
+.vg-slot:not(.set) b{color:var(--faint)}
+.vg-slot i{font-family:var(--mono);font-size:9px;color:var(--faint);font-style:normal;margin-top:2px}
+.vg-slot.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-glow)}
+.vg-slot.set{border-color:var(--teal-deep)}
+
+.bd-string{display:flex;flex-wrap:wrap;gap:2px;padding:14px;background:#05070c;border:1px solid var(--line2);border-radius:var(--r);margin-bottom:12px;font-family:var(--mono)}
+.bd-sym{display:inline-flex;align-items:center;justify-content:center;width:22px;height:28px;border-radius:4px;background:var(--panel);border:1px solid var(--line);font-size:14px;cursor:pointer;color:var(--paper)}
+.bd-sym.sel{border-color:var(--gold);background:var(--gold-glow)}
+.bd-sym.set{color:var(--teal)}
+.bd-gap{width:10px}
+.bd-assign{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+
+.sp-bytes{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0;font-family:var(--mono);font-size:13px;color:var(--teal)}
+.sp-byte{background:#05070c;border:1px solid var(--line2);border-radius:6px;padding:4px 7px;letter-spacing:1px}
+.sp-reveal{display:inline-block;margin-top:8px;font-size:12px;color:var(--muted)}
+.sp-reveal b{color:var(--gold);font-family:var(--mono)}
+
+.phase-train{margin:14px 0;padding:14px 16px;border:1px solid var(--gold-deep);background:var(--gold-glow);border-radius:var(--r);font-size:13.5px;color:var(--muted)}
+.phase-train b{color:var(--paper)}
+.phase-train-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
