@@ -15,7 +15,7 @@ const TRAINERS = {
   'phase-1': ['hashhunt'],
   'phase-2': ['hashhunt', 'cryptogram'],
   'phase-3': ['hashhunt'],
-  'phase-3-2': ['vigenere', 'cryptogram'],
+  'phase-3-2': ['straddle', 'vigenere', 'cryptogram'],
   'salphaseion': ['fielddecode', 'binarydecode'],
   'cosmic': ['hashhunt', 'fielddecode'],
 };
@@ -62,8 +62,12 @@ export default async function phaseView({ params, navigate }) {
       <div id="game-host" class="game-host"><div class="faint" style="padding:20px">loading…</div></div>` : ''}
 
     ${trainers.length ? `<div class="phase-train">
-      <span>🎯 <b>Want a real challenge?</b> Train this door’s technique — it scales from easy to brutal and feeds the weekly <a href="#/arcade">tournaments</a>:</span>
+      <span>🎯 <b>Want a real challenge?</b> This door’s technique scales from easy to brutal and feeds the weekly <a href="#/arcade">tournaments</a>:</span>
       <div class="phase-train-row">${trainers.map(g => `<a class="btn ghost sm" href="#/arcade/${g.id}">${g.icon} ${esc(g.title)}</a>`).join('')}</div>
+      <div class="phase-hard">
+        <button type="button" class="btn gold sm" id="hard-launch">🔥 Solve a fresh ${esc(trainers[0].title)} challenge right here</button>
+        <div id="hard-host" class="game-host"></div>
+      </div>
     </div>` : ''}
 
     ${renderDoor(p, cracked)}
@@ -107,6 +111,22 @@ export default async function phaseView({ params, navigate }) {
         })
         .catch(e => { console.error(e); gameHost.innerHTML = '<p class="faint">Game failed to load.</p>'; });
     }
+
+    // in-door "hard mode": mount a fresh, generated trainer challenge inline
+    const hardBtn = qs('#hard-launch', root);
+    if (hardBtn && trainers.length) hardBtn.addEventListener('click', async () => {
+      const hh = qs('#hard-host', root);
+      hardBtn.disabled = true; hardBtn.textContent = 'loading…';
+      try {
+        const [mod, hostMod] = await Promise.all([trainers[0].load(), import('../engine/host.js')]);
+        const startFn = mod.start || mod.default;
+        hh.innerHTML = '';
+        const host = hostMod.createHost({ el: hh, game: trainers[0], navigate });
+        const inst = startFn(host);
+        if (window.__gsmgMountGame) window.__gsmgMountGame(inst);
+        hardBtn.style.display = 'none';
+      } catch (e) { console.error(e); hh.innerHTML = '<p class="faint">Failed to load this challenge.</p>'; }
+    });
 
     // interactive lab (matrix / cipher), lazy-loaded
     const labHost = qs('#lab-host', root);

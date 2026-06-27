@@ -51,6 +51,13 @@ export const GAMES = [
     load: () => import('./binarydecode.js'),
   },
   {
+    id: 'straddle', title: 'Checkerboard', kind: 'skill', icon: '🏁',
+    verifiable: true, tournament: true, difficulty: 'scales 1–9',
+    concept: 'Straddling checkerboard — the heart of the VIC cipher the Architect used in Phase 3.2.',
+    blurb: 'Decode a number string with a straddling checkerboard: 8 letters are one digit, the rest are two. Mind the straddle digits. Longer words as you climb.',
+    load: () => import('./straddle.js'),
+  },
+  {
     id: 'hashminer', title: 'Hash Miner', kind: 'idle', icon: '⛏️',
     verifiable: false, difficulty: 'endless',
     concept: 'SHA-256 proof-of-work — why "mining" means guessing trillions of inputs to hit a rare output.',

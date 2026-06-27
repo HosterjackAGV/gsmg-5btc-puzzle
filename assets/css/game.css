@@ -364,3 +364,13 @@ table.board td.bh{background:var(--panel2);color:var(--gold);font-weight:700}
 .phase-train{margin:14px 0;padding:14px 16px;border:1px solid var(--gold-deep);background:var(--gold-glow);border-radius:var(--r);font-size:13.5px;color:var(--muted)}
 .phase-train b{color:var(--paper)}
 .phase-train-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.phase-hard{margin-top:12px}
+.phase-hard .game-host{margin-top:12px}
+
+/* straddling checkerboard game */
+.st-wrap{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}
+@media(max-width:640px){.st-wrap{grid-template-columns:1fr}}
+.board.straddle th{border:1px solid var(--line2);width:26px;height:26px;text-align:center;color:var(--faint);font-weight:700;background:#05070c}
+.board.straddle th.bh{color:var(--gold);background:var(--panel2)}
+.board.straddle td{background:var(--void2)}
+.st-ct{font-size:16px;letter-spacing:2px;word-break:break-all;padding:10px;background:#05070c;border:1px solid var(--line2);border-radius:var(--r);color:var(--teal);margin:4px 0}

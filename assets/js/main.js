@@ -51,11 +51,12 @@ store.onChange((s) => {
 // ---------- boot ----------
 store.subscribe(renderXp);
 
-// active mini-game teardown: games register an instance here; the router stops
-// the previous one (RAF loop, key listeners) before the next view mounts.
-let activeGame = null;
-window.__gsmgMountGame = (inst) => { activeGame = inst; };
-function teardownGame() { if (activeGame && activeGame.destroy) { try { activeGame.destroy(); } catch (e) {} } activeGame = null; }
+// active mini-game teardown: games register their instance here; the router stops
+// all of them (RAF loops, key listeners) before the next view mounts. A single view
+// can host several games (e.g. a phase's intro game + its in-door hard mode).
+let activeGames = [];
+window.__gsmgMountGame = (inst) => { if (inst) activeGames.push(inst); };
+function teardownGame() { for (const g of activeGames) { if (g && g.destroy) { try { g.destroy(); } catch (e) {} } } activeGames = []; }
 
 const router = createRouter({
   outlet: qs('#app'),
