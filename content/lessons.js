@@ -23,7 +23,7 @@ export const LESSONS = [
     <p>That refusal is important: when you try a wrong passphrase on a real blob, AES reports <b>“invalid padding”</b> — a clean “nope”. When you get it right, real sentences appear. There’s no ambiguity. Try opening the real Phase-2 box below by hashing the word <span class="mono">causality</span>.</p>`,
   },
   {
-    id: 'l-openssl', ico: '🧂', title: 'Salt & the OpenSSL envelope', mins: 3,
+    id: 'l-openssl', ico: '🧂', title: 'Salt & the OpenSSL envelope', mins: 3, demo: 'salt',
     body: `
     <p>Every encrypted box in this puzzle is an <b>OpenSSL “Salted__” envelope</b>. If you base64-decode it, the raw bytes literally begin with the word <span class="mono">Salted__</span>, followed by 8 random <b>salt</b> bytes, then the ciphertext.</p>
     <p><b>Why salt?</b> It’s a pinch of randomness mixed with your passphrase before making the key, so the same password produces a different key each time it’s used. It isn’t secret — it travels in the open inside the box.</p>
@@ -31,7 +31,7 @@ export const LESSONS = [
     <div class="note"><p class="mono" style="font-size:12.5px">base64 of “Salted__” is <b>U2FsdGVkX18=</b> — so every blob in this puzzle starts with <b>U2FsdGVkX1…</b>. Now you can spot one anywhere.</p></div>`,
   },
   {
-    id: 'l-ciphers', ico: '🔤', title: 'Classic ciphers', mins: 4,
+    id: 'l-ciphers', ico: '🔤', title: 'Classic ciphers', mins: 4, demo: 'ciphers',
     body: `
     <p>Before computers, people hid messages with <b>pencil-and-paper ciphers</b>. Phase 3.2 uses two of them.</p>
     <p><b>Beaufort cipher</b> — a cousin of the Vigenère cipher. You line your message up against a repeating <b>keyword</b> (here, <span class="mono">THEMATRIXHASYOU</span>) and look each letter up in a grid. Neat trick: with Beaufort, <em>encrypting and decrypting are the same operation</em>.</p>
@@ -39,14 +39,14 @@ export const LESSONS = [
     <p>You don’t need to do these by hand — tools like <a href="https://www.dcode.fr/" target="_blank" rel="noopener">dcode.fr</a> and <a href="https://gchq.github.io/CyberChef/" target="_blank" rel="noopener">CyberChef</a> do them. The skill the puzzle tests is <em>recognising which cipher</em> you’re looking at.</p>`,
   },
   {
-    id: 'l-bitcoin', ico: '₿', title: 'Bitcoin keys & the prize', mins: 4,
+    id: 'l-bitcoin', ico: '₿', title: 'Bitcoin keys & the prize', mins: 4, demo: 'bitcoin',
     body: `
     <p>A <b>Bitcoin address</b> (like <span class="mono break">1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe</span>) is like a transparent glass piggy-bank: anyone can see what’s inside, but only the holder of the matching <b>private key</b> can spend it.</p>
     <p>The puzzle’s prize sits in such an address. <b>Solving the puzzle means recovering that private key</b> — usually written as a <b>WIF</b> string starting with <span class="mono">5</span>, <span class="mono">K</span>, or <span class="mono">L</span>. Decrypt the final box correctly and a WIF key falls out; import it and you can move the coins.</p>
     <div class="note key"><h4>♻️ The halving twist</h4><p>The bounty began at <b>5 BTC</b> in 2019. The creators mirror Bitcoin’s own “halving” by cutting the prize in half on each halving date: 5 → 2.5 (2020) → <b>~1.25 BTC today</b>. The peeled-off 3.75 BTC waits, untouched, in a second address. The prize has <b>never been claimed</b> by a solver — that empty-handedness is the only proof the puzzle is still open.</p></div>`,
   },
   {
-    id: 'l-chain', ico: '⛓️', title: 'How it all chains together', mins: 3,
+    id: 'l-chain', ico: '⛓️', title: 'How it all chains together', mins: 3, demo: 'chain',
     body: `
     <p>Now the whole machine in one picture. Each phase is a <b>locked box</b>. You solve its riddle to get an <b>answer</b>; you <b>hash</b> that answer to get the <b>key</b>; the key <b>unlocks the next box</b>; inside is the next riddle. Repeat.</p>
     <p class="mono" style="font-size:13px;line-height:2">riddle → <b class="gold">answer</b> → sha256 → <b class="blue">key</b> → decrypt → next riddle → …</p>
