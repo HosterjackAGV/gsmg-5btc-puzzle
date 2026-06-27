@@ -10,6 +10,18 @@ import { esc, on, qs, qsa, toast } from '../util.js';
 
 const u8hex = (u8) => [...u8].map(b => b.toString(16).padStart(2, '0')).join('');
 
+// each lesson's technique → the scaling game that drills it (Education → Games)
+const EXERCISES = [
+  ['#️⃣', 'Hashing & one-wayness', 'Solve a riddle, find the word behind a SHA-256 — no reversing, only guessing.', 'hashhunt'],
+  ['🔡', 'Substitution', 'Break a monoalphabetic cipher; the frequency aid disappears as you climb.', 'cryptogram'],
+  ['🔑', 'Polyalphabetic', 'Recover a repeating Vigenère key so the gibberish becomes a sentence.', 'vigenere'],
+  ['📊', 'Frequency / IoC', 'Find a Vigenère key length by reading the Index-of-Coincidence chart.', 'freqanalysis'],
+  ['🔢', 'Base-9 field decode', 'Map symbols to digits so a big number decodes to a word — the SalPhaseIon method.', 'fielddecode'],
+  ['⚌', 'Binary ASCII', 'Two symbols, two bits — decode the a/b string into letters.', 'binarydecode'],
+  ['🌀', 'Spiral grid reading', 'Read a bit-grid in a counter-clockwise spiral and recover the hidden word.', 'spiralcipher'],
+  ['🏁', 'VIC checkerboard', 'Decode a number string with a straddling checkerboard.', 'straddle'],
+];
+
 export default async function learnView() {
   const done = store.state.lessons;
   const total = LESSONS.length;
@@ -40,6 +52,13 @@ export default async function learnView() {
       <p class="muted" style="margin:0">${doneN === total ? 'Course complete — you’re ready for anything in this puzzle.' : 'Tap a lesson to expand it. Your progress is saved in your browser.'}</p>
     </div>
     ${cards}
+
+    <div class="sec-head" style="margin-top:38px"><div class="sec-num">EXERCISES</div><h2>Practice — gentle to brutal</h2>
+      <p>Reading is one thing; doing is another. Every technique here has a full <a href="#/arcade">game</a> that starts easy and ramps up, with weekly tournaments that match you against players at your level. Pick a skill and drill it.</p></div>
+    <div class="eff-grid">
+      ${EXERCISES.map(([ico, skill, desc, id]) => `<a class="eff-card" href="#/arcade/${id}"><div class="eff-ico">${ico}</div><div><b>${esc(skill)}</b><p>${esc(desc)}</p></div></a>`).join('')}
+    </div>
+    <p class="cnote" style="margin-top:14px">Each is replay-verified — the bot re-plays your moves, so a score reflects real skill. Climb the divisions in the <a href="#/arcade">Games</a> section.</p>
   </div></section>`;
 
   function mount(root) {

@@ -70,6 +70,8 @@ const frontierAlias = async () => ({ default: async ({ navigate }) => { navigate
 
 router
   .add('/', () => import('./views/home.js'))
+  .add('/walkthrough', () => import('./views/walkthrough.js'))
+  .add('/effort', () => import('./views/effort.js'))
   .add('/map', () => import('./views/home.js'))
   .add('/phase/:id', () => import('./views/phase.js'))
   .add('/frontier', frontierAlias)
