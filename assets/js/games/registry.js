@@ -58,6 +58,13 @@ export const GAMES = [
     load: () => import('./straddle.js'),
   },
   {
+    id: 'freqanalysis', title: 'Frequency Analysis', kind: 'skill', icon: '📊',
+    verifiable: true, tournament: true, difficulty: 'scales 1–9',
+    concept: 'Index of Coincidence — the column-IC test the dead-end ledger ran on dbbi & faed to find a key period.',
+    blurb: 'A repeating key flattens the letters. Read the Index-of-Coincidence chart, find the shortest period where it spikes toward English, and recover the key length. Longer keys as you climb.',
+    load: () => import('./freqanalysis.js'),
+  },
+  {
     id: 'hashminer', title: 'Hash Miner', kind: 'idle', icon: '⛏️',
     verifiable: false, difficulty: 'endless',
     concept: 'SHA-256 proof-of-work — why "mining" means guessing trillions of inputs to hit a rare output.',

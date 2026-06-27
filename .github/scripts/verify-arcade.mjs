@@ -15,10 +15,11 @@ import { simulate as spiralcipher } from '../../assets/js/games/sim/spiralcipher
 import { simulate as vigenere } from '../../assets/js/games/sim/vigenere.js';
 import { simulate as binarydecode } from '../../assets/js/games/sim/binarydecode.js';
 import { simulate as straddle } from '../../assets/js/games/sim/straddle.js';
+import { simulate as freqanalysis } from '../../assets/js/games/sim/freqanalysis.js';
 import { parseWeeklySeed, levelForDivision, divisionFor } from '../../assets/js/games/divisions.js';
 
 // Keep aligned with games/registry.js (`verifiable: true`) and games/sim/*.
-const SIMS = { cryptogram, fielddecode, hashhunt, spiralcipher, vigenere, binarydecode, straddle };
+const SIMS = { cryptogram, fielddecode, hashhunt, spiralcipher, vigenere, binarydecode, straddle, freqanalysis };
 const MAX_SCORES = 200, MAX_MOVES = 3000;
 
 const sha256hex = (s) => createHash('sha256').update(String(s)).digest('hex');

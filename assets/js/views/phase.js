@@ -15,9 +15,9 @@ const TRAINERS = {
   'phase-1': ['hashhunt'],
   'phase-2': ['hashhunt', 'cryptogram'],
   'phase-3': ['hashhunt'],
-  'phase-3-2': ['straddle', 'vigenere', 'cryptogram'],
-  'salphaseion': ['fielddecode', 'binarydecode'],
-  'cosmic': ['hashhunt', 'fielddecode'],
+  'phase-3-2': ['straddle', 'vigenere', 'cryptogram', 'freqanalysis'],
+  'salphaseion': ['fielddecode', 'binarydecode', 'freqanalysis'],
+  'cosmic': ['hashhunt', 'fielddecode', 'freqanalysis'],
 };
 
 export default async function phaseView({ params, navigate }) {
