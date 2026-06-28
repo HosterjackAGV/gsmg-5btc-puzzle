@@ -4,7 +4,7 @@
 
 import { qs, qsa, on } from '../util.js';
 import { snakeGame } from '../games/snake.js';
-import { fetchBoard, submitScore, fmtTime, isGlobal } from '../games/scoreboard.js';
+import { fetchBoard, submitScore, fmtTime, isConfigured } from '../games/scoreboard.js';
 
 export default async function gamesView() {
   const html = `
@@ -18,7 +18,7 @@ export default async function gamesView() {
     <div class="snake-wrap">
       <div class="snake-hud">
         <div class="sk-stat"><span>Score</span><b id="sk-score">0</b></div>
-        <div class="sk-stat"><span>Best</span><b id="sk-best">0</b></div>
+        <div class="sk-stat"><span>Top</span><b id="sk-top">—</b></div>
         <div class="sk-stat"><span>Time</span><b id="sk-time">0:00</b></div>
         <div class="sk-stat"><span>Level</span><b id="sk-level">1</b></div>
         <div class="sk-stat"><span>Glitches</span><b id="sk-enemies">0</b></div>
@@ -67,8 +67,9 @@ export default async function gamesView() {
           <li><b>Move</b> with the <b>arrow keys / WASD</b> (PC) or by <b>swiping</b> the grid / tapping the <b>D-pad</b> (phone). You <b>cannot turn back into your own body</b> — a too-fast reversal is ignored.</li>
           <li><b>Speed</b> starts <b>slow</b> and ramps up as your score climbs, reaching the <b>human-reaction maximum</b> at about <b>score 50</b>, then holds there.</li>
           <li><b>Death:</b> hitting a <b>wall</b>, your <b>own body</b>, or a moving <b>glitch</b> ends the run.</li>
-          <li><b>Glitches</b> 👾 spawn from the genesis grid's <b>blue / yellow / #FEFEFE</b> boxes. They are <b>frozen</b> until <b>score 8</b>; above that they start <b>chasing</b> you. Every glitch <b>vanishes after a while</b> — and the <b>higher your score, the longer each one lingers</b>.</li>
-          <li><b>Power-ups</b> appear on those same boxes:
+          <li><b>Glitches</b> 👾 spawn from the genesis grid's <b>blue / yellow / #FEFEFE</b> boxes. They sit <b>frozen</b> until <b>score 15</b>, then start <b>chasing</b> you (and move faster from <b>score 30</b>). Every glitch <b>vanishes after a while</b> — and the <b>higher your score, the longer each one lingers</b>.</li>
+          <li><b>Your body is a weapon:</b> a glitch that walks into the snake's <b>body</b> is <b>destroyed</b> and leaves a <span class="pu pu-y">×2</span> behind. But a glitch that hits you <b>head-on (the mouth)</b> still <b>kills</b> you — so herd them into your tail, not your face. (A shielded head smashes them instead.)</li>
+          <li><b>Power-ups</b> appear on those same boxes and <b>all fade away</b> — the <b>rarer</b> the power-up, the <b>shorter</b> it lingers, so grab the good ones fast:
             <ul>
               <li><span class="pu pu-b">🛡 blue</span> — <b>shield</b>: smash through glitches and your own body for a few seconds.</li>
               <li><span class="pu pu-y">×2 yellow</span> — <b>double seeds</b> for a few seconds.</li>
@@ -76,7 +77,7 @@ export default async function gamesView() {
               <li><span class="pu pu-r">↺ purple</span> — <b>incredibly rare</b> (score 10+): <b>reset your length</b> back to the start but <b>keep your score</b> — a second wind to push higher.</li>
             </ul>
           </li>
-          <li><b>Scoreboard:</b> when you die, enter a name to post your <b>score</b> and <b>run time</b>. <b id="sk-anti"></b></li>
+          <li><b>Scoreboard:</b> when you die, enter a name to post your <b>score</b> and <b>run time</b> to the <b>global</b> board — shared by every player and stored on <b>GitHub</b>. <b id="sk-anti"></b></li>
         </ul>
       </details>
     </div>
@@ -90,16 +91,14 @@ export default async function gamesView() {
     const submitRow = $('#sk-submit-row'), nameIn = $('#sk-name'), submitBtn = $('#sk-submit'), rankEl = $('#sk-rank');
     const PU = { blue: '🛡 shield', yellow: '×2 seeds', fefefe: '0 wipe', reset: '↺ reset' };
 
-    $('#sk-scope').textContent = isGlobal() ? '· global' : '· this device';
-    $('#sk-anti').textContent = isGlobal()
-      ? 'Scores are re-simulated on the server from your recorded game, so the board can’t be faked.'
-      : 'Scores are re-simulated from your recorded game before they’re saved (local board on this device until a global server is set up).';
+    $('#sk-scope').textContent = isConfigured() ? '· global · on GitHub' : '· not connected yet';
+    $('#sk-anti').textContent = 'The server re-simulates your recorded game to compute the real score, so the board can’t be faked — and nothing is stored on your device.';
 
     let lastReplay = null, submitted = false;
 
     const game = snakeGame(canvas, {
       onHud(s) {
-        $('#sk-score').textContent = s.score; $('#sk-best').textContent = s.best;
+        $('#sk-score').textContent = s.score;
         $('#sk-time').textContent = fmtTime(s.timeMs); $('#sk-level').textContent = s.level; $('#sk-enemies').textContent = s.enemies;
         const p = $('#sk-power');
         if (s.power) { p.hidden = false; p.textContent = PU[s.power] || s.power; p.className = 'sk-power pu-' + s.power[0]; } else p.hidden = true;
@@ -121,11 +120,13 @@ export default async function gamesView() {
       },
     });
 
-    // ---- scoreboard ----
+    // ---- scoreboard (global, lives on GitHub) ----
+    function setTop(board) { $('#sk-top').textContent = (board && board.length) ? board[0].score : '—'; }
     async function refreshBoard() {
-      const { board, global } = await fetchBoard();
-      $('#sk-scope').textContent = global ? '· global' : '· this device';
-      renderBoard($('#sk-board'), board);
+      const { board, configured, error } = await fetchBoard();
+      $('#sk-scope').textContent = configured ? '· global · on GitHub' : '· not connected yet';
+      setTop(board);
+      renderBoard($('#sk-board'), board, { configured, error });
     }
     refreshBoard();
 
@@ -137,8 +138,8 @@ export default async function gamesView() {
       submitBtn.disabled = false; submitBtn.textContent = 'Submit score';
       if (res.ok) {
         submitted = true; submitRow.hidden = true;
-        rankEl.hidden = false; rankEl.innerHTML = `✓ Verified — <b>rank #${res.rank}</b>${res.global ? '' : ' (this device)'}`;
-        if (res.board) renderBoard($('#sk-board'), res.board); else refreshBoard();
+        rankEl.hidden = false; rankEl.innerHTML = `✓ Verified on the server — <b>rank #${res.rank}</b> on the global board`;
+        if (res.board) { renderBoard($('#sk-board'), res.board, { configured: true }); setTop(res.board); } else refreshBoard();
       } else { rankEl.hidden = false; rankEl.innerHTML = `<span class="sb-err">${res.error || 'could not submit'}</span>`; }
     });
     nameIn.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitBtn.click(); });
@@ -176,10 +177,14 @@ export default async function gamesView() {
   return { title: 'Games', html, mount };
 }
 
-function renderBoard(host, board) {
+function renderBoard(host, board, opts = {}) {
   if (!host) return;
-  if (!board || !board.length) { host.innerHTML = '<p class="sb-empty">No scores yet — <b>be the first</b>. 🥇</p>'; return; }
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  if (!board || !board.length) {
+    if (opts.configured === false) { host.innerHTML = '<p class="sb-empty">The global scoreboard isn’t connected yet — see <a href="https://github.com/HosterjackAGV/gsmg-5btc-puzzle/blob/main/docs/SCOREBOARD.md" target="_blank" rel="noopener">docs/SCOREBOARD.md</a> to switch it on (free, ~10 min).</p>'; return; }
+    if (opts.error) { host.innerHTML = `<p class="sb-empty">${esc(opts.error)}</p>`; return; }
+    host.innerHTML = '<p class="sb-empty">No scores yet — <b>be the first</b>. 🥇</p>'; return;
+  }
   const medal = (i) => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
   host.innerHTML = `<table class="sb-table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th></tr></thead><tbody>${
     board.slice(0, 25).map((e, i) => `<tr><td class="sb-rank">${medal(i)}</td><td class="sb-name">${esc(e.name)}</td><td class="sb-score">${e.score}</td><td class="sb-time">${fmtTime(e.timeMs)}</td></tr>`).join('')

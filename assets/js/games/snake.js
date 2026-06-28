@@ -29,8 +29,7 @@ const randSeed = () => (Math.floor(Math.random() * 0xFFFFFFFF) >>> 0);
 export function snakeGame(canvas, { onHud = () => {}, onOver = () => {} } = {}) {
   const ctx = canvas.getContext ? canvas.getContext('2d') : null;
   canvas.width = N * CELL; canvas.height = N * CELL;
-  let sim, seed, inputs, status, best, timer = null, lastTick = 0;
-  best = +(localStorage.getItem('gsmg:snake:best') || 0);
+  let sim, seed, inputs, status, timer = null, lastTick = 0;   // no device storage — the board lives on GitHub
 
   function reset() {
     seed = randSeed(); sim = createSim(seed, LORE); inputs = []; status = 'ready';
@@ -40,7 +39,7 @@ export function snakeGame(canvas, { onHud = () => {}, onOver = () => {} } = {}) 
 
   function hud() {
     onHud({
-      score: sim.score, best, status, level: level(),
+      score: sim.score, status, level: level(),
       enemies: sim.enemies.length, enemiesActive: sim.score >= enemiesMoveAt,
       power: sim.power ? sim.power.type : null,
       timeMs: sim.timeMs,
@@ -50,7 +49,6 @@ export function snakeGame(canvas, { onHud = () => {}, onOver = () => {} } = {}) 
   function tick() {
     if (status !== 'playing') return;
     const alive = coreStep(sim);
-    if (sim.score > best) { best = sim.score; try { localStorage.setItem('gsmg:snake:best', best); } catch {} }
     if (!alive) { status = 'over'; hud(); draw(); onOver({ seed, inputs: inputs.slice(), score: sim.score, timeMs: sim.timeMs, ticks: sim.tick }); return; }
     hud(); draw();
   }

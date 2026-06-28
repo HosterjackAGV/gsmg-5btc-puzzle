@@ -1,13 +1,13 @@
 // content/games.js — games configuration.
 //
-// scoreboardUrl — OPTIONAL global, CHEAT-PROOF Snake scoreboard. A static page can't verify
-// scores on its own (anyone could POST a fake number to an open database), so the only honest
-// "unhackable" design is server-side replay verification: the client submits the recorded game
-// (seed + inputs), and the server RE-SIMULATES it to compute the real score. Deploy the free
-// Cloudflare Worker in docs/SCOREBOARD.md (~5 min) and paste its URL here.
+// scoreboardUrl — the global Snake scoreboard endpoint (a free Cloudflare Worker). The board is
+// PERSISTED ON GITHUB (a Gist) so it's the same for every device and player, and nothing is stored
+// or trusted on the player's device. The client submits the recorded game (seed + inputs); the
+// Worker RE-SIMULATES it to compute the real score before saving, so fake scores can't get on the
+// board. Deploy it once (free, ~10 min) — see docs/SCOREBOARD.md — and paste the worker URL here.
 //
-// Leave it '' and the scoreboard is LOCAL only (per-browser, still tamper-checked client-side by
-// re-simulating the replay before saving) — global play just isn't shared until the Worker is up.
+// Until it's set, the Games page shows the scoreboard as "not connected yet" (no local fallback —
+// the board is intentionally server-only).
 
 export const GAMES = {
   scoreboardUrl: '',     // e.g. 'https://gsmg-snake.<you>.workers.dev'

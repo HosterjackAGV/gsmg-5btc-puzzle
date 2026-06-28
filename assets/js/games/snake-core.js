@@ -15,11 +15,14 @@ const SLOW_MS = 230, FAST_MS = 95, RAMP = 50;
 export function speedMs(score) {
   return Math.round(Math.max(FAST_MS, SLOW_MS - (SLOW_MS - FAST_MS) * Math.min(1, score / RAMP)));
 }
-// Enemies are frozen until the score reaches this; above it they roam.
-const ENEMY_MOVE_SCORE = 8;
+// Enemies stay FROZEN until the score reaches this; then they roam — slowly at first, faster later.
+const ENEMY_MOVE_SCORE = 15;
+const enemyMoveEvery = (s) => s >= 30 ? 2 : 3;       // ticks per enemy step (lower = faster)
 // Enemies always vanish after a while; the higher the score, the longer they linger (more dangerous).
 export function enemyTTL(score) { return 34 + score * 4; }
-const POWERUP_TTL = 75, POWERUP_EVERY = 60, MAX_ENEMIES = 6;
+// Power-ups always vanish; the RARER the power-up, the SHORTER it stays on the field.
+const PU_TTL = { blue: 80, yellow: 90, fefefe: 48, reset: 26 };
+const POWERUP_EVERY = 60, MAX_ENEMIES = 6;
 const MAX_TICKS = 250000, MAX_INPUTS = 200000;
 
 // deterministic PRNG (mulberry32)
@@ -68,7 +71,7 @@ function spawnPowerup(sim) {
   else type = sim.rng() < 0.5 ? 'blue' : 'yellow';
   const want = (type === 'reset' || type === 'fefefe') ? 'fefefe' : type;
   const c = freeLore(sim, want) || freeLore(sim); if (!c) return;
-  sim.powerups.push({ x: c.x, y: c.y, type, ttl: sim.tick + POWERUP_TTL });
+  sim.powerups.push({ x: c.x, y: c.y, type, ttl: sim.tick + (PU_TTL[type] || 70) });
 }
 
 // queue a turn — rejects 180° reversals & duplicates, validating against the last queued/current
@@ -117,22 +120,32 @@ export function step(sim) {
   sim.powerups = sim.powerups.filter(p => p.ttl > sim.tick);
 
   sim.enemies = sim.enemies.filter(e => e.expires > sim.tick);                      // vanish on expiry
-  if (sim.score >= ENEMY_MOVE_SCORE && sim.tick % 2 === 0) moveEnemies(sim);        // frozen until score high enough
+  if (sim.score >= ENEMY_MOVE_SCORE && sim.tick % enemyMoveEvery(sim.score) === 0) moveEnemies(sim);
+  if (sim.status !== 'playing') return false;                                       // an enemy reached the mouth
   if (sim.tick % POWERUP_EVERY === 0) spawnPowerup(sim);
-  if (sim.enemies.some(e => e.x === head.x && e.y === head.y) && !shielded) return die(sim);
   return true;
 }
 
+// Enemy turn. An enemy that walks into the snake's HEAD (the mouth) kills it (unless shielded,
+// which smashes the enemy). An enemy that walks into the snake's BODY is destroyed and leaves a ×2.
 function moveEnemies(sim) {
+  const shielded = sim.power && sim.power.type === 'blue' && sim.power.until > sim.tick;
+  const survivors = [];
   for (const e of sim.enemies) {
-    if (sim.rng() < 0.35) {
-      const h = sim.snake[0];
-      e.dir = Math.abs(h.x - e.x) > Math.abs(h.y - e.y) ? [Math.sign(h.x - e.x) || 1, 0] : [0, Math.sign(h.y - e.y) || 1];
-    }
+    if (sim.rng() < 0.35) { const h = sim.snake[0]; e.dir = Math.abs(h.x - e.x) > Math.abs(h.y - e.y) ? [Math.sign(h.x - e.x) || 1, 0] : [0, Math.sign(h.y - e.y) || 1]; }
     let nx = e.x + e.dir[0], ny = e.y + e.dir[1];
     if (nx < 0 || nx >= N || ny < 0 || ny >= N) { e.dir = [-e.dir[0], -e.dir[1]]; nx = e.x + e.dir[0]; ny = e.y + e.dir[1]; }
-    if (nx >= 0 && nx < N && ny >= 0 && ny < N) { e.x = nx; e.y = ny; }
+    if (nx < 0 || nx >= N || ny < 0 || ny >= N) { survivors.push(e); continue; }
+    if (sim.snake[0].x === nx && sim.snake[0].y === ny) {
+      if (!shielded) { e.x = nx; e.y = ny; survivors.push(e); sim.enemies = survivors; sim.status = 'over'; return; }
+      continue;
+    }
+    let hitBody = false;
+    for (let i = 1; i < sim.snake.length; i++) if (sim.snake[i].x === nx && sim.snake[i].y === ny) { hitBody = true; break; }
+    if (hitBody) { sim.powerups.push({ x: nx, y: ny, type: 'yellow', ttl: sim.tick + PU_TTL.yellow }); continue; }
+    e.x = nx; e.y = ny; survivors.push(e);
   }
+  sim.enemies = survivors;
 }
 
 export const enemiesMoveAt = ENEMY_MOVE_SCORE;
