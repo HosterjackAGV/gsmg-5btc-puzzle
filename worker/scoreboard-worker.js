@@ -11,6 +11,8 @@
 //   3. Cloudflare → Workers & Pages → create a Worker, paste this file, Deploy.
 //   4. Worker → Settings → Variables: add **secret** GH_TOKEN = your token; **var** GIST_ID = the id.
 //   5. Put the worker URL into content/games.js → scoreboardUrl.
+//   (Optional) Admin "erase scoreboard" button gated to one GitHub login: set GH_OAUTH_ID /
+//   GH_OAUTH_SECRET / SITE_URL (+ optional ADMIN_LOGIN, default HosterjackAGV). See docs/SCOREBOARD.md.
 //
 // The simulation below is a verbatim copy of assets/js/games/snake-core.js — keep them in sync.
 
@@ -108,7 +110,7 @@ function simulate(seed, inputs) {
 }
 
 const cleanName = (s) => String(s || '').replace(/[<>&"']/g, '').replace(/\s+/g, ' ').trim().slice(0, 16) || 'anon';
-const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' };
+const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' };
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json', ...CORS } });
 
 // ---- GitHub Gist persistence (the board lives on GitHub, shared by everyone) ----
@@ -131,9 +133,64 @@ async function writeGist(env, board) {
   if (!r.ok) throw new Error('gist write ' + r.status);
 }
 
+// ---- admin auth: GitHub OAuth, gated to a single login (default HosterjackAGV) ----
+const ADMIN_LOGIN = (env) => env.ADMIN_LOGIN || 'HosterjackAGV';
+const b64urlBytes = (bytes) => { let s = ''; for (const b of bytes) s += String.fromCharCode(b); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
+const b64urlStr = (str) => b64urlBytes(new TextEncoder().encode(str));
+function b64urlDecode(p) { const bin = atob(p.replace(/-/g, '+').replace(/_/g, '/')); const a = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return new TextDecoder().decode(a); }
+async function hmac(secret, msg) {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return b64urlBytes(new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(msg))));
+}
+async function mintToken(login, secret) {
+  const payload = b64urlStr(JSON.stringify({ login, exp: Date.now() + 24 * 3600 * 1000 }));
+  return payload + '.' + await hmac(secret, payload);
+}
+async function verifyToken(token, secret, adminLogin) {
+  if (!token || !secret || token.indexOf('.') < 0) return null;
+  const [payload, sig] = token.split('.');
+  if (sig !== await hmac(secret, payload)) return null;            // tamper-proof: only the Worker can mint
+  let p; try { p = JSON.parse(b64urlDecode(payload)); } catch { return null; }
+  return (p && p.login === adminLogin && p.exp > Date.now()) ? p : null;
+}
+const htmlMsg = (msg, status = 200) => new Response('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><body style="font-family:system-ui,sans-serif;background:#0b0e15;color:#e6ecf5;padding:48px 20px;text-align:center;line-height:1.6"><p>' + msg + '</p></body>', { status, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+
+function handleLogin(env, url) {
+  if (!env.GH_OAUTH_ID) return htmlMsg('Admin login isn’t configured (set GH_OAUTH_ID / GH_OAUTH_SECRET / SITE_URL).', 503);
+  const redirect = url.origin + '/auth/callback';
+  const auth = 'https://github.com/login/oauth/authorize?client_id=' + encodeURIComponent(env.GH_OAUTH_ID) + '&scope=read:user&allow_signup=false&redirect_uri=' + encodeURIComponent(redirect);
+  return Response.redirect(auth, 302);
+}
+async function handleCallback(env, url) {
+  const code = url.searchParams.get('code');
+  if (!code || !env.GH_OAUTH_ID || !env.GH_OAUTH_SECRET) return htmlMsg('Bad callback / admin login not configured.', 400);
+  const tr = await fetch('https://github.com/login/oauth/access_token', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'User-Agent': 'gsmg-snake-scoreboard' }, body: JSON.stringify({ client_id: env.GH_OAUTH_ID, client_secret: env.GH_OAUTH_SECRET, code }) });
+  const at = (await tr.json().catch(() => ({}))).access_token;
+  if (!at) return htmlMsg('GitHub login failed.');
+  const ur = await fetch('https://api.github.com/user', { headers: { 'Authorization': 'Bearer ' + at, 'User-Agent': 'gsmg-snake-scoreboard', 'Accept': 'application/vnd.github+json' } });
+  const u = await ur.json().catch(() => ({}));
+  const admin = ADMIN_LOGIN(env);
+  if (!u || u.login !== admin) return htmlMsg('Access denied — only <b>' + admin + '</b> can manage the scoreboard. (Signed in as ' + ((u && u.login) || 'unknown') + '.)', 403);
+  const site = (env.SITE_URL || '').replace(/\/$/, '');
+  if (!site) return htmlMsg('Logged in as ' + admin + ', but SITE_URL is not set on the Worker.');
+  const token = await mintToken(u.login, env.GH_OAUTH_SECRET);
+  return Response.redirect(site + '/?admin=' + encodeURIComponent(token) + '#/games', 302);
+}
+async function handleWipe(request, env) {
+  if (!env.GH_TOKEN || !env.GIST_ID) return json({ error: 'scoreboard not configured' }, 503);
+  const token = (request.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!await verifyToken(token, env.GH_OAUTH_SECRET, ADMIN_LOGIN(env))) return json({ error: 'not authorized' }, 403);
+  await writeGist(env, []);
+  return json({ ok: true, board: [] });
+}
+
 export default {
   async fetch(request, env) {
     if (request.method === 'OPTIONS') return new Response(null, { headers: CORS });
+    const url = new URL(request.url), path = url.pathname;
+    if (path === '/auth/login') return handleLogin(env, url);
+    if (path === '/auth/callback') return handleCallback(env, url);
+    if (path === '/wipe' && request.method === 'POST') return handleWipe(request, env);
     if (!env.GH_TOKEN || !env.GIST_ID) return json({ error: 'scoreboard not configured (set GH_TOKEN + GIST_ID)' }, 503);
     try {
       if (request.method === 'GET') return json({ board: (await readGist(env)).slice(0, 25) });

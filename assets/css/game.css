@@ -780,6 +780,12 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .sb-time { font-family:'JetBrains Mono',monospace; color:#8b97a8; }
 .sb-date { font-family:'JetBrains Mono',monospace; color:#6f7c8f; font-size:12px; white-space:nowrap; }
 .sb-empty { text-align:center; color:#9fb0c4; padding:18px 8px; }
+.sb-admin { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:12px; padding-top:11px; border-top:1px solid #1c2330; }
+.sb-admin-who { font-size:12px; color:#8b97a8; margin-right:auto; }
+.sb-admin-login { font-size:12px; color:#7c89a0; text-decoration:none; opacity:.7; }
+.sb-admin-login:hover { opacity:1; color:#cfd8e6; }
+.btn.danger { background:#2a0e12; color:#ff8a8a; border:1px solid #5f2533; }
+.btn.danger:hover { background:#3a141a; color:#ffb0b0; }
 
 .snake-rules { border:1px solid #1c2330; border-radius:14px; background:#0b0e15; padding:4px 16px; }
 .snake-rules > summary { cursor:pointer; font-weight:700; color:#cfd8e6; padding:11px 0; font-family:'Space Grotesk',sans-serif; }

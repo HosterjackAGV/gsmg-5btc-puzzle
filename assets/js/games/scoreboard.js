@@ -26,7 +26,9 @@ export function fmtTime(ms) {
 export function fmtDate(ms) {
   if (!ms) return '—';
   const d = new Date(ms);
-  return isNaN(d.getTime()) ? '—' : d.toISOString().slice(0, 10);   // YYYY-MM-DD (UTC)
+  if (isNaN(d.getTime())) return '—';
+  try { return d.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }   // viewer's own locale + timezone
+  catch { return d.toISOString().slice(0, 16).replace('T', ' '); }
 }
 export function verifyReplay(replay) {
   if (!replay || typeof replay.seed !== 'number' || !Array.isArray(replay.inputs)) return null;
@@ -53,6 +55,51 @@ export async function submitScore(name, replay) {
     });
     const d = await r.json().catch(() => ({}));
     if (r.ok) return { ok: true, board: d.board || [], rank: d.rank, score: d.score, timeMs: d.timeMs };
+    return { ok: false, error: d.error || ('server said ' + r.status) };
+  } catch { return { ok: false, error: 'Could not reach the scoreboard server.' }; }
+}
+
+// ---- admin (only GitHub user HosterjackAGV; verified server-side via GitHub OAuth) ----
+const ADMIN_KEY = 'gsmg:snake:admin';
+const base = () => (GAMES.scoreboardUrl || '').replace(/\/$/, '');
+function decodeToken(t) {
+  try {
+    const bin = atob(String(t).split('.')[0].replace(/-/g, '+').replace(/_/g, '/'));
+    const a = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+    return JSON.parse(new TextDecoder().decode(a));
+  } catch { return null; }
+}
+export function captureAdminToken() {                 // grab ?admin=<token> after returning from GitHub OAuth
+  try {
+    const u = new URL(location.href), t = u.searchParams.get('admin');
+    if (!t) return false;
+    localStorage.setItem(ADMIN_KEY, t);
+    u.searchParams.delete('admin');
+    history.replaceState(null, '', u.pathname + (u.search ? u.search : '') + (u.hash || ''));
+    return true;
+  } catch { return false; }
+}
+export function adminToken() {
+  try {
+    const t = localStorage.getItem(ADMIN_KEY); if (!t) return null;
+    const p = decodeToken(t);
+    if (!p || !p.login || !p.exp || p.exp < Date.now()) { localStorage.removeItem(ADMIN_KEY); return null; }   // server re-verifies anyway
+    return t;
+  } catch { return null; }
+}
+export const isAdmin = () => !!adminToken();
+export function adminLogin() { const p = decodeToken(adminToken() || ''); return p && p.login; }
+export function adminLogout() { try { localStorage.removeItem(ADMIN_KEY); } catch {} }
+export const adminLoginUrl = () => base() ? base() + '/auth/login' : null;
+
+export async function wipeBoard() {                   // server re-verifies the admin token before erasing
+  if (!base()) return { ok: false, error: 'The scoreboard isn’t connected.' };
+  const t = adminToken(); if (!t) return { ok: false, error: 'Not logged in as the admin.' };
+  try {
+    const r = await fetch(base() + '/wipe', { method: 'POST', headers: { 'Authorization': 'Bearer ' + t } });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) return { ok: true, board: d.board || [] };
+    if (r.status === 401 || r.status === 403) adminLogout();
     return { ok: false, error: d.error || ('server said ' + r.status) };
   } catch { return { ok: false, error: 'Could not reach the scoreboard server.' }; }
 }

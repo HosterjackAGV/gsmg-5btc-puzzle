@@ -70,3 +70,34 @@ server-verified.
 > a puzzle site's needs. The Worker does a read-modify-write of the Gist per submission; two submissions
 > landing in the same instant could rarely drop one — harmless here. A token with only the **gist** scope
 > can do nothing to your repository even if it leaked, but you can revoke/rotate it any time.
+
+---
+
+## Admin: an "Erase scoreboard" button only **you** can use (optional)
+
+You can wipe the whole board from the Games page — but **only while signed in to GitHub as `HosterjackAGV`**.
+It uses GitHub OAuth: the Worker asks GitHub who you are and only mints an admin session if your login matches.
+
+### One-time setup (free, ~5 min)
+1. **Create a GitHub OAuth App** — <https://github.com/settings/developers> → **OAuth Apps** → **New OAuth App**:
+   - *Application name*: anything (e.g. `GSMG Snake admin`).
+   - *Homepage URL*: your site (e.g. `https://hosterjackagv.github.io/gsmg-5btc-puzzle/`).
+   - *Authorization callback URL*: **`https://scoreboard-worker.hosterjack.workers.dev/auth/callback`**
+     (your Worker URL + `/auth/callback`).
+   - Register, copy the **Client ID**, then **Generate a new client secret** and copy it.
+2. **Add them to the Worker** → *Settings → Variables and Secrets*:
+   - **Variable** `GH_OAUTH_ID` = the Client ID.
+   - **Secret** `GH_OAUTH_SECRET` = the Client Secret.
+   - **Variable** `SITE_URL` = your site base URL, no trailing slash (e.g. `https://hosterjackagv.github.io/gsmg-5btc-puzzle`).
+   - *(optional)* **Variable** `ADMIN_LOGIN` if your GitHub login isn't `HosterjackAGV`.
+   - **Deploy**.
+3. Done. On the Games page a small **🔒 Admin login (GitHub)** link appears under the board. Click it →
+   authorize on GitHub → if you're the admin you come back logged in and an **Erase scoreboard** button
+   appears. Anyone else is refused at the GitHub step.
+
+### Why only you can erase
+- The Worker only mints an admin session **after GitHub confirms your login is `HosterjackAGV`** — the
+  decision is made server-side from GitHub's own `/user` API, not from anything the browser claims.
+- That session is a token **HMAC-signed with the Worker's secret**, so it can't be forged; it **expires in
+  24 h** and can do **nothing but erase** (no score access, no repo access). The Worker re-verifies it on
+  every erase. The token rides back in the URL for a blink, then the page strips it from the address bar.

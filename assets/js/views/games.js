@@ -4,7 +4,7 @@
 
 import { qs, qsa, on } from '../util.js';
 import { snakeGame } from '../games/snake.js';
-import { fetchBoard, submitScore, fmtTime, fmtDate, isConfigured } from '../games/scoreboard.js';
+import { fetchBoard, submitScore, fmtTime, fmtDate, isConfigured, captureAdminToken, isAdmin, adminLogin, adminLoginUrl, adminLogout, wipeBoard } from '../games/scoreboard.js';
 
 export default async function gamesView() {
   const html = `
@@ -58,6 +58,7 @@ export default async function gamesView() {
       <div class="scoreboard">
         <div class="sb-head"><h3>🏆 Scoreboard <span class="sb-scope" id="sk-scope"></span></h3></div>
         <div id="sk-board"><p class="faint">loading…</p></div>
+        <div class="sb-admin" id="sk-admin" hidden></div>
       </div>
 
       <details class="snake-rules" open>
@@ -138,6 +139,7 @@ export default async function gamesView() {
     });
 
     // ---- scoreboard (global, lives on GitHub) ----
+    captureAdminToken();                               // grab the admin token if we just came back from GitHub OAuth
     function setTop(board) { $('#sk-top').textContent = (board && board.length) ? board[0].score : '—'; }
     async function refreshBoard() {
       const { board, configured, error } = await fetchBoard();
@@ -145,7 +147,31 @@ export default async function gamesView() {
       setTop(board);
       renderBoard($('#sk-board'), board, { configured, error });
     }
+    function renderAdmin() {
+      const host = $('#sk-admin'); if (!host) return;
+      if (!isConfigured()) { host.hidden = true; return; }
+      host.hidden = false;
+      if (isAdmin()) {
+        host.innerHTML = `<span class="sb-admin-who">🔓 admin: <b>${adminLogin() || 'you'}</b></span>` +
+          `<button type="button" class="btn danger sm" id="sk-wipe">Erase scoreboard</button>` +
+          `<button type="button" class="btn ghost sm" id="sk-logout">Log out</button>`;
+        $('#sk-wipe').addEventListener('click', async () => {
+          if (!confirm('Erase the ENTIRE global scoreboard for everyone? This cannot be undone.')) return;
+          const b = $('#sk-wipe'); b.disabled = true; b.textContent = 'Erasing…';
+          const res = await wipeBoard();
+          b.disabled = false; b.textContent = 'Erase scoreboard';
+          if (res.ok) { renderBoard($('#sk-board'), res.board || [], { configured: true }); setTop(res.board || []); }
+          else { alert('Could not erase: ' + (res.error || 'error')); }
+          renderAdmin();                               // token may have been cleared if it expired
+        });
+        $('#sk-logout').addEventListener('click', () => { adminLogout(); renderAdmin(); });
+      } else {
+        const url = adminLoginUrl();
+        host.innerHTML = url ? `<a class="sb-admin-login" href="${url}">🔒 Admin login (GitHub)</a>` : '';
+      }
+    }
     refreshBoard();
+    renderAdmin();
 
     submitBtn.addEventListener('click', async () => {
       if (!lastReplay || submitted) return;
