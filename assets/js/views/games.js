@@ -4,7 +4,7 @@
 
 import { qs, qsa, on } from '../util.js';
 import { snakeGame } from '../games/snake.js';
-import { fetchBoard, submitScore, fmtTime, isConfigured } from '../games/scoreboard.js';
+import { fetchBoard, submitScore, fmtTime, fmtDate, isConfigured } from '../games/scoreboard.js';
 
 export default async function gamesView() {
   const html = `
@@ -74,16 +74,25 @@ export default async function gamesView() {
           <li><b>Move</b> with the <b>arrow keys / WASD</b> (PC) or by <b>swiping</b> the grid / tapping the <b>D-pad</b> (phone). You <b>cannot turn back into your own body</b> — a too-fast reversal is ignored.</li>
           <li><b>Speed</b> starts <b>slow</b> and ramps up as your score climbs, reaching the <b>human-reaction maximum</b> at about <b>score 50</b>, then holds there.</li>
           <li><b>Death:</b> hitting a <b>wall</b>, your <b>own body</b>, or a moving <b>glitch</b> ends the run.</li>
-          <li><b>Glitches</b> 👾 spawn from the genesis grid's <b>blue / yellow / #FEFEFE</b> boxes. They sit <b>frozen</b> until <b>score 15</b>, then start <b>chasing</b> you (and move faster from <b>score 30</b>). Every glitch <b>vanishes after a while</b> — and the <b>higher your score, the longer each one lingers</b>.</li>
-          <li><b>Your body is a weapon:</b> a glitch that walks into the snake's <b>body</b> is <b>destroyed</b> and leaves a <span class="pu pu-y">×2</span> behind. But a glitch that hits you <b>head-on (the mouth)</b> still <b>kills</b> you — so herd them into your tail, not your face. (A shielded head smashes them instead.)</li>
-          <li><b>Power-ups</b> appear on those same boxes and <b>all fade away</b> — the <b>rarer</b> the power-up, the <b>shorter</b> it lingers, so grab the good ones fast:
+          <li><b>Glitches</b> 👾 crawl out of the genesis grid's <b>blue / yellow / #FEFEFE</b> boxes — at most <b>3</b> on the board at once. Each is <b>telegraphed</b>: a fast <b>red aura</b> pulses on the box for <b>1–3 seconds</b> before the glitch appears. They stay <b>frozen</b> until <b>score 100</b>, then hunt — getting faster as you climb:
             <ul>
-              <li><span class="pu pu-b">🛡 blue</span> — <b>shield</b>: smash through glitches and your own body for a few seconds.</li>
-              <li><span class="pu pu-y">×2 yellow</span> — <b>double seeds</b> for a few seconds.</li>
-              <li><span class="pu pu-f">0 white</span> — the rare <b>#FEFEFE</b> drop: <b>wipe every glitch</b> + a bonus (a nod to the “zero out” hint).</li>
-              <li><span class="pu pu-r">↺ purple</span> — <b>incredibly rare</b> (score 10+): <b>reset your length</b> back to the start but <b>keep your score</b> — a second wind to push higher.</li>
+              <li><b>100+</b> — crawling, about <b>a third</b> of your speed.</li>
+              <li><b>200+</b> — <b>half</b> your speed.</li>
+              <li><b>500+</b> — <b>your full</b> speed.</li>
+              <li><b>1000+</b> — <b>twice</b> your speed, turning <b>blinking bright red</b>.</li>
             </ul>
           </li>
+          <li><b>Your body is a weapon:</b> a glitch that walks into the snake's <b>body</b> is <b>destroyed</b> and drops a <span class="pu" style="background:#fff200;color:#201500">×2</span>. But one that hits you <b>head-on (the mouth)</b> still <b>kills</b> you — herd them into your tail, not your face.</li>
+          <li><b>Shield</b> 🛡 flips the hunt: while it's up, glitches turn <b>ghostly</b> and <b>flee</b> from you, and you can pass through them and your own body. <b>Head-butt</b> one while shielded and it's smashed, dropping a <span class="pu" style="background:#ffae34;color:#201500">×4</span>.</li>
+          <li><b>Power-ups</b> appear on those boxes and <b>all fade</b> (rarer = shorter on the field):
+            <ul>
+              <li><span class="pu pu-b">🛡 shield</span> — phase through glitches &amp; your own body for a few seconds (and scatter the glitches).</li>
+              <li><b>Score multipliers</b> <span class="pu" style="background:#fff200;color:#201500">×2</span> <span class="pu" style="background:#ffae34;color:#201500">×4</span> <span class="pu" style="background:#ff6ad5;color:#201500">×8</span> <span class="pu" style="background:#7cf9ff;color:#072028">×16</span> — ×4 is <b>4×</b> rarer than ×2, ×8 is <b>32×</b> rarer, ×16 is <b>128×</b> rarer.</li>
+              <li><span class="pu pu-f">0 white</span> — the rare <b>#FEFEFE</b> drop: <b>wipe every glitch</b> + a bonus (a nod to “zero out”).</li>
+              <li><span class="pu pu-r">↺ purple</span> — <b>incredibly rare</b> (score 10+): <b>reset your length</b> to the start but <b>keep your score</b> — a second wind.</li>
+            </ul>
+          </li>
+          <li><b>Multipliers stack.</b> Hold two at once and their effects <b>multiply while they overlap</b> (a ×2 plus a ×4 = <b>×8</b> for as long as both last), and each still <b>expires on its own timer</b>. Your <b>score is the real point total</b> — every seed is worth its points × your current multiplier.</li>
           <li><b>Scoreboard:</b> when you die, enter a name to post your <b>score</b> and <b>run time</b> to the <b>global</b> board — shared by every player and stored on <b>GitHub</b>. <b id="sk-anti"></b></li>
         </ul>
       </details>
@@ -96,7 +105,6 @@ export default async function gamesView() {
     const $ = (s) => qs(s, root);
     const overlay = $('#sk-overlay'), ovTitle = $('#sk-ov-title'), ovSub = $('#sk-ov-sub'), ovBtn = $('#sk-ov-btn');
     const submitRow = $('#sk-submit-row'), nameIn = $('#sk-name'), submitBtn = $('#sk-submit'), rankEl = $('#sk-rank');
-    const PU = { blue: '🛡 shield', yellow: '×2 seeds', fefefe: '0 wipe', reset: '↺ reset' };
 
     $('#sk-scope').textContent = isConfigured() ? '· global · on GitHub' : '· not connected yet';
     $('#sk-anti').textContent = 'The server re-simulates your recorded game to compute the real score, so the board can’t be faked — and nothing is stored on your device.';
@@ -107,8 +115,10 @@ export default async function gamesView() {
       onHud(s) {
         $('#sk-score').textContent = s.score;
         $('#sk-time').textContent = fmtTime(s.timeMs); $('#sk-level').textContent = s.level; $('#sk-enemies').textContent = s.enemies;
-        const p = $('#sk-power');
-        if (s.power) { p.hidden = false; p.textContent = PU[s.power] || s.power; p.className = 'sk-power pu-' + s.power[0]; } else p.hidden = true;
+        const p = $('#sk-power'); const bits = [];
+        if (s.shield) bits.push('🛡');
+        if (s.mult > 1) bits.push('×' + s.mult);
+        if (bits.length) { p.hidden = false; p.textContent = bits.join(' '); p.className = 'sk-power' + (s.mult > 1 ? ' pu-mult' : '') + (s.shield ? ' pu-shield' : ''); } else p.hidden = true;
 
         if (s.status === 'playing') { overlay.classList.add('hidden'); return; }
         overlay.classList.remove('hidden');
@@ -193,7 +203,7 @@ function renderBoard(host, board, opts = {}) {
     host.innerHTML = '<p class="sb-empty">No scores yet — <b>be the first</b>. 🥇</p>'; return;
   }
   const medal = (i) => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
-  host.innerHTML = `<table class="sb-table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th></tr></thead><tbody>${
-    board.slice(0, 25).map((e, i) => `<tr><td class="sb-rank">${medal(i)}</td><td class="sb-name">${esc(e.name)}</td><td class="sb-score">${e.score}</td><td class="sb-time">${fmtTime(e.timeMs)}</td></tr>`).join('')
+  host.innerHTML = `<table class="sb-table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th><th>Date</th></tr></thead><tbody>${
+    board.slice(0, 25).map((e, i) => `<tr><td class="sb-rank">${medal(i)}</td><td class="sb-name">${esc(e.name)}</td><td class="sb-score">${e.score}</td><td class="sb-time">${fmtTime(e.timeMs)}</td><td class="sb-date">${fmtDate(e.date)}</td></tr>`).join('')
   }</tbody></table>`;
 }

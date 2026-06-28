@@ -3,7 +3,7 @@
 // final score can be re-verified server-side. Drawing no-ops when there's no 2D context (headless).
 
 import { MATRIX } from '../../../content/matrix.js';
-import { createSim, step as coreStep, applyInput as coreInput, speedMs, N, START_LEN, enemiesMoveAt, SEEDS } from './snake-core.js';
+import { createSim, step as coreStep, applyInput as coreInput, speedMs, N, START_LEN, enemiesMoveAt, SEEDS, effMult } from './snake-core.js';
 
 const CELL = 40;                                  // internal canvas resolution = 560×560
 const key = (x, y) => x + ',' + y;
@@ -20,10 +20,11 @@ const C = {
   blueFaint: 'rgba(63,72,204,.30)', yellowFaint: 'rgba(255,242,0,.16)', fefefeFaint: 'rgba(224,85,106,.28)',
   snake: '#2ec8a0', head: '#5fe9c4', food: '#f2c14a', foodGlow: 'rgba(242,193,74,.5)',
   enemy: '#ff5a5a', enemyFrozen: '#8a6a6a', enemyEye: '#2a0000',
-  blue: '#5f8cff', yellow: '#fff200', fefefe: '#ffffff', reset: '#c77dff', text: '#e6ecf5',
+  blue: '#5f8cff', fefefe: '#ffffff', reset: '#c77dff', text: '#e6ecf5',
+  m2: '#fff200', m4: '#ffae34', m8: '#ff6ad5', m16: '#7cf9ff',          // multiplier power-ups by value
 };
 const SEEDC = { plus3: '#9be870', plus5: '#ffb454', plus10: '#ff5fa2' };   // special-seed colours by value
-const PUTEXT = { blue: '🛡', yellow: '×2', fefefe: '0', reset: '↺' };
+const PUTEXT = { blue: '🛡', m2: '×2', m4: '×4', m8: '×8', m16: '×16', fefefe: '0', reset: '↺' };
 
 const randSeed = () => (Math.floor(Math.random() * 0xFFFFFFFF) >>> 0);
 
@@ -42,7 +43,7 @@ export function snakeGame(canvas, { onHud = () => {}, onOver = () => {} } = {}) 
     onHud({
       score: sim.score, status, level: level(),
       enemies: sim.enemies.length, enemiesActive: sim.score >= enemiesMoveAt,
-      power: sim.power ? sim.power.type : null,
+      mult: effMult(sim), shield: sim.timeMs < sim.shieldExp,
       timeMs: sim.timeMs,
     });
   }
@@ -82,20 +83,32 @@ export function snakeGame(canvas, { onHud = () => {}, onOver = () => {} } = {}) 
       ctx.fillStyle = '#07120a'; ctx.font = `bold ${CELL * 0.32}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('+' + (def ? def.score : ''), cx, cy + 1);
     }
-    for (const p of sim.powerups) {
-      const [px, py] = cr(p.x, p.y, 6);
-      ctx.fillStyle = C[p.type]; ctx.shadowColor = C[p.type]; ctx.shadowBlur = 14; rr(px, py, CELL - 12, CELL - 12, 7); ctx.shadowBlur = 0;
-      ctx.fillStyle = (p.type === 'yellow') ? '#222' : (p.type === 'reset') ? '#1a0030' : '#06121f';
-      ctx.font = `bold ${CELL * .4}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(PUTEXT[p.type], p.x * CELL + CELL / 2, p.y * CELL + CELL / 2 + 1);
+    for (const sp of sim.spawns) {                    // warning aura: fast red pulse + ring filling toward the spawn
+      const cx = sp.x * CELL + CELL / 2, cy = sp.y * CELL + CELL / 2, total = sp.at - sp.born;
+      const prog = total > 0 ? Math.max(0, Math.min(1, (sim.timeMs - sp.born) / total)) : 1;
+      const pulse = 0.30 + 0.40 * Math.abs(Math.sin(sim.tick * 0.9));
+      ctx.fillStyle = `rgba(255,60,60,${pulse})`; ctx.fillRect(...cr(sp.x, sp.y, 3));
+      ctx.strokeStyle = '#ff3b3b'; ctx.lineWidth = 3; ctx.shadowColor = '#ff3b3b'; ctx.shadowBlur = 14;
+      ctx.beginPath(); ctx.arc(cx, cy, CELL * 0.40, -Math.PI / 2, -Math.PI / 2 + prog * 2 * Math.PI); ctx.stroke(); ctx.shadowBlur = 0;
     }
-    const moving = sim.score >= enemiesMoveAt;
+    for (const p of sim.powerups) {
+      const [px, py] = cr(p.x, p.y, 6), col = C[p.type] || '#fff';
+      ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = 14; rr(px, py, CELL - 12, CELL - 12, 7); ctx.shadowBlur = 0;
+      ctx.fillStyle = (p.type[0] === 'm') ? '#201500' : (p.type === 'reset') ? '#1a0030' : '#06121f';
+      ctx.font = `bold ${CELL * (p.type === 'm16' ? .28 : .36)}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(PUTEXT[p.type] || '?', p.x * CELL + CELL / 2, p.y * CELL + CELL / 2 + 1);
+    }
+    const shielded = sim.timeMs < sim.shieldExp;
+    const moving = sim.score >= enemiesMoveAt, blink = sim.score >= 1000 && sim.tick % 2 === 0;
     for (const e of sim.enemies) {
       const [ex, ey] = cr(e.x, e.y, 5);
-      ctx.fillStyle = moving ? C.enemy : C.enemyFrozen; rr(ex, ey, CELL - 10, CELL - 10, 6);
+      if (shielded) ctx.globalAlpha = 0.4;            // shield: glitches turn ghostly (and flee)
+      if (sim.score >= 1000) { ctx.fillStyle = blink ? '#ff2b2b' : '#ff9a9a'; ctx.shadowColor = '#ff2b2b'; ctx.shadowBlur = blink ? 18 : 6; }
+      else ctx.fillStyle = moving ? C.enemy : C.enemyFrozen;
+      rr(ex, ey, CELL - 10, CELL - 10, 6); ctx.shadowBlur = 0;
       ctx.fillStyle = C.enemyEye; ctx.fillRect(ex + 7, ey + 9, 5, 5); ctx.fillRect(ex + CELL - 22, ey + 9, 5, 5);
+      ctx.globalAlpha = 1;
     }
-    const shielded = sim.power && sim.power.type === 'blue' && sim.power.until > sim.tick;
     for (let i = sim.snake.length - 1; i >= 0; i--) {
       const s = sim.snake[i];
       ctx.fillStyle = i === 0 ? C.head : C.snake;

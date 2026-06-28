@@ -16,14 +16,16 @@
 
 const N = 14, START_LEN = 3;
 const SLOW_MS = 230, FAST_MS = 95, RAMP = 50;
-const ENEMY_MOVE_SCORE = 15, POWERUP_EVERY = 60, MAX_ENEMIES = 6;
-const MAX_TICKS = 250000, MAX_INPUTS = 200000;
-const PU_TTL = { blue: 80, yellow: 90, fefefe: 48, reset: 26 };
+const MAX_ENEMIES = 3, ENEMY_MOVE_SCORE = 100, AURA_MIN_MS = 1000, AURA_MAX_MS = 3000;
+const POWERUP_EVERY = 60, MAX_TICKS = 250000, MAX_INPUTS = 200000;
+const PU_TTL = { blue: 80, m2: 90, m4: 70, m8: 50, m16: 34, fefefe: 48, reset: 26 };
+const MULTS = { m2: 2, m4: 4, m8: 8, m16: 16 };
+const MULT_MS = 8000, SHIELD_MS = 6000;
 const SEEDS = { plus3: { score: 3, grow: 1, persistMs: 6000 }, plus5: { score: 5, grow: 2, persistMs: 4000 }, plus10: { score: 10, grow: 3, persistMs: 3000 } };
 const SEED_EVERY = 45, MAX_SEEDS = 2;
 const speedMs = (s) => Math.round(Math.max(FAST_MS, SLOW_MS - (SLOW_MS - FAST_MS) * Math.min(1, s / RAMP)));
 const enemyTTL = (s) => 34 + s * 4;
-const enemyMoveEvery = (s) => s >= 30 ? 2 : 3;
+const enemySteps = (score, tick) => score >= 1000 ? 2 : score >= 500 ? 1 : score >= 200 ? (tick % 2 === 0 ? 1 : 0) : score >= ENEMY_MOVE_SCORE ? (tick % 3 === 0 ? 1 : 0) : 0;
 
 const LORE = [
   ['blue', 5, 0], ['blue', 2, 1], ['blue', 10, 1], ['blue', 7, 2], ['blue', 4, 3], ['blue', 1, 4], ['blue', 3, 6],
@@ -34,25 +36,29 @@ const LORE = [
 
 function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const ri = (rng, n) => Math.floor(rng() * n);
-function occupied(s, x, y) { return s.snake.some(q => q.x === x && q.y === y) || s.enemies.some(e => e.x === x && e.y === y) || (s.food && s.food.x === x && s.food.y === y) || s.powerups.some(p => p.x === x && p.y === y) || s.seeds.some(z => z.x === x && z.y === y); }
+const isShielded = (s) => s.timeMs < s.shieldExp;
+function effMult(s) { let m = 1; for (const e of s.mults) if (e.exp > s.timeMs) m *= e.mult; return m; }
+function occupied(s, x, y) { return s.snake.some(q => q.x === x && q.y === y) || s.enemies.some(e => e.x === x && e.y === y) || s.spawns.some(z => z.x === x && z.y === y) || (s.food && s.food.x === x && s.food.y === y) || s.powerups.some(p => p.x === x && p.y === y) || s.seeds.some(z => z.x === x && z.y === y); }
 function placeFood(s) { let x, y, n = 0; do { x = ri(s.rng, N); y = ri(s.rng, N); n++; } while (occupied(s, x, y) && n < 500); s.food = { x, y }; }
 function freeLore(s, type) { const pool = s.lore.filter(c => (!type || c.t === type) && !occupied(s, c.x, c.y)); return pool.length ? pool[ri(s.rng, pool.length)] : null; }
-function spawnEnemy(s) { if (s.enemies.length >= MAX_ENEMIES) return; const c = freeLore(s); if (!c) return; s.enemies.push({ x: c.x, y: c.y, dir: [[1, 0], [-1, 0], [0, 1], [0, -1]][ri(s.rng, 4)], expires: s.tick + enemyTTL(s.score) }); }
-function spawnPowerup(s) { if (s.powerups.length) return; const r = s.rng(); let type; if (s.score >= 10 && r < 0.02) type = 'reset'; else if (r < 0.10) type = 'fefefe'; else type = s.rng() < 0.5 ? 'blue' : 'yellow'; const want = (type === 'reset' || type === 'fefefe') ? 'fefefe' : type; const c = freeLore(s, want) || freeLore(s); if (!c) return; s.powerups.push({ x: c.x, y: c.y, type, ttl: s.tick + (PU_TTL[type] || 70) }); }
+function spawnEnemy(s) { if (s.enemies.length + s.spawns.length >= MAX_ENEMIES) return; const c = freeLore(s); if (!c) return; const dir = [[1, 0], [-1, 0], [0, 1], [0, -1]][ri(s.rng, 4)]; const at = s.timeMs + AURA_MIN_MS + Math.floor(s.rng() * (AURA_MAX_MS - AURA_MIN_MS + 1)); s.spawns.push({ x: c.x, y: c.y, dir, born: s.timeMs, at }); }
+function processSpawns(s) { if (!s.spawns.length) return; const ready = [], keep = []; for (const z of s.spawns) (s.timeMs >= z.at ? ready : keep).push(z); s.spawns = keep; for (const z of ready) { if (s.enemies.length >= MAX_ENEMIES) continue; if (occupied(s, z.x, z.y)) continue; s.enemies.push({ x: z.x, y: z.y, dir: z.dir, expires: s.tick + enemyTTL(s.score) }); } }
+function dropPower(s, type, x, y) { s.powerups.push({ x, y, type, ttl: s.tick + (PU_TTL[type] || 70) }); }
+function spawnPowerup(s) { if (s.powerups.length) return; const r = s.rng(); let type; if (s.score >= 10 && r < 0.02) type = 'reset'; else if (r < 0.10) type = 'fefefe'; else if (r < 0.30) type = 'blue'; else { const m = s.rng(); type = m < 0.7758 ? 'm2' : m < 0.9697 ? 'm4' : m < 0.99394 ? 'm8' : 'm16'; } const want = (type === 'reset' || type === 'fefefe') ? 'fefefe' : type === 'blue' ? 'blue' : 'yellow'; const c = freeLore(s, want) || freeLore(s); if (!c) return; s.powerups.push({ x: c.x, y: c.y, type, ttl: s.tick + (PU_TTL[type] || 70) }); }
 function spawnSeed(s) { if (s.seeds.length >= MAX_SEEDS) return; if (s.rng() >= 0.5) return; const t = s.rng(); const type = t < 0.6 ? 'plus3' : t < 0.9 ? 'plus5' : 'plus10'; const def = SEEDS[type]; let x, y, n = 0; do { x = ri(s.rng, N); y = ri(s.rng, N); n++; } while (occupied(s, x, y) && n < 200); if (occupied(s, x, y)) return; s.seeds.push({ x, y, type, score: def.score, grow: def.grow, exp: s.timeMs + def.persistMs }); }
 function applyInput(s, x, y) { if (s.status !== 'playing') return; const last = s.queue.length ? s.queue[s.queue.length - 1] : s.dir; if ((x === -last.x && y === -last.y) || (x === last.x && y === last.y)) return; if (s.queue.length >= 2) return; s.queue.push({ x, y }); }
 function moveEnemies(s) {
-  const shielded = s.power && s.power.type === 'blue' && s.power.until > s.tick;
+  const shielded = isShielded(s);
   const survivors = [];
   for (const e of s.enemies) {
-    if (s.rng() < 0.35) { const h = s.snake[0]; e.dir = Math.abs(h.x - e.x) > Math.abs(h.y - e.y) ? [Math.sign(h.x - e.x) || 1, 0] : [0, Math.sign(h.y - e.y) || 1]; }
+    if (s.rng() < 0.35) { const h = s.snake[0], sx = Math.sign(h.x - e.x) || 1, sy = Math.sign(h.y - e.y) || 1, tx = shielded ? -sx : sx, ty = shielded ? -sy : sy; e.dir = Math.abs(h.x - e.x) > Math.abs(h.y - e.y) ? [tx, 0] : [0, ty]; }
     let nx = e.x + e.dir[0], ny = e.y + e.dir[1];
     if (nx < 0 || nx >= N || ny < 0 || ny >= N) { e.dir = [-e.dir[0], -e.dir[1]]; nx = e.x + e.dir[0]; ny = e.y + e.dir[1]; }
     if (nx < 0 || nx >= N || ny < 0 || ny >= N) { survivors.push(e); continue; }
-    if (s.snake[0].x === nx && s.snake[0].y === ny) { if (!shielded) { e.x = nx; e.y = ny; survivors.push(e); s.enemies = survivors; s.status = 'over'; return; } continue; }
+    if (s.snake[0].x === nx && s.snake[0].y === ny) { if (!shielded) { e.x = nx; e.y = ny; survivors.push(e); s.enemies = survivors; s.status = 'over'; return; } dropPower(s, 'm4', e.x, e.y); continue; }
     let hitBody = false;
     for (let i = 1; i < s.snake.length; i++) if (s.snake[i].x === nx && s.snake[i].y === ny) { hitBody = true; break; }
-    if (hitBody) { s.powerups.push({ x: nx, y: ny, type: 'yellow', ttl: s.tick + PU_TTL.yellow }); continue; }
+    if (hitBody) { dropPower(s, 'm2', nx, ny); continue; }
     e.x = nx; e.y = ny; survivors.push(e);
   }
   s.enemies = survivors;
@@ -62,34 +68,36 @@ function step(s) {
   s.timeMs += speedMs(s.score); s.tick++;
   if (s.queue.length) s.dir = s.queue.shift();
   const head = { x: s.snake[0].x + s.dir.x, y: s.snake[0].y + s.dir.y };
-  const shielded = s.power && s.power.type === 'blue' && s.power.until > s.tick;
+  const shielded = isShielded(s);
   if (head.x < 0 || head.x >= N || head.y < 0 || head.y >= N) { s.status = 'over'; return false; }
   if (s.snake.some(q => q.x === head.x && q.y === head.y) && !shielded) { s.status = 'over'; return false; }
-  if (s.enemies.some(e => e.x === head.x && e.y === head.y)) { if (!shielded) { s.status = 'over'; return false; } s.enemies = s.enemies.filter(e => !(e.x === head.x && e.y === head.y)); }
+  if (s.enemies.some(e => e.x === head.x && e.y === head.y)) { if (!shielded) { s.status = 'over'; return false; } s.enemies = s.enemies.filter(e => { if (e.x === head.x && e.y === head.y) { dropPower(s, 'm4', e.x, e.y); return false; } return true; }); }
   s.snake.unshift(head);
-  const dbl = s.power && s.power.type === 'yellow' && s.power.until > s.tick;
+  const mult = effMult(s);
   let scoreGain = 0, growGain = 0, ateFood = false;
   if (s.food && head.x === s.food.x && head.y === s.food.y) { scoreGain += 1; growGain += 1; ateFood = true; }
   const si = s.seeds.findIndex(z => z.x === head.x && z.y === head.y);
   if (si >= 0) { const sd = s.seeds.splice(si, 1)[0]; scoreGain += sd.score; growGain += sd.grow; }
-  if (scoreGain > 0) { const before = s.score; s.score += dbl ? scoreGain * 2 : scoreGain; for (let i = Math.floor(before / 3); i < Math.floor(s.score / 3); i++) spawnEnemy(s); if (ateFood) placeFood(s); }
+  if (scoreGain > 0) { const before = s.score; s.score += scoreGain * mult; const ne = Math.min(Math.floor(s.score / 3) - Math.floor(before / 3), MAX_ENEMIES); for (let i = 0; i < ne; i++) spawnEnemy(s); if (ateFood) placeFood(s); }
   s.grow += growGain;
   if (s.grow > 0) s.grow--; else s.snake.pop();
   const pi = s.powerups.findIndex(p => p.x === head.x && p.y === head.y);
-  if (pi >= 0) { const p = s.powerups.splice(pi, 1)[0]; if (p.type === 'fefefe') { s.enemies = []; s.score += 5; } else if (p.type === 'reset') { s.snake = s.snake.slice(0, START_LEN); } else s.power = { type: p.type, until: s.tick + 45 }; }
-  if (s.power && s.power.until <= s.tick) s.power = null;
+  if (pi >= 0) { const p = s.powerups.splice(pi, 1)[0]; if (p.type === 'fefefe') { s.enemies = []; s.spawns = []; s.score += 5 * effMult(s); } else if (p.type === 'reset') { s.snake = s.snake.slice(0, START_LEN); s.grow = 0; } else if (p.type === 'blue') { s.shieldExp = s.timeMs + SHIELD_MS; } else if (MULTS[p.type]) { s.mults.push({ mult: MULTS[p.type], exp: s.timeMs + MULT_MS }); } }
+  s.mults = s.mults.filter(e => e.exp > s.timeMs);
   s.powerups = s.powerups.filter(p => p.ttl > s.tick);
   s.seeds = s.seeds.filter(z => z.exp > s.timeMs);
   s.enemies = s.enemies.filter(e => e.expires > s.tick);
-  if (s.score >= ENEMY_MOVE_SCORE && s.tick % enemyMoveEvery(s.score) === 0) moveEnemies(s);
+  const es = enemySteps(s.score, s.tick);
+  for (let k = 0; k < es && s.status === 'playing'; k++) moveEnemies(s);
   if (s.status !== 'playing') return false;
+  processSpawns(s);
   if (s.tick % POWERUP_EVERY === 0) spawnPowerup(s);
   if (s.tick % SEED_EVERY === 0) spawnSeed(s);
   return true;
 }
 function simulate(seed, inputs) {
   if (!Array.isArray(inputs) || inputs.length > MAX_INPUTS) return null;
-  const s = { rng: mulberry32(seed >>> 0), lore: LORE, snake: [{ x: 7, y: 8 }, { x: 7, y: 9 }, { x: 7, y: 10 }], dir: { x: 0, y: -1 }, queue: [], food: null, enemies: [], powerups: [], seeds: [], score: 0, tick: 0, timeMs: 0, status: 'playing', power: null, grow: 0 };
+  const s = { rng: mulberry32(seed >>> 0), lore: LORE, snake: [{ x: 7, y: 8 }, { x: 7, y: 9 }, { x: 7, y: 10 }], dir: { x: 0, y: -1 }, queue: [], food: null, enemies: [], spawns: [], powerups: [], seeds: [], score: 0, tick: 0, timeMs: 0, status: 'playing', grow: 0, mults: [], shieldExp: 0 };
   placeFood(s);
   let ip = 0;
   while (s.status === 'playing' && s.tick < MAX_TICKS) {

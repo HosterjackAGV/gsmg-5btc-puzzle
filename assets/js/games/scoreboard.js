@@ -23,6 +23,11 @@ export function fmtTime(ms) {
   const t = Math.round((ms || 0) / 1000), m = Math.floor(t / 60), s = t % 60;
   return m + ':' + String(s).padStart(2, '0');
 }
+export function fmtDate(ms) {
+  if (!ms) return '—';
+  const d = new Date(ms);
+  return isNaN(d.getTime()) ? '—' : d.toISOString().slice(0, 10);   // YYYY-MM-DD (UTC)
+}
 export function verifyReplay(replay) {
   if (!replay || typeof replay.seed !== 'number' || !Array.isArray(replay.inputs)) return null;
   return simulate(replay.seed >>> 0, replay.inputs, LORE);   // local sanity check before bothering the server

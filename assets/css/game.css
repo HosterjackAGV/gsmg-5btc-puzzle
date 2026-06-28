@@ -778,6 +778,7 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .sb-name { color:#cfd8e6; font-weight:600; }
 .sb-score { font-family:'JetBrains Mono',monospace; color:#5fe9c4; font-weight:700; }
 .sb-time { font-family:'JetBrains Mono',monospace; color:#8b97a8; }
+.sb-date { font-family:'JetBrains Mono',monospace; color:#6f7c8f; font-size:12px; white-space:nowrap; }
 .sb-empty { text-align:center; color:#9fb0c4; padding:18px 8px; }
 
 .snake-rules { border:1px solid #1c2330; border-radius:14px; background:#0b0e15; padding:4px 16px; }
@@ -789,3 +790,6 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .pu-b { color:#9fb4f0; background:#0c1322; } .pu-y { color:#e8c84a; background:#1a1708; }
 .pu-f { color:#fff; background:#1a0c10; } .pu-r { color:#d7a8ff; background:#160c22; }
 .sk-power.pu-r { color:#c77dff; background:#160c22; border:1px solid #4a2a6b; }
+.sk-power.pu-mult { color:#ffd24a; background:#1a1708; border:1px solid #5f4a1c; }
+.sk-power.pu-mult.pu-shield { color:#9fe6ff; background:#08161c; border:1px solid #2a5566; }
+.sk-power.pu-shield { color:#9fe6ff; background:#08161c; border:1px solid #2a5566; }
