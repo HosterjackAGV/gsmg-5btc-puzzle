@@ -7,7 +7,6 @@ const ADDRESSES = [
   { label: 'Prize (main, unclaimed)', value: '1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
   { label: 'Prize balance now', value: '~1.25634510 BTC (was 5 BTC, halved twice)' },
   { label: 'Split-off (halvings, unspent)', value: '17ucy1K9ZUAaoY6JVtM932W9jUp5LXfyHa' },
-  { label: 'Donation (older)', value: '1JK27jtvE1wS4VG9k7Zpo8wBufMbYwy3r8' },
 ];
 
 export default async function referenceView() {

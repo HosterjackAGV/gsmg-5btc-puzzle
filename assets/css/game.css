@@ -545,3 +545,74 @@ table.board td.bh{background:var(--panel2);color:var(--gold);font-weight:700}
 .md details.wt-more[open] > summary::before { transform:rotate(90deg); }
 .md details.wt-more > *:not(summary) { padding-left:16px; padding-right:16px; }
 .md details.wt-more > summary + * { padding-top:6px; }
+
+/* ── live wallet status (top of walkthrough) ─────────────────────────────── */
+.wt-wallets { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0 2px; position:relative; }
+.wlt { border:1px solid #1c2330; border-radius:12px; background:linear-gradient(180deg,#0c0f16,#0a0c11); padding:13px 15px; }
+.wlt-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.wlt-label { font-family:'Space Grotesk',sans-serif; font-weight:700; color:#cfd8e6; font-size:13px; letter-spacing:.02em; }
+.wlt-amt { font-family:'JetBrains Mono',monospace; font-size:20px; margin:6px 0 3px; color:#eef2f8; }
+.wlt-amt b { font-weight:700; }
+.wlt-usd { font-size:13px; color:#8b97a8; font-weight:500; }
+.wlt-sub { font-size:11.5px; color:#7c8696; line-height:1.5; }
+.wlt-x { color:#6f7c8f; text-decoration:none; white-space:nowrap; }
+.wlt-x:hover { color:#9fb4f0; }
+.wlt-badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px;
+  text-transform:uppercase; letter-spacing:.04em; border:1px solid #2a3346; color:#9fb0c4; }
+.wlt-badge .st-dot { width:7px; height:7px; border-radius:50%; background:currentColor; box-shadow:0 0 7px currentColor; }
+.wlt-badge.st-ok { color:#37d6a8; border-color:#1c5f4d; background:#0c1a16; }
+.wlt-badge.st-partly { color:#f2b14a; border-color:#5f4a1c; background:#1a1408; }
+.wlt-badge.st-drained { color:#ff7a7a; border-color:#5f1c1c; background:#1a0c0c; }
+.wlt-live { position:absolute; top:-9px; right:6px; font-size:10px; color:#6f7c8f; background:#0a0c11; padding:1px 8px; border:1px solid #1c2330; border-radius:999px; display:flex; align-items:center; gap:5px; }
+.live-dot { width:7px; height:7px; border-radius:50%; background:#37d6a8; box-shadow:0 0 8px #37d6a8; animation:livepulse 2s ease-in-out infinite; }
+@keyframes livepulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+/* ── donations view ──────────────────────────────────────────────────────── */
+.don-total { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  border:1px solid #2a3346 !important; background:linear-gradient(180deg,#0d1320,#0a0c11) !important; }
+.dt-label { font-size:12px; color:#8b97a8; }
+.dt-val { font-family:'JetBrains Mono',monospace; font-size:30px; font-weight:700; color:#5fe9c4; margin-top:2px; }
+.dt-live { font-size:11px; color:#6f7c8f; display:flex; align-items:center; gap:6px; white-space:nowrap; }
+.don-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:14px; margin-top:14px; }
+.don-card { border:1px solid #1c2330; border-radius:14px; background:linear-gradient(180deg,#0c0f16,#0a0c11); padding:15px; display:flex; flex-direction:column; gap:10px; }
+.don-head { display:flex; align-items:center; gap:12px; }
+.don-sym { width:46px; height:46px; flex:0 0 46px; border-radius:11px; display:flex; align-items:center; justify-content:center;
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color:#0a0c11; }
+.s-btc{background:#f7931a} .s-eth{background:#8aa0ee} .s-usdt{background:#26a17b} .s-bnb{background:#f0b90b} .s-xrp{background:#cfd5dd} .s-sol{background:linear-gradient(135deg,#9945ff,#14f195)}
+.don-chain { font-size:12px; color:#8b97a8; }
+.don-bal { font-family:'JetBrains Mono',monospace; font-size:15px; color:#eef2f8; margin-top:2px; }
+.don-usd { font-size:12px; color:#8b97a8; }
+.don-addr { display:flex; align-items:center; gap:8px; background:#070a10; border:1px solid #161c27; border-radius:9px; padding:7px 9px; }
+.don-addr code { font-family:'JetBrains Mono',monospace; font-size:11.5px; color:#bcd3ff; word-break:break-all; flex:1; }
+.don-note { font-size:11.5px; color:#c79a52; background:#171204; border:1px solid #3a2e10; border-radius:8px; padding:6px 9px; line-height:1.45; }
+.don-actions { display:flex; gap:7px; flex-wrap:wrap; }
+.btn-don { font-size:12px; font-weight:600; padding:7px 12px; border-radius:9px; text-decoration:none; cursor:pointer;
+  background:#5a78dc; color:#fff; border:1px solid #5a78dc; font-family:inherit; }
+.btn-don:hover { background:#6f8aea; }
+.btn-don.ghost { background:transparent; color:#9fb0c4; border-color:#2a3346; }
+.btn-don.ghost:hover { color:#cfd8e6; border-color:#3a4660; }
+.btn-don.ghost.on { color:#5fe9c4; border-color:#2ec8a0; }
+.don-qr { background:#fff; border-radius:10px; padding:10px; width:max-content; max-width:100%; }
+.don-qr svg { display:block; width:170px; height:170px; }
+.don-wallets { font-size:11px; color:#6f7c8f; line-height:1.5; }
+.don-disc { font-size:11.5px; color:#6f7c8f; line-height:1.6; margin-top:16px; }
+
+/* ── hall of fame ────────────────────────────────────────────────────────── */
+.hall-wrap { overflow-x:auto; }
+table.hall { width:100%; border-collapse:collapse; font-size:13px; }
+table.hall th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:#6f7c8f; padding:6px 10px; border-bottom:1px solid #1c2330; font-weight:600; }
+table.hall td { padding:9px 10px; border-bottom:1px solid #121723; vertical-align:middle; }
+table.hall tr:last-child td { border-bottom:none; }
+.dh-when { color:#9fb0c4; white-space:nowrap; }
+.dh-pend { font-size:9.5px; color:#f2b14a; border:1px solid #5f4a1c; border-radius:4px; padding:0 4px; margin-left:4px; }
+.dh-from { font-family:'JetBrains Mono',monospace; color:#bcd3ff; }
+.dh-amt { font-family:'JetBrains Mono',monospace; color:#eef2f8; white-space:nowrap; }
+.dh-usd { color:#5fe9c4; white-space:nowrap; }
+.dh-link a { color:#6f7c8f; text-decoration:none; font-size:15px; }
+.dh-link a:hover { color:#9fb4f0; }
+.chip { display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; color:#0a0c11; }
+.c-btc{background:#f7931a} .c-eth{background:#8aa0ee} .c-usdt{background:#26a17b;color:#fff} .c-bnb{background:#f0b90b} .c-xrp{background:#cfd5dd} .c-sol{background:#9945ff;color:#fff}
+.don-empty { text-align:center; padding:26px 12px; color:#9fb0c4; }
+.hall-note { margin-top:12px; }
+.nav-donate { color:#ff8fb0 !important; }
+@media (max-width:640px){ .wt-wallets{grid-template-columns:1fr} }

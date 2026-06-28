@@ -7,6 +7,14 @@ import { renderMarkdown } from '../md.js';
 import { saltOf } from '../crypto.js';
 import { esc, qs, qsa, on, copy } from '../util.js';
 import { byPhase, phaseKeyForHeading, OUTCOMES } from '../../../content/attempts.js';
+import { WATCHED } from '../../../content/donations.js';
+import { getPrices, getBalance, statusFor, peek, poll, fmtUsd, fmtAmt } from '../onchain.js';
+
+const STATUS = {
+  available: { cls: 'st-ok', label: 'available', tip: 'Funds are present and intact.' },
+  partly: { cls: 'st-partly', label: 'partly drained', tip: 'Balance is lower than it was at the start of today (UTC).' },
+  drained: { cls: 'st-drained', label: 'drained', tip: 'Balance is negligible (under $100).' },
+};
 
 const BLOBS = [
   { name: 'phase2', phase: 'Phase 2', note: 'opens with sha256("causality")' },
@@ -33,6 +41,16 @@ export default async function walkthroughView() {
         <button type="button" class="btn ghost sm" id="wt-jump">↓ Raw artifacts</button>
       </div></div>
 
+    <div class="wt-wallets" id="wt-wallets">
+      ${WATCHED.map(w => `<div class="wlt" data-w="${w.id}">
+        <div class="wlt-top"><span class="wlt-label">${esc(w.label)}</span>
+          <span class="wlt-badge" data-badge="${w.id}"><span class="faint">…</span></span></div>
+        <div class="wlt-amt" data-amt="${w.id}"><span class="faint">checking balance…</span></div>
+        <div class="wlt-sub">${esc(w.blurb)} <a href="${esc(w.explorer + w.address)}" target="_blank" rel="noopener" class="wlt-x">${esc(w.address.slice(0, 8))}… ↗</a></div>
+      </div>`).join('')}
+      <div class="wlt-live"><span class="live-dot"></span> on-chain · live</div>
+    </div>
+
     <div class="wt-grid">
       <nav class="wt-toc" id="wt-toc"></nav>
       <article class="md" id="wt-doc">${docHtml}</article>
@@ -51,6 +69,31 @@ export default async function walkthroughView() {
 
   function mount(root) {
     const doc = qs('#wt-doc', root), toc = qs('#wt-toc', root);
+
+    // ---- live prize / halving wallet balances + status badge (top of page) ----
+    async function refreshWallets() {
+      let prices = {}; try { prices = await getPrices(); } catch { prices = peek('prices') || {}; }
+      const btc = prices.bitcoin > 0 ? prices.bitcoin : null;   // a 0/absent price means "no USD", not $0
+      await Promise.all(WATCHED.map(async w => {
+        let amount = null;
+        try { amount = (await getBalance(w)).amount; }
+        catch { const c = peek('bal:' + w.id + ':' + w.address); amount = c ? c.amount : null; }
+        const usd = amount != null && btc != null ? amount * btc : null;
+        const amtEl = qs(`[data-amt="${w.id}"]`, root), badgeEl = qs(`[data-badge="${w.id}"]`, root);
+        if (amtEl) amtEl.innerHTML = amount == null
+          ? '<span class="faint">unavailable</span>'
+          : `<b>${esc(fmtAmt(amount, 8))}</b> BTC${usd != null ? ` <span class="wlt-usd">≈ ${esc(fmtUsd(usd))}</span>` : ''}`;
+        if (badgeEl) {
+          if (amount == null || usd == null) { badgeEl.innerHTML = '<span class="faint">—</span>'; return; }
+          const s = STATUS[statusFor(w, amount, usd).state];
+          badgeEl.className = `wlt-badge ${s.cls}`;
+          badgeEl.innerHTML = `<span class="st-dot"></span>${esc(s.label)}`;
+          badgeEl.title = s.tip;
+        }
+      }));
+    }
+    const wltHost = qs('#wt-wallets', root);
+    if (wltHost) poll(refreshWallets, 75000, wltHost);   // anchor on the in-view element so polling auto-stops on navigation
 
     // ---- inject "What was tried to move forward" panel at the END of each phase ----
     if (doc) qsa('h2', doc).forEach(h => {

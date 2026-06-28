@@ -41,7 +41,9 @@ router
   .add('/tried', () => import('./views/tried.js'))
   .add('/tried/:id', () => import('./views/tried.js'))
   .add('/insights', () => import('./views/insights.js'))
-  .add('/reference', () => import('./views/reference.js'));
+  .add('/reference', () => import('./views/reference.js'))
+  .add('/donations', () => import('./views/donations.js'))
+  .add('/donate', () => import('./views/donations.js'));
 
 wireScan();
 router.start();
