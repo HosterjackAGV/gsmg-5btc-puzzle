@@ -1,10 +1,10 @@
 // views/games.js — the Games section. First game: Snake on the 14×14 genesis grid.
-// Controls: keyboard (arrows/WASD/space) on a PC; swipe on the grid OR an on-screen
-// D-pad below it on a phone. The grid sizes itself to the viewport so it never shrinks
-// awkwardly, and touch-gestures over it don't scroll the page.
+// Keyboard (PC) + swipe / on-screen D-pad (phone). On death you can put your name on the
+// scoreboard; scores are verified by re-simulating the recorded game, so they can't be faked.
 
 import { qs, qsa, on } from '../util.js';
 import { snakeGame } from '../games/snake.js';
+import { fetchBoard, submitScore, fmtTime, isGlobal } from '../games/scoreboard.js';
 
 export default async function gamesView() {
   const html = `
@@ -13,27 +13,30 @@ export default async function gamesView() {
       <p>Mini-games built on the puzzle's own artifacts. First up: <b>Snake</b> on the 14×14 <b>genesis grid</b> — eat the seeds (<i>“the seed is planted”</i>), grab power-ups, and dodge the glitches that crawl out of the <b>blue</b>, <b>yellow</b> and <b>#FEFEFE</b> boxes of Phase 0.</p>
     </div>
 
-    <div class="game-tabs">
-      <button type="button" class="game-tab active">🐍 Snake</button>
-      <span class="game-tab soon">more soon…</span>
-    </div>
+    <div class="game-tabs"><button type="button" class="game-tab active">🐍 Snake</button><span class="game-tab soon">more soon…</span></div>
 
     <div class="snake-wrap">
       <div class="snake-hud">
         <div class="sk-stat"><span>Score</span><b id="sk-score">0</b></div>
         <div class="sk-stat"><span>Best</span><b id="sk-best">0</b></div>
+        <div class="sk-stat"><span>Time</span><b id="sk-time">0:00</b></div>
         <div class="sk-stat"><span>Level</span><b id="sk-level">1</b></div>
         <div class="sk-stat"><span>Glitches</span><b id="sk-enemies">0</b></div>
         <div class="sk-power" id="sk-power" hidden></div>
       </div>
 
       <div class="snake-stage">
-        <canvas id="sk-canvas" class="snake-canvas" aria-label="Snake game on the genesis grid"></canvas>
+        <canvas id="sk-canvas" class="snake-canvas" aria-label="Snake on the genesis grid"></canvas>
         <div class="snake-overlay" id="sk-overlay">
           <div class="ov-card">
             <div class="ov-title" id="sk-ov-title">Snake</div>
             <div class="ov-sub" id="sk-ov-sub">Press <b>Space</b> or <b>tap</b> to start</div>
-            <button type="button" class="btn teal" id="sk-ov-btn">▶ Play</button>
+            <div class="ov-submit" id="sk-submit-row" hidden>
+              <input id="sk-name" type="text" maxlength="16" placeholder="your name" autocomplete="off" spellcheck="false">
+              <button type="button" class="btn teal sm" id="sk-submit">Submit score</button>
+            </div>
+            <div class="ov-rank" id="sk-rank" hidden></div>
+            <button type="button" class="btn ghost sm" id="sk-ov-btn">▶ Play</button>
           </div>
         </div>
       </div>
@@ -48,71 +51,137 @@ export default async function gamesView() {
         <button type="button" class="dpad" data-dir="0,1" aria-label="down">▼</button>
       </div>
 
-      <p class="snake-help"><b>PC:</b> arrow keys or WASD · <b>Space</b> = pause/restart.&nbsp; <b>Phone:</b> swipe on the grid or use the pad below.&nbsp; Power-ups: <span class="pu pu-b">🛡 shield</span> <span class="pu pu-y">×2 seeds</span> <span class="pu pu-f">0 = wipe glitches</span>.</p>
+      <p class="snake-help"><b>PC:</b> arrow keys / WASD · <b>Space</b> = pause/restart.&nbsp; <b>Phone:</b> swipe on the grid or use the pad.</p>
+    </div>
+
+    <div class="sk-below">
+      <div class="scoreboard">
+        <div class="sb-head"><h3>🏆 Scoreboard <span class="sb-scope" id="sk-scope"></span></h3></div>
+        <div id="sk-board"><p class="faint">loading…</p></div>
+      </div>
+
+      <details class="snake-rules" open>
+        <summary>📜 Rules — how Snake works here</summary>
+        <ul class="rules-list">
+          <li><b>Goal:</b> eat the gold <b>seeds</b> 🌱 to grow and score. Each seed is <b>+1</b> point.</li>
+          <li><b>Move</b> with the <b>arrow keys / WASD</b> (PC) or by <b>swiping</b> the grid / tapping the <b>D-pad</b> (phone). You <b>cannot turn back into your own body</b> — a too-fast reversal is ignored.</li>
+          <li><b>Speed</b> starts <b>slow</b> and ramps up as your score climbs, reaching the <b>human-reaction maximum</b> at about <b>score 50</b>, then holds there.</li>
+          <li><b>Death:</b> hitting a <b>wall</b>, your <b>own body</b>, or a moving <b>glitch</b> ends the run.</li>
+          <li><b>Glitches</b> 👾 spawn from the genesis grid's <b>blue / yellow / #FEFEFE</b> boxes. They are <b>frozen</b> until <b>score 8</b>; above that they start <b>chasing</b> you. Every glitch <b>vanishes after a while</b> — and the <b>higher your score, the longer each one lingers</b>.</li>
+          <li><b>Power-ups</b> appear on those same boxes:
+            <ul>
+              <li><span class="pu pu-b">🛡 blue</span> — <b>shield</b>: smash through glitches and your own body for a few seconds.</li>
+              <li><span class="pu pu-y">×2 yellow</span> — <b>double seeds</b> for a few seconds.</li>
+              <li><span class="pu pu-f">0 white</span> — the rare <b>#FEFEFE</b> drop: <b>wipe every glitch</b> + a bonus (a nod to the “zero out” hint).</li>
+              <li><span class="pu pu-r">↺ purple</span> — <b>incredibly rare</b> (score 10+): <b>reset your length</b> back to the start but <b>keep your score</b> — a second wind to push higher.</li>
+            </ul>
+          </li>
+          <li><b>Scoreboard:</b> when you die, enter a name to post your <b>score</b> and <b>run time</b>. <b id="sk-anti"></b></li>
+        </ul>
+      </details>
     </div>
   </div></section>`;
 
   function mount(root) {
     const canvas = qs('#sk-canvas', root);
     if (!canvas) return;
+    const $ = (s) => qs(s, root);
+    const overlay = $('#sk-overlay'), ovTitle = $('#sk-ov-title'), ovSub = $('#sk-ov-sub'), ovBtn = $('#sk-ov-btn');
+    const submitRow = $('#sk-submit-row'), nameIn = $('#sk-name'), submitBtn = $('#sk-submit'), rankEl = $('#sk-rank');
+    const PU = { blue: '🛡 shield', yellow: '×2 seeds', fefefe: '0 wipe', reset: '↺ reset' };
 
-    const overlay = qs('#sk-overlay', root), ovTitle = qs('#sk-ov-title', root), ovSub = qs('#sk-ov-sub', root), ovBtn = qs('#sk-ov-btn', root);
-    const elScore = qs('#sk-score', root), elBest = qs('#sk-best', root), elLevel = qs('#sk-level', root), elEnemies = qs('#sk-enemies', root), elPower = qs('#sk-power', root);
+    $('#sk-scope').textContent = isGlobal() ? '· global' : '· this device';
+    $('#sk-anti').textContent = isGlobal()
+      ? 'Scores are re-simulated on the server from your recorded game, so the board can’t be faked.'
+      : 'Scores are re-simulated from your recorded game before they’re saved (local board on this device until a global server is set up).';
 
-    const PU = { blue: '🛡 shield', yellow: '×2 seeds', fefefe: '0 wipe' };
+    let lastReplay = null, submitted = false;
+
     const game = snakeGame(canvas, {
       onHud(s) {
-        elScore.textContent = s.score; elBest.textContent = s.best; elLevel.textContent = s.level; elEnemies.textContent = s.enemies;
-        if (s.power) { elPower.hidden = false; elPower.textContent = PU[s.power] || s.power; elPower.className = 'sk-power pu-' + s.power[0]; }
-        else elPower.hidden = true;
-        if (s.status === 'playing') overlay.classList.add('hidden');
-        else {
-          overlay.classList.remove('hidden');
-          if (s.status === 'ready') { ovTitle.textContent = 'Snake'; ovSub.innerHTML = 'Press <b>Space</b> or <b>tap</b> to start'; ovBtn.textContent = '▶ Play'; }
-          else if (s.status === 'paused') { ovTitle.textContent = 'Paused'; ovSub.innerHTML = 'Take a breath'; ovBtn.textContent = '▶ Resume'; }
-          else if (s.status === 'over') { ovTitle.textContent = 'Game Over'; ovSub.innerHTML = `Score <b>${s.score}</b> · Best <b>${s.best}</b>`; ovBtn.textContent = '↻ Play again'; }
-        }
+        $('#sk-score').textContent = s.score; $('#sk-best').textContent = s.best;
+        $('#sk-time').textContent = fmtTime(s.timeMs); $('#sk-level').textContent = s.level; $('#sk-enemies').textContent = s.enemies;
+        const p = $('#sk-power');
+        if (s.power) { p.hidden = false; p.textContent = PU[s.power] || s.power; p.className = 'sk-power pu-' + s.power[0]; } else p.hidden = true;
+
+        if (s.status === 'playing') { overlay.classList.add('hidden'); return; }
+        overlay.classList.remove('hidden');
+        const over = s.status === 'over';
+        submitRow.hidden = !(over && lastReplay && lastReplay.score > 0 && !submitted);
+        if (over) {
+          ovTitle.textContent = 'Game Over';
+          ovSub.innerHTML = `Score <b>${s.score}</b> · Time <b>${fmtTime(s.timeMs)}</b>`;
+          ovBtn.textContent = '↻ Play again';
+        } else if (s.status === 'paused') { ovTitle.textContent = 'Paused'; ovSub.textContent = 'Take a breath'; ovBtn.textContent = '▶ Resume'; submitRow.hidden = true; rankEl.hidden = true; }
+        else { ovTitle.textContent = 'Snake'; ovSub.innerHTML = 'Press <b>Space</b> or <b>tap</b> to start'; ovBtn.textContent = '▶ Play'; submitRow.hidden = true; rankEl.hidden = true; }
+      },
+      onOver(replay) {
+        lastReplay = replay; submitted = false; rankEl.hidden = true;
+        try { const n = localStorage.getItem('gsmg:snake:name'); if (n) nameIn.value = n; } catch {}
       },
     });
 
-    // ---- keyboard (PC) — self-removes once the view is gone ----
+    // ---- scoreboard ----
+    async function refreshBoard() {
+      const { board, global } = await fetchBoard();
+      $('#sk-scope').textContent = global ? '· global' : '· this device';
+      renderBoard($('#sk-board'), board);
+    }
+    refreshBoard();
+
+    submitBtn.addEventListener('click', async () => {
+      if (!lastReplay || submitted) return;
+      submitBtn.disabled = true; submitBtn.textContent = 'verifying…';
+      try { localStorage.setItem('gsmg:snake:name', nameIn.value); } catch {}
+      const res = await submitScore(nameIn.value, lastReplay);
+      submitBtn.disabled = false; submitBtn.textContent = 'Submit score';
+      if (res.ok) {
+        submitted = true; submitRow.hidden = true;
+        rankEl.hidden = false; rankEl.innerHTML = `✓ Verified — <b>rank #${res.rank}</b>${res.global ? '' : ' (this device)'}`;
+        if (res.board) renderBoard($('#sk-board'), res.board); else refreshBoard();
+      } else { rankEl.hidden = false; rankEl.innerHTML = `<span class="sb-err">${res.error || 'could not submit'}</span>`; }
+    });
+    nameIn.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitBtn.click(); });
+
+    // ---- keyboard (PC) ----
     const DIRS = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0], w: [0, -1], s: [0, 1], a: [-1, 0], d: [1, 0], W: [0, -1], S: [0, 1], A: [-1, 0], D: [1, 0] };
     function onKey(e) {
       if (!document.body.contains(canvas)) { window.removeEventListener('keydown', onKey); document.removeEventListener('visibilitychange', onVis); return; }
+      if (document.activeElement === nameIn) return;                      // typing a name
       if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); game.action(); return; }
-      const d = DIRS[e.key];
-      if (d) { e.preventDefault(); game.setDir(d[0], d[1]); }
+      const d = DIRS[e.key]; if (d) { e.preventDefault(); game.setDir(d[0], d[1]); }
     }
     window.addEventListener('keydown', onKey);
     function onVis() { if (document.visibilityState === 'hidden') game.pause(); }
     document.addEventListener('visibilitychange', onVis);
 
-    // ---- swipe on the grid (phone) — doesn't scroll the page ----
-    let sx = 0, sy = 0, mx = 0, my = 0, moved = false;
-    canvas.addEventListener('touchstart', (e) => { const t = e.touches[0]; sx = mx = t.clientX; sy = my = t.clientY; moved = false; }, { passive: true });
-    canvas.addEventListener('touchmove', (e) => { const t = e.touches[0]; mx = t.clientX; my = t.clientY; moved = true; e.preventDefault(); }, { passive: false });
+    // ---- swipe on the grid (no page-scroll) ----
+    let sx = 0, sy = 0, mx = 0, my = 0;
+    canvas.addEventListener('touchstart', (e) => { const t = e.touches[0]; sx = mx = t.clientX; sy = my = t.clientY; }, { passive: true });
+    canvas.addEventListener('touchmove', (e) => { const t = e.touches[0]; mx = t.clientX; my = t.clientY; e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend', () => {
       const dx = mx - sx, dy = my - sy;
-      if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) { game.action(); return; }      // tap = start/pause/restart
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) { game.action(); return; }
       if (Math.abs(dx) > Math.abs(dy)) game.setDir(Math.sign(dx), 0); else game.setDir(0, Math.sign(dy));
     });
-    // clicking the grid with a mouse also starts/pauses
-    canvas.addEventListener('click', () => { if (!moved) game.action(); });
+    canvas.addEventListener('click', () => game.action());
 
-    // ---- on-screen D-pad ----
-    on(qs('#sk-dpad', root), 'click', '.dpad', (e, b) => {
-      if (b.id === 'sk-act') return game.action();
-      const [x, y] = b.dataset.dir.split(',').map(Number); game.setDir(x, y);
-    });
-    // suppress the 300ms tap-delay / double-events on touch for the pad
-    qsa('.dpad', root).forEach(b => b.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      if (b.id === 'sk-act') game.action();
-      else { const [x, y] = b.dataset.dir.split(',').map(Number); game.setDir(x, y); }
-    }, { passive: false }));
+    // ---- D-pad ----
+    on($('#sk-dpad'), 'click', '.dpad', (e, b) => { if (b.id === 'sk-act') return game.action(); const [x, y] = b.dataset.dir.split(',').map(Number); game.setDir(x, y); });
+    qsa('.dpad', root).forEach(b => b.addEventListener('touchstart', (e) => { e.preventDefault(); if (b.id === 'sk-act') game.action(); else { const [x, y] = b.dataset.dir.split(',').map(Number); game.setDir(x, y); } }, { passive: false }));
 
     ovBtn.addEventListener('click', () => game.action());
   }
 
   return { title: 'Games', html, mount };
+}
+
+function renderBoard(host, board) {
+  if (!host) return;
+  if (!board || !board.length) { host.innerHTML = '<p class="sb-empty">No scores yet — <b>be the first</b>. 🥇</p>'; return; }
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const medal = (i) => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+  host.innerHTML = `<table class="sb-table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th></tr></thead><tbody>${
+    board.slice(0, 25).map((e, i) => `<tr><td class="sb-rank">${medal(i)}</td><td class="sb-name">${esc(e.name)}</td><td class="sb-score">${e.score}</td><td class="sb-time">${fmtTime(e.timeMs)}</td></tr>`).join('')
+  }</tbody></table>`;
 }
