@@ -632,3 +632,27 @@ table.hall tr:last-child td { border-bottom:none; }
 .vc-break { display:flex; gap:6px; flex-wrap:wrap; }
 .vc-chip { font-size:10.5px; color:#7c8696; background:#0a0c11; border:1px solid #161c27; border-radius:999px; padding:2px 8px; font-family:'JetBrains Mono',monospace; }
 .vc-chip b { color:#aeb9c8; }
+
+/* ── "Complete & verbatim" — per-phase pieces ledger (input · method · output) ── */
+#wt-pieces { display:flex; flex-direction:column; gap:14px; }
+.pc-phase { border:1px solid #1c2330; border-radius:14px; background:#0b0e14; overflow:hidden; }
+.pc-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 15px; background:#0e1118; border-bottom:1px solid #1c2330; }
+.pc-title { font-family:'Space Grotesk',sans-serif; font-weight:700; color:#e6ecf5; font-size:14px; }
+.pc-status { font-size:12px; color:#9fb0c4; white-space:nowrap; }
+.pc-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:0; }
+.pc-col { padding:10px 14px; border-right:1px solid #141a24; }
+.pc-col:last-child { border-right:none; }
+.pc-lab { font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:7px; padding-bottom:4px; border-bottom:1px dashed #1c2330; }
+.pc-in { color:#d6b545; } .pc-me { color:#9fb4f0; } .pc-out { color:#5fe9c4; }
+b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; }
+.pc-piece { margin:7px 0; }
+.pc-k { display:block; font-size:11px; color:#8b97a8; margin-bottom:2px; }
+.pc-v { display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; font-size:12.5px; color:#d4dce8; line-height:1.5; }
+.pc-v .mono { word-break:break-all; }
+.pc-v .copy { flex:0 0 auto; }
+.pc-openpiece .pc-k { color:#c79a52; }
+.pc-livetag { color:#2ec8a0; font-weight:700; font-size:10px; }
+.pc-pt { width:100%; }
+.pc-pt > summary { cursor:pointer; color:#9fb4f0; font-size:12px; }
+.pc-pt pre.wt-blob { max-height:260px; overflow:auto; }
+@media (max-width:760px){ .pc-cols { grid-template-columns:1fr; } .pc-col { border-right:none; border-bottom:1px solid #141a24; } .pc-col:last-child{border-bottom:none;} }
