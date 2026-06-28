@@ -4,6 +4,7 @@
 
 import { createRouter } from './router.js';
 import { qs, qsa } from './util.js';
+import { track } from './counter.js';
 
 // ---------- active nav highlight ----------
 function highlightNav(path) {
@@ -31,7 +32,7 @@ const notFound = async () => ({ default: async () => ({
 
 const router = createRouter({
   outlet: qs('#app'),
-  onAfter: (path) => { highlightNav(path); try { window.scrollTo(0, 0); } catch {} },
+  onAfter: (path) => { highlightNav(path); try { window.scrollTo(0, 0); } catch {} try { track(path, qs('#app')); } catch {} },
   notFound,
 });
 
