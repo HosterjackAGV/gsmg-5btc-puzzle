@@ -12,12 +12,16 @@ export const START_LEN = 3;
 // Bump this whenever the simulation rules change. The client sends it with each submission and the
 // Worker must match — otherwise an out-of-date Worker would re-simulate replays under the wrong rules
 // and store wrong scores. On mismatch the Worker refuses the score and asks to be redeployed.
-export const RULES_VERSION = 3;
+export const RULES_VERSION = 4;
 
-// Player speed curve: slow at the start, ramping to the human-reaction maximum by score RAMP.
-const SLOW_MS = 230, FAST_MS = 95, RAMP = 50;
+// Player speed steps DOWN (faster) at the SAME score thresholds the enemies use (100/200/500/1000),
+// so the snake ramps in lockstep with the glitches — relaxed to start, human-reaction max only deep in.
 export function speedMs(score) {
-  return Math.round(Math.max(FAST_MS, SLOW_MS - (SLOW_MS - FAST_MS) * Math.min(1, score / RAMP)));
+  if (score >= 1000) return 95;     // human-reaction maximum (where enemies hit 2×)
+  if (score >= 500) return 125;
+  if (score >= 200) return 160;
+  if (score >= 100) return 195;     // first speed-up, where the glitches wake
+  return 230;                       // relaxed early game
 }
 
 // Enemies: at most 3 on the board, each telegraphed by a 1–3s warning aura before it appears.

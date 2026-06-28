@@ -17,7 +17,6 @@
 // The simulation below is a verbatim copy of assets/js/games/snake-core.js — keep them in sync.
 
 const N = 14, START_LEN = 3;
-const SLOW_MS = 230, FAST_MS = 95, RAMP = 50;
 const MAX_ENEMIES = 3, ENEMY_MOVE_SCORE = 100, AURA_MIN_MS = 1000, AURA_MAX_MS = 3000;
 const POWERUP_EVERY = 60, MAX_TICKS = 250000, MAX_INPUTS = 200000;
 const PU_TTL = { blue: 80, m2: 90, m4: 70, m8: 50, m16: 34, fefefe: 48, reset: 26 };
@@ -25,9 +24,9 @@ const MULTS = { m2: 2, m4: 4, m8: 8, m16: 16 };
 const MULT_MS = 8000, SHIELD_MS = 6000;
 const SEEDS = { plus3: { score: 3, grow: 1, persistMs: 6000 }, plus5: { score: 5, grow: 2, persistMs: 4000 }, plus10: { score: 10, grow: 3, persistMs: 3000 } };
 const SEED_EVERY = 45, MAX_SEEDS = 2;
-const RULES_VERSION = 3;     // MUST match assets/js/games/snake-core.js — bump together when rules change
+const RULES_VERSION = 4;     // MUST match assets/js/games/snake-core.js — bump together when rules change
 const MAX_USERS = 100, MAX_PER_USER = 25;   // keep up to 25 games each for the top 100 players
-const speedMs = (s) => Math.round(Math.max(FAST_MS, SLOW_MS - (SLOW_MS - FAST_MS) * Math.min(1, s / RAMP)));
+const speedMs = (s) => s >= 1000 ? 95 : s >= 500 ? 125 : s >= 200 ? 160 : s >= 100 ? 195 : 230;
 const enemyTTL = (s) => 34 + s * 4;
 const enemySteps = (score, tick) => score >= 1000 ? 2 : score >= 500 ? 1 : score >= 200 ? (tick % 2 === 0 ? 1 : 0) : score >= ENEMY_MOVE_SCORE ? (tick % 3 === 0 ? 1 : 0) : 0;
 
