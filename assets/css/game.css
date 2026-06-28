@@ -670,3 +670,18 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .cm-grid.plain .cm-cell { background:#fff !important; color:#111 !important; box-shadow:none !important; }
 .cm-legend { margin-top:8px; font-size:11px; color:#8b97a8; display:flex; flex-wrap:wrap; gap:4px 10px; align-items:center; }
 .cm-legend .cm-cell { width:15px; height:15px; aspect-ratio:auto; font-size:9px; border-radius:2px; }
+
+/* ── calm title glow — soft halos so phases · hints · trials · insights stand out ── */
+/* low-alpha, no motion: easy on the eyes, just enough to separate the heading levels. */
+.hero h1            { text-shadow: 0 0 26px rgba(120,150,255,.20), 0 0 6px rgba(160,185,255,.16); }
+.sec-head h2        { text-shadow: 0 0 18px rgba(120,150,255,.20), 0 0 4px rgba(160,185,255,.16); }
+.md h2              { text-shadow: 0 0 16px rgba(242,193,74,.20),  0 0 4px rgba(242,193,74,.15); }   /* phases */
+.md h3              { text-shadow: 0 0 12px rgba(242,193,74,.17),  0 0 3px rgba(242,193,74,.13); }   /* sub-sections + hint-timeline entries */
+.pc-title           { text-shadow: 0 0 12px rgba(242,193,74,.20),  0 0 3px rgba(242,193,74,.14); }   /* verbatim phase cards */
+.tried-phase > h2,
+.tried-cat,
+.tried-head h4      { text-shadow: 0 0 12px rgba(95,140,255,.22),  0 0 3px rgba(95,140,255,.16); }   /* trials (blue) */
+.tried-panel > summary { text-shadow: 0 0 10px rgba(95,140,255,.18); }
+.sum-phase > h3,
+.sum-title,
+#chain, .chain-concl h3 { text-shadow: 0 0 12px rgba(55,214,168,.24), 0 0 3px rgba(55,214,168,.16); } /* insights (teal) */

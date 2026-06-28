@@ -16,7 +16,7 @@
 export const ANALYTICS = {
   showCounts: true,
   keylessNamespace: 'gsmg5btc-hjagv-v1',   // unique key-space for this site's public counters
-  goatcounterCode: '',                      // e.g. 'gsmg5btc'  → https://gsmg5btc.goatcounter.com
+  goatcounterCode: 'hosterjack',            // → https://hosterjack.goatcounter.com (per-section, SPA-aware)
   firebaseDbUrl: '',                        // e.g. 'https://gsmg-xxxx-default-rtdb.firebaseio.com'
 };
 
