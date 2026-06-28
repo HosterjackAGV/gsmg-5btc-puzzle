@@ -135,7 +135,7 @@ const PIECES = [
              { k: 'Hash', v: 'sha256(entry text, 59 chars, no trailing newline)' }],
     output: [{ k: 'Entry text (59 chars)', v: 'GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', mono: 1 },
              { k: 'Entry hash = SalPhaseIon URL', v: '89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32', mono: 1 }] },
-  { title: 'SalPhaseIon — The Inner Sanctum', status: '⚠️ frontier',
+  { title: 'SalPhaseIon — The Inner Sanctum', status: '⚠️ frontier', outputCards: true,
     input:  [{ k: 'The “soup” (description)', v: 'a long a–i/o string split by the letter z, with two embedded base64 blobs and some plain English' },
              { k: 'Complete raw soup (verbatim, as on the page)', v: SOUP, long: 1 },
              { k: 'salphaseion.txt (inner blob)', v: 'AES blob · salt 3ab585348552415d', blob: 'salphaseion', open: 1 }],
@@ -288,15 +288,15 @@ export default async function walkthroughView() {
         if (p.live) return `<div class="pc-piece" data-live="${p.live}"><span class="pc-k">${esc(p.k || 'Decrypted page')} <span class="pc-livetag">live ✓</span></span><span class="pc-v"><span class="faint">decrypting…</span></span></div>`;
         if (p.img) return `<div class="pc-piece"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>image — click to view</summary><img class="pc-img" src="${esc(p.img)}" alt="${esc(p.k)}" loading="lazy"></details></span></div>`;
         if (p.matrix) return `<div class="pc-piece"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>14×14 matrix — click to view</summary><div data-matrix><span class="faint">building…</span></div></details></span></div>`;
-        if (p.long) return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>${p.v.length} chars — click to read${p.open ? ' · UNDECODED' : ''}</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(p.v)}">copy</button></div><pre class="wt-blob mono">${esc(p.v)}</pre></details>${noteHtml(p)}</span></div>`;
+        if (p.long) return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}${p.card ? ' pc-card' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>${p.v.length} chars — click to read${p.open ? ' · UNDECODED' : ''}</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(p.v)}">copy</button></div><pre class="wt-blob mono">${esc(p.v)}</pre></details>${noteHtml(p)}</span></div>`;
         const val = p.mono ? `<span class="mono break">${esc(p.v)}</span>` : esc(p.v);
         const blobDetails = p.blob ? `<details class="pc-pt" data-blobtext="${esc(p.blob)}"><summary>full ciphertext — click to read</summary><div class="faint">loading…</div></details>` : '';
-        return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v">${val}<button class="copy" data-copy="${esc(p.v)}">copy</button>${blobDetails}${srcHtml(p)}${noteHtml(p)}</span></div>`;
+        return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}${p.card ? ' pc-card' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v">${val}<button class="copy" data-copy="${esc(p.v)}">copy</button>${blobDetails}${srcHtml(p)}${noteHtml(p)}</span></div>`;
       };
       const col = (label, cls, arr) => `<div class="pc-col"><div class="pc-lab ${cls}">${label}</div>${arr.map(pieceRow).join('')}</div>`;
       piecesHost.innerHTML = PIECES.map(ph => `<article class="pc-phase">
         <div class="pc-head"><span class="pc-title">${esc(ph.title)}</span><span class="pc-status">${esc(ph.status)}</span></div>
-        <div class="pc-cols">${col('Input', 'pc-in', ph.input)}${col('Method', 'pc-me', ph.method)}${col('Output', 'pc-out', ph.output)}</div>
+        <div class="pc-cols">${col('Input', 'pc-in', ph.input)}${col('Method', 'pc-me', ph.method)}${col('Output', 'pc-out', ph.outputCards ? ph.output.map(p => p.z ? p : { ...p, card: 1 }) : ph.output)}</div>
       </article>`).join('');
       // decrypt the three solved AES pages live, in-browser, to prove the outputs verbatim
       Object.entries(LIVE_KEYS).forEach(async ([blob, answer]) => {

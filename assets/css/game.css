@@ -712,3 +712,8 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .pc-src[open] > summary::before { content:'▾ '; }
 .pc-src pre.wt-blob { border-color:#5a4410; background:#16120a; }
 .pc-note2 { font-size:11px; color:#8b97a8; margin-top:4px; line-height:1.5; }
+
+/* each SalPhaseIon soup output PART gets its own card (z separators stay bare between them) */
+.pc-piece.pc-card { border:1px solid #1c2330; border-radius:10px; background:#0a0d13; padding:9px 11px; margin:8px 0; }
+.pc-piece.pc-card .pc-k { color:#9fb0c4; }
+.pc-piece.pc-card.pc-openpiece .pc-k { color:#c79a52; }
