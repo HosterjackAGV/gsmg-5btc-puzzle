@@ -27,7 +27,7 @@ export default async function walkthroughView() {
   const html = `
   <section class="section"><div class="wrap">
     <div class="sec-head"><div class="sec-num">WALKTHROUGH</div><h2>The whole puzzle, phase by phase</h2>
-      <p>The complete, <b>authoritative, source-merged</b> walkthrough — every phase, every exact value, and every image, assembled from all public sources (the puzzlehunt &amp; Naddiseo repos, the creator's hint posts, and on-chain data), de-duplicated and cross-checked. Solved and reproducible through <b>Phase 3.2</b>; the endgame is <b class="gold">OPEN</b>. The interactive genesis grid and the complete raw ciphertext blobs follow.</p>
+      <p>The complete, <b>authoritative, source-merged</b> walkthrough — every phase, every exact value, and every image, assembled from all public sources (the puzzlehunt &amp; Naddiseo repos, the creator's hint posts, and on-chain data), de-duplicated and cross-checked. Solved and reproducible through <b>Phase 3.2</b>; the endgame is <b class="gold">OPEN</b>. Each phase opens with its <b>Input → Method → Output</b>; the full write-up, code, images and sources sit in the collapsible <i>"Full walkthrough"</i> panel, and every phase ends with what's been tried to move it forward. The interactive genesis grid and the complete raw ciphertext blobs follow.</p>
       <div class="row" style="margin-top:6px">
         <a class="btn ghost sm" href="#/reference">📋 Reference sheet (every value)</a>
         <button type="button" class="btn ghost sm" id="wt-jump">↓ Raw artifacts</button>
@@ -52,7 +52,7 @@ export default async function walkthroughView() {
   function mount(root) {
     const doc = qs('#wt-doc', root), toc = qs('#wt-toc', root);
 
-    // ---- inject "What was tried to move forward" panel after each phase heading ----
+    // ---- inject "What was tried to move forward" panel at the END of each phase ----
     if (doc) qsa('h2', doc).forEach(h => {
       const key = phaseKeyForHeading(h.textContent);
       if (!key) return;
@@ -65,14 +65,18 @@ export default async function walkthroughView() {
       const panel = document.createElement('details');
       panel.className = 'tried-panel';
       panel.innerHTML = `<summary>🧪 What was tried to move forward <span class="tp-count">${items.length}</span></summary>
-        <p class="tp-note">Every documented attempt tied to this phase — click any to jump to its full input / method / output in <a href="#/tried">What was tried</a>.</p>
+        <p class="tp-note">Every documented attempt tied to this phase — click any to jump to its full input / method / output in <a href="#/tried">What was tried</a>, or see the connected reasoning under <a href="#/insights">Insights</a>.</p>
         <ul class="tried-list">${list}</ul>`;
-      h.insertAdjacentElement('afterend', panel);
+      // place at the end of the phase: just before the next h2 (or at the end of the doc)
+      let next = h.nextElementSibling;
+      while (next && next.tagName !== 'H2') next = next.nextElementSibling;
+      if (next) next.parentNode.insertBefore(panel, next);
+      else doc.appendChild(panel);
     });
 
-    // ---- phase table-of-contents from rendered headings ----
+    // ---- phase table-of-contents (top-level phase headings only) ----
     if (doc && toc) {
-      const heads = qsa('h2, h3', doc).filter(h => h.id);
+      const heads = qsa('h2', doc).filter(h => h.id);
       toc.innerHTML = `<div class="wt-toc-h">Contents</div>` +
         heads.map(h => `<button type="button" class="wt-toc-link wt-${h.tagName.toLowerCase()}" data-t="${h.id}">${esc(h.textContent)}</button>`).join('');
       on(toc, 'click', '.wt-toc-link', (e, b) => {

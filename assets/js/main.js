@@ -40,6 +40,7 @@ router
   .add('/walkthrough', () => import('./views/walkthrough.js'))
   .add('/tried', () => import('./views/tried.js'))
   .add('/tried/:id', () => import('./views/tried.js'))
+  .add('/insights', () => import('./views/insights.js'))
   .add('/reference', () => import('./views/reference.js'));
 
 wireScan();

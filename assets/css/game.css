@@ -503,3 +503,45 @@ table.board td.bh{background:var(--panel2);color:var(--gold);font-weight:700}
 .tried-entry.tried-focus { border-color:#5fe9c4; box-shadow:0 0 0 2px rgba(46,200,160,.35); animation:triedpulse 2.4s ease; }
 @keyframes triedpulse { 0%,100%{ background:#0c0f16 } 18%{ background:#10231d } }
 @media (max-width:620px){ .tried-io { grid-template-columns:1fr; gap:1px 0 } .tried-io dt { padding-top:8px } }
+
+/* ── Insights / trial-summary view + insight chain ───────────────────────── */
+.sum-phase { margin:22px 0; }
+.sum-phase > h3 { border-bottom:1px solid #1c2330; padding-bottom:6px; color:#e6ecf5; }
+.sum-h { margin:14px 0 8px; font-size:14px; }
+.sum-insights { list-style:none; margin:0; padding:0; }
+.sum-insights > li { border-left:3px solid #2ec8a0; background:#0c0f16; border-radius:0 10px 10px 0; padding:10px 14px; margin:8px 0; }
+.sum-title { font-weight:700; color:#e6ecf5; text-decoration:none; }
+.sum-title:hover { color:#5fe9c4; text-decoration:underline; }
+.sum-ins { margin-top:4px; font-size:13.5px; color:#bfc9d6; line-height:1.55; }
+.sum-noins { margin:12px 0 4px; }
+.sum-noins > summary { cursor:pointer; color:#9fb0c4; font-size:13px; padding:4px 0; }
+.sum-alist { list-style:none; margin:6px 0 0; padding:0; }
+.sum-alist li { padding:4px 0; font-size:13px; display:flex; gap:8px; align-items:center; }
+.sum-alist a { color:#c4cdda; text-decoration:none; flex:1; }
+.sum-alist a:hover { color:#9fb4f0; }
+
+.chain { list-style:none; counter-reset:none; margin:0; padding:0; }
+.chain-step { display:flex; gap:14px; margin:0 0 6px; padding:14px; border:1px solid #1c2330; border-left:3px solid #5a78dc; border-radius:0 12px 12px 0; background:#0c0f16; }
+.chain-n { flex:0 0 30px; height:30px; border-radius:50%; background:#161b26; border:1px solid #2a3346; color:#9fb4f0; font-weight:800; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; }
+.chain-body { flex:1; }
+.chain-body p { margin:0 0 8px; line-height:1.6; color:#d4dce8; }
+.chain-refs { display:flex; flex-wrap:wrap; gap:6px; }
+.chain-ref { font-size:11.5px; color:#8b97a8; text-decoration:none; background:#11151e; border:1px solid #1c2330; border-radius:999px; padding:2px 9px; }
+.chain-ref:hover { color:#5fe9c4; border-color:#2ec8a0; }
+.chain-concl { border:1px solid #2ec8a0 !important; background:linear-gradient(180deg,#0c1a16,#0c0f16); }
+.concl-list { margin:0; padding-left:20px; }
+.concl-list li { margin:8px 0; line-height:1.6; color:#d4dce8; }
+
+/* ── Walkthrough collapsibles: visible Input/Method/Output + collapsed detail ── */
+.md .wt-imo { border:1px solid #233; border-left:3px solid #d6b545; background:#0e1014; border-radius:0 12px 12px 0; padding:6px 16px 8px; margin:14px 0; }
+.md .wt-imo ul { margin:6px 0; padding-left:0; list-style:none; }
+.md .wt-imo li { margin:6px 0; line-height:1.55; }
+.md .wt-imo li b { color:#f2cf73; display:inline-block; min-width:74px; }
+.md details.wt-more { margin:8px 0 4px; border:1px solid #1c2330; border-radius:12px; background:#0a0c11; }
+.md details.wt-more > summary { cursor:pointer; padding:11px 16px; font-weight:700; color:#9fb0c4; list-style:none;
+  font-family:'Space Grotesk',sans-serif; display:flex; align-items:center; gap:10px; }
+.md details.wt-more > summary::-webkit-details-marker { display:none; }
+.md details.wt-more > summary::before { content:'▸'; color:#6b7688; transition:transform .15s; }
+.md details.wt-more[open] > summary::before { transform:rotate(90deg); }
+.md details.wt-more > *:not(summary) { padding-left:16px; padding-right:16px; }
+.md details.wt-more > summary + * { padding-top:6px; }

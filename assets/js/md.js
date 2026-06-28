@@ -68,6 +68,7 @@ export function renderMarkdown(src) {
     if (/^\s*<(audio|video|img|iframe|figure|details|summary|div|br)\b/i.test(line)) { // trusted raw HTML block (one line)
       html += line.trim(); i++; continue;
     }
+    if (/^\s*<\/(details|summary|div|figure)>\s*$/i.test(line)) { html += line.trim(); i++; continue; } // closing tag
     if (/^\s*\|/.test(line)) { i = flushTable(i); continue; }   // table
     if (/^\s*>\s?/.test(line)) {                    // blockquote (consecutive)
       let j = i, q = '';

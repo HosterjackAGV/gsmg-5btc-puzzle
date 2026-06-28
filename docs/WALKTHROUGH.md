@@ -14,7 +14,19 @@
 
 ---
 
+---
+
 ## Phase 0 — Genesis Image / "The Seed Is Planted"
+
+<div class="wt-imo">
+
+- **Input** — The 14×14 colored genesis grid (`puzzle.png`), 196 tiles.
+- **Method** — Read each tile as a bit (black/blue = 1, white/yellow = 0) in a counter-clockwise inward spiral; group the 196 bits into 8-bit bytes; decode as ASCII.
+- **Output** — `gsmg.io/theseedisplanted` (the Phase 1 URL). Separately, the per-row and per-column 1-counts give the deferred `matrixsumlist` token.
+
+</div>
+
+<details class="wt-more"><summary>📖 Full walkthrough — the complete write-up, code, images and sources</summary>
 
 > **Status: ✅ SOLVED and fully reproducible.** This is the entry door. It contains no private key — it is a pure decode-and-navigate gate that hands you the URL of Phase 1.
 
@@ -303,9 +315,22 @@ This is the official confirmation that (a) the genesis grid has more than one do
 
 **bit** (a single 0/1) · **binary** · **byte** (8 bits) · **ASCII** (the 7-bit text encoding — note the leading `0` on every byte) · **spiral reading order** · **row/column sums** · **Bitcoin address** (a public "glass piggy-bank": everyone sees the balance, only the private-key holder can spend) · **QR code** · the white-rabbit / Matrix motif that threads through the whole hunt.
 
+</details>
+
+
 ---
 
 ## Phase 1 — "The Warning"
+
+<div class="wt-imo">
+
+- **Input** — The `theseedisplanted` page: a hidden password form plus scrambled images.
+- **Method** — The scrambled images spell WARNING + LOGIC → the song "The Warning" by Logic; take the lyric right after the words "Phase two"; lowercase and strip spaces.
+- **Output** — passphrase `theflowerblossomsthroughwhatseemstobeaconcretesurface`, which redirects (via two Merovingian quotes) on to Phase 2.
+
+</div>
+
+<details class="wt-more"><summary>📖 Full walkthrough — the complete write-up, code, images and sources</summary>
 
 **Status: SOLVED and fully reproducible.** This phase is a pure navigation / lookup gate — it reveals **no private key**. You arrive at a web page, find a hidden password form, recognise that the on-page images and the page URL encode a song, look up one specific lyric, and submit it to be redirected to Phase 2.
 
@@ -564,9 +589,22 @@ Two conventions established here carry through the **entire** rest of the puzzle
 | Source of the redirect URL | Two **Merovingian** quotes, *The Matrix Reloaded* | ✅ CONFIRMED |
 | Private key revealed this phase | None (navigation gate only) | ✅ CONFIRMED |
 
+</details>
+
+
 ---
 
 ## Phase 2 — Mr. Robot (the 7-part password)
+
+<div class="wt-imo">
+
+- **Input** — `phase2.txt` (OpenSSL AES blob), opened with the key `sha256("causality")`.
+- **Method** — Solve the Mr-Robot riddle's seven parts — `causality` · `Safenet` · `Luna` · `HSM` · `11110` · the `0x`-genesis-coinbase hex · the full chess FEN — concatenate them, then SHA-256.
+- **Output** — the Phase 3 key `1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5`.
+
+</div>
+
+<details class="wt-more"><summary>📖 Full walkthrough — the complete write-up, code, images and sources</summary>
 
 **Plain English:** Phase 2 is the longest puzzle so far. Solving the Phase 1 lyric drops you onto a long Matrix-quote URL. That page (below) is split into a "PHASE 2" section and a "PHASE 3" section, and contains text clues plus a blob of base64-encoded ciphertext. You unlock the first blob with the single word **`causality`** (you actually feed OpenSSL the SHA-256 hash of that word). Inside is a **Mr. Robot–themed riddle** whose answers build a **seven-part password**. The SHA-256 of that whole concatenated string is the AES key to Phase 3.
 
@@ -1018,9 +1056,22 @@ openssl enc -aes-256-cbc -d -a -md sha256 -in phase3.txt \
 
 **Lessons from Phase 2:** the URL itself is a clue; `...` can mean "replace with a word"; hints are sometimes metaphorical, not literal; and casing/spacing markers (`/(aBa, connected enf)`) are load-bearing for the final hash.
 
+</details>
+
+
 ---
 
 ## Phase 3 — "Free Will"
+
+<div class="wt-imo">
+
+- **Input** — `phase3.txt`, opened with the Phase-2 key.
+- **Method** — Solve three riddles → `jacquefresco` · `giveitjustonesecond` · `heisenbergsuncertaintyprinciple`; concatenate; SHA-256.
+- **Output** — the Phase 3.2 key `250f37726d6862939f723edc4f993fde9d33c6004aab4f2203d9ee489d61ce4c`.
+
+</div>
+
+<details class="wt-more"><summary>📖 Full walkthrough — the complete write-up, code, images and sources</summary>
 
 **Plain English:** Phase 2 ended by handing us the SHA-256 key `1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5`. We use that key to decrypt the next encrypted blob, `phase3.txt`. Out come **three short riddles**. Each riddle has a one-word-ish answer; solve all three, glue the lowercase answers together with no spaces, take the SHA-256 of the whole thing — and that is the key to the *next* blob, Phase 3.2.
 
@@ -1198,9 +1249,22 @@ This 64-character hash is the password to the Phase 3.2 blob, which is handled i
 - **Concatenation** — simply joining strings end-to-end with nothing between them.
 - **Heisenberg's uncertainty principle** — here it's the *answer to a riddle* (a famous physics name), not something you calculate.
 
+</details>
+
+
 ---
 
 ## Phase 3.2 — The Architect (EBCDIC → Beaufort → VIC)
+
+<div class="wt-imo">
+
+- **Input** — `phase32.txt`, opened with the Phase-3 key.
+- **Method** — Decode the bytes via IBM EBCDIC code page 1141 ("one for one, four for one"); run the Beaufort cipher (key `THEMATRIXHASYOU`) on the letter block and the VIC straddling-checkerboard (alphabet `FUBCDORA.LETHINGKYMVPS.JQZXW`, markers 1 and 4) on the digit block.
+- **Output** — the Architect monologue + the VIC line "IN CASE YOU MANAGE… THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF…", plus an embedded trailing AES blob (`p32_trailing`) that remains undecoded.
+
+</div>
+
+<details class="wt-more"><summary>📖 Full walkthrough — the complete write-up, code, images and sources</summary>
 
 **Plain-English overview.** Decrypting the Phase 3.2 blob (`phase32.txt`) does not hand you a clean message — it hands you a *workshop* full of separate puzzles wrapped in Matrix lore. You get: (1) some prose that quotes *The Matrix Reloaded* with two `...` blanks to fill in; (2) a wall of garbled "mojibake" bytes that must first be re-decoded through a specific IBM EBCDIC code page and then deciphered with a **Beaufort** cipher; (3) a long string of digits that decode through a **VIC straddling-checkerboard** cipher; (4) a one-line riddle that *gives you the alphabet* for that VIC cipher; and (5) a final trailing AES blob (`p32_trailing`) that, to this day, nobody has decoded.
 
@@ -1460,9 +1524,22 @@ gKlIi8aaqY5gpJPPEzW1n9n3/26qs4zstWtPKF8Zs/BTNN4IiEh4qu18mdC0NAv4
 
 **From-zero concepts introduced here:** EBCDIC / IBM code page 1141 · mojibake (wrong-encoding garble) · text-encoding brute force · the Beaufort cipher (a Vigenère-family cipher where encrypt = decrypt) · the VIC cipher and straddling-checkerboard (digits → letters using two "marker" rows) · how a riddle can *define a cipher alphabet*.
 
+</details>
+
+
 ---
 
 ## Decentraland — Entry to SalPhaseIon
+
+<div class="wt-imo">
+
+- **Input** — The Decentraland plot at coordinates −41,−17 → the audio file `puzzlepiece.mp3`.
+- **Method** — Split the stereo track, invert one channel, mix to mono, and view the spectrogram → the word HASHTHETEXT; then take SHA-256 of all the text on the opening puzzle image (including the prize address, no trailing newline).
+- **Output** — `89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32` → the secret SalPhaseIon page URL.
+
+</div>
+
+<details class="wt-more"><summary>📖 Full walkthrough — the complete write-up, code, images and sources</summary>
 
 > **Status: SOLVED and reproducible.** This side-quest is the bridge from the main Matrix puzzle chain into the **SalPhaseIon** endgame stage. It combines an official 2020 hint posted inside a virtual world (Decentraland) with the much later 2021 instruction "hash the text on the image." Together they tell you exactly how to compute the secret URL of the next phase.
 
@@ -1673,9 +1750,22 @@ Visiting that URL loads the **SalPhaseIon / Cosmic Duality** page — a long "so
 - **Spectrogram** — a picture of a sound's frequencies over time; text/images hidden in audio are typically seen here.
 - **"Hash the text"** — the recovered instruction `HASHTHETEXT` means: SHA-256 the literal text printed on the first puzzle image (including the address), and use the hex digest as the next page's name.
 
+</details>
+
+
 ---
 
 ## SalPhaseIon (the soup) & Cosmic Duality — the open endgame
+
+<div class="wt-imo">
+
+- **Input** — The SalPhaseIon "soup" (a long run of letters a–i/o split by `z`) and the final Cosmic Duality AES blob.
+- **Method** — Split on `z`; the a/b chunks → 8-bit-ASCII binary (`matrixsumlist`, `enter`); the a–i/o chunks → base-9 → hex → ASCII (`lastwordsbeforearchichoice`, `thispassword`). Two chunks — `dbbi` (91 symbols) and `faed` (570) — refuse to decode. The cosmic key is meant to be built from `yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang`.
+- **Output** — OPEN / UNSOLVED. `dbbi`/`faed` are undecoded; `yellowblueprimes`, `yinyang`, and the combine operation are unknown; the cosmic blob has never been decrypted. The 5 BTC is unclaimed.
+
+</div>
+
+<details class="wt-more"><summary>📖 Full walkthrough — the complete write-up, code, images and sources</summary>
 
 > **Status at a glance:** SalPhaseIon is **partially solved** — four tokens are cleanly decoded and reproduce exactly. Two blocks of the soup (`dbbi` and `faed`) and the embedded `salph_inner` AES blob are **UNDECODED**. **Cosmic Duality is genuinely OPEN — unsolved.** No one has ever produced a Bitcoin private key that moves the prize coins. Everything below distinguishes ✅ SOLVED/reproduced from ⚠️ HYPOTHESIS/community-guess from ❌ UNSOLVED.
 
@@ -1962,9 +2052,14 @@ There is also a **third, never-noted 80-byte blob** at the **end of the Phase 3.
 
 > **Bottom line:** SalPhaseIon's four word-tokens are solid and reproducible; the `dbbi`/`faed` blocks, the `salph_inner` blob, and **Cosmic Duality** are **genuinely OPEN**. Treat any "I solved it" post that does not show the prize address `1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe` dropping to zero on-chain as **false**.
 
+</details>
+
+
 ---
 
 ## Appendix — Creator Hint Timeline (2020–2026)
+
+<details class="wt-more"><summary>📖 The full creator hint timeline (2020–2026) — every hint, transcribed, with images</summary>
 
 From late 2019 onward, no one had publicly made progress past the AES blob of Phase 3.2. To keep the hunt alive, the puzzle's creator — posting in the official **Telegram** group under the handle **"Jrk Bgrt"** (admin), and occasionally in the `#Crypto_Puzzles` **Discord** channel — dripped out a long series of hints, jokes, and confirmations over the following six years. This section reproduces every one of those hints in chronological order, with a faithful transcription of each message and the original screenshot inline.
 
@@ -2420,3 +2515,6 @@ Pulling together the **[ENDGAME]** hints, the community's working model of the u
 5. Reaching a **"ying yang" (yinyang)** is the breakthrough — solvable the same day afterward (2023-08-06). This dovetails with the 2023-02-23 decode: `…yinyang … the password is in front of your eyes … very last step is a true give away`.
 
 **Status: OPEN.** No public, verified solution to the endgame exists. The puzzle is reproducibly solved through Phase 3.2 only; everything past SalPhaseIon / Cosmic Duality remains unsolved, and the prize address is **unclaimed** (the spent outputs are the creators' scheduled halving moves, not a solve).
+
+</details>
+
