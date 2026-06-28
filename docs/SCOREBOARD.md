@@ -52,6 +52,17 @@ server-verified.
 
 ---
 
+## ⚠️ Keep the Worker in sync with the game
+
+Scores are verified by **re-simulating your replay on the server**, so the Worker must run the **same
+rules** as the game. Whenever the gameplay changes, **redeploy the Worker**: open it in Cloudflare,
+paste the latest [`worker/scoreboard-worker.js`](../worker/scoreboard-worker.js), and **Deploy**.
+
+If you forget, you don't get silently-wrong scores anymore: the game sends a `RULES_VERSION` with each
+submission and an out-of-date Worker **refuses the score** with a "redeploy me" message instead of saving
+a number computed under the old rules. (Bump `RULES_VERSION` in both `snake-core.js` and the Worker when
+you change the rules — they're kept equal on purpose.)
+
 ## Why it's cheat-proof
 - The Worker **inlines the exact game simulation** (a verbatim copy of `assets/js/games/snake-core.js`)
   and re-runs the submitted `(seed, inputs)` to compute the authoritative `score` and `time`. It ignores

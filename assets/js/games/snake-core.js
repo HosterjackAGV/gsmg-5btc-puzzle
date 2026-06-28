@@ -9,6 +9,10 @@
 
 export const N = 14;
 export const START_LEN = 3;
+// Bump this whenever the simulation rules change. The client sends it with each submission and the
+// Worker must match — otherwise an out-of-date Worker would re-simulate replays under the wrong rules
+// and store wrong scores. On mismatch the Worker refuses the score and asks to be redeployed.
+export const RULES_VERSION = 3;
 
 // Player speed curve: slow at the start, ramping to the human-reaction maximum by score RAMP.
 const SLOW_MS = 230, FAST_MS = 95, RAMP = 50;

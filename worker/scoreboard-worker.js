@@ -25,6 +25,7 @@ const MULTS = { m2: 2, m4: 4, m8: 8, m16: 16 };
 const MULT_MS = 8000, SHIELD_MS = 6000;
 const SEEDS = { plus3: { score: 3, grow: 1, persistMs: 6000 }, plus5: { score: 5, grow: 2, persistMs: 4000 }, plus10: { score: 10, grow: 3, persistMs: 3000 } };
 const SEED_EVERY = 45, MAX_SEEDS = 2;
+const RULES_VERSION = 3;     // MUST match assets/js/games/snake-core.js — bump together when rules change
 const speedMs = (s) => Math.round(Math.max(FAST_MS, SLOW_MS - (SLOW_MS - FAST_MS) * Math.min(1, s / RAMP)));
 const enemyTTL = (s) => 34 + s * 4;
 const enemySteps = (score, tick) => score >= 1000 ? 2 : score >= 500 ? 1 : score >= 200 ? (tick % 2 === 0 ? 1 : 0) : score >= ENEMY_MOVE_SCORE ? (tick % 3 === 0 ? 1 : 0) : 0;
@@ -197,6 +198,7 @@ export default {
       if (request.method === 'POST') {
         let body; try { body = await request.json(); } catch { return json({ error: 'bad json' }, 400); }
         const { name, seed, inputs } = body || {};
+        if ((body && body.v) !== RULES_VERSION) return json({ error: `Scoreboard server is out of date (game rules v${body && body.v} vs server v${RULES_VERSION}). Redeploy the Worker with the latest worker/scoreboard-worker.js — see docs/SCOREBOARD.md.` }, 409);
         if (typeof seed !== 'number' || !Array.isArray(inputs) || inputs.length > 60000) return json({ error: 'bad replay' }, 400);
         const v = simulate(seed >>> 0, inputs);                    // ← the verification
         if (!v || v.score <= 0) return json({ error: 'replay did not produce a score' }, 400);

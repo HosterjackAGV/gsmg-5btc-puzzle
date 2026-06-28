@@ -5,7 +5,7 @@
 // the Worker re-simulates it and writes the authoritative score. Nothing here is trusted on the
 // player's device. (Only the player's chosen display-name is remembered locally, for convenience.)
 
-import { simulate } from './snake-core.js';
+import { simulate, RULES_VERSION } from './snake-core.js';
 import { MATRIX } from '../../../content/matrix.js';
 import { GAMES } from '../../../content/games.js';
 
@@ -51,7 +51,7 @@ export async function submitScore(name, replay) {
   try {
     const r = await fetch(GAMES.scoreboardUrl, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: cleanName(name), seed: replay.seed >>> 0, inputs: replay.inputs }),
+      body: JSON.stringify({ name: cleanName(name), seed: replay.seed >>> 0, inputs: replay.inputs, v: RULES_VERSION }),
     });
     const d = await r.json().catch(() => ({}));
     if (r.ok) return { ok: true, board: d.board || [], rank: d.rank, score: d.score, timeMs: d.timeMs };
