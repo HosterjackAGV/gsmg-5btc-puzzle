@@ -24,9 +24,9 @@ const MULTS = { m2: 2, m4: 4, m8: 8, m16: 16 };
 const MULT_MS = 8000, SHIELD_MS = 6000;
 const SEEDS = { plus3: { score: 3, grow: 1, persistMs: 6000 }, plus5: { score: 5, grow: 2, persistMs: 4000 }, plus10: { score: 10, grow: 3, persistMs: 3000 } };
 const SEED_EVERY = 45, MAX_SEEDS = 2;
-const RULES_VERSION = 4;     // MUST match assets/js/games/snake-core.js — bump together when rules change
+const RULES_VERSION = 5;     // MUST match assets/js/games/snake-core.js — bump together when rules change
 const MAX_USERS = 100, MAX_PER_USER = 25;   // keep up to 25 games each for the top 100 players
-const speedMs = (s) => s >= 1000 ? 95 : s >= 500 ? 125 : s >= 200 ? 160 : s >= 100 ? 195 : 230;
+const speedMs = (s) => s >= 1000 ? 160 : s >= 500 ? 200 : s >= 200 ? 240 : s >= 100 ? 280 : 320;
 const enemyTTL = (s) => 34 + s * 4;
 const enemySteps = (score, tick) => score >= 1000 ? 2 : score >= 500 ? 1 : score >= 200 ? (tick % 2 === 0 ? 1 : 0) : score >= ENEMY_MOVE_SCORE ? (tick % 3 === 0 ? 1 : 0) : 0;
 
