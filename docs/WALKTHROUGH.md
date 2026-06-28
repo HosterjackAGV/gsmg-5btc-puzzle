@@ -1,5 +1,7 @@
 # GSMG.io 5 BTC Puzzle — The Complete Walkthrough
 
+🔗 **gsmg.io is permanently offline — every original page is preserved at the community archive [gsmg-archive.org](https://gsmg-archive.org/):** [genesis image](https://gsmg-archive.org/#section-base-image) · [Phase 1](https://gsmg-archive.org/#section-phase1) · [Phase 2 & 3](https://gsmg-archive.org/#section-phase23) · [Phase 3.2](https://gsmg-archive.org/#section-phase32) · [SalPhaseIon & Cosmic](https://gsmg-archive.org/#section-salphaseion). Every "open the page" link below points there.
+
 > **The authoritative, source-merged walkthrough of the unsolved GSMG.io 5 BTC cryptographic puzzle.**
 > Every phase, every value, every image, and the open endgame — merged from all public sources
 > (the [puzzlehunt](https://github.com/puzzlehunt/gsmgio-5btc-puzzle) and
@@ -32,7 +34,7 @@
 
 ### Where it lives
 
-The puzzle was published at **https://gsmg.io/puzzle**. The single opening picture (the "genesis image") is a hand-decoded **14×14 grid of coloured squares** — 196 tiles in four colours. It is *not* a scannable QR code; it is a bespoke spiral-decoded grid (do not call it a QR code — that wording is wrong, the actual QR appears elsewhere and decodes separately, see below).
+The puzzle was published at **`gsmg.io/puzzle`** (offline — mirrored at **[gsmg-archive.org → the genesis image](https://gsmg-archive.org/#section-base-image)**). The single opening picture (the "genesis image") is a hand-decoded **14×14 grid of coloured squares** — 196 tiles in four colours. It is *not* a scannable QR code; it is a bespoke spiral-decoded grid (do not call it a QR code — that wording is wrong, the actual QR appears elsewhere and decodes separately, see below).
 
 ![The genesis puzzle image](assets/walkthrough/puzzle.png)
 
@@ -239,7 +241,7 @@ The 196 bits decode to **24 ASCII characters** (plus a 4-bit zero pad at the end
 
 > **`gsmg.io/theseedisplanted`**
 
-Visit **http://gsmg.io/theseedisplanted** — that page begins **Phase 1 ("The Warning")**.
+Visit it — originally **`gsmg.io/theseedisplanted`**, now mirrored at **[gsmg-archive.org → Phase 1](https://gsmg-archive.org/#section-phase1)** — that page begins **Phase 1 ("The Warning")**.
 
 ![Phase 1 source view](assets/walkthrough/phase1-assets/phase1-source.png)
 
@@ -1732,7 +1734,7 @@ GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe
 
 So the doorway into the SalPhaseIon (and ultimately Cosmic Duality) stage is:
 
-> **https://gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32**
+> **`gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32`** — mirrored at **[gsmg-archive.org → SalPhaseIon](https://gsmg-archive.org/#section-salphaseion)**
 
 > ⚠️ **The "no trailing newline" detail is load-bearing.** Hashing the string *with* a trailing newline produces a completely different (wrong) digest (`8784851d…`). Make sure your tool does not append `\n` (e.g. avoid `echo` without `-n`).
 >
@@ -2463,7 +2465,7 @@ A (since-deleted) account posted the exact instruction. It reveals that you take
 ```
 
 So the SalPhaseIon URL is:
-[https://gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32](https://gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32)
+`gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32` — mirrored at [gsmg-archive.org → SalPhaseIon](https://gsmg-archive.org/#section-salphaseion)
 
 ### 2021-08-11 — "The solver will find a way to 'decrypt' it" **[ENDGAME]**
 

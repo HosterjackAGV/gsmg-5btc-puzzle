@@ -1,6 +1,6 @@
 # GSMG.io 5 BTC Puzzle — The Complete Walkthrough
 
-**The authoritative, source-merged walkthrough of the unsolved [GSMG.io](https://gsmg.io) 5 BTC
+**The authoritative, source-merged walkthrough of the unsolved [GSMG.io](https://gsmg-archive.org/) 5 BTC
 cryptographic puzzle.** Every phase, every exact value, every original image, and the open endgame —
 assembled from *all* public sources into one place, de-duplicated and cross-checked against the real
 artifacts, so the community can read the whole puzzle here without hunting across scattered repos.
