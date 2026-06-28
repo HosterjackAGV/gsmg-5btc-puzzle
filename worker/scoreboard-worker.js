@@ -24,10 +24,10 @@ const MULTS = { m2: 2, m4: 4, m8: 8, m16: 16 };
 const MULT_MS = 8000, SHIELD_MS = 6000;
 const SEEDS = { plus3: { score: 3, grow: 1, persistMs: 6000 }, plus5: { score: 5, grow: 2, persistMs: 4000 }, plus10: { score: 10, grow: 3, persistMs: 3000 } };
 const SEED_EVERY = 45, MAX_SEEDS = 2;
-const RULES_VERSION = 5;     // MUST match assets/js/games/snake-core.js — bump together when rules change
+const RULES_VERSION = 6;     // MUST match assets/js/games/snake-core.js — bump together when rules change
 const MAX_USERS = 100, MAX_PER_USER = 25;   // keep up to 25 games each for the top 100 players
 const speedMs = (s) => s >= 1000 ? 160 : s >= 500 ? 200 : s >= 200 ? 240 : s >= 100 ? 280 : 320;
-const enemyTTL = (s) => 34 + s * 4;
+const ENEMY_TTL_MS = 10000;     // every glitch stays on the board exactly 10 seconds
 const enemySteps = (score, tick) => score >= 1000 ? 2 : score >= 500 ? 1 : score >= 200 ? (tick % 2 === 0 ? 1 : 0) : score >= ENEMY_MOVE_SCORE ? (tick % 3 === 0 ? 1 : 0) : 0;
 
 const LORE = [
@@ -45,7 +45,7 @@ function occupied(s, x, y) { return s.snake.some(q => q.x === x && q.y === y) ||
 function placeFood(s) { let x, y, n = 0; do { x = ri(s.rng, N); y = ri(s.rng, N); n++; } while (occupied(s, x, y) && n < 500); s.food = { x, y }; }
 function freeLore(s, type) { const pool = s.lore.filter(c => (!type || c.t === type) && !occupied(s, c.x, c.y)); return pool.length ? pool[ri(s.rng, pool.length)] : null; }
 function spawnEnemy(s) { if (s.enemies.length + s.spawns.length >= MAX_ENEMIES) return; const c = freeLore(s); if (!c) return; const dir = [[1, 0], [-1, 0], [0, 1], [0, -1]][ri(s.rng, 4)]; const at = s.timeMs + AURA_MIN_MS + Math.floor(s.rng() * (AURA_MAX_MS - AURA_MIN_MS + 1)); s.spawns.push({ x: c.x, y: c.y, dir, born: s.timeMs, at }); }
-function processSpawns(s) { if (!s.spawns.length) return; const ready = [], keep = []; for (const z of s.spawns) (s.timeMs >= z.at ? ready : keep).push(z); s.spawns = keep; for (const z of ready) { if (s.enemies.length >= MAX_ENEMIES) continue; if (occupied(s, z.x, z.y)) continue; s.enemies.push({ x: z.x, y: z.y, dir: z.dir, expires: s.tick + enemyTTL(s.score) }); } }
+function processSpawns(s) { if (!s.spawns.length) return; const ready = [], keep = []; for (const z of s.spawns) (s.timeMs >= z.at ? ready : keep).push(z); s.spawns = keep; for (const z of ready) { if (s.enemies.length >= MAX_ENEMIES) continue; if (occupied(s, z.x, z.y)) continue; s.enemies.push({ x: z.x, y: z.y, dir: z.dir, expires: s.timeMs + ENEMY_TTL_MS }); } }
 function dropPower(s, type, x, y) { s.powerups.push({ x, y, type, ttl: s.tick + (PU_TTL[type] || 70) }); }
 function spawnPowerup(s) { if (s.powerups.length) return; const r = s.rng(); let type; if (s.score >= 10 && r < 0.02) type = 'reset'; else if (r < 0.10) type = 'fefefe'; else if (r < 0.30) type = 'blue'; else { const m = s.rng(); type = m < 0.7758 ? 'm2' : m < 0.9697 ? 'm4' : m < 0.99394 ? 'm8' : 'm16'; } const want = (type === 'reset' || type === 'fefefe') ? 'fefefe' : type === 'blue' ? 'blue' : 'yellow'; const c = freeLore(s, want) || freeLore(s); if (!c) return; s.powerups.push({ x: c.x, y: c.y, type, ttl: s.tick + (PU_TTL[type] || 70) }); }
 function spawnSeed(s) { if (s.seeds.length >= MAX_SEEDS) return; if (s.rng() >= 0.5) return; const t = s.rng(); const type = t < 0.6 ? 'plus3' : t < 0.9 ? 'plus5' : 'plus10'; const def = SEEDS[type]; let x, y, n = 0; do { x = ri(s.rng, N); y = ri(s.rng, N); n++; } while (occupied(s, x, y) && n < 200); if (occupied(s, x, y)) return; s.seeds.push({ x, y, type, score: def.score, grow: def.grow, exp: s.timeMs + def.persistMs }); }
@@ -89,7 +89,7 @@ function step(s) {
   s.mults = s.mults.filter(e => e.exp > s.timeMs);
   s.powerups = s.powerups.filter(p => p.ttl > s.tick);
   s.seeds = s.seeds.filter(z => z.exp > s.timeMs);
-  s.enemies = s.enemies.filter(e => e.expires > s.tick);
+  s.enemies = s.enemies.filter(e => e.expires > s.timeMs);
   const es = enemySteps(s.score, s.tick);
   for (let k = 0; k < es && s.status === 'playing'; k++) moveEnemies(s);
   if (s.status !== 'playing') return false;

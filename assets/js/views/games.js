@@ -75,7 +75,7 @@ export default async function gamesView() {
           <li><b>Move</b> with the <b>arrow keys / WASD</b> (PC) or by <b>swiping</b> the grid / tapping the <b>D-pad</b> (phone). You <b>cannot turn back into your own body</b> — a too-fast reversal is ignored.</li>
           <li><b>Speed</b> steps up at the <b>same milestones as the glitches</b>: relaxed until <b>100</b>, then faster at <b>200</b> and <b>500</b>, reaching its <b>top speed at 1000</b>. Slow to start, brutal once you're deep.</li>
           <li><b>Death:</b> hitting a <b>wall</b>, your <b>own body</b>, or a moving <b>glitch</b> ends the run.</li>
-          <li><b>Glitches</b> 👾 crawl out of the genesis grid's <b>blue / yellow / #FEFEFE</b> boxes — at most <b>3</b> on the board at once. Each is <b>telegraphed</b>: a fast <b>red aura</b> pulses on the box for <b>1–3 seconds</b> before the glitch appears. They stay <b>frozen</b> until <b>score 100</b>, then hunt — getting faster as you climb:
+          <li><b>Glitches</b> 👾 crawl out of the genesis grid's <b>blue / yellow / #FEFEFE</b> boxes — at most <b>3</b> on the board at once. Each is <b>telegraphed</b>: a fast <b>red aura</b> pulses on the box for <b>1–3 seconds</b> before the glitch appears. Each one stays for <b>exactly 10 seconds</b>, then vanishes. They stay <b>frozen</b> until <b>score 100</b>, then hunt — getting faster as you climb:
             <ul>
               <li><b>100+</b> — crawling, about <b>a third</b> of your speed.</li>
               <li><b>200+</b> — <b>half</b> your speed.</li>

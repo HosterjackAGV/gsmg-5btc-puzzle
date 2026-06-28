@@ -12,7 +12,7 @@ export const START_LEN = 3;
 // Bump this whenever the simulation rules change. The client sends it with each submission and the
 // Worker must match — otherwise an out-of-date Worker would re-simulate replays under the wrong rules
 // and store wrong scores. On mismatch the Worker refuses the score and asks to be redeployed.
-export const RULES_VERSION = 5;
+export const RULES_VERSION = 6;
 
 // Player speed steps DOWN (faster) at the SAME score thresholds the enemies use (100/200/500/1000),
 // so the snake ramps in lockstep with the glitches — relaxed to start, top speed only deep in.
@@ -30,7 +30,7 @@ export function speedMs(score) {
 const MAX_ENEMIES = 3;
 const ENEMY_MOVE_SCORE = 100;
 const AURA_MIN_MS = 1000, AURA_MAX_MS = 3000;
-export function enemyTTL(score) { return 34 + score * 4; }       // they vanish; higher score → linger longer
+const ENEMY_TTL_MS = 10000;                                      // every glitch stays on the board exactly 10 seconds
 function enemySteps(score, tick) {                                // enemy moves performed this player-tick
   if (score >= 1000) return 2;
   if (score >= 500) return 1;
@@ -110,7 +110,7 @@ function processSpawns(sim) {
   for (const s of ready) {
     if (sim.enemies.length >= MAX_ENEMIES) continue;
     if (occupied(sim, s.x, s.y)) continue;                        // snake/food moved onto it → cancel
-    sim.enemies.push({ x: s.x, y: s.y, dir: s.dir, expires: sim.tick + enemyTTL(sim.score) });
+    sim.enemies.push({ x: s.x, y: s.y, dir: s.dir, expires: sim.timeMs + ENEMY_TTL_MS });
   }
 }
 
@@ -198,7 +198,7 @@ export function step(sim) {
   sim.mults = sim.mults.filter(e => e.exp > sim.timeMs);
   sim.powerups = sim.powerups.filter(p => p.ttl > sim.tick);
   sim.seeds = sim.seeds.filter(s => s.exp > sim.timeMs);                            // special seeds vanish (real-time)
-  sim.enemies = sim.enemies.filter(e => e.expires > sim.tick);                      // glitches vanish on expiry
+  sim.enemies = sim.enemies.filter(e => e.expires > sim.timeMs);                    // glitches vanish 10s after they appear
 
   const es = enemySteps(sim.score, sim.tick);                                       // 0 / part-time / 1× / 2× the player
   for (let k = 0; k < es && sim.status === 'playing'; k++) moveEnemies(sim);
