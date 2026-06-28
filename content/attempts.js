@@ -117,14 +117,14 @@ export const ATTEMPTS = [
   "id": "genesis-fefefe-cell-located-7-4",
   "phase": "genesis",
   "category": "image forensics",
-  "title": "The #FEFEFE marked cell LOCATED at (row 7, col 4), a dual-prime index",
+  "title": "The #FEFEFE marked cell LOCATED at (row 7, col 4) [0-based; = row 8, col 5 from 1], a dual-prime index",
   "who": "this project",
   "source": "this session (image forensics on img_puzzle.png)",
   "input": "Original genesis image img_puzzle.png (1048x1556). Creator hint: '104 is the fefefe square. fefefe is 101010.' Palette scan for an off-white cell rendered 254,254,254 instead of 255,255,255.",
   "method": "Ran a pixel-by-pixel palette histogram and per-cell color scan over the 14x14 grid to find the single planted off-white cell. Computed its spiral index and row-major index to test the creator's '104' / 'array indexing' claim. The cell's grid value and indices were then checked against dbbi/faed/matrixsumlist as a possible 'zero-out' pointer.",
-  "output": "Exactly ONE cell is 254,254,254 (vs 255,255,255 everywhere else): grid (row 7, col 4), grid value 0 (white). Its spiral index = 163 (PRIME), 1-based 164; row-major index = 103 (1-based)/102 (0-based). It sits at a DUAL-PRIME index (spiral 163 AND row-major 103). Spiral 164 is not divisible by 8, so it tags a single BIT (the 4th bit of URL char 21 = 'n'), unlike blue/yellow which tag whole chars. Note: row-major 104 (1-based) is the adjacent cell (7,5) — the creator's '104' may intend that neighbor (verify on a pristine PNG).",
+  "output": "Exactly ONE cell is 254,254,254 (vs 255,255,255 everywhere else): grid (row 7, col 4) — counting rows/cols from 0; that is row 8, col 5 counting from 1 — grid value 0 (white). Its spiral index = 163 (PRIME) counting from 0 / 164 counting from 1; row-major index = 102 (0-based) / 103 (1-based). It sits at a DUAL-PRIME index, though the two primes come from DIFFERENT origins: spiral 163 (counted from 0) and row-major 103 (counted from 1) are both prime. Spiral 164 is not divisible by 8, so it tags a single BIT (the 4th bit of URL char 21 = 'n', counting chars from 1), unlike blue/yellow which tag whole chars. Note: row-major 104 (1-based) is the adjacent cell (row 7, col 5) [0-based; = row 8, col 6 from 1] — the creator's '104' may intend that neighbor (verify on a pristine PNG).",
   "outcome": "verified-insight",
-  "insight": "The planted #FEFEFE cell is exactly at grid (7,4), a dual-prime index (spiral 163 / row-major 103), tagging a single bit rather than a whole character — concretely on-theme with 'the prime part' though no decode follows from it yet."
+  "insight": "The planted #FEFEFE cell is exactly at grid (row 7, col 4) counting from 0 (= row 8, col 5 counting from 1), a dual-prime index — spiral 163 (0-based) and row-major 103 (1-based) are both prime — tagging a single bit rather than a whole character; concretely on-theme with 'the prime part' though no decode follows from it yet."
  },
  {
   "id": "genesis-qr-decoded-blockchain-link",

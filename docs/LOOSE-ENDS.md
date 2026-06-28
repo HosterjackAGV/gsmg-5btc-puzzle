@@ -58,13 +58,15 @@
 
 **The #FEFEFE cell (image forensics) — NOW LOCATED** — `[UNDECODED]`
 - What: a planted off-white cell (FEFEFE not FFFFFF); creator: "104 is the fefefe square. fefefe is 101010."
-- LOCATED (this session, pixel scan of img_puzzle.png): exactly ONE cell at grid **(row 7, col 4)** is
-  rendered 254,254,254 vs 255,255,255 everywhere else. grid value there = 0 (white). Its **spiral index =
-  163 (PRIME)**, 1-based 164; **row-major index = 103 (1-based) / 102 (0-based)**. It is NOT a byte boundary
-  (spiral 164 ∤ 8) so it tags a single BIT (the 4th bit of URL char 21='n'), unlike blue/yellow which tag whole chars.
-- → potential: MAJOR & now concrete. "104 is the fefefe square" — note row-major **104 (1-based) = cell (7,5)**,
-  one column right of the located (7,4); the marker may intend index 104 exactly (verify on a pristine PNG). The
-  cell sits at a DUAL-PRIME index (spiral 163, row-major 103) — strongly on-theme with "the prime part." Test
+- LOCATED (this session, pixel scan of img_puzzle.png): exactly ONE cell at grid **(row 7, col 4)** — counting
+  rows/cols from **0**; = **row 8, col 5** counting from 1 — is rendered 254,254,254 vs 255,255,255 everywhere
+  else. grid value there = 0 (white). Its **spiral index = 163 (PRIME)** counting from 0 / 164 counting from 1;
+  **row-major index = 102 (0-based) / 103 (1-based)**. It is NOT a byte boundary (spiral 164 ∤ 8) so it tags a
+  single BIT (the 4th bit of URL char 21='n', counting chars from 1), unlike blue/yellow which tag whole chars.
+- → potential: MAJOR & now concrete. "104 is the fefefe square" — note row-major **104 (1-based) = cell (row 7, col 5)**
+  (0-based; = row 8, col 6 from 1), one column right of the located (row 7, col 4); the marker may intend index 104
+  exactly (verify on a pristine PNG). The cell sits at a DUAL-PRIME index, though the two primes use **different
+  origins** — spiral 163 (counted from 0) and row-major 103 (counted from 1) — strongly on-theme with "the prime part." Test
   whether index 103/104 selects a char in dbbi/faed/matrixsumlist or marks the "zero-out" point.
 
 **Alternate spiral orientations / bit polarities** — `[BRUTEFORCED]`

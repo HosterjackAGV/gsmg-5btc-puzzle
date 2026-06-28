@@ -15,7 +15,7 @@ export function matrixWidget() {
     for (let c = 0; c < MATRIX.grid[r].length; c++) {
       const v = MATRIX.grid[r][c];
       const tint = blue.has(r + ',' + c) ? 'blue' : yellow.has(r + ',' + c) ? 'yellow' : '';
-      cells += `<div class="mcell ${v ? 'on' : 'off'} ${tint}" data-rc="${r},${c}" title="row ${r}, col ${c} = ${v}"></div>`;
+      cells += `<div class="mcell ${v ? 'on' : 'off'} ${tint}" data-rc="${r},${c}" title="row ${r + 1}, col ${c + 1} (counting from 1) · row ${r}, col ${c} (counting from 0) = ${v}"></div>`;
     }
   }
 
