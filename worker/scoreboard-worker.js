@@ -26,6 +26,7 @@ const MULT_MS = 8000, SHIELD_MS = 6000;
 const SEEDS = { plus3: { score: 3, grow: 1, persistMs: 6000 }, plus5: { score: 5, grow: 2, persistMs: 4000 }, plus10: { score: 10, grow: 3, persistMs: 3000 } };
 const SEED_EVERY = 45, MAX_SEEDS = 2;
 const RULES_VERSION = 3;     // MUST match assets/js/games/snake-core.js — bump together when rules change
+const MAX_USERS = 100, MAX_PER_USER = 25;   // keep up to 25 games each for the top 100 players
 const speedMs = (s) => Math.round(Math.max(FAST_MS, SLOW_MS - (SLOW_MS - FAST_MS) * Math.min(1, s / RAMP)));
 const enemyTTL = (s) => 34 + s * 4;
 const enemySteps = (score, tick) => score >= 1000 ? 2 : score >= 500 ? 1 : score >= 200 ? (tick % 2 === 0 ? 1 : 0) : score >= ENEMY_MOVE_SCORE ? (tick % 3 === 0 ? 1 : 0) : 0;
@@ -134,6 +135,24 @@ async function writeGist(env, board) {
   if (!r.ok) throw new Error('gist write ' + r.status);
 }
 
+// ---- group a flat list of games into one entry per player (their best) + all their games ----
+function groupBoard(games, maxUsers, perUser) {
+  const byName = new Map();
+  for (const e of games) { if (!e || typeof e.score !== 'number') continue; const k = e.name || 'anon'; let a = byName.get(k); if (!a) byName.set(k, a = []); a.push(e); }
+  const users = [];
+  for (const [name, list] of byName) {
+    list.sort((a, b) => b.score - a.score || a.timeMs - b.timeMs);
+    users.push({ name, score: list[0].score, timeMs: list[0].timeMs, date: list[0].date, count: list.length, games: list.slice(0, perUser) });
+  }
+  users.sort((a, b) => b.score - a.score || a.timeMs - b.timeMs);
+  return users.slice(0, maxUsers);
+}
+function pruneGames(games) {                  // bound storage: top MAX_USERS players, ≤ MAX_PER_USER games each
+  const flat = [];
+  for (const u of groupBoard(games, MAX_USERS, MAX_PER_USER)) for (const g of u.games) flat.push(g);
+  return flat;
+}
+
 // ---- admin auth: GitHub OAuth, gated to a single login (default HosterjackAGV) ----
 const ADMIN_LOGIN = (env) => env.ADMIN_LOGIN || 'HosterjackAGV';
 const b64urlBytes = (bytes) => { let s = ''; for (const b of bytes) s += String.fromCharCode(b); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
@@ -194,7 +213,7 @@ export default {
     if (path === '/wipe' && request.method === 'POST') return handleWipe(request, env);
     if (!env.GH_TOKEN || !env.GIST_ID) return json({ error: 'scoreboard not configured (set GH_TOKEN + GIST_ID)' }, 503);
     try {
-      if (request.method === 'GET') return json({ board: (await readGist(env)).slice(0, 25) });
+      if (request.method === 'GET') return json({ board: groupBoard(await readGist(env), 25, MAX_PER_USER) });
       if (request.method === 'POST') {
         let body; try { body = await request.json(); } catch { return json({ error: 'bad json' }, 400); }
         const { name, seed, inputs } = body || {};
@@ -203,12 +222,14 @@ export default {
         const v = simulate(seed >>> 0, inputs);                    // ← the verification
         if (!v || v.score <= 0) return json({ error: 'replay did not produce a score' }, 400);
         const entry = { name: cleanName(name), score: v.score, timeMs: v.timeMs, date: Date.now() };
-        const board = await readGist(env);                         // read-modify-write the Gist
-        board.push(entry);
-        board.sort((a, c) => c.score - a.score || a.timeMs - c.timeMs);
-        const top = board.slice(0, 100);
-        await writeGist(env, top);
-        return json({ ok: true, board: top.slice(0, 25), rank: top.indexOf(entry) + 1, score: v.score, timeMs: v.timeMs });
+        let games = await readGist(env);                           // read-modify-write the Gist
+        games.push(entry);
+        games = pruneGames(games);
+        await writeGist(env, games);
+        const ranked = groupBoard(games, 1e9, MAX_PER_USER);       // this player's rank among all players (by best)
+        const ui = ranked.findIndex(u => u.name === entry.name), me = ui >= 0 ? ranked[ui] : null;
+        const isBest = !!(me && me.games[0] && me.games[0].date === entry.date && me.games[0].score === entry.score && me.games[0].timeMs === entry.timeMs);
+        return json({ ok: true, board: ranked.slice(0, 25), rank: ui >= 0 ? ui + 1 : null, score: v.score, timeMs: v.timeMs, best: me ? me.score : v.score, isBest });
       }
     } catch (e) { return json({ error: String(e && e.message || e) }, 502); }
     return json({ error: 'method' }, 405);
@@ -216,4 +237,4 @@ export default {
 };
 
 // (Cloudflare only uses the default export; these are for the repo's determinism cross-check test.)
-export { simulate, LORE };
+export { simulate, LORE, groupBoard };

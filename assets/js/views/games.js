@@ -4,7 +4,7 @@
 
 import { qs, qsa, on } from '../util.js';
 import { snakeGame } from '../games/snake.js';
-import { fetchBoard, submitScore, fmtTime, fmtDate, isConfigured, captureAdminToken, isAdmin, adminLogin, adminLoginUrl, adminLogout, wipeBoard } from '../games/scoreboard.js';
+import { fetchBoard, submitScore, fmtTime, fmtDate, isConfigured, groupBoard, captureAdminToken, isAdmin, adminLogin, adminLoginUrl, adminLogout, wipeBoard } from '../games/scoreboard.js';
 
 export default async function gamesView() {
   const html = `
@@ -181,7 +181,11 @@ export default async function gamesView() {
       submitBtn.disabled = false; submitBtn.textContent = 'Submit score';
       if (res.ok) {
         submitted = true; submitRow.hidden = true;
-        rankEl.hidden = false; rankEl.innerHTML = `✓ Verified on the server — <b>rank #${res.rank}</b> on the global board`;
+        rankEl.hidden = false;
+        const rk = res.rank ? ` — <b>rank #${res.rank}</b> of all players` : '';
+        rankEl.innerHTML = res.isBest
+          ? `✓ Verified — <b>new personal best ${res.score}</b>!${rk}`
+          : `✓ Verified — saved (your best is <b>${res.best != null ? res.best : res.score}</b>)${rk}`;
         if (res.board) { renderBoard($('#sk-board'), res.board, { configured: true }); setTop(res.board); } else refreshBoard();
       } else { rankEl.hidden = false; rankEl.innerHTML = `<span class="sb-err">${res.error || 'could not submit'}</span>`; }
     });
@@ -223,13 +227,35 @@ export default async function gamesView() {
 function renderBoard(host, board, opts = {}) {
   if (!host) return;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  if (!board || !board.length) {
+  const users = groupBoard(board || []);                 // one row per player (their best) + all their games
+  if (!users.length) {
     if (opts.configured === false) { host.innerHTML = '<p class="sb-empty">The global scoreboard isn’t connected yet — see <a href="https://github.com/HosterjackAGV/gsmg-5btc-puzzle/blob/main/docs/SCOREBOARD.md" target="_blank" rel="noopener">docs/SCOREBOARD.md</a> to switch it on (free, ~10 min).</p>'; return; }
     if (opts.error) { host.innerHTML = `<p class="sb-empty">${esc(opts.error)}</p>`; return; }
     host.innerHTML = '<p class="sb-empty">No scores yet — <b>be the first</b>. 🥇</p>'; return;
   }
   const medal = (i) => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
-  host.innerHTML = `<table class="sb-table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th><th>Date</th></tr></thead><tbody>${
-    board.slice(0, 25).map((e, i) => `<tr><td class="sb-rank">${medal(i)}</td><td class="sb-name">${esc(e.name)}</td><td class="sb-score">${e.score}</td><td class="sb-time">${fmtTime(e.timeMs)}</td><td class="sb-date">${fmtDate(e.date)}</td></tr>`).join('')
+  host.innerHTML = `<table class="sb-table"><thead><tr><th class="sb-x"></th><th>#</th><th>Name</th><th>Best</th><th>Time</th><th>Date</th></tr></thead><tbody>${
+    users.slice(0, 25).map((u, i) => {
+      const gs = Array.isArray(u.games) ? u.games : [u];
+      const multi = gs.length > 1;
+      const head = `<tr class="sb-user${multi ? ' has-games' : ''}" data-u="${i}">` +
+        `<td class="sb-x">${multi ? '<span class="sb-exp">▸</span>' : ''}</td>` +
+        `<td class="sb-rank">${medal(i)}</td>` +
+        `<td class="sb-name">${esc(u.name)}${multi ? ` <span class="sb-count">${gs.length} games</span>` : ''}</td>` +
+        `<td class="sb-score">${u.score}</td><td class="sb-time">${fmtTime(u.timeMs)}</td><td class="sb-date">${fmtDate(u.date)}</td></tr>`;
+      const sub = multi ? `<tr class="sb-sub" data-sub="${i}" hidden><td></td><td colspan="5"><ol class="sb-games-list">${
+        gs.map(g => `<li><span class="sb-g-score">${g.score}</span><span class="sb-time">${fmtTime(g.timeMs)}</span><span class="sb-date">${fmtDate(g.date)}</span></li>`).join('')
+      }</ol></td></tr>` : '';
+      return head + sub;
+    }).join('')
   }</tbody></table>`;
+  host.querySelectorAll('.sb-user.has-games').forEach(row => {
+    row.addEventListener('click', () => {
+      const i = row.getAttribute('data-u'), sub = host.querySelector(`.sb-sub[data-sub="${i}"]`);
+      if (!sub) return;
+      const nowOpen = sub.hidden; sub.hidden = !nowOpen;
+      row.classList.toggle('open', nowOpen);
+      const exp = row.querySelector('.sb-exp'); if (exp) exp.textContent = nowOpen ? '▾' : '▸';
+    });
+  });
 }

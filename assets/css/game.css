@@ -786,6 +786,15 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .sb-admin-login:hover { opacity:1; color:#cfd8e6; }
 .btn.danger { background:#2a0e12; color:#ff8a8a; border:1px solid #5f2533; }
 .btn.danger:hover { background:#3a141a; color:#ffb0b0; }
+.sb-table th.sb-x, .sb-table td.sb-x { width:16px; padding-left:4px; padding-right:0; }
+.sb-exp { color:#6f7c8f; font-size:10px; }
+.sb-user.has-games { cursor:pointer; }
+.sb-user.has-games:hover, .sb-user.open { background:#0f1420; }
+.sb-count { font-size:10px; color:#6f7c8f; font-weight:500; }
+.sb-sub > td { padding:0 8px 9px; }
+.sb-games-list { list-style:none; margin:0; padding:3px 0 2px 8px; border-left:2px solid #233; }
+.sb-games-list li { display:flex; gap:14px; align-items:baseline; padding:3px 0; font-size:12px; }
+.sb-g-score { font-family:'JetBrains Mono',monospace; color:#5fe9c4; font-weight:700; min-width:46px; }
 
 .snake-rules { border:1px solid #1c2330; border-radius:14px; background:#0b0e15; padding:4px 16px; }
 .snake-rules > summary { cursor:pointer; font-weight:700; color:#cfd8e6; padding:11px 0; font-family:'Space Grotesk',sans-serif; }

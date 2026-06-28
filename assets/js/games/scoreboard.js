@@ -30,6 +30,21 @@ export function fmtDate(ms) {
   try { return d.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }   // viewer's own locale + timezone
   catch { return d.toISOString().slice(0, 16).replace('T', ' '); }
 }
+// Normalise the board into one entry per player (best) + their games[]. The Worker already returns
+// this shape; this also groups a flat list (older Worker) so the page works either way.
+export function groupBoard(raw) {
+  if (!Array.isArray(raw)) return [];
+  if (raw.length && raw[0] && Array.isArray(raw[0].games)) return raw;
+  const byName = new Map();
+  for (const e of raw) { if (!e) continue; const k = e.name || 'anon'; let a = byName.get(k); if (!a) byName.set(k, a = []); a.push(e); }
+  const users = [];
+  for (const [name, list] of byName) {
+    list.sort((a, b) => b.score - a.score || a.timeMs - b.timeMs);
+    users.push({ name, score: list[0].score, timeMs: list[0].timeMs, date: list[0].date, count: list.length, games: list });
+  }
+  users.sort((a, b) => b.score - a.score || a.timeMs - b.timeMs);
+  return users;
+}
 export function verifyReplay(replay) {
   if (!replay || typeof replay.seed !== 'number' || !Array.isArray(replay.inputs)) return null;
   return simulate(replay.seed >>> 0, replay.inputs, LORE);   // local sanity check before bothering the server
@@ -54,7 +69,7 @@ export async function submitScore(name, replay) {
       body: JSON.stringify({ name: cleanName(name), seed: replay.seed >>> 0, inputs: replay.inputs, v: RULES_VERSION }),
     });
     const d = await r.json().catch(() => ({}));
-    if (r.ok) return { ok: true, board: d.board || [], rank: d.rank, score: d.score, timeMs: d.timeMs };
+    if (r.ok) return { ok: true, board: d.board || [], rank: d.rank, score: d.score, timeMs: d.timeMs, best: d.best, isBest: d.isBest };
     return { ok: false, error: d.error || ('server said ' + r.status) };
   } catch { return { ok: false, error: 'Could not reach the scoreboard server.' }; }
 }
