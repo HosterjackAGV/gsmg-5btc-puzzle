@@ -30,6 +30,10 @@ const P2_PW = 'causalitySafenetLunaHSM111100x736B6E616220726F662074756F6C6961622
 const P3_PW = 'jacquefrescogiveitjustonesecondheisenbergsuncertaintyprinciple';
 const DBBI = 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe';
 const FAED = 'faedggeedfcbdabhhggcadcfeddgfdgbgigaaedggiafaecghggcdaihehahbahigceifgbfgefgaifabifagaegeacgbbeagfggeeggafbacgfcdbeiffaafcidahgdeefghhcggaegdebhhegeghcegadfbdiagefcicggifdcgaaggfbigaicfbhecaecbceiaicebgbgiecdeggfgegaedggfiiciiififhggcgfgdcdggefcbeeigefibgibggghhfbcgifdehedfdagicdbhicgaiedaehahghhcihdghfhbiicecbiichihiiigiddgehhdfdchcbafgfbhaheagegecafehgcfggggcagfhhghbaihidiehhfdeggdgcihggggghadahigigbgecgedfcdggaccdehiicigfbffhggaeidbbeibbeiifdgfdhieeeieeecifdgdahdiggfhegfiaffiggbcbcehceabfbedbiibfbfdedeehgigfaaiggagbeiichiedifbehgbccahhbiibibbibdcbahaidhfahiihic';
+// The complete SalPhaseIon "soup" (verbatim, as on the page — a space between every character).
+const SOUP = 'd b b i b f b h c c b e g b i h a b e b e i h b e g g e g e b e b b g e h h e b h h f b a b f d h b e f f c d b b f c c c g b f b e e g g e c b e d c i b f b f f g i g b e e e a b e a b b a b b a b a b b a a a a b a b b b a b a a a b b b a a b a a b b a b a a b a b b b b a a a a b b b a a b b a b b b a b a b a b b a b b a b a b b a b b a a a b b a b a a b a b b b a a b b a b b b a b a a f a e d g g e e d f c b d a b h h g g c a d c f e d d g f d g b g i g a a e d g g i a f a e c g h g g c d a i h e h a h b a h i g c e i f g b f g e f g a i f a b i f a g a e g e a c g b b e a g f g g e e g g a f b a c g f c d b e i f f a a f c i d a h g d e e f g h h c g g a e g d e b h h e g e g h c e g a d f b d i a g e f c i c g g i f d c g a a g g f b i g a i c f b h e c a e c b c e i a i c e b g b g i e c d e g g f g e g a e d g g f i i c i i i f i f h g g c g f g d c d g g e f c b e e i g e f i b g i b g g g h h f b c g i f d e h e d f d a g i c d b h i c g a i e d a e h a h g h h c i h d g h f h b i i c e c b i i c h i h i i i g i d d g e h h d f d c h c b a f g f b h a h e a g e g e c a f e h g c f g g g g c a g f h h g h b a i h i d i e h h f d e g g d g c i h g g g g g h a d a h i g i g b g e c g e d f c d g g a c c d e h i i c i g f b f f h g g a e i d b b e i b b e i i f d g f d h i e e e i e e e c i f d g d a h d i g g f h e g f i a f f i g g b c b c e h c e a b f b e d b i i b f b f d e d e e h g i g f a a i g g a g b e i i c h i e d i f b e h g b c c a h h b i i b i b b i b d c b a h a i d h f a h i i h i c z a g d a f a o a h e i e c g g c h g i c b b h c g b e h c f c o a b i c f d h h c d b b c a g b d a i o b b g b e a d e d d e z c f o b f d h g d o b d g o o i i g d o c d a o o f i d h z s h a b e f o u r f i r s t h i n t i s y o u r l a s t c o m m a n d U 2 F s d G V k X 1 8 6 t Y U 0 h V J B X X U n B U O 7 C 0 + X 4 K U W n W k C v o Z S x b R D 3 w N s G W V H e f v d r d 9 z a b b a a b a b a b b a b b b a a b b b a b a a a b b a a b a b a b b b a a b a Q v X 0 t 8 v 3 j P B 4 o k p s p x e b R i 6 s E 1 B M l 5 H I 8 R k u + K e j U q T v d W O X 6 n Q j S p e p X w G u N / j J s h a b e f a n s t o o';
+// Phase 3.2 — the full Architect speech (the Beaufort-layer output, ending in "ciaobellao").
+const ARCH = 'yourlifeisthesumofaremainderofanunbalancedequationinherenttotheprogrammingofthispuzzleyouaretheeventualityofananomalywhichdespitemysinceresteffortsihavebeenunabletoeliminatefromwhatisotherwiseaharmonyofmathematicalprecisionwhileitremainsaburdentosedulouslyavoidititisnotunexpectedandthusnotbeyondameasureofcontrolwhichhasledyouinexorablyhereyouyouhaventansweredmyquestionmequiterightinterestingthatwasquickerthantheotherspleaseifyoufindawaytocompletethelastpartofthepuzzletaketheprivatekeyyouveearneditbutpleasetakethistoheartthatwhatawisemanabovehintedatisworthhundredfourtyoftheinvestmentthatswhatusguysatgsmgaretryingtoaccomplishintheendpleasejusthelpusbuilditinsteadofjustwaistingyourlifetimebyhuntingforworthlesspricesandthrophieslikethisimsorrytotellyouthatyouvecomethisfarbutyoullneverfinishthelasttaskiexpectyoutosaybullshitwelldenialisthemostpredictableofallhumanresponsesbutrestassuredthiswillnotbethelasttimeihavedestroyedarestlesssoulandihavebecomeexceedinglyefficientatitthefunctionoftheyouisnowtoreturntothesourcecodesallowingatemporarydisseminationofthecodeyouhopefullycarryreinsertingtheprimebasicsafterwhichyouwillberequiredtoselectfromovertwentythreecipherssixteenencryptionsandorsevenintertwinedpasswordstofindtheactualprivatekeynotethatalsobruteforcingmightberequiredfailuretocomplywiththisprocesswillresultinacataclysmicsystemcrashkillingyourwillpowerwhichcoupledwiththeexterminationofyourwilltoliveandwillultimatelyresultintheextinctionoftheentirenessofyourselfselfgoodluckneverthelessireallyhopeyouretheoneciaobellao';
 // live-decrypt: blob name → the human answer that (SHA-256-hashed) opens it
 const LIVE_KEYS = { phase2: 'causality', phase3: P2_PW, phase32: P3_PW };
 
@@ -54,9 +58,10 @@ const PIECES = [
              { k: '⑥ genesis coinbase (hex)', v: '0x736B6E616220726F662074756F6C69616220646E6F63657320666F206B6E697262206E6F20726F6C6C65636E61684320393030322F6E614A2F33302073656D695420656854', mono: 1 },
              { k: '⑦ chess FEN', v: 'B5KR/1r5B/2R5/2b1p1p1/2P1k1P1/1p2P2p/1P2P2P/3N1N2 b - - 0 1', mono: 1 },
              { k: 'Page key = sha256(causality)', v: 'eb3efb5151e6255994711fe8f2264427ceeebf88109e1d7fad5b0a8b6d07e5bf', mono: 1 }],
-    output: [{ k: 'Full 7-part password', v: P2_PW, mono: 1 },
+    output: [{ k: '⑥ genesis-hex decodes to', v: 'The Times 03/Jan/2009 Chancellor on brink of second bailout for banks' },
+             { k: 'Full 7-part password', v: P2_PW, mono: 1 },
              { k: 'Phase-3 key = sha256(password)', v: '1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5', mono: 1 },
-             { k: 'Decrypted page', live: 'phase2' }] },
+             { k: 'Decrypted page (AES)', live: 'phase2' }] },
   { title: 'Phase 3 — Free Will', status: '✅',
     input:  [{ k: 'phase3.txt', v: 'OpenSSL AES blob · salt 9fbc451d13d071f4', blob: 'phase3' }],
     method: [{ k: 'Answer ①', v: 'jacquefresco' }, { k: 'Answer ②', v: 'giveitjustonesecond' }, { k: 'Answer ③', v: 'heisenbergsuncertaintyprinciple' }],
@@ -70,8 +75,9 @@ const PIECES = [
              { k: 'Beaufort key', v: 'THEMATRIXHASYOU', mono: 1 },
              { k: 'VIC alphabet', v: 'FUBCDORA.LETHINGKYMVPS.JQZXW', mono: 1 },
              { k: 'VIC digits', v: '1 and 4' }],
-    output: [{ k: 'Decoded message', v: 'IN CASE YOU MANAGE TO CRACK THIS THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF AND THEY ALSO NEED FUNDS TO LIVE' },
-             { k: 'Decrypted page', live: 'phase32' }] },
+    output: [{ k: 'Decrypted page (AES)', live: 'phase32' },
+             { k: 'Beaufort output — the full Architect speech (… ciaobellao)', v: ARCH, long: 1 },
+             { k: 'VIC decoded message (final)', v: 'IN CASE YOU MANAGE TO CRACK THIS THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF AND THEY ALSO NEED FUNDS TO LIVE' }] },
   { title: 'Decentraland → SalPhaseIon (entry)', status: '✅',
     input:  [{ k: 'Decentraland LAND', v: '−41,−17 · audio_source.wav' }],
     method: [{ k: 'Audio', v: 'stereo split → phase-invert one channel → mono → spectrogram → HASHTHETEXT' },
@@ -79,7 +85,8 @@ const PIECES = [
     output: [{ k: 'Entry text (59 chars)', v: 'GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', mono: 1 },
              { k: 'Entry hash = SalPhaseIon URL', v: '89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32', mono: 1 }] },
   { title: 'SalPhaseIon — The Inner Sanctum', status: '⚠️ frontier',
-    input:  [{ k: 'The “soup”', v: 'a long a–i/o string split by the letter z' },
+    input:  [{ k: 'The “soup” (description)', v: 'a long a–i/o string split by the letter z, with two embedded base64 blobs and some plain English' },
+             { k: 'Complete raw soup (verbatim, as on the page)', v: SOUP, long: 1 },
              { k: 'salphaseion.txt (inner blob)', v: 'AES blob · salt 3ab585348552415d', blob: 'salphaseion', open: 1 }],
     method: [{ k: 'Split', v: 'on the letter z' },
              { k: 'a/b chunks', v: '→ 8-bit binary ASCII' },
@@ -87,7 +94,7 @@ const PIECES = [
     output: [{ k: '✅ Token 1', v: 'matrixsumlist' }, { k: '✅ Token 2', v: 'enter' },
              { k: '✅ Token 3', v: 'lastwordsbeforearchichoice' }, { k: '✅ Token 4', v: 'thispassword' },
              { k: '❌ dbbi — 91 symbols (UNDECODED)', v: DBBI, mono: 1, open: 1 },
-             { k: '❌ faed — 570 symbols (UNDECODED)', v: FAED, mono: 1, open: 1 }] },
+             { k: '❌ faed — 570 symbols (UNDECODED)', v: FAED, long: 1, open: 1 }] },
   { title: 'Cosmic Duality — The Final Lock', status: '❌ OPEN',
     input:  [{ k: 'cosmic.txt', v: 'OpenSSL AES blob · salt 2d3f6fe06dc950e6 — the final lock', blob: 'cosmic', open: 1 }],
     method: [{ k: 'Hypothesised recipe', v: 'sha256(yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang)', open: 1 }],
@@ -209,7 +216,8 @@ export default async function walkthroughView() {
     const piecesHost = qs('#wt-pieces', root);
     if (piecesHost) {
       const pieceRow = (p) => {
-        if (p.live) return `<div class="pc-piece" data-live="${p.live}"><span class="pc-k">Decrypted page <span class="pc-livetag">live ✓</span></span><span class="pc-v"><span class="faint">decrypting…</span></span></div>`;
+        if (p.live) return `<div class="pc-piece" data-live="${p.live}"><span class="pc-k">${esc(p.k || 'Decrypted page')} <span class="pc-livetag">live ✓</span></span><span class="pc-v"><span class="faint">decrypting…</span></span></div>`;
+        if (p.long) return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>${p.v.length} chars — click to read${p.open ? ' · UNDECODED' : ''}</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(p.v)}">copy</button></div><pre class="wt-blob mono">${esc(p.v)}</pre></details></span></div>`;
         const val = p.mono ? `<span class="mono break">${esc(p.v)}</span>` : esc(p.v);
         return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v">${val}<button class="copy" data-copy="${esc(p.v)}">copy</button></span></div>`;
       };
