@@ -33,7 +33,7 @@ export function phaseKeyForHeading(text) {
 
 export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 
-// ── the catalog (136 attempts) ─────────────────────────────────────────
+// ── the catalog (138 attempts) ─────────────────────────────────────────
 export const ATTEMPTS = [
  {
   "id": "ledger-game-of-life-1357-matrix",
@@ -307,6 +307,19 @@ export const ATTEMPTS = [
   "output": "All three stages decrypt with valid PKCS7 and produce the expected plaintext (phase2 -> Mr-Robot riddle; phase3 -> 7-part-password stage; phase3.2 -> the EBCDIC/Beaufort Architect speech + VIC digit block). Confirms the published solved chain is byte-exact and independently reproducible.",
   "outcome": "verified-insight",
   "insight": "An independent from-scratch EVP_BytesToKey(SHA-256)+AES-256-CBC harness reproduces phase2/3/3.2 exactly, fixing the precise crypto format (salt-prefixed OpenSSL, pass = sha256hex(answer)) used by every blob in the puzzle."
+ },
+ {
+  "id": "architect-ebcdic-cp1141-codepage-debate",
+  "phase": "architect",
+  "category": "decode provenance",
+  "title": "Is the EBCDIC / CP1141 code page a real decode step, or just a coincidence of the a-z range? (community debate)",
+  "who": "community",
+  "source": "community discussion (Telegram, 2026-06)",
+  "input": "The Phase 3.2 'Beaufort blob' (the Architect speech). Sparky's critique: the post-AES bytes use only 26 distinct values, which is simply a property of a lowercase a-z alphabet, so reading an 'EBCDIC 1141 code page' into it is unjustified -- a Beaufort (a wrapped negative shift over a-z) is the real operation and the code page is a post-hoc rationalisation nobody verified for themselves. Counter (the blob's poster, and @CoruNethron): CP1141 is literally the transform in the working pipeline, and CP273 (German/Dutch = 1141 plus the EUR sign) is itself a hint.",
+  "method": "Re-examined whether the EBCDIC/CP1141 step carries meaning or is mechanical. @CoruNethron posted a full reproducible one-liner of the Phase 2->3->3.2 chain whose final stage is `... | tail -c+448 | head -c 1539 | iconv -f ISO-8859-1 -t CP1141 | beaufort --decrypt --key=thematrixhasyou --alphabet=abcdefghijklmnopqrstuvwxyz` -- i.e. reinterpret the Latin-1 bytes AS CP1141, then Beaufort-decrypt with key 'thematrixhasyou' over the plain a-z alphabet. He notes you can pipe the bytes through iconv in the 'wrong' code page directly and read the plaintext (he reports it begins 'yourlifeisthesum...'). Reference Beaufort impl: github.com/jwerle/libbeaufort.",
+  "output": "Unresolved, with both sides partly right. The code-page step is unquestionably PRESENT and reproducible: this project's own harness and Denis's one-liner both run `iconv ... CP1141` before the Beaufort (key 'thematrixhasyou'), so 'zero use of a code page' overstates it. But Sparky's caution lands too -- 26 distinct byte values follow automatically from an a-z Beaufort, so that property is NOT independent evidence that 'EBCDIC 1141' encodes a hidden clue; the code page may be a mechanical byte-reinterpretation that happens to land the a-z range rather than a deep signal.",
+  "outcome": "verified-insight",
+  "insight": "CP1141 + Beaufort (key 'thematrixhasyou', alphabet a-z) is the real, reproducible Phase 3.2 decode -- but the much-repeated 'EBCDIC 1141' framing is over-read: a Beaufort over a-z trivially yields only 26 distinct values, so that fact alone is not evidence the code page is a meaningful clue rather than a mechanical byte-reinterpretation step."
  },
  {
   "id": "ledger-blocks-as-base9-numbers-into-hash",
