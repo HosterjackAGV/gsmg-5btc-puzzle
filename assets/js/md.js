@@ -12,6 +12,10 @@ function inline(s) {
   s = s.replace(/`([^`]+)`/g, (_, c) => `<code>${c}</code>`);
   s = s.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
   s = s.replace(/(^|[^*])\*([^*]+?)\*/g, '$1<em>$2</em>');
+  // images ![alt](src) — handled BEFORE links so the ! prefix is consumed
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) =>
+    `<a class="md-imglink" href="${src}" target="_blank" rel="noopener"><img class="md-img" src="${src}" alt="${alt}" loading="lazy"></a>` +
+    (alt ? `<span class="md-cap">${alt}</span>` : ''));
   s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, u) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`);
   // autolink bare URLs (the Sources list) — the boundary class skips URLs already
   // inside an href="..." (preceded by a quote), so markdown links aren't double-wrapped
@@ -61,6 +65,9 @@ export function renderMarkdown(src) {
       i++; continue;
     }
     if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) { html += '<hr>'; i++; continue; } // hr
+    if (/^\s*<(audio|video|img|iframe|figure|details|summary|div|br)\b/i.test(line)) { // trusted raw HTML block (one line)
+      html += line.trim(); i++; continue;
+    }
     if (/^\s*\|/.test(line)) { i = flushTable(i); continue; }   // table
     if (/^\s*>\s?/.test(line)) {                    // blockquote (consecutive)
       let j = i, q = '';

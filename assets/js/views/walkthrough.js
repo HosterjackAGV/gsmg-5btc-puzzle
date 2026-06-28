@@ -1,34 +1,34 @@
-// views/walkthrough.js — the plain, complete, source-checked walk through every
-// phase. It renders the project's AUDITED reference (docs/VERIFIED-SOLUTIONS.md)
-// verbatim — so the walkthrough IS the verified source, with every value tagged
-// ✅/⚠️/❌ — then appends the interactive genesis grid and the COMPLETE raw
-// ciphertext blobs (nothing truncated). Sourced; no re-typed values, no ellipsis.
+// views/walkthrough.js — THE authoritative, source-merged walkthrough. Renders
+// docs/WALKTHROUGH.md (every phase, every value, every image, merged from all public
+// repos + the creator hints), then appends the interactive genesis grid and the
+// COMPLETE raw ciphertext blobs (nothing truncated).
 
 import { renderMarkdown } from '../md.js';
 import { saltOf } from '../crypto.js';
-import { esc, qs, qsa, on, copy, toast } from '../util.js';
+import { esc, qs, qsa, on, copy } from '../util.js';
 
 const BLOBS = [
   { name: 'phase2', phase: 'Phase 2', note: 'opens with sha256("causality")' },
   { name: 'phase3', phase: 'Phase 3', note: 'opens with the Phase-2 7-part password (hashed)' },
   { name: 'phase32', phase: 'Phase 3.2', note: 'opens with the Phase-3 password (hashed)' },
-  { name: 'salphaseion', phase: 'SalPhaseIon', note: 'inner blob — frontier' },
-  { name: 'cosmic', phase: 'Cosmic Duality', note: 'the final lock — OPEN' },
+  { name: 'p32_trailing', phase: 'Phase 3.2 — trailing blob', note: 'embedded at the end of the Phase 3.2 plaintext — UNDECODED' },
+  { name: 'salphaseion', phase: 'SalPhaseIon — inner blob', note: 'the inner blob in the soup — UNDECODED' },
+  { name: 'salph_inner', phase: 'SalPhaseIon — inner blob (reconstructed)', note: 'reconstructed copy of the inner blob — UNDECODED' },
+  { name: 'cosmic', phase: 'Cosmic Duality', note: 'the final lock — OPEN / UNSOLVED' },
 ];
 
 export default async function walkthroughView() {
   let md = '';
-  try { const r = await fetch('docs/VERIFIED-SOLUTIONS.md', { cache: 'no-store' }); if (r.ok) md = await r.text(); } catch {}
+  try { const r = await fetch('docs/WALKTHROUGH.md', { cache: 'no-store' }); if (r.ok) md = await r.text(); } catch {}
   const docHtml = md ? renderMarkdown(md)
-    : '<div class="note warn"><h4>Reference unavailable</h4><p>Could not load <span class="mono">docs/VERIFIED-SOLUTIONS.md</span>. On a local copy, serve over http (not file://).</p></div>';
+    : '<div class="note warn"><h4>Walkthrough unavailable</h4><p>Could not load <span class="mono">docs/WALKTHROUGH.md</span>. Serve over http (not file://).</p></div>';
 
   const html = `
   <section class="section"><div class="wrap">
     <div class="sec-head"><div class="sec-num">WALKTHROUGH</div><h2>The whole puzzle, phase by phase</h2>
-      <p>A plain, complete, source-checked walk through every phase — exact inputs and outputs, nothing omitted. This renders the project's independently <b>audited reference</b> verbatim: every value is tagged <b class="teal">✅ confirmed</b> / <b class="gold">⚠️ unverified</b> / <b class="rust">❌ refuted</b>, with sources at the end. The interactive genesis grid and the complete raw ciphertext blobs follow.</p>
+      <p>The complete, <b>authoritative, source-merged</b> walkthrough — every phase, every exact value, and every image, assembled from all public sources (the puzzlehunt &amp; Naddiseo repos, the creator's hint posts, and on-chain data), de-duplicated and cross-checked. Solved and reproducible through <b>Phase 3.2</b>; the endgame is <b class="gold">OPEN</b>. The interactive genesis grid and the complete raw ciphertext blobs follow.</p>
       <div class="row" style="margin-top:6px">
-        <a class="btn ghost sm" href="#/map">🚪 Solve the doors hands-on</a>
-        <a class="btn ghost sm" href="#/effort">🛰️ The open frontier</a>
+        <a class="btn ghost sm" href="#/reference">📋 Reference sheet (every value)</a>
         <button type="button" class="btn ghost sm" id="wt-jump">↓ Raw artifacts</button>
       </div></div>
 
@@ -44,29 +44,26 @@ export default async function walkthroughView() {
     <h3>🧩 Genesis grid — Phase 0</h3>
     <div id="wt-grid-host"><p class="faint">loading…</p></div>
 
-    <h3 style="margin-top:26px">🔒 Raw ciphertext blobs (all five, in full)</h3>
+    <h3 style="margin-top:26px">🔒 Raw ciphertext blobs (in full)</h3>
     <div id="wt-blobs"><p class="faint">loading…</p></div>
   </div></section>`;
 
   function mount(root) {
-    // ---- build the phase table-of-contents from rendered headings ----
+    // ---- phase table-of-contents from rendered headings ----
     const doc = qs('#wt-doc', root), toc = qs('#wt-toc', root);
     if (doc && toc) {
       const heads = qsa('h2, h3', doc).filter(h => h.id);
       toc.innerHTML = `<div class="wt-toc-h">Contents</div>` +
         heads.map(h => `<button type="button" class="wt-toc-link wt-${h.tagName.toLowerCase()}" data-t="${h.id}">${esc(h.textContent)}</button>`).join('');
-      // in-page scroll WITHOUT touching the hash router
       on(toc, 'click', '.wt-toc-link', (e, b) => {
         const t = qs('#' + CSS.escape(b.dataset.t), root) || document.getElementById(b.dataset.t);
         if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
 
-    // jump-to-artifacts (scroll, not a hash-route)
     const jump = qs('#wt-jump', root);
     if (jump) jump.addEventListener('click', () => { const a = qs('#artifacts', root); if (a) a.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 
-    // copy buttons inside the rendered doc / artifacts
     on(root, 'click', '.copy', (e, b) => copy(b.dataset.copy, b));
 
     // ---- interactive genesis grid ----
@@ -82,7 +79,7 @@ export default async function walkthroughView() {
       catch { return { ...b, text: null }; }
     })).then(list => {
       blobHost.innerHTML = list.map(b => {
-        if (!b.text) return `<details class="eli5"><summary>${esc(b.phase)} — <span class="mono">${b.name}.txt</span> <span class="chev">+</span></summary><div class="body"><p class="faint">unavailable</p></div></details>`;
+        if (!b.text) return '';
         const salt = saltOf(b.text);
         return `<details class="eli5"><summary>${esc(b.phase)} — <span class="mono">${b.name}.txt</span> · ${b.text.length} chars${salt ? ` · salt <span class="mono gold">${salt}</span>` : ''} <span class="chev">+</span></summary>
           <div class="body">

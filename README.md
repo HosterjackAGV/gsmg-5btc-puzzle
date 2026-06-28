@@ -1,58 +1,53 @@
-# The Seed Is Planted — GSMG.io 5 BTC Puzzle · the game
+# GSMG.io 5 BTC Puzzle — The Complete Walkthrough
 
-An **interactive, beginner-friendly, community-maintained game** built around the unsolved
-[GSMG.io](https://gsmg.io) **5 BTC cryptographic puzzle**. Learn cryptography and Bitcoin from
-**absolute zero**, open every locked door **live in your browser**, and join the collective effort
-to crack the final lock.
+**The authoritative, source-merged walkthrough of the unsolved [GSMG.io](https://gsmg.io) 5 BTC
+cryptographic puzzle.** Every phase, every exact value, every original image, and the open endgame —
+assembled from *all* public sources into one place, de-duplicated and cross-checked against the real
+artifacts, so the community can read the whole puzzle here without hunting across scattered repos.
 
-Open it here → **https://hosterjackagv.github.io/gsmg-5btc-puzzle/** *(live once GitHub Pages is enabled)*
+Open it here → **https://hosterjackagv.github.io/gsmg-5btc-puzzle/** *(GitHub Pages)*
 
-> The GSMG team has wound down its official site and (per community reports) asked that the puzzle be
-> kept alive by the community. This repo is built to keep it openable by anyone, forever.
+> Built so the puzzle stays openable by anyone, forever. No guessing — verified findings only, all
+> negatives documented.
 
 ---
 
-## What it is
+## What this is
 
-A **modular static site** (native ES modules — no build step, no framework, no tracking) that turns the
-puzzle into a game with two intertwined layers:
+A **modular static site** (native ES modules — no build step, no framework, no tracking) whose
+centerpiece is **[`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md)**: the complete, merged walkthrough of
+every phase, rendered in the browser with all images inline and the real encrypted blobs verbatim.
 
-- **A guided learning journey.** A story-driven path through every phase, explained from zero with
-  everyday analogies. XP, levels, badges, and a "doors cracked" map track your progress (saved in your
-  browser). A total beginner can understand hashes, AES, ciphers, Bitcoin addresses and private keys.
-- **A collaborative race.** The open endgame (the two encoded blocks **dbbi** & **faed**, and the final
-  **Cosmic Duality** blob) becomes a shared, self-verifying search: a live coverage map of what's been
-  ruled out, profiles, comments, and user-vs-user challenges — all re-verified by CI so nothing is taken
-  on trust. The first verified Cosmic unlock wins outright.
+It merges, de-duplicates, and reconciles:
 
-Every solved door runs the **real OpenSSL-compatible crypto** in your browser (SHA-256 +
-`EVP_BytesToKey` + AES-256-CBC) — type an answer and watch the actual encrypted page decrypt.
+- the **[puzzlehunt](https://github.com/puzzlehunt/gsmgio-5btc-puzzle)** walkthrough,
+- the **[Naddiseo](https://github.com/Naddiseo/gsmgio-5btc-puzzle)** notebooks + every asset image,
+- the creator's full **hint timeline (2020–2026)** with every hint image transcribed,
+- on-chain data (prize/split-off/donation addresses, OP_RETURN messages), and
+- an independent re-verification of every solved-path value against the OpenSSL artifacts.
 
-## Everything here is fact-checked
+Where two sources disagree, the discrepancy is called out. Nothing is truncated.
 
-Every value, hash, salt, address and step in this game was independently re-verified against the
-authoritative community walkthroughs and the live blockchain. The full audit — with a ✅/⚠️/❌ status on
-every claim and complete step-by-step solutions — lives in **[docs/VERIFIED-SOLUTIONS.md](docs/VERIFIED-SOLUTIONS.md)**.
+## Solve status
 
-A few corrections that audit surfaced (and that most write-ups get wrong):
+✅ **Solved and fully reproducible through Phase 3.2** (plus four decoded SalPhaseIon tokens). The
+endgame — the `dbbi` & `faed` blocks and the final **Cosmic Duality** AES decryption — is **genuinely
+OPEN**. The prize wallet `1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe` has never been swept by any solver; no
+"solution" posted anywhere has moved the coins.
 
-- **The prize wallet is *unclaimed*, not "unspent."** The address `1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe`
-  has spent outputs — but those are the creators' **scheduled halving moves**, not a solve. No solver has
-  ever swept it.
-- **The bounty is ~1.25 BTC today**, not 5. It started at 5 BTC (2019) and the team halves it on each
-  Bitcoin halving: 5 → 2.5 (2020) → 1.25 (2024). The peeled-off 3.75 BTC sits unspent in
-  `17ucy1K9ZUAaoY6JVtM932W9jUp5LXfyHa`.
-- **dbbi → `yellowblueprimes`** and **faed → `yinyang`** are community **guesses**, not decodes — the
-  repo's own dead-end ledger contradicts them. The endgame is genuinely **open**.
-- Only the creator handle **Jrk** is publicly attested; the 2026 farewell and wind-down are reported via
-  a private Discord and are **unverified** (presented as such).
+A few corrections this walkthrough makes that most write-ups get wrong:
 
-The puzzle is **solved and reproducible through Phase 3.2**; the frontier beyond it is unsolved as of 2026.
+- **The prize wallet is *unclaimed*, not "unspent."** Its earlier outflows are the creators' scheduled
+  halving moves, not a solve.
+- **The bounty is ~1.25 BTC today** (5 → 2.5 → 1.25 across two halvings); the peeled-off 3.75 BTC sits
+  unspent in `17ucy1K9ZUAaoY6JVtM932W9jUp5LXfyHa`.
+- **`dbbi → yellowblueprimes`** and **`faed → yinyang`** are community *guesses*, not decodes — the
+  endgame is genuinely unsolved.
 
 ## Run it
 
-It's a static site, but the in-browser crypto needs a **secure context**, so serve it over http rather
-than opening `index.html` as a `file://`:
+It's a static site, but the in-browser crypto and ES imports need a **secure context**, so serve it over
+http rather than opening `index.html` as a `file://`:
 
 ```bash
 python3 -m http.server      # then open http://localhost:8000
@@ -63,49 +58,37 @@ On GitHub Pages (HTTPS) it works out of the box. No install, no build, no depend
 ## Repo structure
 
 ```
-index.html              app shell (topbar, XP/level widget, router target)
+index.html               app shell (Home · Walkthrough · Reference)
+docs/
+  WALKTHROUGH.md          ← THE complete merged walkthrough (the centerpiece)
+  VERIFIED-SOLUTIONS.md   the value-by-value verification audit (✅/⚠️/❌)
+  ENDGAME-ANALYSIS.md     deep cryptanalysis of the open Cosmic Duality endgame
+  LOOSE-ENDS.md           inventory of every unused / under-exploited piece
+  BLOB-COMBINATION-ANALYSIS.md   "are the 4 blobs one scattered AES?" analysis
 assets/
-  css/                  base.css (design tokens) · components.css · game.css
-  js/                   crypto.js · store.js (XP/progress/achievements) · router.js · util.js · main.js
-    views/              home · phase · workbench · placeholder (more landing incrementally)
-content/                phases.js — the game's data spine (story, lessons, steps, doors, refs)
-ciphertexts/            the raw OpenSSL-encrypted blobs (the single source of truth; fetched at runtime)
-data/                   leaderboard data (machine-written by CI — do not hand-edit)
-.github/                workflows + scripts that re-verify submissions and rebuild the board
-docs/                   VERIFIED-SOLUTIONS.md (the audit) · verify-findings.json
-legacy/                 the original single-file v1 site, preserved for reference
+  walkthrough/            EVERY original asset image, by phase (puzzle.png, phaseN-assets/,
+                          phase2.1-assets/, phase3.2-assets/, decentraland-assets/, hints/, …)
+  js/                     crypto.js · router.js · md.js · util.js · main.js · views/{home,walkthrough,reference}
+  css/                    base.css · components.css · game.css
+content/                  phases.js (reference data spine) · matrix.js (genesis grid bits)
+ciphertexts/              the raw OpenSSL-encrypted blobs (single source of truth; rendered in full)
 ```
 
-## The collaborative leaderboard
+## Verify it yourself
 
-Every decrypt attempt you make is logged locally and verified by the real crypto (unlocked vs. fail), and
-**deduplicated by an exact fingerprint** of `blob + recipe + prehash`. One click submits your new attempts
-as a pre-filled GitHub issue; a GitHub Action **re-runs the decryption on each one in CI** and updates
-`data/leaderboard.json` — so a claimed result that isn't reproducible is silently corrected. The first
-verified valid decryption of the Cosmic Duality blob is auto-detected and pinned.
-
-Verify any blob yourself with OpenSSL (note the required `-md sha256`):
+Every decryption is reproducible. Note the required `-md sha256`:
 
 ```bash
 openssl enc -aes-256-cbc -d -a -md sha256 -in ciphertexts/phase2.txt \
-  -pass pass:eb3efb5151e6255994711fe8f2264427ceeebf88109e1d7fad5b0a8b6d07e5bf
+  -pass pass:$(printf %s causality | sha256sum | cut -d' ' -f1)
 ```
 
-To rebuild the board manually: **Actions → GSMG leaderboard → Run workflow**.
-
-## Build status
-
-Live now: the engine, design system, XP/achievement system, the doors map, every phase's story +
-step-by-step + live door, and the workbench. Landing incrementally: the full crash course, the profile,
-the Hive leaderboard UI, GitHub-Discussions comments, the dead-end ledger, and user challenges (the
-data layer and CI they ride on already exist).
+The walkthrough includes the full `Salted__` base64 of every blob so you can re-run each step with
+OpenSSL or [CyberChef](https://gchq.github.io/CyberChef/) — no trust required.
 
 ## Credits & license
 
-Puzzle by the GSMG team (Jrk and crew). This is an independent, not-for-profit community archive — not
-affiliated with GSMG. Cross-checked against the walkthroughs at
-[puzzlehunt/gsmgio-5btc-puzzle](https://github.com/puzzlehunt/gsmgio-5btc-puzzle) and
-[Naddiseo/gsmgio-5btc-puzzle](https://github.com/Naddiseo/gsmgio-5btc-puzzle).
-
-Released into the public domain (CC0). Made in the spirit of the puzzle: **no guessing, verified findings
-only, all negatives documented.**
+Puzzle by the GSMG team. This is an independent, not-for-profit community archive — not affiliated with
+GSMG. Merged from the [puzzlehunt](https://github.com/puzzlehunt/gsmgio-5btc-puzzle) and
+[Naddiseo](https://github.com/Naddiseo/gsmgio-5btc-puzzle) walkthroughs and the creator's public hints.
+Released into the public domain (**CC0**).
