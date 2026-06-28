@@ -38,6 +38,8 @@ const router = createRouter({
 router
   .add('/', () => import('./views/home.js'))
   .add('/walkthrough', () => import('./views/walkthrough.js'))
+  .add('/tried', () => import('./views/tried.js'))
+  .add('/tried/:id', () => import('./views/tried.js'))
   .add('/reference', () => import('./views/reference.js'));
 
 wireScan();

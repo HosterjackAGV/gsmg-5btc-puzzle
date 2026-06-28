@@ -38,7 +38,7 @@ export function createRouter({ outlet, onBefore, onAfter, notFound }) {
     }
     outlet.innerHTML = (result && result.html) || '';
     outlet.classList.remove('view-enter'); void outlet.offsetWidth; outlet.classList.add('view-enter');
-    document.title = (result && result.title ? result.title + ' · ' : '') + 'The Seed Is Planted — GSMG 5 BTC';
+    document.title = (result && result.title ? result.title + ' · ' : '') + 'GSMG.io 5 BTC Puzzle — Walkthrough';
     if (result && result.mount) { try { result.mount(outlet); } catch (e) { console.error(e); } }
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     onAfter && onAfter(path, result);

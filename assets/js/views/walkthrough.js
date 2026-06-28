@@ -6,6 +6,7 @@
 import { renderMarkdown } from '../md.js';
 import { saltOf } from '../crypto.js';
 import { esc, qs, qsa, on, copy } from '../util.js';
+import { byPhase, phaseKeyForHeading, OUTCOMES } from '../../../content/attempts.js';
 
 const BLOBS = [
   { name: 'phase2', phase: 'Phase 2', note: 'opens with sha256("causality")' },
@@ -49,8 +50,27 @@ export default async function walkthroughView() {
   </div></section>`;
 
   function mount(root) {
-    // ---- phase table-of-contents from rendered headings ----
     const doc = qs('#wt-doc', root), toc = qs('#wt-toc', root);
+
+    // ---- inject "What was tried to move forward" panel after each phase heading ----
+    if (doc) qsa('h2', doc).forEach(h => {
+      const key = phaseKeyForHeading(h.textContent);
+      if (!key) return;
+      const items = byPhase(key);
+      if (!items.length) return;
+      const list = items.map(a => {
+        const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
+        return `<li><a href="#/tried/${encodeURIComponent(a.id)}"><span class="tp-title">${esc(a.title)}</span><span class="tbadge ${o.cls} sm">${o.label}</span></a></li>`;
+      }).join('');
+      const panel = document.createElement('details');
+      panel.className = 'tried-panel';
+      panel.innerHTML = `<summary>🧪 What was tried to move forward <span class="tp-count">${items.length}</span></summary>
+        <p class="tp-note">Every documented attempt tied to this phase — click any to jump to its full input / method / output in <a href="#/tried">What was tried</a>.</p>
+        <ul class="tried-list">${list}</ul>`;
+      h.insertAdjacentElement('afterend', panel);
+    });
+
+    // ---- phase table-of-contents from rendered headings ----
     if (doc && toc) {
       const heads = qsa('h2, h3', doc).filter(h => h.id);
       toc.innerHTML = `<div class="wt-toc-h">Contents</div>` +
