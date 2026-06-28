@@ -3,7 +3,7 @@
 // final score can be re-verified server-side. Drawing no-ops when there's no 2D context (headless).
 
 import { MATRIX } from '../../../content/matrix.js';
-import { createSim, step as coreStep, applyInput as coreInput, speedMs, N, START_LEN, enemiesMoveAt } from './snake-core.js';
+import { createSim, step as coreStep, applyInput as coreInput, speedMs, N, START_LEN, enemiesMoveAt, SEEDS } from './snake-core.js';
 
 const CELL = 40;                                  // internal canvas resolution = 560×560
 const key = (x, y) => x + ',' + y;
@@ -22,6 +22,7 @@ const C = {
   enemy: '#ff5a5a', enemyFrozen: '#8a6a6a', enemyEye: '#2a0000',
   blue: '#5f8cff', yellow: '#fff200', fefefe: '#ffffff', reset: '#c77dff', text: '#e6ecf5',
 };
+const SEEDC = { plus3: '#9be870', plus5: '#ffb454', plus10: '#ff5fa2' };   // special-seed colours by value
 const PUTEXT = { blue: '🛡', yellow: '×2', fefefe: '0', reset: '↺' };
 
 const randSeed = () => (Math.floor(Math.random() * 0xFFFFFFFF) >>> 0);
@@ -73,6 +74,13 @@ export function snakeGame(canvas, { onHud = () => {}, onOver = () => {} } = {}) 
       const [fx, fy, fw] = cr(sim.food.x, sim.food.y, 9);
       ctx.fillStyle = C.foodGlow; ctx.beginPath(); ctx.arc(fx + fw / 2, fy + fw / 2, fw, 0, 7); ctx.fill();
       ctx.fillStyle = C.food; ctx.beginPath(); ctx.arc(fx + fw / 2, fy + fw / 2, fw / 2 + 3, 0, 7); ctx.fill();
+    }
+    for (const sd of sim.seeds) {                     // special seeds: glowing token, +value label, shrinking timer ring
+      const cx = sd.x * CELL + CELL / 2, cy = sd.y * CELL + CELL / 2, col = SEEDC[sd.type] || '#9be870', def = SEEDS[sd.type];
+      if (def) { const frac = Math.max(0, Math.min(1, (sd.exp - sim.timeMs) / def.persistMs)); ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx, cy, CELL * 0.40, -Math.PI / 2, -Math.PI / 2 + frac * 2 * Math.PI); ctx.stroke(); }
+      ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = 16; ctx.beginPath(); ctx.arc(cx, cy, CELL * 0.30, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+      ctx.fillStyle = '#07120a'; ctx.font = `bold ${CELL * 0.32}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('+' + (def ? def.score : ''), cx, cy + 1);
     }
     for (const p of sim.powerups) {
       const [px, py] = cr(p.x, p.y, 6);

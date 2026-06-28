@@ -63,7 +63,14 @@ export default async function gamesView() {
       <details class="snake-rules" open>
         <summary>📜 Rules — how Snake works here</summary>
         <ul class="rules-list">
-          <li><b>Goal:</b> eat the gold <b>seeds</b> 🌱 to grow and score. Each seed is <b>+1</b> point.</li>
+          <li><b>Goal:</b> eat the gold <b>seeds</b> 🌱 to grow and score. Each gold seed is <b>+1</b> point and <b>+1</b> length.</li>
+          <li><b>Special seeds</b> flash in now and then and <b>fade fast</b> — each is worth more points than the length it adds, and the bigger the bonus the <b>rarer</b> and <b>shorter-lived</b> it is (each lasts at least <b>3&nbsp;seconds</b>; the ring around it shows the time left). Grab them to leap up the board without bloating your snake:
+            <ul>
+              <li><span class="pu" style="background:#9be870;color:#07120a">+3</span> — <b>+3 points</b>, only <b>+1</b> longer.</li>
+              <li><span class="pu" style="background:#ffb454;color:#241200">+5</span> — <b>+5 points</b> (rarer), only <b>+2</b> longer.</li>
+              <li><span class="pu" style="background:#ff5fa2;color:#2a0014">+10</span> — <b>+10 points</b> (rarest, gone in ~3s), only <b>+3</b> longer.</li>
+            </ul>
+          </li>
           <li><b>Move</b> with the <b>arrow keys / WASD</b> (PC) or by <b>swiping</b> the grid / tapping the <b>D-pad</b> (phone). You <b>cannot turn back into your own body</b> — a too-fast reversal is ignored.</li>
           <li><b>Speed</b> starts <b>slow</b> and ramps up as your score climbs, reaching the <b>human-reaction maximum</b> at about <b>score 50</b>, then holds there.</li>
           <li><b>Death:</b> hitting a <b>wall</b>, your <b>own body</b>, or a moving <b>glitch</b> ends the run.</li>

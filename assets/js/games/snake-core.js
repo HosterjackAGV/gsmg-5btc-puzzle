@@ -25,6 +25,15 @@ const PU_TTL = { blue: 80, yellow: 90, fefefe: 48, reset: 26 };
 const POWERUP_EVERY = 60, MAX_ENEMIES = 6;
 const MAX_TICKS = 250000, MAX_INPUTS = 200000;
 
+// Special seeds: worth far more points than the length they add. The more points a seed gives, the
+// RARER it is (weight) and the SHORTER it lingers (persistMs is real game-time, floor 3s).
+export const SEEDS = {
+  plus3:  { score: 3,  grow: 1, persistMs: 6000 },
+  plus5:  { score: 5,  grow: 2, persistMs: 4000 },
+  plus10: { score: 10, grow: 3, persistMs: 3000 },
+};
+const SEED_EVERY = 45, MAX_SEEDS = 2;
+
 // deterministic PRNG (mulberry32)
 function mulberry32(a) {
   return function () {
@@ -42,8 +51,8 @@ export function createSim(seed, lore) {
     rng: mulberry32(seed >>> 0), lore,
     snake: [{ x: 7, y: 8 }, { x: 7, y: 9 }, { x: 7, y: 10 }],
     dir: { x: 0, y: -1 }, queue: [],
-    food: null, enemies: [], powerups: [],
-    score: 0, tick: 0, timeMs: 0, status: 'playing', power: null, flash: null,
+    food: null, enemies: [], powerups: [], seeds: [],
+    score: 0, tick: 0, timeMs: 0, status: 'playing', power: null, flash: null, grow: 0,
   };
   placeFood(sim);
   return sim;
@@ -51,7 +60,8 @@ export function createSim(seed, lore) {
 
 function occupied(sim, x, y) {
   return sim.snake.some(s => s.x === x && s.y === y) || sim.enemies.some(e => e.x === x && e.y === y)
-    || (sim.food && sim.food.x === x && sim.food.y === y) || sim.powerups.some(p => p.x === x && p.y === y);
+    || (sim.food && sim.food.x === x && sim.food.y === y) || sim.powerups.some(p => p.x === x && p.y === y)
+    || sim.seeds.some(s => s.x === x && s.y === y);
 }
 function placeFood(sim) { let x, y, n = 0; do { x = ri(sim.rng, N); y = ri(sim.rng, N); n++; } while (occupied(sim, x, y) && n < 500); sim.food = { x, y }; }
 function freeLore(sim, type) { const pool = sim.lore.filter(c => (!type || c.t === type) && !occupied(sim, c.x, c.y)); return pool.length ? pool[ri(sim.rng, pool.length)] : null; }
@@ -72,6 +82,17 @@ function spawnPowerup(sim) {
   const want = (type === 'reset' || type === 'fefefe') ? 'fefefe' : type;
   const c = freeLore(sim, want) || freeLore(sim); if (!c) return;
   sim.powerups.push({ x: c.x, y: c.y, type, ttl: sim.tick + (PU_TTL[type] || 70) });
+}
+function spawnSeed(sim) {
+  if (sim.seeds.length >= MAX_SEEDS) return;
+  if (sim.rng() >= 0.5) return;                                    // appears only sometimes
+  const t = sim.rng();
+  const type = t < 0.6 ? 'plus3' : t < 0.9 ? 'plus5' : 'plus10';  // rarer the more points it gives
+  const def = SEEDS[type];
+  let x, y, n = 0;
+  do { x = ri(sim.rng, N); y = ri(sim.rng, N); n++; } while (occupied(sim, x, y) && n < 200);
+  if (occupied(sim, x, y)) return;
+  sim.seeds.push({ x, y, type, score: def.score, grow: def.grow, exp: sim.timeMs + def.persistMs });
 }
 
 // queue a turn — rejects 180° reversals & duplicates, validating against the last queued/current
@@ -102,12 +123,20 @@ export function step(sim) {
   }
   sim.snake.unshift(head);
 
-  if (sim.food && head.x === sim.food.x && head.y === sim.food.y) {
-    const dbl = sim.power && sim.power.type === 'yellow' && sim.power.until > sim.tick;
-    sim.score += dbl ? 2 : 1;
-    if (sim.score % 3 === 0) spawnEnemy(sim);
-    placeFood(sim);
-  } else sim.snake.pop();
+  // eat the permanent seed (+1 score, +1 length) and/or a special seed (more points than length)
+  const dbl = sim.power && sim.power.type === 'yellow' && sim.power.until > sim.tick;
+  let scoreGain = 0, growGain = 0, ateFood = false;
+  if (sim.food && head.x === sim.food.x && head.y === sim.food.y) { scoreGain += 1; growGain += 1; ateFood = true; }
+  const si = sim.seeds.findIndex(s => s.x === head.x && s.y === head.y);
+  if (si >= 0) { const sd = sim.seeds.splice(si, 1)[0]; scoreGain += sd.score; growGain += sd.grow; sim.flash = { x: head.x, y: head.y, t: sim.tick, big: 1 }; }
+  if (scoreGain > 0) {
+    const before = sim.score;
+    sim.score += dbl ? scoreGain * 2 : scoreGain;                 // ×2 power-up doubles the points
+    for (let i = Math.floor(before / 3); i < Math.floor(sim.score / 3); i++) spawnEnemy(sim);  // ~1 glitch / 3 pts
+    if (ateFood) placeFood(sim);
+  }
+  sim.grow += growGain;                                           // grow length over the next grow ticks
+  if (sim.grow > 0) sim.grow--; else sim.snake.pop();
 
   const pi = sim.powerups.findIndex(p => p.x === head.x && p.y === head.y);
   if (pi >= 0) {
@@ -118,11 +147,13 @@ export function step(sim) {
   }
   if (sim.power && sim.power.until <= sim.tick) sim.power = null;
   sim.powerups = sim.powerups.filter(p => p.ttl > sim.tick);
+  sim.seeds = sim.seeds.filter(s => s.exp > sim.timeMs);                            // special seeds vanish (real-time)
 
   sim.enemies = sim.enemies.filter(e => e.expires > sim.tick);                      // vanish on expiry
   if (sim.score >= ENEMY_MOVE_SCORE && sim.tick % enemyMoveEvery(sim.score) === 0) moveEnemies(sim);
   if (sim.status !== 'playing') return false;                                       // an enemy reached the mouth
   if (sim.tick % POWERUP_EVERY === 0) spawnPowerup(sim);
+  if (sim.tick % SEED_EVERY === 0) spawnSeed(sim);                                  // occasional special seed
   return true;
 }
 
