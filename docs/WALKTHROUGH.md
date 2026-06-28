@@ -2057,11 +2057,11 @@ There is also a **third, never-noted 80-byte blob** at the **end of the Phase 3.
 
 ---
 
-## Appendix — Creator Hint Timeline (2020–2026)
+## Appendix — Creator Hint Timeline (2019–2026)
 
-<details class="wt-more"><summary>📖 The full creator hint timeline (2020–2026) — every hint, transcribed, with images</summary>
+<details class="wt-more"><summary>📖 The full creator hint timeline (2019–2026) — every message &amp; hint, transcribed</summary>
 
-From late 2019 onward, no one had publicly made progress past the AES blob of Phase 3.2. To keep the hunt alive, the puzzle's creator — posting in the official **Telegram** group under the handle **"Jrk Bgrt"** (admin), and occasionally in the `#Crypto_Puzzles` **Discord** channel — dripped out a long series of hints, jokes, and confirmations over the following six years. This section reproduces every one of those hints in chronological order, with a faithful transcription of each message and the original screenshot inline.
+From the puzzle's **April 2019 launch** onward, the creator — posting in the official **Telegram** group under the handle **"Jrk Bgrt"** (admin), and occasionally in the `#Crypto_Puzzles` **Discord** channel — posted a long stream of confirmations, corrections, jokes, and hints. The 2019 messages track the rapid fall of Phases 1–3 and the infamous Phase-III typo; from 2020 onward, with the endgame stalled, the hints became the hunt's main lifeline. This section reproduces every substantive one in chronological order, with a faithful transcription (and, where one exists, the original screenshot inline).
 
 > **Reading guide.** Not everything Jrk posted is a real hint — he sometimes explicitly said he was "just fooling around," and at least one entry is an April Fools' joke. Each entry below is tagged accordingly. The hints that matter most for the still-**OPEN endgame** (Cosmic Duality / the final private key) cluster around a handful of recurring themes:
 > - **Primes 2,3,5,7** — "the prime part," confirmed repeatedly as essential to proceed.
@@ -2077,33 +2077,132 @@ From late 2019 onward, no one had publicly made progress past the AES blob of Ph
 
 | Date | Channel | Type | One-line summary |
 |------|---------|------|------------------|
+| 2019-04-20 | Telegram | Event | First code cracked "way faster than expected"; confirms the puzzle has **multiple stages** |
+| 2019-04-22 | Telegram | Hint | Releases the **stage-1 SHA-256 hash** (`5ac4078…746f75`) so solvers can test answers offline; the answer is "**a sticker**" |
+| 2019-04-23 | Telegram | Event | **Ewout** is the first to crack the April-1st puzzle |
+| 2019-05-08 | Telegram | Event | Somebody reaches **Phase 3** |
+| 2019-05-14 | Telegram | Meta | The puzzle wasn't promoted and **is** solvable; unrelated "quests" may be scams |
+| 2019-05-17 | Telegram | **Correction** | The famous Phase-III typo fix — add one character between the 3 answers: **`giveit = givetit`** |
+| 2019-05-18 | Telegram | Meta | If unsolved in 2019, a **final "tiny hint"** comes at the start of 2020 — but the key is solvable without it; no hints after stage 2 except the "t" |
+| 2019-05-26 | Telegram | Hint | Confirms a **song** must be found; voice-recognition could pass it |
+| 2019-09-22 | Telegram | Hint | The puzzle has **"7 parts"**; a piece may be found **outside** the main puzzle |
+| 2019-12-31 | Telegram | Meta | The final hint will land at the **start of 2020**, well before the halving |
 | 2020-01-14 | Telegram | Official hint | "Roses are White but often Red" poem — points back to the first puzzle piece / a hidden second door |
 | 2020-02-20 | Telegram | Official hint | Decentraland screenshot at (-41,-17) — leads toward SalPhaseIon |
+| 2020-02-22 | Telegram | Clarification | Early-stage solutions are online; **typos hide no clues**; **only -41,-17 matters** |
+| 2020-02-25 | Telegram | Hint | **"3.2 is a thing"** — most see 3.2 as the last part; maybe nobody found the **direction** |
 | 2020-04-08 | Telegram | **Not a hint** ("just fooling around") | Matrix "Hope… human delusion" quote |
-| 2020-05-11 | Telegram | Event + hint | Bitcoin halving; prize halved; mentions the **2nd door** |
+| 2020-05-11 | Telegram | Event + hint | First halving; prize halved; the **2nd door**; "the price is in half, but what does it mean"; next halving block 209999 |
+| 2020-05-20 | Telegram | Hint | "The answer is there"; indexing hint **"First or zero"** (0- vs 1-based) |
 | 2020-06-07 | Discord | Community | First public mention of **SalPhaseIon**; "combine the last 2 hints, understand the first door" |
 | 2020-08-02 | Telegram | Hint | "Really nobody managed to find the extra door" |
+| 2020-08-09 | Telegram | Answer | What you're after is "**a private key**" |
+| 2020-08-12 | Telegram | Meta | The hints make the path "pretty obvious" yet it's unsolved; one club passed but is stuck |
+| 2020-10-27 | Telegram | Event | Prize **still at** `1GSMG1…` (unclaimed); solver #2 reached the next stage |
+| 2020-11-24 | Telegram | Event | Prize money is **halved at every Bitcoin halving** (maybe in the same block) |
 | 2021-01-21 | Telegram | Hint | "A few might not require the internet anymore" |
 | 2021-02-12 | Telegram | Community summary | Open questions about `#..#`, the 2nd way, mp3 blobs, "salphaselon" origin |
 | 2021-03-01 (primes) | Telegram | Hint **[ENDGAME]** | "You are at the prime part already???" — primes 2,3,5,7 |
-| 2021-03-01 (spelling) | Telegram | Hint **[ENDGAME]** | Spelling errors are just typos; `fefefe = 104 = 101 010` |
-| 2021-03-14 | Telegram | Hint | "Breaking salphation should be giving the feeling of the phase's name" |
+| 2021-03-01 (spelling) | Telegram | Hint **[ENDGAME]** | Spelling errors are just typos; `fefefe = 104 = 101 010`; "ancient spelling" |
+| 2021-03-05 | Telegram | Hint | One-word clue: **"Infrared"** |
+| 2021-03-14 | Telegram | Hint | "Breaking salphation should be giving the feeling of the phase's name"; another team reaches salph |
+| 2021-03-27 | Telegram | Hint | Psychedelic aside (psilocybe / 5-MeO-DMT) — "breaking salphation" is about a **feeling** |
+| 2021-03-31 | Telegram | Hint **[ENDGAME]** | "another door might be found on **{1},{4},{21}**" |
 | 2021-04-01 | Telegram | **April Fools** | "R=18, A=1, B=2 … could also be 21 or 1812 bit" |
 | 2021-04-16 | Telegram | Leak | Full SalPhaseIon blob posted for verification |
 | 2021-05-06 | Telegram | Official instruction | "SHA-256(GSMGIO5BTCPUZZLECHALLENGE…)" — how to enter SalPhaseIon |
+| 2021-08-11 | Telegram | Hint **[ENDGAME]** | The address is **found by solving**; the solver will find a way to **"decrypt"** it |
 | 2021-12-02 | Telegram | Official hint | "There is Another DOOR" |
 | 2021-12-25/26 | Telegram | Official hint **[ENDGAME]** | Prime numbers required; some characters must be **"zeroed out"** |
+| 2021-12-31 | Telegram | Hint | Joke: "the only date I give away is the expiry date of **Neo's passport**" (Matrix) |
 | 2022-12-10 | Telegram | Hint | Photo of a book, *Cosmic Duality* |
 | 2023-01-09 | Telegram | Hint **[ENDGAME]** | "At least prime number is very important to get any further" |
-| 2023-01-12 | Telegram | Semi-official hint **[ENDGAME]** | "Theory of everything is a valid path to the private key" |
+| 2023-01-12 | Telegram | Semi-official hint **[ENDGAME]** | "Theory of everything is a valid path"; "higher than **sqrt(-1)**"; remaining 2.5 BTC "or 5" |
+| 2023-01-25 | Telegram | Hint **[ENDGAME]** | Posts "**42**" (theory-of-everything theme) |
 | 2023-02-23 | Telegram | Official hint | Binary string decoding to "yellow blue primes matrix sumlist…" |
 | 2023-08-03 | Telegram | Official hint | "Are you really looking for just the btc…?" / "the hardest part is done" |
-| 2023-08-06 | Telegram | Official hint **[ENDGAME]** | "The puzzle talks for me"; "Once you hit a 'ying yang', you'll solve it the same day" |
+| 2023-08-04 | Telegram | Hint **[ENDGAME]** | Phrase: **"Globally supporting my generation"** (G S M G) |
+| 2023-08-06 | Telegram | Official hint **[ENDGAME]** | "Once you hit a 'ying yang', you'll solve it the same day"; private key; internet only to **claim** |
+| 2023-11-24 | Telegram | Clarification **[ENDGAME]** | Internet is **NOT required to solve** (only to claim) |
+| 2023-12-26 | Telegram | Hint | "Have you tried the **purple pill**?" (red + blue) |
+| 2024-01-26 | Telegram | Hint **[ENDGAME]** | Final answer format is a **"Regular Bitcoin Private key"** |
+| 2024-03-26 | Telegram | Meta | Will **no longer answer** puzzle questions; future hints go to the channel only |
 | 2024-04-10 | Telegram | Countdown | "1357 blocks to go" |
 | 2024-04-19 | Telegram | Event + hint | Second halving; prize halved again; "the most obvious reason to hold Bitcoin" |
+| 2024-11-29 | Telegram | Hint **[ENDGAME]** | One "**microstep**" from a same-day solve; he'd try **ASCII 127** (DEL); you only need the **last digit of pi** |
+| 2025-04-28 | Telegram | Endgame **[ENDGAME]** | **Nobody has reached "yingyang"** yet; once reached, **≤2 hours** to solve |
+| 2025-09-15 | Telegram | Hint | Trivia: carrots were **purple** until the Dutch made them orange (colour theme) |
 | 2026-01-01 | Telegram | New Year's hint | Binary → "Happy new year! … here's a 'tiny hint' <3" |
+| 2026-03-03 | Telegram | Hint **[ENDGAME]** | "No hints, only **free will**"; cites **Jacque** (Fresco); reaching the next phase = **instant claim** |
+| 2026-05-28 | Telegram | Meta | Confirms the puzzle is **still valid** / unsolved |
 
 ---
+
+### 2019 — Launch year: Phases 1–3 fall fast, and the infamous typo
+
+The puzzle went live on **20 April 2019**. These early Telegram messages — absent from earlier versions of this timeline — track how quickly the first phases fell, the workaround for the site's token errors, the famous Phase-III typo, and the promise of a single "final" hint for 2020.
+
+### 2019-04-20 — First code cracked; "the puzzle has multiple stages"
+
+Within hours of launch the first code fell — far faster than expected — and Jrk confirmed the multi-stage structure.
+
+> **Jrk Bgrt** (admin): Ok.. somebody has cracked the first code. … that was way faster than expected.
+> **Jrk Bgrt** (admin): The first part. Maybe the puzzle has multiple stages.
+> **Jrk Bgrt** (admin) *(asked whether it really does)*: It is.
+
+### 2019-04-22 — The stage-1 SHA-256 hash ("a sticker")
+
+Because the site threw token/CSRF errors on repeated tries (the load-balancer "is a bitch on multiple tries"), Jrk released the **SHA-256 of the stage-1 answer** so solvers could test candidates offline, and pointed them at an online generator. He also let slip that the answer is "**a sticker**."
+
+> **Jrk Bgrt** (admin): 5ac407837447fba24ba2802e4d1e9aecb4580aa29fef1088cc387c180b746f75
+> **Jrk Bgrt** (admin): just try hit your options against that hash.
+> **Jrk Bgrt** (admin): https://passwordsgenerator.net/sha256-hash-generator/ … a sticker
+
+### 2019-04-23 — Ewout cracks the April-1st puzzle first
+
+> **Jrk Bgrt** (admin): Ewout managed to crack the april 1st puzzle. He was the first to solve it.
+
+### 2019-05-08 — Phase 3 reached
+
+> **Jrk Bgrt** (admin): Apparently somebody managed to get into Phase 3.
+
+### 2019-05-14 — "We didn't promote this puzzle nor is it unsolvable"
+
+> **Jrk Bgrt** (admin): Quests might* be scams. We didn't promote this puzzle nor is it unsolvable. Please enjoy the puzzle or continue your journey.
+
+### 2019-05-17 — The infamous Phase-III typo: `giveit = givetit`
+
+The single most important early correction. Jrk admitted a mistake **inside Phase III** that makes it "nearly impossible to solve unless you'd know where to add 1 extra character between the 3 answers," then gave the fix. He later clarified the issue is within Phase 3 (not the 2→3 transition) and confessed he had tested the whole puzzle three times with the typo'd string.
+
+> **Jrk Bgrt** (admin): …there might be a mistake in phase III … it makes it nearly impossible to solve unless you'd know where to add 1 extra character between the 3 answers.
+> **Jrk Bgrt** (admin): Here's the hint in order to bypass the mistake: **giveit = givetit**
+> **Jrk Bgrt** (admin): Once you have to work with give(t)it you'll know.
+
+*(This is the origin of the `givetit` correction applied in Phase 3 above.)*
+
+### 2019-05-18 — The 2020 "final tiny hint" promise; no hints after stage 2
+
+After the typo fix, a team made "an unbelievable amount of progress in just one day." Jrk set the hint policy that would govern the next seven years: one **final tiny hint at the start of 2020** if the key wasn't found in 2019 — but the key is retrievable **without** it — and **no hints after stage 2** beyond the "t" fix.
+
+> **Jrk Bgrt** (admin): In case the private key hasn't been found in 2019 we'll release a tiny hint at the start of 2020, that will be the final hint. Can the private key be retrieved without that hint? Yes.
+> **Jrk Bgrt** (admin): No hints after stage 2 (except the 't' to fix my stupid mistake).
+
+### 2019-05-26 — "Ok you found a song"
+
+Confirms a stage hinges on identifying a **song**; voice recognition might even pass it.
+
+> **Jrk Bgrt** (admin): Ok you found a song. Do have a clue on how to proceed on the webpage? … voice recognition might even work to pass although I'd copy paste the answer as it's faster.
+
+### 2019-09-22 — "7 parts" + a piece outside the main puzzle
+
+Two structural confirmations: the puzzle is framed as **"7 parts,"** and a piece may be found **outside** the main puzzle line.
+
+> **Jrk Bgrt** (admin): 7 parts right?
+> **Jrk Bgrt** (admin): There may indeed a piece be found outside the main puzzle.
+
+### 2019-12-31 — The final hint will land "start of 2020"
+
+> **Jrk Bgrt** (admin): It's at the start of 2020 indeed, way before the halving.
 
 ### 2020-01-14 — Official Hint: "Roses are Red" poem
 
@@ -2130,6 +2229,18 @@ A second official hint: a screenshot taken inside [Decentraland](https://decentr
 
 ![Decentraland in-world hint screenshot, Telegram 2020-02-20](assets/walkthrough/hints/decentraland-tg.png)
 
+### 2020-02-22 — "Only -41,-17 matters"; typos hide no clues
+
+A clarification alongside the Decentraland hint: solutions for the first stages are already online, the many typos are just rushed mistakes with **no hidden clues**, and of the Decentraland material **only the coordinates -41,-17 matter**.
+
+> **Jrk Bgrt** (admin): Typos: Horrible mistakes due to rushed work. No clues to be found in those typos might you wonder. … Only -41,-17 matters.
+
+### 2020-02-25 — "3.2 is a thing"
+
+First appearance of the **"3.2"** stage label, with the suggestion that nobody had yet found the right **direction**.
+
+> **Jrk Bgrt** (admin): 3.2 is a thing btw … Or nobody found the direction … most see 3.2 as the last part.
+
 ### 2020-04-08 — "Hope is the quintessential human delusion" *(NOT a hint)*
 
 A *Matrix* (Agent Smith) quote. The creator explicitly disclaimed it in the same breath, so it is most likely Jrk just trolling.
@@ -2150,6 +2261,12 @@ The first Bitcoin halving. Per the creator's stated plan to halve the prize at e
 > **Jrk Bgrt** (admin):
 > Let's see what bitcoin is worth the next halving and who knows what you'll find after opening the **2nd door**. The price is in half, but what does it mean 🤔.
 
+### 2020-05-20 — "First or zero"
+
+An indexing / off-by-one hint — the answer is already present in the material, and the question is whether to count from **first (1) or zero (0)**.
+
+> **Jrk Bgrt** (admin): …answer is there … First or zero.
+
 ### 2020-06-07 — First public mention of SalPhaseIon (Discord)
 
 In the `#Crypto_Puzzles` Discord channel, user **VrsN** publicly named **SalPhaseIon** for the first time and hinted at the method.
@@ -2168,6 +2285,28 @@ A community member notes the second half of the prize might fund another puzzle;
 > **senape:** I know, but they said that the second half will probably be used for another puzzle
 > **Jrk Bgrt** (admin): Or the same puzzle, or just not at all 🧙‍♂️🔮
 > **Jrk Bgrt** (admin): Really nobody managed to find the extra door, didn't expect that after the earlier pace of cracking things.
+
+### 2020-08-09 — "A private key"
+
+Asked what the puzzle ultimately yields, Jrk answers plainly.
+
+> **Jrk Bgrt** (admin): a private key
+
+### 2020-08-12 — "The hints state the path pretty obvious… yet"
+
+> **Jrk Bgrt** (admin): Indeed remarkable with the hints stating the path pretty obvious… There's 1 club that passed but they are stuck in the next phase.
+
+### 2020-10-27 — Prize still unclaimed; solver #2 advances
+
+Jrk confirmed the prize was still sitting at the GSMG address, and that a second solver had reached the next stage.
+
+> **Jrk Bgrt** (admin): https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe — price is indeed still there.
+
+### 2020-11-24 — Why the prize halves
+
+The first clear statement of the **prize-halving mechanic**: the bounty is cut in half at every Bitcoin halving (possibly in the same block) — the on-chain "spends" later mistaken for a solve.
+
+> **Jrk Bgrt** (admin): We have our reasons halving the price money at every bitcoin halving event :-). Who knows, maybe even in the same block.
 
 ### 2021-01-21 — "A few might not require the internet anymore"
 
@@ -2220,6 +2359,12 @@ Same day: confirmation that the puzzle's spelling errors are merely typos and no
 > **[user]:** if you know how the array is indexed ofc
 > **Jrk Bgrt** (admin) → *Janusz Baran ("someone from england or america is here? this is old talk, now…")*: Ancient spelling 😄. One of the many many typos.
 
+### 2021-03-05 — "Infrared"
+
+A one-word thematic clue, dropped without elaboration — part of the recurring colour thread (later: purple pill, purple carrots).
+
+> **Jrk Bgrt** (admin): Infrared
+
 ### 2021-03-14 — "Breaking salphation should give the feeling of the phase's name"
 
 Jrk gives a long, reflective message confirming SalPhaseIon is effectively the last phase and that breaking it should evoke the feeling of the phase's name ("salphation" / salvation).
@@ -2228,6 +2373,18 @@ Jrk gives a long, reflective message confirming SalPhaseIon is effectively the l
 
 > **Jrk Bgrt** (admin) → *Zil ("I always wonder how when you tell us that someone (or a team) has …")*:
 > I don't check the website logs. There aren't any tracking scripts either. People somehow now how to reach me on telegram and PM me, that's how I know :-). Although I can't prove it, we don't monitor the puzzlers progress in any way. I just read the chat and when I notice the address is empty I'll know how they did it. After the first stage was cracked within no-time I was afraid the entire puzzle would have been solved not too long after that. When people progress in salphation it might be cracked pretty soon. Breaking salphation, should be giving the feeling of the phase's name. Won't be easy but I've noticed how clever most of you are so I assume it will be cracked at some point, probably before next halving.
+
+### 2021-03-27 — The "feeling" of salphation (a psychedelic aside)
+
+Reinforcing that "breaking salphation" is about reaching a particular **altered-perception feeling** matching the phase's name, Jrk joked about how one might get there.
+
+> **Jrk Bgrt** (admin): Maybe combine it with some psilocybe azurescens and mao inhibitors or go all the way with some 5-MeO-DMT.
+
+### 2021-03-31 — "Another door might be found on {1},{4},{21}" **[ENDGAME]**
+
+A concrete index/coordinate clue for locating the recurring **"another door."** The `{1},{4},{21}` set foreshadows the next day's April-Fools `R=18, A=1, B=2` letter-to-number game.
+
+> **Jrk Bgrt** (admin): another door might be found on {1},{4},{21}
 
 ### 2021-04-01 — April Fools' Day *(likely NOT a real hint)*
 
@@ -2308,6 +2465,12 @@ A (since-deleted) account posted the exact instruction. It reveals that you take
 So the SalPhaseIon URL is:
 [https://gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32](https://gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32)
 
+### 2021-08-11 — "The solver will find a way to 'decrypt' it" **[ENDGAME]**
+
+Confirms the final address is **reached by solving** (not a pre-known address), and that the last step involves a **"decrypt."**
+
+> **Jrk Bgrt** (admin): The one to be found by solving the puzzle yes … And the solver will find a way to 'decrypt' it.
+
 ### 2021-12-02 — Official Hint: "There is Another DOOR"
 
 ![Another door hint, Telegram 2021-12-02](assets/walkthrough/hints/2021-12-02-another-door-hint.png)
@@ -2330,6 +2493,12 @@ One of the most load-bearing endgame hints. Jrk reconfirms the "another door" id
 
 > **Jrk Bgrt** (admin):
 > The previous "there is another door hint" is still a thing. We're not sure if anyone has found another door so far, and we can't check that… We've seen prime numbers being mentioned; well, that is definitely an aspect which is required to proceed. Furthermore, along the way, some characters need to be 'zeroed out'.. Best of luck and happy holidays! 🙌
+
+### 2021-12-31 — "Neo's passport"
+
+A New Year's joke that doubles as a Matrix nod — the first of several Neo/Matrix references (see the 2023-12-26 "purple pill").
+
+> **Jrk Bgrt** (admin): The only date I give away is the expiry date of neo's passport.
 
 ### 2022-12-10 — *Cosmic Duality* book photo
 
@@ -2356,6 +2525,20 @@ A pivotal hint: focusing on the **theory of everything** is a legitimate route t
 
 > **Jrk Bgrt** (admin):
 > Focussing on the theory of everything is also still a valid path to reaching the private key.
+
+### 2023-01-12 (more) — "Higher than sqrt(-1)" / "an imaginary puzzle would" **[ENDGAME]**
+
+The same exchange that produced "theory of everything is a valid path" also carried an explicit **imaginary-number** hint, and confirmation that solvers were close — Jrk had checked a community GitHub.
+
+> **Jrk Bgrt** (admin): I checked a certain GitHub yesterday … You guys are really getting close.
+> **Jrk Bgrt** (admin): At least higher than sqrt(-1).
+> **Jrk Bgrt** (admin): An imaginary puzzle would. … the remaining 2.5 btc is well deserved… Or 5, who knows.
+
+### 2023-01-25 — "42" **[ENDGAME]**
+
+A single message reinforcing the **theory-of-everything / answer-to-everything** thread.
+
+> **Jrk Bgrt** (admin): 42
 
 ### 2023-02-23 — Official Hint: binary string
 
@@ -2423,6 +2606,12 @@ In response to a plea to "shine us some light," Jrk gives two cryptic lines.
 
 > **Community interpretation:** the recurring "…" in the puzzles may be a stand-in for the word **"key"**, so the sentence reads "Are you really looking for just the **btc key**…?" — i.e. *look for the key*.
 
+### 2023-08-04 — "Globally supporting my generation" **[ENDGAME]**
+
+A phrase hint posted the day after the "just the btc?" reveal — widely read as an acrostic for **G S M G**.
+
+> **Jrk Bgrt** (admin): "Globally supporting my generation"
+
 ### 2023-08-06 — Official Hint: "The puzzle talks for me" + "ying yang" **[ENDGAME]**
 
 A four-part exchange. Jrk gets uncharacteristically emotional ("it was nice knowing you all"), warns puzzlers to be careful, and — most importantly — gives what he calls "probably the last hint": once you reach a **"ying yang"** (yinyang), you'll solve it the same day.
@@ -2458,6 +2647,39 @@ A four-part exchange. Jrk gets uncharacteristically emotional ("it was nice know
 > **Jrk Bgrt** (admin): I won't!
 > **Jrk Bgrt** (admin): Ok, although I somehow feel the need to have my eyes at this chat all of a sudden it's time for me to shut up again and see my little ones play in an obstacle parc here on France. Ciao!
 
+### 2023-08-06 (more) — Endgame mechanics: the private key, the no-halving scenario, internet-to-claim **[ENDGAME]**
+
+The same day as the "ying yang" hint, Jrk spelled out several endgame mechanics: whoever connects the last pieces gets the **private key**; his friends and family could together access his data (in which case "don't expect a halving"); he considered but rejected a **24-hour killswitch**; solvers already have **all the information needed**; and the **internet is required only to CLAIM** the prize, not to solve it.
+
+> **Jrk Bgrt** (admin): the person who connects the last pieces … will thus get its hands on the private key …
+> **Jrk Bgrt** (admin): my friends and family can get to all my data if they'd work together. In that scenario, don't expect a halving …
+> **Jrk Bgrt** (admin): I thought of a 24h Killswitch, but nah. … you'll need the internet to claim the prize.
+
+### 2023-11-24 — "Is internet still required to solve it?" → "Nope" **[ENDGAME]**
+
+Resolves the long-running question: with the available knowledge, **solving needs no internet** (only claiming does).
+
+> **[user]:** Given the available knowledge, is internet still required to solve it?
+> **Jrk Bgrt** (admin): Nope
+
+### 2023-12-26 — "The purple pill"
+
+A Matrix red+blue → **purple** variant, tying into the recurring colour theme (infrared, yellow/blue, purple/orange).
+
+> **Jrk Bgrt** (admin): Have you tried the purple pill already?
+
+### 2024-01-26 — "Regular Bitcoin Private key" **[ENDGAME]**
+
+Pins down the **output format** of the whole puzzle: a standard Bitcoin private key.
+
+> **Jrk Bgrt** (admin): Regular Bitcoin Private key
+
+### 2024-03-26 — "No more puzzle questions"
+
+A policy change: Jrk stops answering puzzle questions; any future hint will only be **broadcast in the channel**.
+
+> **Jrk Bgrt** (admin): I decided not to answer any puzzle questions anymore. If there will be a hint (ever). It will be here.
+
 ### 2024-04-10 — Halving countdown: "1357 blocks to go"
 
 ![1357 blocks to go, Telegram 2024-04-10](assets/walkthrough/hints/2024-04-10.png)
@@ -2481,6 +2703,26 @@ The second Bitcoin halving. The prize was halved again (now ~**1.25 BTC**). Jrk 
 > **Jrk Bgrt** (admin): Well, anyway, see you in 4 years! Good luck you all.
 > **[user]:** Me? No. Don't know that guy. ❤️
 
+### 2024-11-29 — "One microstep" / ASCII 127 / the last digit of pi **[ENDGAME]**
+
+Three concrete late-stage hints: solvers are **one microstep** from a same-day solve; Jrk says he'd personally go for **ASCII 127** (the `DEL` control character — which dovetails with the "zeroed out" / character-deletion thread); and you **only need the last digit of pi** to progress.
+
+> **Jrk Bgrt** (admin): If you guys got 1 microstep further, the puzzle will likely be solved the same day.
+> **Jrk Bgrt** (admin): I think I'll be going for ASCII 127 myself. But not overly dramatic.
+> **Jrk Bgrt** (admin): You only need the last number of pi and it might get you somewhere.
+
+### 2025-04-28 — "Did anyone find yingyang? I don't think so" **[ENDGAME]**
+
+A status update on the key milestone: as of 2025, **nobody has reached "yingyang."** Once someone does, Jrk reiterates it is **~2 hours, max** to a full solve.
+
+> **Jrk Bgrt** (admin): Did anyone found yingyang? I don't think so … when yingyang is reached, 2 hours max. It's the next phase, but I await the day someone finally gets there.
+
+### 2025-09-15 — Purple carrots (a colour-theme aside)
+
+Trivia that fits the colour thread (purple → orange; the Dutch House of Orange).
+
+> **Jrk Bgrt** (admin): Carrots were originally purple, until the Dutch turned them orange in the 1600s to kiss up to their royal family.
+
 ### 2026-01-01 — New Year's Hint ("a tiny hint")
 
 Five messages posted exactly one minute apart (`8:15`–`8:19 PM`), the last carrying a long binary block.
@@ -2502,6 +2744,18 @@ Decoded:
 - The hint is again delivered as binary text.
 - The "tiny hint" is deliberately ambiguous — it is unclear whether the timing, the wording, the `<3`, or something else is the actual hint.
 
+### 2026-03-03 — "No hints, only free will" + Jacque Fresco **[ENDGAME]**
+
+A cluster of 2026 messages: a determinism musing ("no hints, only free will"), a nod to **Jacque** (Fresco — the Venus Project / resource-based economy, echoing Phase 3's "Free Will" theme), a "Bingo" confirming a community guess, the restated mechanic that **reaching the next phase means the prize is claimed instantly**, and a mention of rewatching "episode 3.5."
+
+> **Jrk Bgrt** (admin): No hints, only free will. … Jacque was quite an inspiring lad I'd say. … Bingo … If any of you reaches the next phase, the price is taken in no-time. … I'm going to rewatch episode 3.5 with the better half.
+
+### 2026-05-28 — "The puzzle is still valid!"
+
+The most recent confirmation that the puzzle remains **unsolved and active**.
+
+> **Jrk Bgrt** (admin): Ah, ofcourse. The puzzle is still valid!
+
 ---
 
 ### Endgame hint synthesis (what's still OPEN)
@@ -2513,6 +2767,10 @@ Pulling together the **[ENDGAME]** hints, the community's working model of the u
 3. The **"theory of everything"** is a valid path to the private key (2023-01-12).
 4. There is **"another door"** that, as of the creator's last checks, may never have been publicly found (2020-05-11, 2020-08-02, 2021-12-02).
 5. Reaching a **"ying yang" (yinyang)** is the breakthrough — solvable the same day afterward (2023-08-06). This dovetails with the 2023-02-23 decode: `…yinyang … the password is in front of your eyes … very last step is a true give away`.
+6. The final output is a **regular Bitcoin private key** (2024-01-26), reached by **solving and then "decrypting"** (2021-08-11). The **internet is needed only to claim it, not to solve** (2023-08-06, 2023-11-24) — everything required to solve is already in hand.
+7. The **"theory of everything"** thread is reinforced by **"42"** (2023-01-25) and an explicit **imaginary-number** nudge — "higher than `sqrt(-1)`," "an imaginary puzzle would" (2023-01-12).
+8. Late, concrete nudges: you are **"one microstep"** away (2024-11-29); try **ASCII 127** (`DEL`, dovetailing with "zeroed out") and **the last digit of pi** (2024-11-29); the **"another door"** sits at **{1},{4},{21}** (2021-03-31). A recurring **colour** thread runs through it all (yellow/blue → infrared → purple pill → purple carrots).
+9. As of 2025, **nobody has reached "yingyang"** — the gating breakthrough — and reaching it means **~2 hours to a full solve** (2025-04-28). The puzzle is confirmed **still unsolved and valid** as recently as **2026-05-28**.
 
 **Status: OPEN.** No public, verified solution to the endgame exists. The puzzle is reproducibly solved through Phase 3.2 only; everything past SalPhaseIon / Cosmic Duality remains unsolved, and the prize address is **unclaimed** (the spent outputs are the creators' scheduled halving moves, not a solve).
 

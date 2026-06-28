@@ -11,6 +11,13 @@ desktop.ini
 verify-summary.txt
 arcade-summary.txt
 
+# ── private maintainer source material — NEVER track or push ─────────────────
+# Raw dump of all of Jrk's messages/answers; used only to enrich the walkthrough.
+jrk_all_messages.txt
+jrk_*.txt
+*jrk*messages*
+*_all_messages.txt
+
 # ── Claude / AI tooling — never tracked or pushed ────────────────────────────
 # Everything relating to Claude Code stays local to the maintainer's machine.
 CLAUDE.md
