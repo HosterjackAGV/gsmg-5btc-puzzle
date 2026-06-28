@@ -44,7 +44,9 @@ router
   .add('/insights', () => import('./views/insights.js'))
   .add('/reference', () => import('./views/reference.js'))
   .add('/donations', () => import('./views/donations.js'))
-  .add('/donate', () => import('./views/donations.js'));
+  .add('/donate', () => import('./views/donations.js'))
+  .add('/games', () => import('./views/games.js'))
+  .add('/play', () => import('./views/games.js'));
 
 wireScan();
 router.start();

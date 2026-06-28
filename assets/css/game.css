@@ -717,3 +717,43 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .pc-piece.pc-card { border:1px solid #1c2330; border-radius:10px; background:#0a0d13; padding:9px 11px; margin:8px 0; }
 .pc-piece.pc-card .pc-k { color:#9fb0c4; }
 .pc-piece.pc-card.pc-openpiece .pc-k { color:#c79a52; }
+
+/* ── Games section: Snake ─────────────────────────────────────────────────── */
+.game-tabs { display:flex; gap:8px; align-items:center; margin:4px 0 16px; }
+.game-tab { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; padding:7px 14px; border-radius:10px;
+  border:1px solid #2a3346; background:#0c0f16; color:#9fb0c4; cursor:pointer; }
+.game-tab.active { color:#5fe9c4; border-color:#2ec8a0; background:#0c1a16; }
+.game-tab.soon { color:#6b7688; border-style:dashed; cursor:default; font-weight:500; }
+
+.snake-wrap { display:flex; flex-direction:column; align-items:center; gap:12px; }
+.snake-hud { display:flex; gap:8px 18px; flex-wrap:wrap; justify-content:center; align-items:center; width:100%; max-width:540px; }
+.sk-stat { display:flex; align-items:baseline; gap:6px; font-size:12px; color:#8b97a8; }
+.sk-stat span { text-transform:uppercase; letter-spacing:.05em; font-size:10.5px; }
+.sk-stat b { font-family:'JetBrains Mono',monospace; font-size:18px; color:#e6ecf5; }
+.sk-power { font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px; }
+.sk-power.pu-b { color:#5f8cff; background:#0c1322; border:1px solid #2a3a6b; }
+.sk-power.pu-y { color:#caa400; background:#1a1708; border:1px solid #5f4a1c; }
+.sk-power.pu-f { color:#fff; background:#1a0c10; border:1px solid #5f2533; }
+
+.snake-stage { position:relative; width:min(94vw, 60vh, 540px); aspect-ratio:1; }
+.snake-canvas { width:100%; height:100%; display:block; border-radius:14px; border:1px solid #1c2330;
+  background:#0b0e15; touch-action:none; image-rendering:auto; box-shadow:0 10px 40px rgba(0,0,0,.45); }
+.snake-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  background:rgba(7,10,17,.72); border-radius:14px; backdrop-filter:blur(3px); transition:opacity .2s; }
+.snake-overlay.hidden { opacity:0; pointer-events:none; }
+.ov-card { text-align:center; padding:18px 22px; }
+.ov-title { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px; color:#e6ecf5; text-shadow:0 0 18px rgba(95,233,196,.4); }
+.ov-sub { color:#9fb0c4; font-size:14px; margin:6px 0 14px; }
+
+.snake-dpad { display:none; flex-direction:column; align-items:center; gap:8px; user-select:none; }
+.dpad-row { display:flex; gap:8px; align-items:center; }
+.dpad { width:60px; height:60px; border-radius:14px; border:1px solid #2a3346; background:#0e1320; color:#cfd8e6;
+  font-size:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; touch-action:none; -webkit-tap-highlight-color:transparent; }
+.dpad:active { background:#15203a; border-color:#3a4a6b; transform:scale(.96); }
+.dpad-act { background:#0c1a16; border-color:#2ec8a0; color:#5fe9c4; font-size:20px; }
+.snake-help { font-size:11.5px; color:#8b97a8; max-width:540px; text-align:center; line-height:1.6; }
+.snake-help .pu { display:inline-block; padding:1px 7px; border-radius:6px; margin:0 2px; font-size:11px; }
+.pu-b { color:#9fb4f0; background:#0c1322; } .pu-y { color:#e8c84a; background:#1a1708; } .pu-f { color:#fff; background:#1a0c10; }
+
+/* show the touch D-pad on coarse-pointer / small screens */
+@media (pointer:coarse), (max-width:760px) { .snake-dpad { display:flex; } }
