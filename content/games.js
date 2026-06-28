@@ -10,5 +10,5 @@
 // the board is intentionally server-only).
 
 export const GAMES = {
-  scoreboardUrl: '',     // e.g. 'https://gsmg-snake.<you>.workers.dev'
+  scoreboardUrl: 'https://scoreboard-worker.hosterjack.workers.dev',     // e.g. 'https://gsmg-snake.<you>.workers.dev'
 };
