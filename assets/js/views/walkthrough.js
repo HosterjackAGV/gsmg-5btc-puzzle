@@ -72,6 +72,14 @@ const FAED = 'faedggeedfcbdabhhggcadcfeddgfdgbgigaaedggiafaecghggcdaihehahbahigc
 const SOUP = 'd b b i b f b h c c b e g b i h a b e b e i h b e g g e g e b e b b g e h h e b h h f b a b f d h b e f f c d b b f c c c g b f b e e g g e c b e d c i b f b f f g i g b e e e a b e a b b a b b a b a b b a a a a b a b b b a b a a a b b b a a b a a b b a b a a b a b b b b a a a a b b b a a b b a b b b a b a b a b b a b b a b a b b a b b a a a b b a b a a b a b b b a a b b a b b b a b a a f a e d g g e e d f c b d a b h h g g c a d c f e d d g f d g b g i g a a e d g g i a f a e c g h g g c d a i h e h a h b a h i g c e i f g b f g e f g a i f a b i f a g a e g e a c g b b e a g f g g e e g g a f b a c g f c d b e i f f a a f c i d a h g d e e f g h h c g g a e g d e b h h e g e g h c e g a d f b d i a g e f c i c g g i f d c g a a g g f b i g a i c f b h e c a e c b c e i a i c e b g b g i e c d e g g f g e g a e d g g f i i c i i i f i f h g g c g f g d c d g g e f c b e e i g e f i b g i b g g g h h f b c g i f d e h e d f d a g i c d b h i c g a i e d a e h a h g h h c i h d g h f h b i i c e c b i i c h i h i i i g i d d g e h h d f d c h c b a f g f b h a h e a g e g e c a f e h g c f g g g g c a g f h h g h b a i h i d i e h h f d e g g d g c i h g g g g g h a d a h i g i g b g e c g e d f c d g g a c c d e h i i c i g f b f f h g g a e i d b b e i b b e i i f d g f d h i e e e i e e e c i f d g d a h d i g g f h e g f i a f f i g g b c b c e h c e a b f b e d b i i b f b f d e d e e h g i g f a a i g g a g b e i i c h i e d i f b e h g b c c a h h b i i b i b b i b d c b a h a i d h f a h i i h i c z a g d a f a o a h e i e c g g c h g i c b b h c g b e h c f c o a b i c f d h h c d b b c a g b d a i o b b g b e a d e d d e z c f o b f d h g d o b d g o o i i g d o c d a o o f i d h z s h a b e f o u r f i r s t h i n t i s y o u r l a s t c o m m a n d U 2 F s d G V k X 1 8 6 t Y U 0 h V J B X X U n B U O 7 C 0 + X 4 K U W n W k C v o Z S x b R D 3 w N s G W V H e f v d r d 9 z a b b a a b a b a b b a b b b a a b b b a b a a a b b a a b a b a b b b a a b a Q v X 0 t 8 v 3 j P B 4 o k p s p x e b R i 6 s E 1 B M l 5 H I 8 R k u + K e j U q T v d W O X 6 n Q j S p e p X w G u N / j J s h a b e f a n s t o o';
 // Phase 3.2 — the full Architect speech (the Beaufort-layer output, ending in "ciaobellao").
 const ARCH = 'yourlifeisthesumofaremainderofanunbalancedequationinherenttotheprogrammingofthispuzzleyouaretheeventualityofananomalywhichdespitemysinceresteffortsihavebeenunabletoeliminatefromwhatisotherwiseaharmonyofmathematicalprecisionwhileitremainsaburdentosedulouslyavoidititisnotunexpectedandthusnotbeyondameasureofcontrolwhichhasledyouinexorablyhereyouyouhaventansweredmyquestionmequiterightinterestingthatwasquickerthantheotherspleaseifyoufindawaytocompletethelastpartofthepuzzletaketheprivatekeyyouveearneditbutpleasetakethistoheartthatwhatawisemanabovehintedatisworthhundredfourtyoftheinvestmentthatswhatusguysatgsmgaretryingtoaccomplishintheendpleasejusthelpusbuilditinsteadofjustwaistingyourlifetimebyhuntingforworthlesspricesandthrophieslikethisimsorrytotellyouthatyouvecomethisfarbutyoullneverfinishthelasttaskiexpectyoutosaybullshitwelldenialisthemostpredictableofallhumanresponsesbutrestassuredthiswillnotbethelasttimeihavedestroyedarestlesssoulandihavebecomeexceedinglyefficientatitthefunctionoftheyouisnowtoreturntothesourcecodesallowingatemporarydisseminationofthecodeyouhopefullycarryreinsertingtheprimebasicsafterwhichyouwillberequiredtoselectfromovertwentythreecipherssixteenencryptionsandorsevenintertwinedpasswordstofindtheactualprivatekeynotethatalsobruteforcingmightberequiredfailuretocomplywiththisprocesswillresultinacataclysmicsystemcrashkillingyourwillpowerwhichcoupledwiththeexterminationofyourwilltoliveandwillultimatelyresultintheextinctionoftheentirenessofyourselfselfgoodluckneverthelessireallyhopeyouretheoneciaobellao';
+// The exact SalPhaseIon soup fragments (verified pixel/parse-exact) that decode to each token.
+const SOUP_BIN1 = 'abbabbababbaaaababbbabaaabbbaabaabbabaababbbbaaaabbbaabbabbbabababbabbababbabbaaabbabaababbbaabbabbbabaa';        // → matrixsumlist
+const SOUP_AGDA = 'agdafaoaheiecggchgicbbhcgbehcfcoabicfdhhcdbbcagbdaiobbgbeadedde';                                                  // → lastwordsbeforearchichoice
+const SOUP_CFOB = 'cfobfdhgdobdgooiigdocdaoofidh';                                                                                  // → thispassword
+const SOUP_BIN2 = 'abbaabababbabbbaabbbabaaabbaabababbbaaba';                                                                       // → enter
+const BLOB_H1   = 'U2FsdGVkX186tYU0hVJBXXUnBUO7C0+X4KUWnWkCvoZSxbRD3wNsGWVHefvdrd9'; // salph_inner 1st half
+const BLOB_H2   = 'QvX0t8v3jPB4okpspxebRi6sE1BMl5HI8Rku+KejUqTvdWOX6nQjSpepXwGuN/jJ'; // salph_inner 2nd half
+
 // live-decrypt: blob name → the human answer that (SHA-256-hashed) opens it
 const LIVE_KEYS = { phase2: 'causality', phase3: P2_PW, phase32: P3_PW };
 
@@ -134,17 +142,24 @@ const PIECES = [
     method: [{ k: 'Split', v: 'on the letter z' },
              { k: 'a/b chunks', v: '→ 8-bit binary ASCII' },
              { k: 'a–i+o chunks', v: 'a=1…i=9, o=0 → base-9 → hex → ASCII' }],
-    // the soup decomposes, IN ORDER, into these parts:
+    // the soup decomposes, IN ORDER, into these parts — z = soup separator (dark orange);
+    // each decoded part carries a golden collapsible with the raw soup chunk it came from.
     output: [{ k: '① dbbi — 91 symbols · UNDECODED', v: DBBI, mono: 1, open: 1 },
-             { k: '② a/b binary → matrixsumlist', v: 'matrixsumlist' },
+             { k: '② matrixsumlist', v: 'matrixsumlist', source: SOUP_BIN1, srcNote: 'a/b binary (a=0, b=1) → 8-bit ASCII' },
              { k: '③ faed — 570 symbols · UNDECODED', v: FAED, long: 1, open: 1 },
-             { k: '④ z · agda → lastwordsbeforearchichoice', v: 'lastwordsbeforearchichoice' },
-             { k: '⑤ z · cfob → thispassword', v: 'thispassword' },
-             { k: '⑥ shabef → sha256', v: 'shabef = sha + (b,e,f via a1z26 → 2,5,6) = sha256' },
-             { k: '⑦ plain English', v: 'ourfirsthintisyourlastcommand — the leading “f” is shared with shabef, so it reads “fourfirsthintisyourlastcommand”' },
-             { k: '⑧ a/b binary → enter (embedded in the inner blob)', v: 'enter' },
-             { k: '⑨ shabef → sha256 (second marker)', v: 'shabef = sha256' },
-             { k: '⑩ trailing token', v: 'anstoo' }] },
+             { z: 1 },
+             { k: '④ lastwordsbeforearchichoice', v: 'lastwordsbeforearchichoice', source: SOUP_AGDA, srcNote: 'a–i/o → a=1…i=9,o=0 → big number → hex → ASCII' },
+             { z: 1 },
+             { k: '⑤ thispassword', v: 'thispassword', source: SOUP_CFOB, srcNote: 'a–i/o → a=1…i=9,o=0 → big number → hex → ASCII' },
+             { z: 1 },
+             { k: '⑥ shabef → sha256', v: 'sha256', source: 'shabef', srcNote: 'a1z26: b=2, e=5, f=6 → “sha” + “256”' },
+             { k: '⑦ ourfirsthintisyourlastcommand', v: 'ourfirsthintisyourlastcommand', note: 'plain text in the soup; the leading “f” is shared with shabef, so it also reads “fourfirsthintisyourlastcommand”' },
+             { k: '⑧ salph_inner AES blob — 1st half', v: BLOB_H1, mono: 1, open: 1, note: 'this half + the z + the 2nd half reassemble into the 80-byte salph_inner ciphertext (salt 3ab585348552415d) — the enter binary is nested at the z' },
+             { z: 1 },
+             { k: '⑨ enter — nested in the blob at the z', v: 'enter', source: SOUP_BIN2, srcNote: 'a/b binary (a=0, b=1) → 8-bit ASCII' },
+             { k: '⑩ salph_inner AES blob — 2nd half', v: BLOB_H2, mono: 1, open: 1 },
+             { k: '⑪ shabef → sha256 (second marker)', v: 'sha256', source: 'shabef', srcNote: 'a1z26 → sha256' },
+             { k: '⑫ anstoo', v: 'anstoo', note: 'trailing plain-text token' }] },
   { title: 'Cosmic Duality — The Final Lock', status: '❌ OPEN',
     input:  [{ k: 'cosmic.txt', v: 'OpenSSL AES blob · salt 2d3f6fe06dc950e6 — the final lock', blob: 'cosmic', open: 1 }],
     method: [{ k: 'Hypothesised recipe', v: 'sha256(yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang)', open: 1 }],
@@ -265,14 +280,18 @@ export default async function walkthroughView() {
     // ---- complete per-phase pieces ledger (input · method · output), verified ----
     const piecesHost = qs('#wt-pieces', root);
     if (piecesHost) {
+      // golden collapsible: the raw soup chunk that decodes to this part
+      const srcHtml = (p) => p.source ? `<details class="pc-src"><summary>↳ soup source${p.srcNote ? ' · ' + esc(p.srcNote) : ''} — click</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(p.source)}">copy</button></div><pre class="wt-blob mono">${esc(p.source)}</pre></details>` : '';
+      const noteHtml = (p) => p.note ? `<div class="pc-note2">${esc(p.note)}</div>` : '';
       const pieceRow = (p) => {
+        if (p.z) return `<div class="pc-zrow"><span class="pc-zsep">z</span><span class="pc-zlabel">soup separator</span></div>`;
         if (p.live) return `<div class="pc-piece" data-live="${p.live}"><span class="pc-k">${esc(p.k || 'Decrypted page')} <span class="pc-livetag">live ✓</span></span><span class="pc-v"><span class="faint">decrypting…</span></span></div>`;
         if (p.img) return `<div class="pc-piece"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>image — click to view</summary><img class="pc-img" src="${esc(p.img)}" alt="${esc(p.k)}" loading="lazy"></details></span></div>`;
         if (p.matrix) return `<div class="pc-piece"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>14×14 matrix — click to view</summary><div data-matrix><span class="faint">building…</span></div></details></span></div>`;
-        if (p.long) return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>${p.v.length} chars — click to read${p.open ? ' · UNDECODED' : ''}</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(p.v)}">copy</button></div><pre class="wt-blob mono">${esc(p.v)}</pre></details></span></div>`;
+        if (p.long) return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>${p.v.length} chars — click to read${p.open ? ' · UNDECODED' : ''}</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(p.v)}">copy</button></div><pre class="wt-blob mono">${esc(p.v)}</pre></details>${noteHtml(p)}</span></div>`;
         const val = p.mono ? `<span class="mono break">${esc(p.v)}</span>` : esc(p.v);
         const blobDetails = p.blob ? `<details class="pc-pt" data-blobtext="${esc(p.blob)}"><summary>full ciphertext — click to read</summary><div class="faint">loading…</div></details>` : '';
-        return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v">${val}<button class="copy" data-copy="${esc(p.v)}">copy</button>${blobDetails}</span></div>`;
+        return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v">${val}<button class="copy" data-copy="${esc(p.v)}">copy</button>${blobDetails}${srcHtml(p)}${noteHtml(p)}</span></div>`;
       };
       const col = (label, cls, arr) => `<div class="pc-col"><div class="pc-lab ${cls}">${label}</div>${arr.map(pieceRow).join('')}</div>`;
       piecesHost.innerHTML = PIECES.map(ph => `<article class="pc-phase">

@@ -698,3 +698,17 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
   .tried-phase > h2, .tried-cat, .tried-head h4, .tried-panel > summary { animation: none; text-shadow: 0 0 14px rgba(95,140,255,.32), 0 0 4px rgba(95,140,255,.20); }
   .sum-phase > h3, .sum-title, #chain, .chain-concl h3 { animation: none; text-shadow: 0 0 14px rgba(55,214,168,.34), 0 0 4px rgba(55,214,168,.20); }
 }
+
+/* ── SalPhaseIon soup decomposition: dark-orange z separators + golden source panels ── */
+.pc-zrow { display:flex; align-items:center; gap:8px; margin:6px 0 6px 2px; }
+.pc-zsep { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px;
+  background:#2a1400; color:#ff8c1a; border:1px solid #6b3500; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; }
+.pc-zlabel { font-size:10.5px; color:#c8772a; letter-spacing:.05em; text-transform:uppercase; }
+.pc-src { margin-top:5px; }
+.pc-src > summary { cursor:pointer; color:#e3b341; font-size:11.5px; list-style:none; }
+.pc-src > summary::-webkit-details-marker { display:none; }
+.pc-src > summary::before { content:'▸ '; color:#e3b341; }
+.pc-src[open] > summary { color:#f2cf73; }
+.pc-src[open] > summary::before { content:'▾ '; }
+.pc-src pre.wt-blob { border-color:#5a4410; background:#16120a; }
+.pc-note2 { font-size:11px; color:#8b97a8; margin-top:4px; line-height:1.5; }
