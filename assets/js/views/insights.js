@@ -25,8 +25,8 @@ const CHAIN = [
     refs: ['vanity-address-kills-brainwallet'] },
   { t: `<b>The blobs are independent — no "scattered-AES" shortcut.</b> The four AES blobs have their own random salts, share no 16-byte ciphertext block, and XOR to noise. They are independent containers; the puzzle's linkage lives in key-derivation/narrative, not in combining the blobs. Each needs its own passphrase.`,
     refs: ['blob-independence-conclusion', 'blob-repeated-block-shared-block-scan', 'blob-xor-two-80byte-blobs', 'blob-multi-blob-detection-scattered-signature'] },
-  { t: `<b>There is no hidden stage and no external rescue.</b> Wayback has no post-cosmic page (the 64-hex "stage" URLs are just the SPA shell); the genesis QR is only the prize-address link; the famous "SOLVED" posts are fabricated (their keys fail on the real blob). The creator's "another door" is not a discoverable URL.`,
-    refs: ['wayback-cdx-gsmg-urls-spa-shell', 'genesis-qr-decoded-blockchain-link'] },
+  { t: `<b>There is no hidden stage and no external rescue.</b> Wayback has no post-cosmic page (the 64-hex "stage" URLs are just the SPA shell); the genesis QR is only the prize-address link — and it is a perfectly standard Byte/UTF-8/level-L QR that reproduces byte-exactly from that URL, so even its error-correction and format bits hide nothing; the famous "SOLVED" posts are fabricated (their keys fail on the real blob). The creator's "another door" is not a discoverable URL.`,
+    refs: ['wayback-cdx-gsmg-urls-spa-shell', 'genesis-qr-decoded-blockchain-link', 'genesis-qr-standard-reproduced-from-url'] },
   { t: `<b>Two under-exploited artifacts remain.</b> A fourth, orphaned OpenSSL blob (salt <code>74c974e3</code>, from a hex "Salted__" gsmg.io URL path) and an on-chain layer of 50 OP_RETURN messages (mostly solver dust, a few suggestive phrases) are catalogued but unsolved.`,
     refs: ['urlblob-4th-orphaned-blob-salt-74c974e3', 'opreturn-50-messages-discovered', 'opreturn-soup-token-concat'] },
 ];

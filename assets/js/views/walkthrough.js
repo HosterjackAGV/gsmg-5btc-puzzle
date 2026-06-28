@@ -8,7 +8,45 @@ import { saltOf, decryptBlob, sha256Hex } from '../crypto.js';
 import { esc, qs, qsa, on, copy } from '../util.js';
 import { byPhase, phaseKeyForHeading, OUTCOMES } from '../../../content/attempts.js';
 import { WATCHED } from '../../../content/donations.js';
+import { MATRIX } from '../../../content/matrix.js';
 import { getPrices, getBalance, statusFor, peek, poll, fmtUsd, fmtAmt } from '../onchain.js';
+
+// The puzzle-relevant passage of "The Warning (Inner Mix)" by Logic (the Phase-1 song).
+const LYRICS = `Phase one
+The seed is planted when opposites attract
+Can you dig it?
+It takes the physical to create the physical
+
+Phase two
+The flower blossoms through what seems to be a concrete surface
+I.e. greed, racism, insanity, physical and social handicaps
+These are the things that mob the flower
+Red rose or black rose; no in-between
+
+Phase 3
+The Judgement
+If it were to fall upon you today, which flower would you be?
+The red rose or the black?
+
+This is the warning`;
+
+// Render the 14×14 genesis matrix colored by the puzzle lore (black/white/blue/yellow/#fefefe),
+// with a button to strip the colors to plain white for reading. (Data is pixel-exact from puzzle.png.)
+function coloredMatrixHTML() {
+  const blue = new Set(MATRIX.blue.map(x => x.join(','))), yellow = new Set(MATRIX.yellow.map(x => x.join(',')));
+  const fefefe = new Set((MATRIX.fefefe || []).map(x => x.join(',')));
+  let cells = '';
+  for (let r = 0; r < MATRIX.grid.length; r++) for (let c = 0; c < MATRIX.grid[r].length; c++) {
+    const v = MATRIX.grid[r][c], rc = r + ',' + c;
+    const cls = blue.has(rc) ? 'cm-blue' : yellow.has(rc) ? 'cm-yellow' : fefefe.has(rc) ? 'cm-fefefe' : (v ? 'cm-on' : 'cm-off');
+    cells += `<span class="cm-cell ${cls}" title="row ${r + 1}, col ${c + 1} (from 1) · ${r},${c} (from 0) = ${v}">${v}</span>`;
+  }
+  return `<div class="cm-wrap">
+    <div class="row" style="margin-bottom:8px"><button class="btn ghost sm" type="button" data-cm-plain>Remove colors (plain)</button></div>
+    <div class="cm-grid" data-cm-grid>${cells}</div>
+    <div class="cm-legend"><span class="cm-cell cm-on">1</span> black = 1 · <span class="cm-cell cm-off">0</span> white = 0 · <span class="cm-cell cm-blue">1</span> blue · <span class="cm-cell cm-yellow">0</span> yellow · <span class="cm-cell cm-fefefe">0</span> #FEFEFE cell (7,4)/(8,5)</div>
+  </div>`;
+}
 
 const STATUS = {
   available: { cls: 'st-ok', label: 'available', tip: 'Funds are present and intact.' },
@@ -41,14 +79,19 @@ const LIVE_KEYS = { phase2: 'causality', phase3: P2_PW, phase32: P3_PW };
 // 'blob' → a raw ciphertext shown below; 'live' → decrypted in-browser; 'open' → unsolved.
 const PIECES = [
   { title: 'Phase 0 — Genesis / The Seed Is Planted', status: '✅',
-    input:  [{ k: 'Genesis grid', v: 'puzzle.png — a 14×14 grid (196 tiles = 196 bits)' }],
+    input:  [{ k: 'Genesis image (puzzle.png)', img: 'assets/walkthrough/puzzle.png' },
+             { k: 'The 14×14 matrix, colored by the puzzle lore', matrix: true },
+             { k: 'Grid summary', v: 'puzzle.png — 14×14 tiles (196 bits); 15 blue, 9 yellow, 1 #FEFEFE cell at (7,4)/(8,5)' }],
     method: [{ k: 'Read', v: 'counter-clockwise inward spiral of bits → 8-bit ASCII' }],
     output: [{ k: 'Decoded URL', v: 'gsmg.io/theseedisplanted', mono: 1 },
              { k: 'matrixsumlist · row-sums', v: '610876654997879', mono: 1 },
              { k: 'matrixsumlist · col-sums', v: '8108108736759668', mono: 1 }] },
   { title: 'Phase 1 — The Warning', status: '✅',
-    input:  [{ k: 'theseedisplanted page', v: 'a hidden password form + scrambled images' }],
-    method: [{ k: 'Song', v: '“The Warning” by Logic — the line after the lyric “Phase two”' }],
+    input:  [{ k: 'theseedisplanted page', v: 'a hidden password form + scrambled images' },
+             { k: 'The Warning page — scrambled image tiles', img: 'assets/walkthrough/phase1-assets/warning-logic.png' }],
+    method: [{ k: 'Box transcription', v: 'WAR + NING → WARNING · LO + GIC → LOGIC (plus the on-tile lyric fragments “Can you dig it?” and “warning”)' },
+             { k: 'Song', v: '“The Warning” by Logic — the line right after the lyric “Phase two”' },
+             { k: 'Song lyrics (the puzzle-relevant passage)', v: LYRICS, long: 1 }],
     output: [{ k: 'Passphrase', v: 'theflowerblossomsthroughwhatseemstobeaconcretesurface', mono: 1 },
              { k: 'Redirect URL', v: 'gsmg.io/choiceisanillusioncreatedbetweenthosewithpowerandthosewithoutaveryspecialdessertiwroteitmyself', mono: 1 }] },
   { title: 'Phase 2 — Mr. Robot', status: '✅',
@@ -91,10 +134,17 @@ const PIECES = [
     method: [{ k: 'Split', v: 'on the letter z' },
              { k: 'a/b chunks', v: '→ 8-bit binary ASCII' },
              { k: 'a–i+o chunks', v: 'a=1…i=9, o=0 → base-9 → hex → ASCII' }],
-    output: [{ k: '✅ Token 1', v: 'matrixsumlist' }, { k: '✅ Token 2', v: 'enter' },
-             { k: '✅ Token 3', v: 'lastwordsbeforearchichoice' }, { k: '✅ Token 4', v: 'thispassword' },
-             { k: '❌ dbbi — 91 symbols (UNDECODED)', v: DBBI, mono: 1, open: 1 },
-             { k: '❌ faed — 570 symbols (UNDECODED)', v: FAED, long: 1, open: 1 }] },
+    // the soup decomposes, IN ORDER, into these parts:
+    output: [{ k: '① dbbi — 91 symbols · UNDECODED', v: DBBI, mono: 1, open: 1 },
+             { k: '② a/b binary → matrixsumlist', v: 'matrixsumlist' },
+             { k: '③ faed — 570 symbols · UNDECODED', v: FAED, long: 1, open: 1 },
+             { k: '④ z · agda → lastwordsbeforearchichoice', v: 'lastwordsbeforearchichoice' },
+             { k: '⑤ z · cfob → thispassword', v: 'thispassword' },
+             { k: '⑥ shabef → sha256', v: 'shabef = sha + (b,e,f via a1z26 → 2,5,6) = sha256' },
+             { k: '⑦ plain English', v: 'ourfirsthintisyourlastcommand — the leading “f” is shared with shabef, so it reads “fourfirsthintisyourlastcommand”' },
+             { k: '⑧ a/b binary → enter (embedded in the inner blob)', v: 'enter' },
+             { k: '⑨ shabef → sha256 (second marker)', v: 'shabef = sha256' },
+             { k: '⑩ trailing token', v: 'anstoo' }] },
   { title: 'Cosmic Duality — The Final Lock', status: '❌ OPEN',
     input:  [{ k: 'cosmic.txt', v: 'OpenSSL AES blob · salt 2d3f6fe06dc950e6 — the final lock', blob: 'cosmic', open: 1 }],
     method: [{ k: 'Hypothesised recipe', v: 'sha256(yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang)', open: 1 }],
@@ -217,9 +267,12 @@ export default async function walkthroughView() {
     if (piecesHost) {
       const pieceRow = (p) => {
         if (p.live) return `<div class="pc-piece" data-live="${p.live}"><span class="pc-k">${esc(p.k || 'Decrypted page')} <span class="pc-livetag">live ✓</span></span><span class="pc-v"><span class="faint">decrypting…</span></span></div>`;
+        if (p.img) return `<div class="pc-piece"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>image — click to view</summary><img class="pc-img" src="${esc(p.img)}" alt="${esc(p.k)}" loading="lazy"></details></span></div>`;
+        if (p.matrix) return `<div class="pc-piece"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>14×14 matrix — click to view</summary><div data-matrix><span class="faint">building…</span></div></details></span></div>`;
         if (p.long) return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v"><details class="pc-pt"><summary>${p.v.length} chars — click to read${p.open ? ' · UNDECODED' : ''}</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(p.v)}">copy</button></div><pre class="wt-blob mono">${esc(p.v)}</pre></details></span></div>`;
         const val = p.mono ? `<span class="mono break">${esc(p.v)}</span>` : esc(p.v);
-        return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v">${val}<button class="copy" data-copy="${esc(p.v)}">copy</button></span></div>`;
+        const blobDetails = p.blob ? `<details class="pc-pt" data-blobtext="${esc(p.blob)}"><summary>full ciphertext — click to read</summary><div class="faint">loading…</div></details>` : '';
+        return `<div class="pc-piece${p.open ? ' pc-openpiece' : ''}"><span class="pc-k">${esc(p.k)}</span><span class="pc-v">${val}<button class="copy" data-copy="${esc(p.v)}">copy</button>${blobDetails}</span></div>`;
       };
       const col = (label, cls, arr) => `<div class="pc-col"><div class="pc-lab ${cls}">${label}</div>${arr.map(pieceRow).join('')}</div>`;
       piecesHost.innerHTML = PIECES.map(ph => `<article class="pc-phase">
@@ -233,6 +286,25 @@ export default async function walkthroughView() {
           const pt = await decryptBlob(blob, await sha256Hex(answer));
           cell.innerHTML = `<details class="pc-pt"><summary>${pt.length} chars — decrypted ✓ (read)</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(pt)}">copy plaintext</button></div><pre class="wt-blob mono">${esc(pt)}</pre></details>`;
         } catch { cell.innerHTML = '<span class="faint">decrypt needs an http(s) context</span>'; }
+      });
+
+      // give every blob input piece its COMPLETE ciphertext as a collapsible
+      qsa('[data-blobtext]', piecesHost).forEach(async d => {
+        const name = d.dataset.blobtext;
+        try {
+          const r = await fetch(`ciphertexts/${name}.txt`, { cache: 'no-store' });
+          const t = (await r.text()).trim();
+          d.innerHTML = `<summary>full ciphertext (${t.length} chars) — click to read</summary><div class="row" style="margin:6px 0"><button class="copy" data-copy="${esc(t)}">copy</button></div><pre class="wt-blob mono">${esc(t)}</pre>`;
+        } catch { d.innerHTML = '<summary>full ciphertext unavailable (serve over http)</summary>'; }
+      });
+
+      // render the colored genesis matrix + wire its "plain colors" toggle
+      const cm = qs('[data-matrix]', piecesHost);
+      if (cm) cm.innerHTML = coloredMatrixHTML();
+      on(piecesHost, 'click', '[data-cm-plain]', (e, b) => {
+        const g = qs('[data-cm-grid]', b.closest('.cm-wrap')); if (!g) return;
+        const plain = g.classList.toggle('plain');
+        b.textContent = plain ? 'Show colors' : 'Remove colors (plain)';
       });
     }
 

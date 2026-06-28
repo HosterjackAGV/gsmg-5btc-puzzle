@@ -1,12 +1,12 @@
 # GSMG.io 5 BTC Puzzle — What Was Tried
 
-> A complete, human-readable catalog of **every documented attempt** to advance the open endgame — both the community’s and this project’s — with the exact input, method, and output of each, badged by outcome. 136 attempts total. This mirrors the in-site **What was tried** section; the walkthrough’s per-phase “What was tried to move forward” panels deep-link to each entry.
+> A complete, human-readable catalog of **every documented attempt** to advance the open endgame — both the community’s and this project’s — with the exact input, method, and output of each, badged by outcome. 137 attempts total. This mirrors the in-site **What was tried** section; the walkthrough’s per-phase “What was tried to move forward” panels deep-link to each entry.
 
-**98** verified fail · **38** verified with new insight · **0** unverified
+**98** verified fail · **39** verified with new insight · **0** unverified
 
 ---
 
-## Phase 0 — Genesis image (matrix · yellowblueprimes · QR) (15)
+## Phase 0 — Genesis image (matrix · yellowblueprimes · QR) (16)
 
 ### cellular automaton
 
@@ -46,6 +46,15 @@
 - **Method:** Decoded the QR from the full-edge image (earlier attempts failed because the code is flush to the left margin and got cropped). Pixel analysis also re-checked the palette for any hidden third color.
 - **Output:** The QR decodes to https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe — a public blockchain-explorer link to the prize address, with no extra payload. Palette shows only white/black/blue/yellow plus the red border (no hidden third color). The genesis image is fully accounted for.
 - **Insight:** The genesis QR code resolves to a plain blockchain.com link to the prize address (no hidden door), closing the long-open question of whether the QR carried a secret payload.
+
+<a id="t-genesis-qr-standard-reproduced-from-url"></a>
+#### QR reproduced byte-exact from the prize-address URL (Byte/UTF-8/Auto mask/7% EC) — no hidden bits
+💡 **Verified — new insight** · community · *community cross-check (a solver re-encoded the URL and compared the QR module-for-module)*
+
+- **Input:** The QR code in puzzle.png and the string https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe. Standard encoder config: Byte mode, UTF-8, mask = Auto, error-correction level L (7%).
+- **Method:** Re-encoded the URL with a standard QR encoder using Byte/UTF-8/Auto-mask/level-L and compared the resulting modules against the QR in the image — the data bits, the Reed-Solomon error-correction (redundancy) bits, the format/version 'service' bits, and the chosen mask — module for module. (Independently re-derived here: that URL at level-L produces a version-4, 33x33 QR.)
+- **Output:** The puzzle's QR is a standard version-4 (33x33) Byte-mode, level-L code that reproduces from the URL with NOT A SINGLE BIT swapped — every data, error-correction and format bit matches the textbook encoding. Nothing is smuggled into the redundancy, the mask, or the format bits.
+- **Insight:** The genesis QR is a perfectly standard QR of the blockchain.com prize-address URL (Byte/UTF-8/Auto-mask/EC-level-L, version 4) — byte-exactly reproducible, so its error-correction and format/service bits carry zero hidden data. This definitively closes the 'is there steganography in the QR' question, hardening the plain-decode result: the QR is just a convenience link to the prize address, not a puzzle input.
 
 ### matrix re-read
 

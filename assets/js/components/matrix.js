@@ -9,12 +9,14 @@ import { qs, on } from '../util.js';
 export function matrixWidget() {
   const blue = new Set(MATRIX.blue.map(([r, c]) => r + ',' + c));
   const yellow = new Set(MATRIX.yellow.map(([r, c]) => r + ',' + c));
+  const fefefe = new Set((MATRIX.fefefe || []).map(([r, c]) => r + ',' + c));
 
   let cells = '';
   for (let r = 0; r < MATRIX.grid.length; r++) {
     for (let c = 0; c < MATRIX.grid[r].length; c++) {
       const v = MATRIX.grid[r][c];
-      const tint = blue.has(r + ',' + c) ? 'blue' : yellow.has(r + ',' + c) ? 'yellow' : '';
+      const rc = r + ',' + c;
+      const tint = blue.has(rc) ? 'blue' : yellow.has(rc) ? 'yellow' : fefefe.has(rc) ? 'fefefe' : '';
       cells += `<div class="mcell ${v ? 'on' : 'off'} ${tint}" data-rc="${r},${c}" title="row ${r + 1}, col ${c + 1} (counting from 1) · row ${r}, col ${c} (counting from 0) = ${v}"></div>`;
     }
   }
