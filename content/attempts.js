@@ -950,6 +950,19 @@ export const ATTEMPTS = [
   "insight": ""
  },
  {
+  "id": "endgame-bip38-ec-multiply-hypothesis",
+  "phase": "salphaseion",
+  "category": "blob combination",
+  "title": "The endgame may encode a BIP38 (EC-multiply) passphrase-protected key — 'shabef four first' = BIP38's addresshash step",
+  "who": "community",
+  "source": "community discussion (Telegram, 2025-08)",
+  "input": "The Phase-3.2 / INCASE / salph instructions and their oddly specific phrasing: '23 ciphers, 16 encryptions and/or 7 intertwined passwords', '24 random bytes', 'shabefourfirsthintisyourlastcommand', 'shabefanstoo', and the 'half and better half' two-key framing.",
+  "method": "Read those instructions as the construction of a BIP38 passphrase-protected private key in EC-multiply mode (record = 0x01 0x43 + flagbyte + addresshash[4] + ownerentropy[8] + encryptedpart1[8] + encryptedpart2[16]). Concretely: 'shabef FOUR FIRST hint is your last command' -> take the FIRST FOUR bytes of SHA256(SHA256(generated address)) = BIP38's addresshash; 'shabef ans too' -> the double-SHA; '7 intertwined passwords' -> seedb[16..23] XOR derivedhalf1[16..31] with key = derivedhalf2.",
+  "output": "A concrete format hypothesis the catalog had not recorded: the final key may be a BIP38 EC-multiply container rather than plaintext -- which would explain the 'half and better half' two-key framing (the BIP38 owner/intermediate split) and the otherwise-strange 'addresshash' / 'four first' phrasing. Untested end-to-end; offered as a structural lead worth building a BIP38 record from the puzzle's bytes.",
+  "outcome": "unverified",
+  "insight": ""
+ },
+ {
   "id": "blob-independence-conclusion",
   "phase": "salphaseion",
   "category": "blob combination",
