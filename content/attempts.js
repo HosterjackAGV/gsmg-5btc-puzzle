@@ -52,6 +52,19 @@ export const ATTEMPTS = [
   "insight": ""
  },
  {
+  "id": "yellowblue-indices-oeis-a007522-primes",
+  "phase": "genesis",
+  "category": "matrix re-read",
+  "title": "The blue/yellow square indices match OEIS A007522 (primes ≡ -1 mod 8) — 49 (=7×7) primes, and it includes 103",
+  "who": "community",
+  "source": "community discussion (Telegram, 2025-09)",
+  "input": "The genesis grid's blue + yellow colored-cell indices vs OEIS A007522 = primes of the form 8n+7 (primes congruent to -1 mod 8): 7, 23, 31, 47, 71, 79, 103, 127, 151, 167, 191, 199, 223, 239, ... (14 of them below 256).",
+  "method": "Compared the prime indices of the blue/yellow squares against named OEIS prime sequences; A007522 (8n+7 primes) lines up -- the first 11 primes of A007522 are reported to match the primes at the blue+yellow square indices.",
+  "output": "A concrete, NAMED candidate for the 'yellowblueprimes' prime set: A007522 (primes = -1 mod 8), with 49 (=7x7) primes in range, 14 below 256 -- and notably it CONTAINS 103, the dimension of the Cosmic Duality 103x103 matrix. A specific, checkable prime list to test against dbbi/faed and the genesis Y/B cells, where prior public work used only the small primes {2,3,5,7}.",
+  "outcome": "unverified",
+  "insight": ""
+ },
+ {
   "id": "ledger-image-forensics-genesis-png",
   "phase": "genesis",
   "category": "image forensics",
