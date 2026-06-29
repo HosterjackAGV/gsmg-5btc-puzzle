@@ -5,6 +5,9 @@
 //
 // outcome ∈ 'unverified' | 'verified-fail' | 'verified-insight'
 // phase   ∈ 'genesis' | 'mrrobot' | 'architect' | 'salphaseion'
+// author  ∈ (optional) the VERIFIED Telegram @handle of the contributor who uncovered it; rendered as
+//           a "The author" badge. Only set when the handle is confidently confirmed (the export stores
+//           numeric sender IDs, so most contributors can't be resolved to a handle — left unset then).
 
 export const PHASE_LABELS = {
   genesis:     'Phase 0 — Genesis image (matrix · yellowblueprimes · QR)',
@@ -315,6 +318,7 @@ export const ATTEMPTS = [
   "title": "Is the EBCDIC / CP1141 code page a real decode step, or just a coincidence of the a-z range? (community debate)",
   "who": "community",
   "source": "community discussion (Telegram, 2026-06)",
+  "author": "@CoruNethron",
   "input": "The Phase 3.2 'Beaufort blob' (the Architect speech). Sparky's critique: the post-AES bytes use only 26 distinct values, which is simply a property of a lowercase a-z alphabet, so reading an 'EBCDIC 1141 code page' into it is unjustified -- a Beaufort (a wrapped negative shift over a-z) is the real operation and the code page is a post-hoc rationalisation nobody verified for themselves. Counter (the blob's poster, and @CoruNethron): CP1141 is literally the transform in the working pipeline, and CP273 (German/Dutch = 1141 plus the EUR sign) is itself a hint.",
   "method": "Re-examined whether the EBCDIC/CP1141 step carries meaning or is mechanical. @CoruNethron posted a full reproducible one-liner of the Phase 2->3->3.2 chain whose final stage is `... | tail -c+448 | head -c 1539 | iconv -f ISO-8859-1 -t CP1141 | beaufort --decrypt --key=thematrixhasyou --alphabet=abcdefghijklmnopqrstuvwxyz` -- i.e. reinterpret the Latin-1 bytes AS CP1141, then Beaufort-decrypt with key 'thematrixhasyou' over the plain a-z alphabet. He notes you can pipe the bytes through iconv in the 'wrong' code page directly and read the plaintext (he reports it begins 'yourlifeisthesum...'). Reference Beaufort impl: github.com/jwerle/libbeaufort.",
   "output": "Unresolved, with both sides partly right. The code-page step is unquestionably PRESENT and reproducible: this project's own harness and Denis's one-liner both run `iconv ... CP1141` before the Beaufort (key 'thematrixhasyou'), so 'zero use of a code page' overstates it. But Sparky's caution lands too -- 26 distinct byte values follow automatically from an a-z Beaufort, so that property is NOT independent evidence that 'EBCDIC 1141' encodes a hidden clue; the code page may be a mechanical byte-reinterpretation that happens to land the a-z range rather than a deep signal.",

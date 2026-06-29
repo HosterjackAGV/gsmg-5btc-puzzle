@@ -469,6 +469,7 @@ table.board td.bh{background:var(--panel2);color:var(--gold);font-weight:700}
 .badge-fail      { background:rgba(214,69,69,.12);  color:#ff9b9b; border-color:rgba(214,69,69,.4); }
 .badge-insight   { background:rgba(46,200,160,.12); color:#5fe9c4; border-color:rgba(46,200,160,.42); }
 .badge-unverified{ background:rgba(220,170,60,.12); color:#f2cf73; border-color:rgba(220,170,60,.42); }
+.badge-author    { background:rgba(150,110,255,.13); color:#c7a8ff; border-color:rgba(150,110,255,.42); }
 
 /* per-phase panel inside the walkthrough */
 .tried-panel { margin:14px 0 22px; border:1px solid #1c2330; border-radius:12px; background:#0c0f16; overflow:hidden; }

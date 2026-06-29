@@ -11,6 +11,7 @@ function entryHtml(a) {
     <div class="tried-head">
       <h4>${esc(a.title)}</h4>
       <span class="tbadge ${o.cls}" title="${esc(o.desc)}">${o.label}</span>
+      ${a.author ? `<span class="tbadge badge-author" title="The author — the contributor who uncovered this (verified Telegram @handle)">👤 The author · ${esc(a.author)}</span>` : ''}
     </div>
     <div class="tried-meta"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span> · <span class="src">${esc(a.source)}</span></div>
     <dl class="tried-io">
