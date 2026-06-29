@@ -677,6 +677,19 @@ export const ATTEMPTS = [
   "insight": ""
  },
  {
+  "id": "dbbi-otp-incase-key-youwon",
+  "phase": "salphaseion",
+  "category": "polyalphabetic cipher",
+  "title": "dbbi as a one-time pad keyed by 'INCASEYOUMANAGE...' — the output contains 'YOUWON' + a 64-char tail",
+  "who": "community",
+  "source": "community discussion (Telegram, 2024-04 / 2024-09)",
+  "input": "dbbi (the 91-char string dbbibfbhccbeg...beeeabe) as ciphertext; key = the 91-char Phase-3.2 line INCASEYOUMANAGETOCRACKTHISTHEPRIVATEKEYSBELONGTOHALFANDBETTERHALFANDTHEYALSONEEDFUNDSTOLIVE, used as a one-time pad (A-Z Vigenere-style subtraction, e.g. via boxentriq's OTP tool).",
+  "method": "dbbi and the 'INCASE...' sentence are BOTH exactly 91 characters, so treat the sentence as a same-length one-time-pad key over dbbi and read the result.",
+  "output": "Result = VOZIJBDTIQBRGVEOMZNBC + YOUWON + XCPKWGBNAXDGJGDUNNVMPABTAFPAAXMJYLZBUWERDNXYDESKUOBXCAMVDJLQTSGA. It contains the literal word 'YOUWON', and EXACTLY 64 characters follow it (21 + 6 + 64 = 91) -- 64 hex chars being the length of a Bitcoin private key. The 21- and 64-char chunks around it are not legible. Unconfirmed and possibly coincidental, but flagged by its author as the only run to surface a real word out of dbbi, and the 64-char tail is suggestive.",
+  "outcome": "unverified",
+  "insight": ""
+ },
+ {
   "id": "ledger-vigenere-beaufort-incase-alphabet",
   "phase": "salphaseion",
   "category": "polyalphabetic cipher",
