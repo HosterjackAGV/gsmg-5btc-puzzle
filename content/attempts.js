@@ -1769,6 +1769,19 @@ export const ATTEMPTS = [
   "insight": "The 1GSMG1 prefix is a brute-forced vanity prefix, so the prize private key is random and cannot be derived from any phrase, ruling out every brainwallet/split-key/address-derivation path."
  },
  {
+  "id": "onchain-ecdsa-nonce-reuse-ruled-out",
+  "phase": "salphaseion",
+  "category": "on-chain forensics",
+  "title": "ECDSA nonce-reuse (repeated-r) key recovery checked on the GSMG signatures + prize address — no reuse",
+  "who": "community",
+  "source": "community discussion (Telegram, 2024-12)",
+  "input": "The on-chain ECDSA signatures of the GSMG creator's spends (pre/post-halving) and the prize address. The classic repeated-nonce leak: if two signatures share the same r (same nonce k), the signer's private key is directly recoverable from (r, s1, s2, z1, z2) modulo the secp256k1 order n.",
+  "method": "Extracted the r values from the relevant signatures (e.g. r1=dbe31ca9440892ab... vs r2=1df5cf8403c93099...) and checked for a repeated nonce; ran the standard sympy mod_inverse recovery end-to-end (including WIF output), validated against a known nonce-reuse demo address 1BFhrfTTZP3Nw4BNy4eX4KFLsn9ZeijcMm, and tested the prize address directly.",
+  "output": "No repeated nonce: the r values differ across the GSMG signatures, so the key cannot be recovered this way, and the prize address yielded nothing ('already tested with the prize address ... nope'). The recovery math is correct; there is simply no exploitable repeated-r on the relevant addresses.",
+  "outcome": "verified-insight",
+  "insight": "The GSMG signatures use distinct ECDSA nonces (no repeated r), so the on-chain nonce-reuse key-recovery shortcut is closed -- consistent with the prize key being random (vanity address) and obtainable only from the cosmic blob."
+ },
+ {
   "id": "wayback-cdx-gsmg-urls-spa-shell",
   "phase": "salphaseion",
   "category": "on-chain forensics",
