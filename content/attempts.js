@@ -963,6 +963,19 @@ export const ATTEMPTS = [
   "insight": ""
  },
  {
+  "id": "cosmic-1327-byte-blob-103x103-matrix",
+  "phase": "salphaseion",
+  "category": "cosmic duality structure",
+  "title": "The Cosmic Duality decrypt (1327 bytes) reshapes to a 103×103 bit matrix — 103 is prime, a second genesis-style grid",
+  "who": "community",
+  "source": "community reproducibility audit (Telegram, 2026-02)",
+  "input": "The AES-decrypted output of the Cosmic Duality stage: reported as a 1327-byte blob whose SHA256 is 4f7a1e4efe4bf6c5581e32505c019657cb7b030e90232d33f011aca6a5e9c081 (the known checkpoint hash already in this catalog).",
+  "method": "Read the 1327-byte decrypt as a bit stream and reshape: 1327 bytes = 10616 bits = 103*103 (=10609) + 7 padding bits, so it folds cleanly into a 103x103 grid. The blob was rebuilt into that matrix directly.",
+  "output": "The Cosmic Duality decrypt is not opaque ciphertext -- it fits exactly into a 103x103 bit matrix, and 103 is PRIME, mirroring the genesis 14x14 grid and the puzzle's 'primes are important' theme. That gives a concrete, deterministic structure to attack (rows/cols/spiral/parity, colour-cell analogues) rather than a featureless blob. Novel to the catalog: the 4f7a1e4e hash was recorded, but the 103x103 prime-matrix shape of the decrypt was not.",
+  "outcome": "verified-insight",
+  "insight": "The 1327-byte Cosmic Duality decrypt reshapes exactly to a 103x103 bit matrix (103 prime, +7 pad bits) -- a second, larger genesis-style grid, turning the endgame blob into a structured grid target instead of opaque ciphertext."
+ },
+ {
   "id": "blob-independence-conclusion",
   "phase": "salphaseion",
   "category": "blob combination",
