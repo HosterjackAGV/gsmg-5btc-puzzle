@@ -924,6 +924,19 @@ export const ATTEMPTS = [
   "insight": ""
  },
  {
+  "id": "blob-aes-key-wrap-format-hypothesis",
+  "phase": "salphaseion",
+  "category": "blob combination",
+  "title": "The 'Salted__' prefix does NOT prove aes-256-cbc — an unsolved blob could be openssl AES-KEY-WRAP (id-aes256-wrap-pad)",
+  "who": "community",
+  "source": "community discussion (Telegram, 2026-05)",
+  "input": "The unsolved 'Salted__' blobs (U2FsdGVkX18..., notably the small 80-byte salph_inner / p32_trailing), universally assumed to be aes-256-cbc.",
+  "method": "Showed that `openssl enc` writes the SAME 'Salted__' + 8-byte-salt header for ANY -pass-driven cipher (EVP_BytesToKey), including the RFC-3394 AES key-wrap cipher -id-aes256-wrap-pad. Demonstration: `openssl enc -id-aes256-wrap-pad -e -pass pass:<hex> -in keyfile | base64` produces a U2FsdGVkX18... blob, recovered by `base64 -d | openssl enc -id-aes256-wrap-pad -d -pass pass:<hex>`. So the Salted__ prefix alone does not identify the cipher mode.",
+  "output": "A format hypothesis the catalog had not recorded: a blob that yields only noise under aes-256-cbc might instead be an AES-KEY-WRAP container holding a RAW (private) key rather than narrative text -- a natural fit for the small 80-byte blobs where 'the key is inside the blob'. Untested against the actual blobs here; worth running `-id-aes256-wrap-pad -d` over the unsolved blobs with the candidate passphrases.",
+  "outcome": "unverified",
+  "insight": ""
+ },
+ {
   "id": "blob-independence-conclusion",
   "phase": "salphaseion",
   "category": "blob combination",
