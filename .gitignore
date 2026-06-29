@@ -18,6 +18,11 @@ jrk_*.txt
 *jrk*messages*
 *_all_messages.txt
 
+# ── Telegram group export — huge (100s of MB) + personal data; sift LOCALLY only ──
+telegram_export.*
+*telegram_export*
+telegram_export_media/
+
 # ── Claude / AI tooling — never tracked or pushed ────────────────────────────
 # Everything relating to Claude Code stays local to the maintainer's machine.
 CLAUDE.md
