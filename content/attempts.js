@@ -690,6 +690,19 @@ export const ATTEMPTS = [
   "insight": ""
  },
  {
+  "id": "dbbi-faed-bifid-dbifhceg-btcseed",
+  "phase": "salphaseion",
+  "category": "polyalphabetic cipher",
+  "title": "Bifid on faed with a dbbi-derived alphabet ('dbifhceg') — surfaces a 'btcseed' fragment",
+  "who": "community",
+  "source": "community discussion (Telegram, 2025-06 / 2025-07)",
+  "input": "faed as ciphertext; key/alphabet derived from dbbi -- its first 13 symbols with duplicates removed give the 8-letter Bifid keyword 'dbifhceg'. dbbi is also split into 7 parts (the size of matrixsumlist), used as successive keys.",
+  "method": "The popular 'dbbi keys faed, it's a dual system' theory applied with Bifid instead of Vigenere: run a Bifid decode of faed using the dbbi-derived 'dbifhceg' alphabet, feeding dbbi's 7 parts in turn (the first part keys faed, its output keys the next, and so on).",
+  "output": "Surfaces suggestive fragments -- a first part reads as 'btcseed...', the next 'can...' -- but no coherent full plaintext or usable key emerges, and a Trifid + XOR follow-up on the tail found nothing substantial. Like the OTP 'YOUWON' run, a tantalising partial that has not been made to close.",
+  "outcome": "unverified",
+  "insight": ""
+ },
+ {
   "id": "ledger-vigenere-beaufort-incase-alphabet",
   "phase": "salphaseion",
   "category": "polyalphabetic cipher",
