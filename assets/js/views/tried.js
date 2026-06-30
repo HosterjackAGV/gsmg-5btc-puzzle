@@ -6,6 +6,7 @@ import { ATTEMPTS, PHASE_LABELS, PHASE_ORDER, OUTCOMES, byPhase } from '../../..
 import { esc, qs, qsa } from '../util.js';
 import { demoHtml, mountDemos } from '../components/demo.js';
 import { toItem, initSearch } from '../components/search.js';
+import { commentsHtml, mountComments } from '../components/comments.js';
 
 function entryHtml(a) {
   const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
@@ -23,6 +24,7 @@ function entryHtml(a) {
       ${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}
     </dl>
     ${demoHtml(a.id)}
+    ${commentsHtml(a.id)}
   </article>`;
 }
 
@@ -64,6 +66,7 @@ export default async function triedView(ctx = {}) {
 
   function mount(root) {
     mountDemos(root);
+    try { mountComments(root); } catch (e) { console.error('comments', e); }
     try { initSearch(root, 'tried', ATTEMPTS.map(a => toItem(a, PHASE_LABELS[a.phase])), { phases: PHASE_ORDER }); } catch (e) { console.error('search', e); }
     if (focus) {
       const el = qs('#t-' + (window.CSS && CSS.escape ? CSS.escape(focus) : focus), root) || document.getElementById('t-' + focus);

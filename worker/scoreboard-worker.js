@@ -14,6 +14,10 @@
 //   (Optional) Admin "erase scoreboard" button gated to one GitHub login: set GH_OAUTH_ID /
 //   GH_OAUTH_SECRET / SITE_URL (+ optional ADMIN_LOGIN, default HosterjackAGV). See docs/SCOREBOARD.md.
 //
+// This same Worker ALSO serves anonymous per-attempt COMMENTS at GET/POST `/comments`, stored in a
+// second file `comments.json` in the SAME Gist (created automatically — no extra setup, no login,
+// reuses GH_TOKEN + GIST_ID). Put <workerUrl>/comments into content/site.js → commentsUrl.
+//
 // The simulation below is a verbatim copy of assets/js/games/snake-core.js — keep them in sync.
 
 const N = 14, START_LEN = 3;
@@ -134,6 +138,50 @@ async function writeGist(env, board) {
   if (!r.ok) throw new Error('gist write ' + r.status);
 }
 
+// ---- per-attempt comments (no login; the same Gist holds a separate comments.json) ----
+const COMMENTS_FILE = (env) => env.COMMENTS_FILE || 'comments.json';
+const cleanComment = (s) => String(s || '').replace(/\r/g, '').replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 1500);
+async function readComments(env) {
+  const r = await fetch('https://api.github.com/gists/' + env.GIST_ID, { headers: GH(env) });
+  if (!r.ok) throw new Error('gist read ' + r.status);
+  const g = await r.json();
+  const f = g.files && g.files[COMMENTS_FILE(env)];
+  let o = {}; try { o = JSON.parse((f && f.content) || '{}'); } catch {}
+  return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {};
+}
+async function writeComments(env, obj) {
+  const r = await fetch('https://api.github.com/gists/' + env.GIST_ID, {
+    method: 'PATCH', headers: { ...GH(env), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ files: { [COMMENTS_FILE(env)]: { content: JSON.stringify(obj) } } }),
+  });
+  if (!r.ok) throw new Error('gist write ' + r.status);
+}
+async function handleComments(request, env, url) {
+  if (request.method === 'GET') {
+    const all = await readComments(env);
+    const qid = url.searchParams.get('id');
+    return json({ comments: qid ? { [qid]: all[qid] || [] } : all });
+  }
+  if (request.method === 'POST') {
+    let body; try { body = await request.json(); } catch { return json({ error: 'bad json' }, 400); }
+    if (body && body.hp) return json({ ok: true });                         // honeypot: bots fill it → store nothing
+    const id = String((body && body.id) || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80);
+    const text = cleanComment(body && body.text);
+    if (!id || !text) return json({ error: 'a comment and a valid attempt id are required' }, 400);
+    const name = cleanName(body && body.name);
+    const all = await readComments(env);
+    const thread = all[id] || (all[id] = []);
+    const last = thread[thread.length - 1];
+    if (last && last.u === name && last.t === text) return json({ ok: true, comment: last, count: thread.length });  // ignore double-submit
+    const entry = { u: name, t: text, ts: Date.now() };
+    thread.push(entry);
+    const cap = +(env.MAX_COMMENTS_PER_ID || 500); if (thread.length > cap) all[id] = thread.slice(-cap);
+    await writeComments(env, all);
+    return json({ ok: true, comment: entry, count: all[id].length });
+  }
+  return json({ error: 'method' }, 405);
+}
+
 // ---- group a flat list of games into one entry per player (their best) + all their games ----
 function groupBoard(games, maxUsers, perUser) {
   const byName = new Map();
@@ -212,6 +260,7 @@ export default {
     if (path === '/wipe' && request.method === 'POST') return handleWipe(request, env);
     if (!env.GH_TOKEN || !env.GIST_ID) return json({ error: 'scoreboard not configured (set GH_TOKEN + GIST_ID)' }, 503);
     try {
+      if (path === '/comments') return await handleComments(request, env, url);
       if (request.method === 'GET') return json({ board: groupBoard(await readGist(env), 25, MAX_PER_USER) });
       if (request.method === 'POST') {
         let body; try { body = await request.json(); } catch { return json({ error: 'bad json' }, 400); }

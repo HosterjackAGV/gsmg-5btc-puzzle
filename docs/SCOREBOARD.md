@@ -112,3 +112,22 @@ It uses GitHub OAuth: the Worker asks GitHub who you are and only mints an admin
 - That session is a token **HMAC-signed with the Worker's secret**, so it can't be forged; it **expires in
   24 h** and can do **nothing but erase** (no score access, no repo access). The Worker re-verifies it on
   every erase. The token rides back in the URL for a blink, then the page strips it from the address bar.
+
+---
+
+## Comments (same Worker, no login)
+
+The same Worker also powers the **anonymous per-attempt comments** under each entry in *What was tried*.
+There's nothing extra to set up: comments live in a second file `comments.json` in the **same Gist**
+(created automatically on the first post) and reuse the same `GH_TOKEN` + `GIST_ID`. No login is needed —
+people post under any name they type; the GitHub token stays on the Worker, never in the page.
+
+To turn it on:
+1. **Redeploy** `worker/scoreboard-worker.js` (it now has the `/comments` route) — paste it into your
+   Worker and Deploy, exactly like a rules update.
+2. Put `<your-worker-url>/comments` into [content/site.js](../content/site.js) → `commentsUrl`.
+
+That's it. `GET /comments` returns every thread; `POST /comments {id,name,text}` appends one (name is
+sanitized, text is capped at 1500 chars, a honeypot field drops obvious bots, threads are bounded to the
+most recent `MAX_COMMENTS_PER_ID` — default 500). Until the Worker is redeployed, the form shows a
+friendly "couldn't load / could not post" message and nothing breaks.
