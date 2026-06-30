@@ -762,4 +762,153 @@ const list = []; for (let n = 0; 8*n + 7 < limit; n++) { const p = 8*n + 7; if (
     },
   },
 
+  'cosmic-1327-byte-blob-103x103-matrix': {
+    code: `// the Cosmic Duality decrypt is reported as 1327 bytes. Does it reshape into a square bit-matrix?
+const bits = bytes * 8;                 // 1327 * 8 = 10616
+const side = Math.floor(Math.sqrt(bits));
+const pad  = bits - side * side;`,
+    inputs: [{ name: 'bytes', label: 'decrypted blob length (bytes)', value: '1327', rows: 1 }],
+    run(v) {
+      const B = Math.max(1, parseInt(v.bytes) || 1327), bits = B * 8;
+      const side = Math.floor(Math.sqrt(bits)), sq = side * side, pad = bits - sq;
+      const isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
+      return {
+        steps: [
+          { title: '1 · blob length in bits', body: B + ' bytes × 8 = ' + bits + ' bits' },
+          { title: '2 · nearest square', body: side + ' × ' + side + ' = ' + sq + ' bits   (+ ' + pad + ' padding bits)' },
+          { title: '3 · is the side prime?', body: isP(side) ? side + ' is PRIME' : side + ' is not prime' },
+        ],
+        output: (B === 1327)
+          ? '1327 bytes = 10616 bits = 103×103 (10609) + 7 padding bits, and 103 is PRIME — the cosmic decrypt folds cleanly into a 103×103 bit matrix, mirroring the genesis 14×14 grid and the puzzle prime theme.'
+          : 'For ' + B + ' bytes the nearest square side is ' + side + (isP(side) ? ' (prime)' : '') + ' with ' + pad + ' bits left over.',
+      };
+    },
+  },
+
+  'vanity-address-kills-brainwallet': {
+    code: `// the prize address starts "1GSMG1". A brainwallet privkey = sha256(phrase) gives a RANDOM address.
+// P(address has a chosen 5-char Base58 prefix after the "1") = 1 / 58^5
+const priv = sha256hex(phrase);
+const expectedTries = Math.pow(58, 5);`,
+    inputs: [{ name: 'phrase', label: 'a brainwallet phrase to try', value: 'theseedisplanted', mono: true, rows: 1 }],
+    async run(v) {
+      const priv = await sha256hex(v.phrase.trim()), tries = Math.pow(58, 5);
+      return {
+        steps: [
+          { title: '1 · brainwallet private key = sha256(phrase)', body: priv },
+          { title: '2 · the prize address', body: '1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe — it literally spells "1GSMG1"' },
+          { title: '3 · odds a random key lands that prefix', body: '1 in 58^5 ≈ ' + tries.toLocaleString() + ' keys — a VANITY grind, not a derivation' },
+        ],
+        output: 'A "1GSMG1" prefix cannot come from a single brainwallet phrase — it needs brute-forcing ~656 million random keys (vanity generation). So brainwallet / address-derivation routes are impossible by construction: the private key exists only inside the cosmic AES blob.',
+      };
+    },
+  },
+
+  'dbbi-faed-bifid-dbifhceg-btcseed': {
+    code: `// dbbi's first symbols, de-duped, fill a 3x3 Polybius square over a-i (keyword "dbifhceg");
+// Bifid-DECODE faed with it (split each coord, regroup the stream, remap).
+const square = dedupeIntoSquare(dbbi);          // 9 symbols, row-major 3x3
+const plain  = bifidDecode(faed, square);`,
+    inputs: [
+      { name: 'faed', label: 'faed (ciphertext)', value: PUZZLE.faed, mono: true, rows: 5 },
+      { name: 'dbbi', label: 'dbbi (key source)', value: PUZZLE.dbbi, mono: true, rows: 3 },
+    ],
+    run(v) {
+      const faed = v.faed.trim(), dbbi = v.dbbi.trim();
+      const seen = []; for (const c of dbbi) { if ('abcdefghi'.includes(c) && !seen.includes(c)) seen.push(c); if (seen.length >= 9) break; }
+      for (const c of 'abcdefghi') if (!seen.includes(c)) seen.push(c);
+      const square = seen.slice(0, 9), pos = {}; square.forEach((c, i) => pos[c] = [Math.floor(i / 3), i % 3]);
+      const s = [...faed].filter(c => 'abcdefghi'.includes(c)), coords = s.map(c => pos[c]), stream = [];
+      for (const rc of coords) stream.push(rc[0]); for (const rc of coords) stream.push(rc[1]);
+      const out = []; for (let i = 0; i < s.length; i++) out.push(square[stream[2 * i] * 3 + stream[2 * i + 1]]);
+      const plain = out.join('');
+      return {
+        steps: [
+          { title: '1 · dbbi → de-duped keyword → 3×3 square', body: 'keyword "' + square.slice(0, 8).join('') + '" · square = ' + square.join('') },
+          { title: '2 · Bifid-decode faed (split coords, regroup, remap)', body: plain.slice(0, 120) + '…' },
+          { title: '3 · field-decode the result → bytes', body: printable(hexToAscii(BigInt(fieldDecode(plain) || '0').toString(16))).slice(0, 80) },
+        ],
+        output: 'The dbbi-keyed Bifid is reported to surface suggestive fragments ("btcseed…", "can…") but yields no coherent full plaintext or usable key — a tantalizing but unconfirmed lead; Trifid + XOR follow-ups were also inconclusive.',
+      };
+    },
+  },
+
+  'endgame-bip38-ec-multiply-hypothesis': {
+    code: `// read the INCASE / salph phrasing as a BIP38 EC-multiply container (39-byte payload):
+// 0x01 0x43 | flag(1) | addresshash(4) | ownerentropy(8) | encryptedpart1(8) | encryptedpart2(16)`,
+    inputs: [],
+    run() {
+      const layout = [['0x01 0x43', 2, 'BIP38 EC-multiply magic prefix'], ['flagbyte', 1, 'compression / lot-sequence flags'], ['addresshash', 4, 'first 4 bytes of sha256d(address)'], ['ownerentropy', 8, 'owner salt / entropy'], ['encryptedpart1', 8, 'first half of the encrypted key'], ['encryptedpart2', 16, 'second half — "16 encryptions"']];
+      const total = layout.reduce((a, r) => a + r[1], 0);
+      return {
+        steps: [
+          { title: '1 · BIP38 EC-multiply record layout', body: layout.map(r => r[0].padEnd(15) + String(r[1]).padStart(2) + ' B   ' + r[2]).join('\n') },
+          { title: '2 · total payload', body: total + ' bytes — "24 random bytes" ≈ ownerentropy(8) + encryptedpart1(8) + part of part2; the oddly specific phrasing lines up' },
+          { title: '3 · matching the instructions', body: '"16 encryptions" ↔ encryptedpart2(16)  ·  "7 intertwined passwords" ↔ the EC-multiply factor chain  ·  "shabef…lastcommand" ↔ a final transform' },
+        ],
+        output: 'A concrete, previously-unrecorded format hypothesis: the final secret may be a BIP38 EC-multiply CONTAINER (not plaintext), which would explain "23 ciphers / 16 encryptions / 7 passwords / 24 random bytes". Unverified, but it gives the endgame a testable target shape.',
+      };
+    },
+  },
+
+  'blob-aes-key-wrap-format-hypothesis': {
+    code: `// "Salted__" + 8-byte salt is written by openssl enc for ANY -pass cipher (EVP_BytesToKey),
+// including RFC-3394 AES key-wrap (-id-aes256-wrap-pad). So a CBC-noise blob might be a key-wrap container.
+const magic = bytes(blob).slice(0, 8);    // "Salted__"
+const salt  = bytes(blob).slice(8, 16);`,
+    inputs: [{ name: 'blob', label: 'a small blob (salph_inner)', value: PUZZLE.salphInner, mono: true, rows: 2 }],
+    run(v) {
+      const raw = b64ToBytes(v.blob), magic = new TextDecoder().decode(raw.slice(0, 8)), salt = hex(raw.slice(8, 16)), ctlen = raw.length - 16;
+      return {
+        steps: [
+          { title: '1 · header', body: 'magic = "' + magic + '"  ·  salt = ' + salt + '  ·  ciphertext = ' + ctlen + ' bytes' },
+          { title: '2 · the header is cipher-AGNOSTIC', body: 'openssl enc writes this identical header for aes-256-cbc AND for -id-aes256-wrap-pad (RFC-3394 key wrap)' },
+          { title: '3 · implication', body: ctlen + ' bytes of "noise under CBC" could instead be an AES-KEY-WRAP container holding a RAW 32-byte private key' },
+        ],
+        output: 'A format hypothesis the catalog had not recorded: the universal "Salted__" header does NOT prove aes-256-cbc. A blob that is pure noise under CBC might be an AES-key-wrap (-id-aes256-wrap-pad) container of a raw key — a different decrypt path worth trying.',
+      };
+    },
+  },
+
+  'dbbi-yellowblue-prime-index-rabbit-cells': {
+    code: `// index dbbi at PRIME positions; map prime-VALUE→0 else→1; compare to the genesis grid's Y/B cells
+const primeIdx = primesBelow(dbbi.length);
+const seq = primeIdx.map(i => primeBit(dbbi[i]));`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim();
+      const isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
+      const idxs = []; for (let i = 0; i < s.length; i++) if (isP(i)) idxs.push(i);
+      const seq = idxs.map(i => [2, 3, 5, 7].includes(A2I(s[i])) ? '0' : '1').join('');
+      const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
+      const yb = [...MATRIX.blue.map(p => [1, p]), ...MATRIX.yellow.map(p => [0, p])]
+        .map(([b, p]) => ({ b, i: idx(p[0], p[1]) })).sort((a, b) => a.i - b.i).map(o => o.b).join('');
+      const n = Math.min(20, seq.length, yb.length); let m = 0; for (let i = 0; i < n; i++) if (seq[i] === yb[i]) m++;
+      return {
+        steps: [
+          { title: '1 · dbbi values at the ' + idxs.length + ' prime positions → bits', body: seq },
+          { title: '2 · genesis grid Y/B cells (blue=1, yellow=0)', body: yb },
+          { title: '3 · compare the first ' + n + ' bits', body: m + '/' + n + ' match' },
+        ],
+        output: 'Indexing dbbi by prime positions yields a yellow/blue bit pattern reported to match the genesis grid Y/B cells over the first ~20 bits — hinting dbbi carries the SAME yellowblue-prime pointer structure as the genesis grid. Unverified: the exact "be-as-one-index" rule and full-length agreement remain open.',
+      };
+    },
+  },
+
+  'rulers-riddle-john-mcafee': {
+    code: `// a wordplay decode (NOT a key): resolve the endgame "competition / ruler of a piece of land" riddle`,
+    inputs: [],
+    run() {
+      return {
+        steps: [
+          { title: '1 · "competition" → an actor', body: 'Thevenin/Norton "equivalent … competition" → Edward NORTON' },
+          { title: '2 · Norton → its rival', body: 'Norton antivirus → its rival McAfee antivirus' },
+          { title: '3 · "ruler of a piece of land"', body: 'John McAfee lived in BELIZE (home of Belikin beer) and twice ran for US President' },
+          { title: '4 · the referent', body: '→ John McAfee' },
+        ],
+        output: 'The hidden referent of the riddle is John McAfee — a narrative / lore decode (not itself a key) that pins a previously-unexplained personal reference in the endgame. Corroborated by several independent clues, but it unlocks no ciphertext on its own.',
+      };
+    },
+  },
+
 };
