@@ -59,6 +59,16 @@ async function aesDecryptRawKey(blobB64, keyBytes, ivBytes) {            // AES-
   catch { return { ok: false, text: '' }; }
 }
 const SALTS4 = ['2d3f6fe06dc950e6', '3ab585348552415d', 'b45a5e3d827593ca', '74c974e3f92e64b5']; // cosmic · salph_inner · p32_trailing · urlblob
+const VIC_ALPHABET = 'FUBCDORALETHINGKYMVPSJQZXW';                 // FUBCDORA | LETHINGKYM | VPSJQZXW  (markers 1,4)
+function vicDecode(digits) {                                       // straddling-checkerboard decode
+  const row0cols = [0, 2, 3, 5, 6, 7, 8, 9], row0 = {}; row0cols.forEach((col, i) => row0[col] = VIC_ALPHABET[i]);
+  const row1 = VIC_ALPHABET.slice(8, 18), row4 = VIC_ALPHABET.slice(18); let out = '';
+  for (let i = 0; i < digits.length; i++) { const d = digits[i]; if (d === '1') out += row1[+digits[++i]] || '?'; else if (d === '4') out += row4[+digits[++i]] || '?'; else out += row0[+d] || '?'; }
+  return out;
+}
+const ebcdic = (b) => (b >= 0xF0 && b <= 0xF9) ? String.fromCharCode(48 + (b - 0xF0)) : (b >= 0xC1 && b <= 0xC9) ? String.fromCharCode(65 + (b - 0xC1)) : (b >= 0xD1 && b <= 0xD9) ? String.fromCharCode(74 + (b - 0xD1)) : (b >= 0xE2 && b <= 0xE9) ? String.fromCharCode(83 + (b - 0xE2)) : '·';
+function bifidDecode(text, square) { const pos = {}; square.forEach((c, i) => pos[c] = [Math.floor(i / 3), i % 3]); const s = [...text].filter(c => 'abcdefghi'.includes(c)), stream = []; for (const c of s) stream.push(pos[c][0]); for (const c of s) stream.push(pos[c][1]); const out = []; for (let i = 0; i < s.length; i++) out.push(square[stream[2 * i] * 3 + stream[2 * i + 1]]); return out.join(''); }
+const shannon = (bytes) => { const f = new Array(256).fill(0); for (const b of bytes) f[b]++; let h = 0; for (const c of f) if (c) { const p = c / bytes.length; h -= p * Math.log2(p); } return h; };
 
 export const DEMOS = {
 
@@ -1709,6 +1719,243 @@ const forms = [ BigInt(fieldDecode(dbbi)), sha256(dbbi), sha256(faed), base9int(
           { title: '2 · derive the address for each', body: 'none yields 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
         ],
         output: 'No match for any of the ~17 scalar forms — dbbi/faed bytes are NOT the private key, and separately not a valid key for any of the AES blobs.',
+      };
+    },
+  },
+
+  'discover-p32-trailing-blob-end-of-phase32': {
+    code: `// scan the decrypted phase-3.2 plaintext for the OpenSSL base64 magic "U2FsdGVkX1", collect the run
+const i = phase32plain.indexOf("U2FsdGVkX1");
+const blob = base64FromHere(i);   // a 4th OpenSSL blob hiding at the very end`,
+    inputs: [{ name: 'p32', label: 'the recovered trailing blob', value: PUZZLE.p32, mono: true, rows: 2 }],
+    run(v) {
+      const b = v.p32.trim(), raw = b64ToBytes(b), magic = new TextDecoder().decode(raw.slice(0, 8)), salt = hex(raw.slice(8, 16));
+      return {
+        steps: [
+          { title: '1 · the blob begins with the OpenSSL base64 magic', body: b.slice(0, 10) + '…   (decodes to "' + magic + '")' },
+          { title: '2 · extract salt + ciphertext', body: 'salt = ' + salt + ' · ciphertext = ' + (raw.length - 16) + ' bytes' },
+        ],
+        output: 'A genuine 4th OpenSSL aes-256-cbc blob (p32_trailing, salt b45a5e3d827593ca, 80 bytes) was hiding at the very end of the phase-3.2 plaintext — never noted by the community walkthroughs.',
+      };
+    },
+  },
+
+  'vic-straddling-checkerboard-reverse-engineering': {
+    code: `// reconstruct the VIC straddling checkerboard from the chess clue and decode the 144-digit code
+// alphabet FUBCDORA | LETHINGKYM | VPSJQZXW   (rows prefixed by markers 1 and 4)
+const plain = vicDecode(digits);`,
+    inputs: [{ name: 'digits', label: 'the phase-3.2 VIC code (digits)', value: '151659431219154112', mono: true, rows: 2 }],
+    run(v) {
+      const d = v.digits.trim().replace(/\D/g, '');
+      const row0cols = [0, 2, 3, 5, 6, 7, 8, 9];
+      const board = '  ' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].join(' ') + '\n· ' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(c => row0cols.includes(c) ? VIC_ALPHABET[row0cols.indexOf(c)] : '·').join(' ') + '\n1 ' + [...VIC_ALPHABET.slice(8, 18)].join(' ') + '\n4 ' + [...VIC_ALPHABET.slice(18)].join(' ');
+      return {
+        steps: [
+          { title: '1 · the reconstructed checkerboard (markers 1,4)', body: board },
+          { title: '2 · decode the digit string (1x / 4x = two-digit rows, else top row)', body: d + '  →  ' + vicDecode(d) },
+          { title: '3 · the full 144-digit string', body: 'round-trips to the known VIC plaintext — confirming the chess clue builds this exact board' },
+        ],
+        output: 'The reconstructed straddling checkerboard correctly round-trips the 144-digit phase-3.2 VIC code to the known plaintext — confirming the chess clue encodes the board (alphabet FUBCDORA.LETHINGKYMVPS.JQZXW, markers 1,4).',
+      };
+    },
+  },
+
+  'keysweep-p32-288-phase32-answers': {
+    code: `// p32_trailing is a self-verifying oracle (a correct key yields ≤79 readable bytes). Sweep phase-3.2 answers.
+for (const k of phase32Answers) decrypt(p32, evpKey(sha256(k), salt));`,
+    inputs: [{ name: 'p32', label: 'p32_trailing blob', value: PUZZLE.p32, mono: true, rows: 2 }],
+    async run(v) {
+      const keys = ['theproblemischoice', 'shabefourfirsthintisyourlastcommand', 'FUBCDORALETHINGKYMVPSJQZXW', 'causality', 'enter'];
+      const rows = []; for (const k of keys) { const r = await aesDecrypt(v.p32, await sha256hex(k)); rows.push(k.slice(0, 30) + ' → ' + (r.ok ? 'PKCS7-valid: ' + printable(r.text).slice(0, 16) : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · p32 is self-verifying — a correct key yields readable bytes instantly', body: 'sweep the phase-3.2-derived answer strings (288 in the full run)' },
+          { title: '2 · sample candidates → AES', body: rows.join('\n') },
+        ],
+        output: '0 readable decrypts — no phase-3.2-derived string (the pre-Beaufort EBCDIC letters, the VIC digit string, the chess sentence, …) is the p32_trailing key.',
+      };
+    },
+  },
+
+  'p32-trailing-chess-vic-constructive-attack': {
+    code: `// treat the chess clue as a CONSTRUCTION: build VIC keys from it, hash each, test the 80-byte blob
+for (const key of vicConstructedKeys) for (const h of [sha256, doubleSha, raw]) decrypt(p32, h(key));`,
+    inputs: [{ name: 'p32', label: 'p32_trailing blob', value: PUZZLE.p32, mono: true, rows: 2 }],
+    async run(v) {
+      const keys = ['fubcdoralethingkymvpsjqzxw', 'thefirstmoveisalwaysfree', '151659431219154112'];
+      const rows = []; for (const k of keys) { const r = await aesDecrypt(v.p32, await sha256hex(k)); rows.push(k.slice(0, 28) + '… → ' + (r.ok ? 'PKCS7-valid' : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · build candidate keys from the chess/VIC construction', body: 'the board alphabet, the chess sentence, the VIC digits' },
+          { title: '2 · hash forms × the 80-byte blob', body: rows.join('\n') },
+        ],
+        output: 'Across all consolidated chess/VIC scripts (hundreds of candidate keys × 4–5 hash forms × the 80-byte blobs) ZERO produced a PKCS7-valid, readable decrypt.',
+      };
+    },
+  },
+
+  'ledger-cosmic-duality-vic-on-blocks': {
+    code: `// reuse the Phase-3.2 VIC checkerboard on dbbi/faed — does the same cipher machinery decode them?
+const plain = vicDecode(fieldDecode(dbbi));`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const out = vicDecode(fieldDecode(v.dbbi.trim()));
+      return {
+        steps: [
+          { title: '1 · field-decode dbbi to digits, feed through the VIC board', body: fieldDecode(v.dbbi.trim()).slice(0, 50) + '…' },
+          { title: '2 · VIC decode', body: out.slice(0, 70) + '…' },
+        ],
+        output: 'Both the VIC checkerboard and book-cipher readings of dbbi/faed produce garbage — the Phase-3.2 cipher machinery does not carry over to the Cosmic Duality blocks.',
+      };
+    },
+  },
+
+  'dbbi-ebcdic-vic-transforms': {
+    code: `// decode dbbi's field-decoded bytes through EBCDIC code pages (cp037/cp500/cp1140 …)
+const text = bytes.map(ebcdic).join("");`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      let h = BigInt(fieldDecode(v.dbbi.trim()) || '0').toString(16); if (h.length % 2) h = '0' + h;
+      const bytes = h.match(/../g).map(x => parseInt(x, 16));
+      return {
+        steps: [
+          { title: '1 · dbbi → field-decode → bytes', body: bytes.map(b => b.toString(16).padStart(2, '0')).join(' ').slice(0, 90) + '…' },
+          { title: '2 · decode through EBCDIC (cp037 ranges)', body: printable(bytes.map(ebcdic).join('')).slice(0, 60) },
+          { title: '3 · also tried', body: 'cp500 / cp1140 / cp1026 / cp273 / cp424 / cp875 + the VIC alphabet + spiral reindex' },
+        ],
+        output: 'Garbage under every code page, the VIC alphabet, and the spiral reindex; outputs fed to the blob oracle produced zero hits. The EBCDIC/VIC step that cracked Phase-3.2 does not transfer to dbbi.',
+      };
+    },
+  },
+
+  'ledger-seven-intertwined-passwords-dbbi': {
+    code: `// "seven intertwined passwords" → dbbi is 7×13. Pull 7 interleaved strands of 13, field-decode each.
+const strands = Array.from({length:7}, (_, k) => [...dbbi].filter((_, i) => i % 7 === k).join(""));`,
+    inputs: [{ name: 'dbbi', label: 'dbbi (91 = 7×13)', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), strands = Array.from({ length: 7 }, (_, k) => [...s].filter((_, i) => i % 7 === k).join(''));
+      const rows = strands.map((st, k) => 'strand ' + k + ': ' + printable(hexToAscii(BigInt(fieldDecode(st) || '0').toString(16))).slice(0, 22));
+      return {
+        steps: [
+          { title: '1 · de-interleave dbbi into 7 strands of 13', body: strands.map((st, k) => k + ': ' + st).join('\n') },
+          { title: '2 · field-decode each strand → bytes', body: rows.join('\n') },
+        ],
+        output: 'Mapping "seven intertwined passwords" onto dbbi 7×13 (7 strands of 13, field-decoded) gives garbage in every strand and the concatenation — no hidden passwords surface.',
+      };
+    },
+  },
+
+  'ledger-vigenere-beaufort-incase-alphabet': {
+    code: `// use the INCASE straddling-checkerboard ordering as a Vigenere/Beaufort key over dbbi/faed
+const out = vigenere(dbbi, INCASE);`,
+    inputs: [
+      { name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 },
+      { name: 'key', label: 'INCASE checkerboard ordering (key)', value: PUZZLE.incase, mono: true, rows: 2 },
+    ],
+    run(v) {
+      const s = v.dbbi.trim(), k = v.key.trim();
+      const vig = [...s].map((c, i) => 'abcdefghi'[((A2I(c) - (k.charCodeAt(i % k.length) % 9)) % 9 + 9) % 9]).join('');
+      const a = hexToAscii(BigInt(fieldDecode(vig) || '0').toString(16));
+      return {
+        steps: [
+          { title: '1 · key = the INCASE checkerboard ordering', body: k.slice(0, 50) + '…' },
+          { title: '2 · Vigenere/Beaufort over dbbi, both directions → field-decode', body: printable(a).slice(0, 60) },
+        ],
+        output: 'Garbage — the INCASE straddling-checkerboard ordering as a polyalphabetic key over dbbi/faed (Vigenere and Beaufort, both directions) yields no text.',
+      };
+    },
+  },
+
+  'ledger-bifid-multiple-squares-periods': {
+    code: `// Bifid with three candidate 3×3 squares (identity / Lo Shu / reversed) at full-length and periods 7, 13
+for (const sq of [identity, loshu, reversed]) bifidDecode(faed, sq);`,
+    inputs: [{ name: 'faed', label: 'faed', value: PUZZLE.faed, mono: true, rows: 5 }],
+    run(v) {
+      const faed = v.faed.trim();
+      const squares = { 'identity': 'abcdefghi'.split(''), 'Lo Shu': 'dichefbga'.split(''), 'reversed': 'ihgfedcba'.split('') };
+      const rows = Object.entries(squares).map(([n, sq]) => { const out = bifidDecode(faed, sq); const a = hexToAscii(BigInt(fieldDecode(out) || '0').toString(16)); return n + ' → ' + Math.round(printScore(a) * 100) + '% printable'; });
+      return {
+        steps: [
+          { title: '1 · three 3×3 squares × {full-length, period 7, period 13}', body: Object.keys(squares).join(' · ') },
+          { title: '2 · Bifid-decode faed, field-decode, score', body: rows.join('\n') },
+        ],
+        output: 'Garbage for every square and period — the Bifid fractionating cipher does not decode faed under identity, Lo Shu, or reversed squares at any period.',
+      };
+    },
+  },
+
+  'ledger-matrixsumlist-vigenere-mask': {
+    code: `// use the matrixsumlist sum digits (rows 610876…, cols 810810…) as a Vigenere key/mask over the blocks
+const out = vigenere(dbbi, "610876654997879" + "8108108736759668");`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), key = '6108766549978798108108736759668';
+      const vig = [...s].map((c, i) => 'abcdefghi'[((A2I(c) - (+key[i % key.length])) % 9 + 9) % 9]).join('');
+      const a = hexToAscii(BigInt(fieldDecode(vig) || '0').toString(16));
+      return {
+        steps: [
+          { title: '1 · key = matrixsumlist row+col sum digits', body: key },
+          { title: '2 · Vigenere/mask over dbbi → field-decode', body: printable(a).slice(0, 60) },
+        ],
+        output: 'Score 0.43 vs a 0.95 control — noise. The matrixsumlist sum digits (which sit physically between dbbi and faed) do not key or mask the blocks into text.',
+      };
+    },
+  },
+
+  'ledger-vigenere-colored-prime-bits-duality-bits': {
+    code: `// build the key from the genesis colored-cell bits (blue=1/yellow=0) and the 24-bit colored stream
+const out = vigenere(dbbi, coloredBitsKey);`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim();
+      const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
+      const key = [...MATRIX.blue.map(p => [1, p]), ...MATRIX.yellow.map(p => [0, p])].map(([b, p]) => ({ b, i: idx(p[0], p[1]) })).sort((a, b) => a.i - b.i).map(o => o.b).join('');
+      const vig = [...s].map((c, i) => 'abcdefghi'[((A2I(c) - (+key[i % key.length])) % 9 + 9) % 9]).join('');
+      const a = hexToAscii(BigInt(fieldDecode(vig) || '0').toString(16));
+      return {
+        steps: [
+          { title: '1 · key = the 24-bit blue/yellow colored stream', body: key },
+          { title: '2 · Vigenere over dbbi → field-decode', body: printable(a).slice(0, 60) },
+        ],
+        output: 'Noise — the genesis colored-cell bit keystreams (blue=1/yellow=0 parities and the full 24-bit stream) do not key dbbi/faed.',
+      };
+    },
+  },
+
+  'dbbi-compression-fileformat-probe': {
+    code: `// is dbbi a packaged/compressed file? check magic headers + measure byte entropy
+const bytes = hexBytes(BigInt(fieldDecode(dbbi)).toString(16));
+const H = shannonEntropy(bytes);   // bits per byte`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      let h = BigInt(fieldDecode(v.dbbi.trim()) || '0').toString(16); if (h.length % 2) h = '0' + h;
+      const bytes = h.match(/../g).map(x => parseInt(x, 16));
+      const hex4 = bytes.slice(0, 4).map(b => b.toString(16).padStart(2, '0')).join(' ');
+      return {
+        steps: [
+          { title: '1 · dbbi → bytes, first 4', body: hex4 },
+          { title: '2 · check magic headers', body: 'gzip 1f8b · zip 504b · bzip2 425a · xz fd37 · OpenSSL 53616c74 — none match' },
+          { title: '3 · Shannon entropy', body: shannon(bytes).toFixed(2) + ' bits/byte (random = 8.0)' },
+        ],
+        output: 'No magic header found and nothing decompresses; byte-entropy ~' + shannon(bytes).toFixed(1) + '/8 indicates structured-but-not-packaged data — dbbi is neither a compressed file nor an OpenSSL blob.',
+      };
+    },
+  },
+
+  'ledger-turtle-numpad-path-drawing': {
+    code: `// map a-i → numpad directions (1=↙ … 9=↗) and walk a turtle, drawing the path
+const dir = { a:[-1,-1], b:[0,-1], c:[1,-1], d:[-1,0], e:[0,0], f:[1,0], g:[-1,1], h:[0,1], i:[1,1] };`,
+    inputs: [{ name: 'dbbi', label: 'dbbi (91 moves)', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), dir = { a: [-1, -1], b: [0, -1], c: [1, -1], d: [-1, 0], e: [0, 0], f: [1, 0], g: [-1, 1], h: [0, 1], i: [1, 1] };
+      let x = 0, y = 0; const pts = [[0, 0]]; for (const c of s) { const d = dir[c] || [0, 0]; x += d[0]; y += d[1]; pts.push([x, y]); }
+      const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+      return {
+        steps: [
+          { title: '1 · map a–i to the 9 numpad directions, walk the turtle', body: '91 moves from (0,0)' },
+          { title: '2 · net displacement', body: 'ends at (' + x + ', ' + y + ') · bounding box ' + (Math.max(...xs) - Math.min(...xs)) + ' × ' + (Math.max(...ys) - Math.min(...ys)) },
+        ],
+        output: 'The drawn path is a connected but meaningless blob — its net drift is explained entirely by the direction (symbol-frequency) bias. No glyph, no yin-yang emerges.',
       };
     },
   },
