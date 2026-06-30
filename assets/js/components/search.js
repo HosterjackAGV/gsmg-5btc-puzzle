@@ -31,9 +31,17 @@ export function toItem(a, phaseLabel) {
   return {
     id: a.id, phase: a.phase, phaseLabel: phaseLabel || '', outcome: a.outcome, who: a.who,
     author, category: a.category || '', title: a.title || '',
+    date: a.date || '', dateApprox: !!a.dateApprox, ts: a.date ? Date.parse(a.date) : null,
     f: { phase: (a.phase + ' ' + (phaseLabel || '') + ' ' + (PHASE_SHORT[a.phase] || '')), outcome: (a.outcome + ' ' + (OUTCOME_ALIAS[a.outcome] || '')), who: whoTxt, author, category: a.category || '', title: a.title || '', method: a.method || '', input: a.input || '', output: a.output || '', insight: a.insight || '' },
     haystack,
   };
+}
+
+// format a date for display: exact dates verbatim, approximate ones as "~2021" / "~2026-06"
+export function fmtDate(a) {
+  if (!a || !a.date) return '';
+  if (!a.dateApprox) return a.date;
+  return /-01-01$/.test(a.date) ? '~' + a.date.slice(0, 4) : '~' + a.date.slice(0, 7);
 }
 
 const FIELD = { p: 'phase', phase: 'phase', o: 'outcome', outcome: 'outcome', status: 'outcome', w: 'who', who: 'who', a: 'author', author: 'author', c: 'category', cat: 'category', category: 'category', t: 'title', title: 'title', m: 'method', method: 'method', in: 'input', input: 'input', out: 'output', output: 'output', i: 'insight', insight: 'insight' };
@@ -121,6 +129,7 @@ function panelHtml(facets) {
     <div class="search-facets">${primary}
       ${more ? `<button type="button" class="search-more" aria-expanded="false">+ more filters</button><div class="search-more-box" hidden>${more}</div>` : ''}
       <button type="button" class="facet-reset" hidden>reset filters</button>
+      <div class="search-sort"><span class="facet-label">Sort</span><button type="button" class="sortbtn on" data-sort="default">Default</button><button type="button" class="sortbtn" data-sort="newest">Newest</button><button type="button" class="sortbtn" data-sort="oldest">Oldest</button></div>
     </div>
     <pre class="search-help" hidden>${esc(HELP)}</pre>
     <div class="no-results" hidden>No attempts match — <button type="button" class="nr-clear">clear the search</button>.</div>
@@ -146,12 +155,32 @@ export function initSearch(root, mode, items, order) {
   const helpBtn = host.querySelector('.search-help-btn');
   const helpEl = host.querySelector('.search-help');
 
-  const state = { q: '', sel: { phase: new Set(), outcome: new Set(), who: new Set(), author: new Set(), category: new Set() } };
+  const state = { q: '', sort: 'default', sel: { phase: new Set(), outcome: new Set(), who: new Set(), author: new Set(), category: new Set() } };
 
   // collect the entry elements + their highlightable fields per mode
   const entries = mode === 'tried'
     ? qsa('.tried-entry', root).map(el => ({ el, id: el.id.replace(/^t-/, ''), hi: [el.querySelector('.tried-head h4'), ...qsa('.tried-io dd', el)] }))
     : qsa('.sum-insights > li, .sum-alist li', root).map(el => ({ el, id: el.getAttribute('data-id') || '', hi: [el.querySelector('.sum-title'), el.querySelector('.sum-ins'), el.querySelector('a')].filter(Boolean) }));
+  entries.forEach((e, i) => { e.el._ord = i; });
+  const idOf = (el) => el.id ? el.id.replace(/^t-/, '') : (el.getAttribute('data-id') || '');
+  function resort() {
+    const cmp = (a, b) => {
+      if (state.sort === 'default') return a._ord - b._ord;
+      const ia = byId.get(idOf(a)), ib = byId.get(idOf(b));
+      const ta = ia && ia.ts != null ? ia.ts : null, tb = ib && ib.ts != null ? ib.ts : null;
+      if (ta == null && tb == null) return a._ord - b._ord;
+      if (ta == null) return 1; if (tb == null) return -1;            // undated entries always sort last
+      return state.sort === 'newest' ? tb - ta : ta - tb;
+    };
+    if (mode === 'tried') {
+      qsa('.tried-cat', root).forEach(cat => {
+        const grp = []; for (let n = cat.nextElementSibling; n && !n.classList.contains('tried-cat'); n = n.nextElementSibling) if (n.classList.contains('tried-entry')) grp.push(n);
+        grp.sort(cmp); let anchor = cat; for (const en of grp) { anchor.after(en); anchor = en; }
+      });
+    } else {
+      qsa('.sum-insights, .sum-alist', root).forEach(ul => { qsa(':scope > li', ul).sort(cmp).forEach(li => ul.appendChild(li)); });
+    }
+  }
 
   const facetTest = (item) => {
     const s = state.sel;
@@ -206,6 +235,7 @@ export function initSearch(root, mode, items, order) {
     const parts = [];
     if (state.q.trim()) parts.push('q=' + encodeURIComponent(state.q.trim()));
     for (const k of ['phase', 'outcome', 'who', 'author', 'category']) if (state.sel[k].size) parts.push(k + '=' + encodeURIComponent([...state.sel[k]].join('|')));
+    if (state.sort !== 'default') parts.push('sort=' + state.sort);
     const base = (location.hash.replace(/^#/, '').split('?')[0]) || '/' + mode;
     const next = '#' + base + (parts.length ? '?' + parts.join('&') : '');
     try { history.replaceState(null, '', next); } catch {}
@@ -220,6 +250,7 @@ export function initSearch(root, mode, items, order) {
     }
     input.value = state.q;
     if ([...state.sel.author, ...state.sel.category].length && moreBox) { moreBox.hidden = false; moreBtn && moreBtn.setAttribute('aria-expanded', 'true'); }
+    const so = p.get('sort'); if (so && ['newest', 'oldest', 'default'].includes(so)) { state.sort = so; host.querySelectorAll('.sortbtn').forEach(x => x.classList.toggle('on', x.dataset.sort === so)); }
   }
 
   // ---- events ----
@@ -234,6 +265,7 @@ export function initSearch(root, mode, items, order) {
     s.has(v) ? s.delete(v) : s.add(v); apply();
   });
   resetBtn.addEventListener('click', () => { for (const k in state.sel) state.sel[k].clear(); apply(); });
+  host.querySelectorAll('.sortbtn').forEach(b => b.addEventListener('click', () => { state.sort = b.dataset.sort; host.querySelectorAll('.sortbtn').forEach(x => x.classList.toggle('on', x === b)); resort(); syncHash(); }));
   if (moreBtn) moreBtn.addEventListener('click', () => { const open = moreBox.hidden; moreBox.hidden = !open; moreBtn.setAttribute('aria-expanded', String(open)); });
   helpBtn.addEventListener('click', () => { helpEl.hidden = !helpEl.hidden; });
   // press "/" anywhere to focus search (unless already typing)
@@ -242,5 +274,6 @@ export function initSearch(root, mode, items, order) {
 
   readHash();
   apply();
+  if (state.sort !== 'default') resort();
   return { apply, destroy() { document.removeEventListener('keydown', slash); } };
 }

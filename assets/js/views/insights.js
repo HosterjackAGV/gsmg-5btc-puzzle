@@ -5,7 +5,7 @@
 
 import { ATTEMPTS, PHASE_ORDER, PHASE_LABELS, OUTCOMES, byPhase } from '../../../content/attempts.js';
 import { esc, qs, qsa } from '../util.js';
-import { toItem, initSearch } from '../components/search.js';
+import { toItem, initSearch, fmtDate } from '../components/search.js';
 
 // ── C: the connected chain of thought (authored from the 38 verified insights) ──
 // Each step cites the trial entries it rests on (deep-links into #/tried).
@@ -52,10 +52,10 @@ export default async function insightsView() {
     const A = items.filter(a => a.outcome !== 'verified-insight');
     const bHtml = B.length ? `
       <h4 class="sum-h sum-b">💡 Insights gained <span class="faint">· ${B.length}</span></h4>
-      <ul class="sum-insights">${B.map(a => `<li data-id="${esc(a.id)}"><a href="#/tried/${encodeURIComponent(a.id)}" class="sum-title">${esc(a.title)}</a>${a.author ? ` <span class="tbadge badge-author sm" title="The author — verified Telegram @handle">👤 ${esc(a.author)}</span>` : ''}<div class="sum-ins">${esc(a.insight)}</div></li>`).join('')}</ul>` : '';
+      <ul class="sum-insights">${B.map(a => `<li data-id="${esc(a.id)}"><a href="#/tried/${encodeURIComponent(a.id)}" class="sum-title">${esc(a.title)}</a>${a.author ? ` <span class="tbadge badge-author sm" title="The author — verified Telegram @handle">👤 ${esc(a.author)}</span>` : ''}${a.date ? ` <span class="sum-date">📅 ${esc(fmtDate(a))}</span>` : ''}<div class="sum-ins">${esc(a.insight)}</div></li>`).join('')}</ul>` : '';
     const aHtml = A.length ? `
       <details class="sum-noins"><summary>No insight · ${A.length} trials (tested, ruled out)</summary>
-      <ul class="sum-alist">${A.map(a => { const o = OUTCOMES[a.outcome] || OUTCOMES['unverified']; return `<li data-id="${esc(a.id)}"><a href="#/tried/${encodeURIComponent(a.id)}">${esc(a.title)}</a> <span class="tbadge ${o.cls} sm">${o.label}</span>${a.author ? ` <span class="tbadge badge-author sm" title="The author — verified Telegram @handle">👤 ${esc(a.author)}</span>` : ''}</li>`; }).join('')}</ul></details>` : '';
+      <ul class="sum-alist">${A.map(a => { const o = OUTCOMES[a.outcome] || OUTCOMES['unverified']; return `<li data-id="${esc(a.id)}"><a href="#/tried/${encodeURIComponent(a.id)}">${esc(a.title)}</a> <span class="tbadge ${o.cls} sm">${o.label}</span>${a.author ? ` <span class="tbadge badge-author sm" title="The author — verified Telegram @handle">👤 ${esc(a.author)}</span>` : ''}${a.date ? ` <span class="sum-date">📅 ${esc(fmtDate(a))}</span>` : ''}</li>`; }).join('')}</ul></details>` : '';
     return `<section class="sum-phase phase-card phase-${ph}"><div class="phase-tag">${({ genesis: 'Phase 0', mrrobot: 'Phase 2', architect: 'Phase 3.2', salphaseion: 'Endgame' })[ph] || ph}</div><h3 id="sum-${ph}">${esc(PHASE_LABELS[ph])}</h3>${bHtml}${aHtml}</section>`;
   }).join('');
 

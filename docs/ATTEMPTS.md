@@ -1,12 +1,12 @@
 # GSMG.io 5 BTC Puzzle — What Was Tried
 
-> A complete, human-readable catalog of **every documented attempt** to advance the open endgame — both the community’s and this project’s — with the exact input, method, and output of each, badged by outcome. 127 attempts total. This mirrors the in-site **What was tried** section; the walkthrough’s per-phase “What was tried to move forward” panels deep-link to each entry.
+> A complete, human-readable catalog of **every documented attempt** to advance the open endgame — both the community’s and this project’s — with the exact input, method, and output of each, badged by outcome and dated where known. 128 attempts total. Mirrors the in-site **What was tried** section.
 
-**80** verified fail · **40** verified with new insight · **7** unverified
+**80** verified fail · **41** verified with new insight · **7** unverified
 
 ---
 
-## Phase 0 — Genesis image (matrix · yellowblueprimes · QR) (17)
+## Phase 0 — Genesis image (matrix · yellowblueprimes · QR) (18)
 
 ### image & QR forensics
 
@@ -30,7 +30,7 @@
 
 <a id="t-genesis-fefefe-cell-located-7-4"></a>
 #### The #FEFEFE marked cell LOCATED at (row 7, col 4) [0-based; = row 8, col 5 from 1], a dual-prime index
-💡 **Verified — new insight** · this project · *this session (image forensics on img_puzzle.png)*
+💡 **Verified — new insight** · this project · *this session (image forensics on img_puzzle.png)* · 📅 ~2026-06
 
 - **Input:** Original genesis image img_puzzle.png (1048x1556). Creator hint: '104 is the fefefe square. fefefe is 101010.' Palette scan for an off-white cell rendered 254,254,254 instead of 255,255,255.
 - **Method:** Ran a pixel-by-pixel palette histogram and per-cell color scan over the 14x14 grid to find the single planted off-white cell. Computed its spiral index and row-major index to test the creator's '104' / 'array indexing' claim. The cell's grid value and indices were then checked against dbbi/faed/matrixsumlist as a possible 'zero-out' pointer.
@@ -39,7 +39,7 @@
 
 <a id="t-genesis-qr-decoded-blockchain-link"></a>
 #### The QR code DECODED to a blockchain.com address link
-💡 **Verified — new insight** · this project · *this session (image forensics on img_puzzle.png)*
+💡 **Verified — new insight** · this project · *this session (image forensics on img_puzzle.png)* · 📅 ~2026-06
 
 - **Input:** The square QR code in the bottom-left of img_puzzle.png, flush to the left edge (which had defeated earlier crops/recompressed copies).
 - **Method:** Decoded the QR from the full-edge image (earlier attempts failed because the code is flush to the left margin and got cropped). Pixel analysis also re-checked the palette for any hidden third color.
@@ -68,7 +68,7 @@
 
 <a id="t-yellowblue-indices-oeis-a007522-primes"></a>
 #### The blue/yellow square indices match OEIS A007522 (primes ≡ -1 mod 8) — 49 (=7×7) primes, and it includes 103
-🟡 **Unverified** · community · *community discussion (Telegram, 2025-09)*
+🟡 **Unverified** · community · *community discussion (Telegram, 2025-09)* · 📅 ~2025
 
 - **Input:** The genesis grid's blue + yellow colored-cell indices vs OEIS A007522 = primes of the form 8n+7 (primes congruent to -1 mod 8): 7, 23, 31, 47, 71, 79, 103, 127, 151, 167, 191, 199, 223, 239, ... (14 of them below 256).
 - **Method:** Compared the prime indices of the blue/yellow squares against named OEIS prime sequences; A007522 (8n+7 primes) lines up -- the first 11 primes of A007522 are reported to match the primes at the blue+yellow square indices.
@@ -78,7 +78,7 @@
 
 <a id="t-genesis-grid-byte-boundary-pointer"></a>
 #### Blue/yellow cells sit on byte boundaries — each tags one URL character
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** content/matrix.js: 14x14 grid (196 cells), 15 blue cells, 9 yellow cells, 0 red, plus the explicit 196-entry CCW spiral reading path. URL produced by the spiral = 'gsmg.io/theseedisplanted' (24 chars = 192 bits + 4 trailing spiral cells).
 - **Method:** Computed the spiral index of every colored cell and divided by 8. Every single blue and yellow cell lands at spiral position congruent to 7 mod 8 — i.e. exactly on the least-significant bit of one of the 24 URL bytes. This means the coloring is not random decoration but a deliberate pointer: each colored cell tags exactly one whole URL character (charindex = (spiral1)//8). Blue tags 1-indexed char positions {1,2,3,4,6,7,8,11,12,13,14,16,17,20,23}; yellow tags {5,9,10,15,18,19,21,22,24}; together they partition all 24 positions.
@@ -87,7 +87,7 @@
 
 <a id="t-genesis-colors-equal-url-bit-parity"></a>
 #### Colors == URL character bit-parity (no hidden color message)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Blue cells (15) and yellow cells (9) read in spiral order as a 24-bit stream (blue=1/yellow=0 and the inverse), versus the per-character LSB parity of the 24 URL bytes of 'gsmg.io/theseedisplanted'.
 - **Method:** Read the colored cells in spiral order as a standalone 24-bit payload under both polarities (B=1/Y=0 and B=0/Y=1), packed into 3 bytes, and compared bit-for-bit against the LSB parity of each URL character. Re-derived independently 3 times. The goal was to see whether the colors carry an extra hidden message beyond the URL.
@@ -111,7 +111,7 @@
 
 <a id="t-genesis-matrix-prime-position-reads"></a>
 #### Grid read at prime spiral positions + all spiral orientations/polarities
-❌ **Verified fail** · this project · *this session / dead-end ledger*
+❌ **Verified fail** · this project · *this session / dead-end ledger* · 📅 ~2026-06
 
 - **Input:** 14x14 grid as a bit stream in spiral order (196 bits). Primes <=196 (44 prime positions). Also all 8 spiral start/direction orientations x 2 bit polarities, plus row-major, column-major and diagonal scans.
 - **Method:** Extracted the grid bits at the 44 prime spiral positions as a candidate 'prime basics' source, and separately re-read the whole grid in every spiral orientation/polarity and in row/column/diagonal order, scoring each output for readable text. Reasoning: the creator repeatedly cites 'the prime part' and 'if you know how the array is indexed', so prime-indexed cells or an alternate index order might surface a second message.
@@ -121,7 +121,7 @@
 
 <a id="t-genesis-yellowblueprimes-lens-4156-sweep"></a>
 #### Expanded yellowblueprimes 'lens' sweep (4,156 candidates / 16,620 key-attempts)
-❌ **Verified fail** · this project · *this session (lens_ybp.py, lens_attack.py)*
+❌ **Verified fail** · this project · *this session (lens_ybp.py, lens_attack.py)* · 📅 ~2020
 
 - **Input:** A much larger derived-value set built from the genesis matrix: blue/yellow counts (15/9), index-sums, index-concatenations, grid row/col-coordinate sums, spiral-position sums, prime-filtered index subsets and their sums, colored-cell grid-bit reads, URL chars at prime / small-prime positions, URL with non-prime (or prime) positions zeroed out, and paired blue-number+yellow-number combinations (e.g. '159','915'). Combined with matrixsumlist variants ('matrixsumlist', '610876654997879'+'8108108736759668', concatenated form), lastwordsbeforearchichoice, yinyang∈{yinyang,'yin yang'}, seps {'' . space}, and double-sha (shabef) hashing.
 - **Method:** Each derived value was tested alone (literal/sha/raw/double/raw-double) on the two 80-byte oracle blobs and cosmic, then folded into the canonical 4-ingredient cosmic key across orders, separators and single vs double sha. Success criterion: printable ratio >0.92 or >=2 dictionary words in the decrypt. This operationalized the 2020 'Yellow has a number and so does Blue' + 'zero out characters' + primes hints into thousands of concrete recipes.
@@ -129,7 +129,7 @@
 
 <a id="t-genesis-firstpiece-text-keys"></a>
 #### Genesis 'first piece' strings (URL, grid rows, prime literals) as blob keys
-❌ **Verified fail** · this project · *this session (firstpiece.py)*
+❌ **Verified fail** · this project · *this session (firstpiece.py)* · 📅 ~2020
 
 - **Input:** Candidate strings derived from the first puzzle piece: 'gsmg.io/theseedisplanted', 'theseedisplanted', the 14x14 grid rows joined (with/without spaces), the SalPhaseIon page hash 89727c59..., the GSMGIO5BTC...challenge string, 'yellowblueprimes', 'yellow', 'blue', and prime literals '235711131719' / '2357111317192329' / '23571113171923'. Each tested in 6 hashing forms (literal, sha256hex, raw-sha, double-sha, hex-of-hex, raw-of-hex) against salph_inner and p32_trailing.
 - **Method:** The 2020 hint says to 'go back to the first puzzle piece', so every concrete string the genesis piece yields was tested as a passphrase on the two instantly-verifiable 80-byte oracle blobs, in all standard key-derivation forms. Success = printable ratio >0.90.
@@ -137,7 +137,7 @@
 
 <a id="t-genesis-matrixsumlist-row-col-sums"></a>
 #### matrixsumlist = genesis row-sums + column-sums (ingredient #2, format ambiguous)
-❌ **Verified fail** · this project · *this session (matrix.py)*
+❌ **Verified fail** · this project · *this session (matrix.py)* · 📅 ~2026-06
 
 - **Input:** 14x14 grid row-sums [6,10,8,7,6,6,5,4,9,9,7,8,7,9] and column-sums [8,10,8,10,8,7,3,6,7,5,9,6,6,8]. Naive concatenations: rows='610876654997879', cols='8108108736759668'.
 - **Method:** Computed the genesis row and column sums and concatenated them to produce the literal value of the cosmic ingredient 'matrixsumlist'. Tested this concatenation (and variants) thousands of times as part of the cosmic recipe. Flagged the format as lossy: the value 10 makes '6108...' parse two ways (single-digit vs zero-padded two-digit), so the exact byte-form feeding sha256 is uncertain.
@@ -145,7 +145,7 @@
 
 <a id="t-genesis-yellowblueprimes-89-candidate-sweep"></a>
 #### yellowblueprimes candidate sweep (~89 derived values) vs the blobs
-❌ **Verified fail** · this project · *this session (attack_ybp.py, ybp.py, ybp2.py)*
+❌ **Verified fail** · this project · *this session (attack_ybp.py, ybp.py, ybp2.py)* · 📅 ~2026-06
 
 - **Input:** Derived yellowblueprimes candidates from the genesis colored cells: blue char-index set {1,2,3,4,6,7,8,11,12,13,14,16,17,20,23}, yellow {5,9,10,15,18,19,21,22,24}; primes 1..24 = {2,3,5,7,11,13,17,19,23}; blue∩primes {2,3,7,11,13,17,23}, yellow∩primes {5,19}; counts 15/9; index-sums; URL chars at those positions; literal '2357' and 'yellowblueprimes'. Tested directly as keys and inside the 4-ingredient cosmic recipe (matrixsumlist, lastwordsbeforearchichoice, yinyang∈{yinyang,yin,yang}, seps {'' . - _ space}, several orders).
 - **Method:** Built every plausible 'yellow has a number and so does Blue' + primes 2,3,5,7 reading as a concrete value (concatenation, index-sum, count, prime-filtered subset, URL chars at prime positions). Each was hashed (literal, sha256hex, raw-sha, double-sha) and tested against cosmic, salph_inner and p32_trailing, both alone and assembled into the cosmic 4-ingredient key.
@@ -153,11 +153,20 @@
 
 <a id="t-genesis-yinyang-from-duality"></a>
 #### yinyang derived from genesis duality / Cosmic Duality book / faed complement
-❌ **Verified fail** · this project · *this session (yinyang_cands.py)*
+❌ **Verified fail** · this project · *this session (yinyang_cands.py)* · 📅 ~2026-06
 
 - **Input:** yinyang candidates: literal forms (yinyang, 'yin yang', YinYang, tao, taiji, taijitu); the faed yin-yang complement map (a<->i, b<->h, c<->g, d<->f, e fixed) applied to the 570-symbol faed block and its digit form; faed binary maps under thresholds 4/5/6 and parity; faed split into two 285-symbol halves; and the genesis blue<->yellow / 0<->1 / black<->white duality, plus the real 'Cosmic Duality' book (Mysteries of the Unknown, yin-yang of two galaxies) as a thematic source.
 - **Method:** The creator's '...you'll solve it the same day once you hit a ying yang' makes yinyang the sole bottleneck, with the most on-theme source being the genesis blue/yellow duality and the faed complement. Generated complement/threshold/parity/half candidates and literal/book forms, hashed each (literal/sha/double-sha) and tested against cosmic and the two oracle blobs.
 - **Output:** Complement and literal yinyang tests all failed (0 hits). The genesis duality and the book yield no verified yinyang value. yinyang remains the central unknown of the endgame.
+
+<a id="t-grid-dbbi-mixed-origin-zero-vs-one-indexing"></a>
+#### Mixed 0-based / 1-based indexing ('zero out = which origin?') across the grid + dbbi/faed
+💡 **Verified — new insight** · this project · *this session — proposed by @DaneelOlivaw (Hosterjack); systematic mixed-origin index sweep* · 📅 2026-06-30 · 👤 **The author** @DaneelOlivaw
+
+- **Input:** The planted #FEFEFE cell only becomes a DUAL-prime index because its two prime indices come from DIFFERENT counting origins -- spiral 163 (counting from 0) and row-major 103 (counting from 1). Hypothesis: the creator's 'some characters need to be zeroed out' / 'if you know how the array is indexed' hints mean some indices are read 0-based and others 1-based -- e.g. the COLOUR decides the origin (yellow = 0 = 'zeroed', blue = 1). Artifacts: the 24 genesis colored cells (15 blue + 9 yellow) and dbbi (91) / faed (570).
+- **Method:** Built candidate 'yellowblueprimes' values from every combination of {index-type (spiral / row-major / URL-position / row / col) x per-cell origin (all-0, all-1, colour-decides-origin both ways) x prime-selection (keep / drop / zero-out primes, keep {2,3,5,7}) x reduction (concat / sum / sorted / prime-mask / parity)} = 851 distinct values; and applied 20 per-position mixed-origin rules to dbbi/faed themselves (origin flipped by position-primality or value-primality = a literal 'zero out'). Each candidate was field-decoded (checked for readable text) and tested as an OpenSSL/sha256 passphrase against cosmic / salph_inner / p32_trailing, plus 8,000 cosmic combines pairing each candidate with a yin-yang battery. ~13,300 AES decrypts, gated on READABLE plaintext (>= 85% printable + an English-word check), not merely valid PKCS7 padding.
+- **Output:** Zero readable hits. dbbi/faed mixed-origin decodes all sit at 30-47% printable (the random floor) with 0 English words; no candidate opens any blob. The only padding-valid results were 52 vs 51.2 expected by pure chance (1/256) -- i.e. exactly the noise floor, confirming the harness is sound and nothing beat chance.
+- **Insight:** The 0-vs-1 'origin ambiguity = zero out' is a coherent, previously-unrecorded reading of the creator's hints -- but it is UNTESTABLE to confirm directly: yellowblueprimes has no standalone oracle (only the cosmic combine validates it, and that also needs the unknown yinyang + combine op). The exhaustive sweep rules these specific values out as direct keys and simple cosmic ingredients -- not the idea itself. Mixed-origin indexing would only become testable if it opened a small blob directly (it does not) or decoded dbbi to text directly (it does not).
 
 ## Phase 3.2 — The Architect & the trailing blob (6)
 
@@ -165,7 +174,7 @@
 
 <a id="t-chain-reproduce-phase2-3-32-byteexact"></a>
 #### Reproduced the full phase2 -> phase3 -> phase3.2 AES chain byte-exact with own OpenSSL/EVP harness
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Three repo ciphertext blobs (ciphertexts/phase2.txt, phase3.txt, phase32.txt). Keys: phase2 = sha256hex('causality'); phase3 = the audit key 1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5 (= sha256 of the 7-part Mr-Robot password); phase3.2 = sha256hex('jacquefrescogiveitjustonesecondheisenbergsuncertaintyprinciple') = 250f37726d6862939f723edc4f993fde9d33c6004aab4f2203d9ee489d61ce4c.
 - **Method:** Built a standalone Python harness (gsmg.py) that re-implements OpenSSL's `enc -aes-256-cbc -md sha256`: it strips/base64-decodes each blob, reads the 8-byte Salted__ salt, derives key+IV via EVP_BytesToKey with SHA-256 (D1=sha256(pw+salt); Di=sha256(Di-1+pw+salt)), then AES-256-CBC decrypts and validates PKCS7. Ran the known answer-strings (chain.py) for all three stages to confirm each decrypts cleanly and the chain is reproducible outside the original repo tooling.
@@ -176,7 +185,7 @@
 
 <a id="t-architect-ebcdic-cp1141-codepage-debate"></a>
 #### Is the EBCDIC / CP1141 code page a real decode step, or just a coincidence of the a-z range? (community debate)
-💡 **Verified — new insight** · community · *community discussion (Telegram, 2026-06)* · 👤 **The author** @CoruNethron
+💡 **Verified — new insight** · community · *community discussion (Telegram, 2026-06)* · 📅 ~2026 · 👤 **The author** @CoruNethron
 
 - **Input:** The Phase 3.2 'Beaufort blob' (the Architect speech). Sparky's critique: the post-AES bytes use only 26 distinct values, which is simply a property of a lowercase a-z alphabet, so reading an 'EBCDIC 1141 code page' into it is unjustified -- a Beaufort (a wrapped negative shift over a-z) is the real operation and the code page is a post-hoc rationalisation nobody verified for themselves. Counter (the blob's poster, and @CoruNethron): CP1141 is literally the transform in the working pipeline, and CP273 (German/Dutch = 1141 plus the EUR sign) is itself a hint.
 - **Method:** Re-examined whether the EBCDIC/CP1141 step carries meaning or is mechanical. @CoruNethron posted a full reproducible one-liner of the Phase 2->3->3.2 chain whose final stage is `... | tail -c+448 | head -c 1539 | iconv -f ISO-8859-1 -t CP1141 | beaufort --decrypt --key=thematrixhasyou --alphabet=abcdefghijklmnopqrstuvwxyz` -- i.e. reinterpret the Latin-1 bytes AS CP1141, then Beaufort-decrypt with key 'thematrixhasyou' over the plain a-z alphabet. He notes you can pipe the bytes through iconv in the 'wrong' code page directly and read the plaintext (he reports it begins 'yourlifeisthesum...'). Reference Beaufort impl: github.com/jwerle/libbeaufort.
@@ -187,7 +196,7 @@
 
 <a id="t-discover-p32-trailing-blob-end-of-phase32"></a>
 #### DISCOVERED the undocumented 80-byte p32_trailing AES blob embedded at the END of the phase-3.2 plaintext
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The decrypted phase-3.2 plaintext (saved to phase32_plain.bin). Searched it for the OpenSSL base64 magic prefix 'U2FsdGVkX1'. Recovered blob (b64): U2FsdGVkX1+0Wl49gnWTyiimluu7V3+vl7st0gUt9sWDzNLxDmlPMsDSiuW2a46zgKlIi8aaqY5gpJPPEzW1n9n3/26qs4zstWtPKF8Zs/BTNN4IiEh4qu18mdC0NAv4 -> salt b45a5e3d827593ca, 80 ciphertext bytes (5 AES blocks).
 - **Method:** After reproducing phase3.2, scanned the full plaintext for any embedded 'Salted__' base64 (extract.py: find('U2FsdGVkX1'), then collect the contiguous base64 run). Found a base64 blob sitting AFTER the Architect speech/VIC text at the very tail of the plaintext, distinct from the on-page salphaseion blob. Decoded it, confirmed the Salted__ header and an 80-byte ciphertext, and cross-checked that it is NOT equal to ciphertexts/salphaseion.txt.
@@ -196,7 +205,7 @@
 
 <a id="t-vic-straddling-checkerboard-reverse-engineering"></a>
 #### VIC straddling-checkerboard reverse-engineering — the chess clue is just the VIC-alphabet mnemonic
-💡 **Verified — new insight** · this project · *this session (vic.py round-trip verification)*
+💡 **Verified — new insight** · this project · *this session (vic.py round-trip verification)* · 📅 ~2026-06
 
 - **Input:** VIC alphabet FUBCDORA.LETHINGKYMVPS.JQZXW with markers (1,4); the 144-digit phase-3.2 VIC code string (151659431219…154112); target known plaintext beginning 'INCASEYOUMANAGE…' → full decode 'IN CASE YOU MANAGE TO CRACK THIS THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF AND THEY ALSO NEED FUNDS TO LIVE'.
 - **Method:** Reverse-engineered the straddling checkerboard from the chess clue's letter-groups and decoded the 144-digit VIC string under both marker orientations (1,4) and (4,1) to find which construction reproduces the known Architect plaintext. Reasoning: confirming the board round-trips the existing plaintext proves whether the chess clue carries any NEW data (a board position) or whether its entire purpose was already spent in establishing the VIC alphabet.
@@ -205,7 +214,7 @@
 
 <a id="t-keysweep-p32-288-phase32-answers"></a>
 #### 288 phase-3.2-derived answer strings against the p32_trailing blob
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The 80-byte p32_trailing blob (salt b45a5e3d827593ca, b64 U2FsdGVkX1+0Wl49...mdC0NAv4) found at the very end of the phase-3.2 plaintext. Keyed with 288 strings derived locally from phase 3.2: the THEMATRIXHASYOU Beaufort key, the custom VIC alphabet FUBCDORA.LETHINGKYMVPS.JQZXW (and the ambiguous ...ZJQWX. rebuild), the chess clue 'A fubcd-king & oracle-queen, thingky mvps, on a sad board but as wide as the first one seen' (and fubcdking/oraclequeen/sadboard fragments), the raw VIC 144-digit string (fwd/rev), CIAO BELLA O, HALF AND BETTER HALF, the phase-2 chess FEN B5KR/1r5B/2R5/..., REINSERTING THE PRIME BASICS / RETURN TO THE SOURCE CODES, 140/hundredfourty, privatekeynote, etc. Each as literal, sha256hex, raw-sha, double-sha, hex-of-hex (attack_p32.py, chessclue.py).
 - **Method:** p32_trailing is a self-verifying oracle (a correct key yields <=79 readable bytes instantly) and the chess sentence immediately preceding it suggested its key is a phase-3.2 construction. Every plausible phase-3.2 answer/alphabet/board phrase was normalized and hashed in the puzzle's conventions and used to decrypt the blob.
@@ -213,7 +222,7 @@
 
 <a id="t-p32-trailing-chess-vic-constructive-attack"></a>
 #### p32_trailing chess-clue CONSTRUCTIVE attack — build the VIC straddling-checkerboard and run the chess clue through it
-❌ **Verified fail** · this project · *this session (p32_chess.py, p32chess.py, chess_p32.py, p32_clue.py, vic.py)*
+❌ **Verified fail** · this project · *this session (p32_chess.py, p32chess.py, chess_p32.py, p32_clue.py, vic.py)* · 📅 ~2026-06
 
 - **Input:** The 80-byte OpenSSL blob at the END of the phase-3.2 plaintext: p32_trailing (salt b45a5e3d827593ca, base64 U2FsdGVkX1+0Wl49…mdC0NAv4). Its immediately-preceding clue: 'Raising the stakes without extra chances of winning. A fubcd-king & oracle-queen, thingky mvps, on a sad board but as wide as the first one seen.' Construction material: the VIC straddling-checkerboard alphabet FUBCDORA.LETHINGKYMVPS.JQZXW with markers 1&4, and the 144-digit VIC code string 15165943121972409169171213758951813141543131412428154191312181219433121171617137149110916631213131281491109166131412199114371612126021664313711154112.
 - **Method:** Rather than just hashing the chess sentence as a phrase, this attack treated the clue as a CONSTRUCTION: built the VIC straddling checkerboard from the clue's letter-groups (top row FUBCDORA into the 8 non-marker columns, marker-1 row and marker-4 row), verified it round-trips the known phase-3.2 VIC plaintext, then generated every plausible key from that construction — the clue text and all normalizations, every sub-fragment (fubcdking, oraclequeen, thingkymvps, sadboard, aswideasthefirstoneseen, gsmg.io/theseedisplanted as 'the first one seen'), the column-read of the checkerboard, the re-decoded VIC string, and the VIC plaintext fragment 'HALF AND BETTER HALF' — each hashed as {literal, sha256hex, raw-sha256, double-sha, hexofhex} and AES-decrypted against p32_trailing (and salph_inner/cosmic), with success defined as a PKCS7-valid plaintext scoring >0.85 printable.
@@ -225,7 +234,7 @@
 
 <a id="t-hint-image-decoding-primes-fefefe-doors-toe"></a>
 #### Hint-image / creator-hint decoding — primes 2,3,5,7, 'zero out', fefefe=101010, 'another door', 'theory of everything'
-💡 **Verified — new insight** · this project · *this session (hints/ images + creator Telegram timeline)*
+💡 **Verified — new insight** · this project · *this session (hints/ images + creator Telegram timeline)* · 📅 2021-03-01
 
 - **Input:** The creator's hint images and Telegram timeline (saved as hints/ + the mh_top/mh_bot/mh_last PNGs). Key extracted statements: 2021-03-01 'which primes 2,3,5,7 we need use' / 'You are at THE PRIME PART already???' / 'too many combinations'; 2021-03-01b 'fefefe is 101010 … if you know how the array is indexed'; 2021-12-25 'prime numbers required to proceed … some characters need to be zeroed out'; 2020-08-02 / 2021-12-02 / 2021-12-25 'there is ANOTHER DOOR' (nobody found) and 'the second half [faed] will probably be used for ANOTHER PUZZLE, or not at all'; 2020-01-14 'Yellow has a number and so does Blue'; 2023 'the theory of everything is also still a valid path' / 'a prime number is very important'.
 - **Method:** Transcribed and cross-referenced the full creator hint timeline (images + Telegram) to extract the precise operational instructions for the endgame rather than treating them as flavor. Reasoning: these hints name the exact mechanism — primes {2,3,5,7}, 'zero out characters', the binary rule fefefe=101010 (so the per-symbol bit map f=1/e=0), an unfound 'another door', and an alternate 'theory of everything' path — so pinning the verbatim wording is what makes the dbbi/faed and yinyang attacks targetable.
@@ -234,7 +243,7 @@
 
 <a id="t-rulers-riddle-john-mcafee"></a>
 #### The 'competition / rulers' riddle resolves to John McAfee (Norton → McAfee wordplay; Belize; POTUS runs)
-🟡 **Unverified** · community · *community discussion (Telegram, 2026-06)* · 👤 **The author** @CoruNethron
+🟡 **Unverified** · community · *community discussion (Telegram, 2026-06)* · 📅 ~2026 · 👤 **The author** @CoruNethron
 
 - **Input:** The endgame's cryptic 'competition' / 'rulers' reference (cf. the Thevenin/Norton 'equivalent ... competition ... tried to become a ruler of a piece of land' phrasing seen in the chat).
 - **Method:** Resolve the wordplay: 'competition' -> Edward Norton -> Norton antivirus -> its rival McAfee antivirus -> John McAfee; corroborated by 'ruler of a piece of land' (McAfee lived in Belize, home of Belikin beer) and his two US-presidential (POTUS) campaign runs.
@@ -244,7 +253,7 @@
 
 <a id="t-verify-embedded-salphaseion-equals-repo"></a>
 #### Confirmed the on-page SalPhaseIon blob embedded in phase-3.2 plaintext matches the repo salphaseion.txt
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The first 'U2FsdGVkX1' base64 run found in the phase-3.2 plaintext vs ciphertexts/salphaseion.txt (whitespace-stripped).
 - **Method:** While scanning the phase-3.2 plaintext for embedded blobs (extract.py), compared the first reconstructed base64 run against the repo's salphaseion.txt by common-prefix length and equality (ignoring '=' padding). This separates the genuine on-page salphaseion blob from the distinct trailing p32_trailing blob.
@@ -255,7 +264,7 @@
 
 <a id="t-reconstruct-salph-inner-blob-stray-z-enter-binary"></a>
 #### Reconstructed the salph_inner 80-byte blob from soup fragments (stray-'z' + embedded 'enter' binary removed)
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** post-z soup chunks 3 and 4. Chunk 3 = 'shabe' + 'fourfirsthintisyourlastcommand' + blobpart1. Chunk 4 = enter-binary (40 a/b chars = 8-bit ASCII of 'enter') + blobpart2 + suffix 'shabefanstoo'. Concatenated b64 -> Salted__ blob, salt 3ab585348552415d, 80 ciphertext bytes.
 - **Method:** The inner blob's base64 is broken across the 'z' token separators and has the word 'enter' (as a 40-char a/b binary string) spliced INTO the middle of the base64. Reconstructed it (inner.py/inner2.py): stripped the leading plaintext 'shabefourfirsthintisyourlastcommand' from chunk 3 to get blobpart1, stripped the leading 40-char 'enter' binary and the trailing 'shabefanstoo' from chunk 4 to get blobpart2, and joined blobpart1+blobpart2. Verified the result base64-decodes to a valid 'Salted__' header with an 80-byte ciphertext.
@@ -264,7 +273,7 @@
 
 <a id="t-recover-dbbi-faed-salphaseion-soup-exact"></a>
 #### Recovered the EXACT dbbi (91) & faed (570) strings and the full SalPhaseIon soup structure
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The SalPhaseIon notebook soup (salphaseion.ipynb, fenced block, spaces/newlines stripped). dbbi (91 = 7x13 symbols, alphabet a-i, no 'o'): dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe. faed (570 = 2x3x5x19 symbols): faedggeedfcbdabhh...ahaidhfahiihic (full string saved to faed.txt).
 - **Method:** Parsed the soup (parse_soup.py): located the first 'z' to split off the leading pre-z chunk, computed the a/b bit-pattern of the word 'matrixsumlist' (8-bit ASCII, a=0/b=1, 104 bits), found that pattern inside pre-z, and split pre-z into [dbbi][matrixsumlist-binary][faed]. Then split post-z on 'z' to recover the agda (->lastwordsbeforearchichoice), cfob (->thispassword), shabef, and the inner-blob region. Saved dbbi.txt and faed.txt verbatim and confirmed both alphabets contain a-i with no 'o'.
@@ -273,7 +282,7 @@
 
 <a id="t-stray-z-enter-marker-finding"></a>
 #### The stray-'z' / embedded-'enter' finding as a possible delimiter/offset signal
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The two soup constructs flanking salph_inner: the 'z' separators that fragment the inner-blob base64, and the 'enter' word encoded as a 40-bit a/b binary spliced inside the base64 (between blobpart1 and blobpart2). 'enter' is NOT one of the four cosmic ingredients.
 - **Method:** Noted during reconstruction that 'enter' is encoded the same self-labeling way as 'matrixsumlist' (a/b 8-bit ASCII) but sits INSIDE the inner-blob base64 rather than standing alone, and that 'z' marks the split points. Considered whether the split position / 'enter' marker is a deliberate pointer (a UI 'enter the password' command, or a byte-offset delimiter) versus mere noise, and tested 'enter'/'thispassword'/'enterthispassword' as inner-blob keys.
@@ -284,7 +293,7 @@
 
 <a id="t-faed-deinterleave-factors-and-lag253"></a>
 #### De-interleave faed at its factors and at autocorrelation lag-253
-💡 **Verified — new insight** · this project + community + community · *this session + dead-end ledger + dead-end ledger*
+💡 **Verified — new insight** · this project + community + community · *this session + dead-end ledger + dead-end ledger* · 📅 ~2026-06
 
 - **Input:** faed (570 = 2*3*5*19) de-interleaved into 2,3,5,6,10,15,19,30 strands; each strand field-decoded plus concatenations plus reversed strands. Separately, autocorrelation found a z~3.8 peak at lag 253 (weak echo near 505), so faed was split/aligned on a 253 period to expose a repeated substring.
 - **Method:** If faed is an interleaving (fractionation) of multiple shorter messages, splitting on a true factor period should re-assemble readable strands. The lag-253 autocorrelation spike was investigated as a possible repeated key/plaintext period that would betray structure.
@@ -292,7 +301,7 @@
 
 <a id="t-dbbi-all-9factorial-substitutions"></a>
 #### Exhaustive sweep of all 362,880 (9!) symbol->digit permutations of dbbi field-decode
-💡 **Verified — new insight** · this project + community · *this session + dead-end ledger*
+💡 **Verified — new insight** · this project + community · *this session + dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi (91 symbols); every one of the 9! = 362,880 bijections from {a..i} to a 9-digit alphabet, run for BOTH digit ranges 0-8 and 1-9 (725,760 total decodes), each field-decoded to bytes and scored for printability/English.
 - **Method:** Rather than guess the symbol->digit mapping, brute-force ALL of them. For each of the 362,880 permutations, build the integer, convert to hex/ASCII, and score the result for printable ratio and dictionary words. If dbbi were monoalphabetically enciphered text, exactly one permutation would surface readable English.
@@ -309,7 +318,7 @@
 
 <a id="t-faed-9factorial-permutation-sweep"></a>
 #### 9! monoalphabetic permutation sweep of the faed field-decode
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The 570-symbol faed string; all 9! = 362,880 permutations of the symbol->digit mapping (a..i to the digits), in two digit ranges (0-8 and 1-9), each fed through the field-decode (int -> hex -> ASCII) and scored for printable ratio.
 - **Method:** Since the 'correct' digit assignment for the alphabet is unknown, every possible bijection of the nine symbols to nine digits was tried exhaustively, then each decode scored for printable English. This brute-forces away any ambiguity in which symbol maps to which value.
@@ -317,7 +326,7 @@
 
 <a id="t-dbbi-transposition-times-substitution"></a>
 #### All transposition layouts x all 9! substitutions of dbbi (3.27M decodes)
-❌ **Verified fail** · this project + community · *dead-end ledger*
+❌ **Verified fail** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi (91 symbols); 9 transposition layouts (7x13 / 13x7 grids read as rows/cols/diagonals/spiral/boustrophedon) x every 9! substitution = 3,265,920 decodes.
 - **Method:** Combine the two classical attacks: first re-order the symbols by a transposition path, then try every monoalphabetic substitution on the re-ordered string, then field-decode and score. Covers the case where dbbi is a transposed AND substituted cipher.
@@ -341,7 +350,7 @@
 
 <a id="t-dbbi-base81-pairs"></a>
 #### dbbi adjacent symbol pairs as base-81 digits
-❌ **Verified fail** · this project + community · *dead-end ledger*
+❌ **Verified fail** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi; adjacent symbol pairs (9x9=81 combinations) read as base-81 digits.
 - **Method:** Since each symbol is base-9, a pair is a base-81 digit; read consecutive pairs as a base-81 number / byte stream to see if a coarser radix reveals structure.
@@ -349,7 +358,7 @@
 
 <a id="t-dbbi-as-number-passphrase"></a>
 #### dbbi numeric / binary derived values as AES passphrases against all blobs
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Values derived from dbbi: the big decimal (a-i->1-9 concatenation), the prime->0 bitstream as bytes/hex/decimal/inverted, hex(int(bits)), field-decode int->hex string; each tested as literal, sha256hex, raw-sha256 and double-sha passphrase plus raw-byte passphrases, vs cosmic/salph_inner/p32_trailing.
 - **Method:** Test the hypothesis that dbbi's decoded value IS the yellowblueprimes/yinyang key - feed its numeric and binary forms directly as the AES passphrase (in every standard KDF form) to the three open blobs, watching for a valid PKCS7 + readable plaintext.
@@ -365,7 +374,7 @@
 
 <a id="t-dbbi-field-decode-int-hex-ascii"></a>
 #### Direct field-decode of dbbi (a-i -> 1-9 -> big integer -> hex -> ASCII)
-❌ **Verified fail** · this project + community · *this session + dead-end ledger*
+❌ **Verified fail** · this project + community · *this session + dead-end ledger* · 📅 ~2026-06
 
 - **Input:** The 91-symbol dbbi string 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe' (alphabet a-i, no 'o'); mapping a=1..i=9.
 - **Method:** Applied the verified 'house' field-decode that solved the soup's z-fields (agda, cfob, shabef): substitute each letter for its 1-9 digit, read the whole string as one decimal integer, convert to hexadecimal, then to ASCII bytes. The reasoning: if dbbi were a word like the other chunks, this exact method would reveal it.
@@ -373,7 +382,7 @@
 
 <a id="t-faed-binary-bit-sweep"></a>
 #### Exhaustive faed binary bit-map sweep (2^9 assignments x grids x 7/8-bit)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** faed (570 symbols). For each of the 510 non-trivial subsets of {a..i} mapped to bit '1' (rest '0'), the 570-bit string was read in grid shapes 570x1, 19x30, 30x19, 10x57, 57x10, 6x95, 95x6 under rows/cols/cols-reversed/boustrophedon orders, then chunked at 7 and 8 bits per character and scored against a 4-10 letter English dictionary.
 - **Method:** Mirrors the verified dbbi 'fefefe is 101010' binary rule (per-symbol bit map). Since the correct symbol->bit assignment is unknown, every subset was tried, across multiple grid reindexings and both ASCII byte widths, and outputs were scored strictly by counting real dictionary words found as substrings.
@@ -381,7 +390,7 @@
 
 <a id="t-faed-field-decode-237-bytes"></a>
 #### faed a1z26 field-decode to one big integer -> 237 random bytes
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The 570-symbol faed string (alphabet a..i only, no 'o'): 'faedggeedfcbdab...ahaidhfahiihic' (570 = 2*3*5*19). Map a..i -> 1..9 (and the alternate a..i -> 0..8), concatenate into one decimal/base-9 integer, convert to hex, then hex pairs to ASCII.
 - **Method:** This is the verified 'house method' that successfully decoded the soup's z-fields (agda, cfob, shabef) into literal words. The reasoning: faed sits in the same family as those word-chunks, so the same a1z26 -> big-int -> hex -> ASCII pipeline should reveal a literal word (the candidate home of 'yinyang'). The single integer was reduced to bytes.
@@ -389,7 +398,7 @@
 
 <a id="t-faed-as-blob-key-material"></a>
 #### faed literal/digits/bits/sha forms as AES passphrases for the blobs
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Derived candidate passphrases from faed: the literal string; the a1z26 digit string; prime->0 bit string and its inverse; zero-out digit string; field-decoded int-as-hex; the yin-yang complement string; plus base-9 integer forms (true base-9 int, decimal of digit strings, int-as-bytes). Each tested as literal, sha256hex, raw-sha256 digest, and double-sha against the salph_inner (salt 3ab585...) and p32_trailing (salt b45a5e3d...) 80-byte AES-CBC blobs via the OpenSSL EVP/SHA-256 KDF.
 - **Method:** A correct key on either 80-byte blob is instantly obvious (valid PKCS7 padding plus <=79 readable bytes). Rather than decode faed to plaintext, this treats every plausible faed-derived string/byte sequence directly as the AES passphrase, since the creator hinted faed could be key/value material rather than text.
@@ -397,7 +406,7 @@
 
 <a id="t-dbbi-primality-factoring"></a>
 #### Primality and factoring of dbbi as a number
-❌ **Verified fail** · this project + community · *dead-end ledger*
+❌ **Verified fail** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi read as a single number in base-9 and base-10.
 - **Method:** If the 'prime number is very important' hint points at dbbi itself, the number might be prime or factor into meaningful primes. Tested primality and factored it in both bases.
@@ -405,7 +414,7 @@
 
 <a id="t-dbbi-search-literal-yellowblueprimes"></a>
 #### Search dbbi for the literal string 'yellowblueprimes' in any base
-❌ **Verified fail** · this project + community · *dead-end ledger*
+❌ **Verified fail** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi; target substring 'yellowblueprimes' encoded in any base representation.
 - **Method:** Directly test whether dbbi simply contains the word it is hypothesized to hold, by encoding 'yellowblueprimes' in each base and searching dbbi's representations.
@@ -413,7 +422,7 @@
 
 <a id="t-faed-yinyang-self-complement-halves"></a>
 #### Yin-yang self-complement test of the two 285-symbol halves
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** faed split into two halves of 285 symbols each (570/2 = 285). Yin-yang complement map a<->i, b<->h, c<->g, d<->f, e fixed. Compared half-A against complement(half-B) and measured matching IC/correlation; also applied the complement standalone and chained with prime-zeroing.
 - **Method:** The 'yinyang' ingredient suggests a duality/complement structure, so the hypothesis was that faed encodes its two conjugate halves such that one half is the yin-yang complement of the other (a self-complementary payload). If true, complementing one half would align it with the other.
@@ -423,7 +432,7 @@
 
 <a id="t-dbbi-binary-prime-value-map"></a>
 #### fefefe=101010 prime-value binary map (prime->0 else->1), flat 7/8-bit + all subsets/polarities
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** dbbi (91 symbols); creator rule 'fefefe is 101010' verified: f(6)->1, e(5)->0, i.e. symbol whose a1z26 value is prime {2,3,5,7}->0 else ->1, giving a 91-bit string. Swept all subsets of {2,3,5,7} as the zero-set, both polarities, widths 7 and 8, plus rules even/odd/>=5/f-only.
 - **Method:** Map each symbol to one bit per the creator's confirmed fefefe rule, producing a 91-bit stream, then chop into 7- or 8-bit chars to read ASCII. Try every variant of which prime values become 0 and both inversions, since the creator said 'if you know how the array is indexed'.
@@ -432,7 +441,7 @@
 
 <a id="t-dbbi-bitmap-render"></a>
 #### Bitmap rendering of dbbi (prime-value bits on 7x13/13x7 grids)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** dbbi prime-value bitstream laid out on 7x13 and 13x7 grids, both polarities; rendered to PNG (dbbimap_prime0_7x13.png, dbbimap_prime0_13x7.png, dbbimap_prime1_*.png).
 - **Method:** If dbbi encodes a glyph (a yin-yang symbol, a QR-like mark, letters), the prime-value bits drawn as black/white pixels on the correct grid should show it. Rendered all four grid/polarity combinations as images for visual inspection.
@@ -440,7 +449,7 @@
 
 <a id="t-dbbi-grid-reindex-binary"></a>
 #### Grid reindex (7x13 / 13x7 rows/cols/diag/spiral/boustrophedon) then prime-value binary
-❌ **Verified fail** · this project + community · *this session + dead-end ledger*
+❌ **Verified fail** · this project + community · *this session + dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi as 7x13 and 13x7 grids; reading orders rows, cols, rows_rev, cols_rev, transpose, boustrophedon, diagonal, spiral_cw, spiral_ccw; each then mapped via 5 bit-rules (prime0, prime1, even1, odd1, ge5) x reverse x widths 7/8 x lsb/msb.
 - **Method:** Honor the creator's 'if you know how the array is indexed' hint by re-ordering the 91 symbols along every plausible 2D path before applying the binary rule and reading ASCII. Each resulting candidate string also tested as a passphrase against the cosmic, salph_inner and p32_trailing blobs.
@@ -448,7 +457,7 @@
 
 <a id="t-dbbi-matrixsumlist-104-mask"></a>
 #### matrixsumlist 104-bit string as a select/XOR mask over dbbi binary
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** dbbi prime-value bitstream (91 bits, both polarities); MSL = ASCII bits of the literal word 'matrixsumlist' (104 bits). Operations: XOR MSL (repeated) onto the dbbi bits; select dbbi symbols where the 104-bit 'a/b' mask is 1 vs 0 (using first 91 of 104); widths 7/8.
 - **Method:** matrixsumlist physically SITS BETWEEN dbbi and faed in the soup and is 104 bits, matching the '104 is the fefefe square' hint - so test it as the 'array index'/mask that selects or XORs exactly the dbbi characters to keep or zero. Re-decode the masked/XORed bits and also test outputs as blob keys.
@@ -458,7 +467,7 @@
 
 <a id="t-dbbi-zero-dominant-be"></a>
 #### Remove / zero the dominant symbols b and e
-❌ **Verified fail** · this project + community · *dead-end ledger*
+❌ **Verified fail** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi; symbols b and e together make up ~47% of the 91 characters. Variants: delete b+e, or set them to 0, then re-decode.
 - **Method:** Since b and e dominate the frequency table, test whether they are filler/spacer symbols to be stripped or zeroed, leaving a sparser payload that field-decodes to text.
@@ -466,7 +475,7 @@
 
 <a id="t-dbbi-single-zero-insertion-sweep"></a>
 #### Single zero-insertion at every position (and prime positions) then field-decode
-❌ **Verified fail** · this project + community · *dead-end ledger*
+❌ **Verified fail** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi (91 symbols); insert exactly one '0' at each of the 92 possible positions, and separately at each prime position, then field-decode.
 - **Method:** Test the minimal version of the 'missing zero' hypothesis: maybe just one zero digit was removed. Insert a single 0 at every candidate slot and re-run the int->hex->ASCII decode, scoring each for readable text.
@@ -474,7 +483,7 @@
 
 <a id="t-dbbi-zero-out-prime-schemes"></a>
 #### Zero-out schemes (by prime value, by prime position, insert/replace) before field-decode
-❌ **Verified fail** · this project + community · *this session + dead-end ledger*
+❌ **Verified fail** · this project + community · *this session + dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi (91 symbols). (A) zero symbols whose value is prime - all subsets of {b,c,e,g}=values{2,3,5,7}, plus each single symbol a-i; (B) zero at prime POSITIONS, 0-indexed and 1-indexed, replace vs insert a '0'; (C) zero only at positions {2,3,5,7} and combos; then field-decode each.
 - **Method:** Act on the creator hints 'some characters need to be zeroed out' and 'reinsert the prime basics'. Force selected symbols to the digit 0 (the digit dbbi conspicuously lacks) - either by symbol value, by position, replacing or inserting - so the field-decode can land on text containing zeros, then convert int->hex->ASCII and score.
@@ -484,7 +493,7 @@
 
 <a id="t-dbbi-faed-bifid-dbifhceg-btcseed"></a>
 #### Bifid on faed with a dbbi-derived alphabet ('dbifhceg') — surfaces a 'btcseed' fragment
-🟡 **Unverified** · community · *community discussion (Telegram, 2025-06 / 2025-07)*
+🟡 **Unverified** · community · *community discussion (Telegram, 2025-06 / 2025-07)* · 📅 ~2025
 
 - **Input:** faed as ciphertext; key/alphabet derived from dbbi -- its first 13 symbols with duplicates removed give the 8-letter Bifid keyword 'dbifhceg'. dbbi is also split into 7 parts (the size of matrixsumlist), used as successive keys.
 - **Method:** The popular 'dbbi keys faed, it's a dual system' theory applied with Bifid instead of Vigenere: run a Bifid decode of faed using the dbbi-derived 'dbifhceg' alphabet, feeding dbbi's 7 parts in turn (the first part keys faed, its output keys the next, and so on).
@@ -492,7 +501,7 @@
 
 <a id="t-dbbi-otp-incase-key-youwon"></a>
 #### dbbi as a one-time pad keyed by 'INCASEYOUMANAGE...' — the output contains 'YOUWON' + a 64-char tail
-🟡 **Unverified** · community · *community discussion (Telegram, 2024-04 / 2024-09)*
+🟡 **Unverified** · community · *community discussion (Telegram, 2024-04 / 2024-09)* · 📅 ~2024
 
 - **Input:** dbbi (the 91-char string dbbibfbhccbeg...beeeabe) as ciphertext; key = the 91-char Phase-3.2 line INCASEYOUMANAGETOCRACKTHISTHEPRIVATEKEYSBELONGTOHALFANDBETTERHALFANDTHEYALSONEEDFUNDSTOLIVE, used as a one-time pad (A-Z Vigenere-style subtraction, e.g. via boxentriq's OTP tool).
 - **Method:** dbbi and the 'INCASE...' sentence are BOTH exactly 91 characters, so treat the sentence as a same-length one-time-pad key over dbbi and read the result.
@@ -548,7 +557,7 @@
 
 <a id="t-dbbi-vigenere-beaufort-brute"></a>
 #### Vigenere / Beaufort brute force on dbbi, periods 1-6
-❌ **Verified fail** · this project + community · *dead-end ledger*
+❌ **Verified fail** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi; 597,870 keys x both directions (Vigenere add and Beaufort), periods 1 through 6, each followed by field-decode and English scoring.
 - **Method:** Treat dbbi as polyalphabetically enciphered and brute every short key, including using the INCASE/VIC checkerboard ordering and matrixsumlist/genesis-URL/cell-stream as keys, to recover plaintext.
@@ -602,7 +611,7 @@
 
 <a id="t-dbbi-compression-fileformat-probe"></a>
 #### Compression / file-format magic-header probe on dbbi-as-bytes
-💡 **Verified — new insight** · this project + community · *dead-end ledger*
+💡 **Verified — new insight** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi mapped to bytes under 4 byte-mappings; checked for gzip/zlib/bzip2/xz/zip/OpenSSL 'Salted__' magic and run through every decompressor.
 - **Method:** Test whether dbbi is a packaged/compressed file rather than text or cipher, by scanning for known magic headers in several byte interpretations and attempting decompression.
@@ -610,7 +619,7 @@
 
 <a id="t-faed-format-alignment-compression"></a>
 #### faed format/alignment/compression probe (Salted__, block alignment, magic headers)
-💡 **Verified — new insight** · this project + community · *this session + dead-end ledger*
+💡 **Verified — new insight** · this project + community · *this session + dead-end ledger* · 📅 ~2026-06
 
 - **Input:** faed-as-bytes in candidate byte-mappings. Checked for an OpenSSL 'Salted__' header, 16-byte AES block alignment, and gzip/zlib/bzip2/xz/zip compressed-file magic; attempted decompressors.
 - **Method:** If faed were an encrypted file or a compressed container rather than a cipher of text, it would carry a recognizable header or align to a block boundary. This screens whether faed is a packaged binary artifact before spending effort on linguistic cipher attacks.
@@ -619,7 +628,7 @@
 
 <a id="t-faed-ic-near-random-118"></a>
 #### faed Index of Coincidence ~0.118 (near-random) battery
-💡 **Verified — new insight** · this project + community · *this session + dead-end ledger*
+💡 **Verified — new insight** · this project + community · *this session + dead-end ledger* · 📅 ~2026-06
 
 - **Input:** The 570-symbol faed string. Measured Index of Coincidence (IC) on the raw string and under candidate monoalphabetic substitutions, transpositions, and polyalphabetic periods 1-30.
 - **Method:** If faed were enciphered natural-language English, its IC would be elevated (English ~0.066 on 26 letters; for a 9-symbol alphabet a substituted/transposed English text holds an IC well above uniform ~0.111). An IC pinned at the uniform-random floor across all periods proves no monoalphabetic/polyalphabetic English is hiding inside. This was run as the decisive screening test before deeper cipher work.
@@ -628,7 +637,7 @@
 
 <a id="t-dbbi-symbol-frequency-analysis"></a>
 #### Symbol-frequency / bigram analysis of dbbi (b,e dominant; 'be' couplet)
-💡 **Verified — new insight** · this project + community · *dead-end ledger*
+💡 **Verified — new insight** · this project + community · *dead-end ledger* · 📅 ~2026-06
 
 - **Input:** dbbi 91-symbol frequency table (b and e together ~47%); bigram 'be' over-represented (~2.3 sigma); whole-string IC = 0.151; per-column IC for periods 1-30; autocorrelation lags 7/14/21/28 and lag-7 vs a frequency-preserving null.
 - **Method:** Statistically characterize dbbi: measure letter and bigram frequencies, index of coincidence, look for a Vigenere period via column-IC spikes, tokenize on the over-represented 'be' couplet, and test autocorrelation against a histogram-preserving shuffle to distinguish real periodicity from frequency skew.
@@ -639,7 +648,7 @@
 
 <a id="t-dbbi-yellowblue-prime-index-rabbit-cells"></a>
 #### Read dbbi's Yellow/Blue prime indexes against the genesis rabbit Y/B cells (first 20 bits reported to match)
-🟡 **Unverified** · community · *community discussion (Telegram, 2026-06)* · 👤 **The author** @CoruNethron
+🟡 **Unverified** · community · *community discussion (Telegram, 2026-06)* · 📅 ~2026 · 👤 **The author** @CoruNethron
 
 - **Input:** dbbi (dbbibfbhccbeg...beeeabe), the genesis 14x14 rabbit grid's yellow & blue cells, and the prime positions used for 'yellowblueprimes'.
 - **Method:** Index dbbi by prime-number positions while treating certain 'be' occurrences as a SINGLE index, then line the resulting yellow/blue sequence up against the genesis grid's Y/B colored cells.
@@ -647,7 +656,7 @@
 
 <a id="t-dbbi-ebcdic-vic-transforms"></a>
 #### EBCDIC (cp1141 family), VIC checkerboard, genesis-spiral transforms on dbbi
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** dbbi field-decoded bytes (digit maps 0-8 and 1-9) decoded through EBCDIC codecs cp500/cp037/cp1140/cp1026/cp273/cp424/cp875 (cp1141 unavailable in Python, nearest German/Intl pages used); the Phase-3.2 VIC alphabet FUBCDORA.LETHINGKYMVPS.JQZXW as a monoalphabetic key; the genesis matrix.js CCW spiral path as the reindexer.
 - **Method:** Re-apply the exact transforms that worked elsewhere in the chain: EBCDIC cp1141 + Beaufort cracked Phase-3.2, and the VIC alphabet decoded its digit block - so run dbbi's bytes through EBCDIC code pages and its symbols through the VIC permutation and the genesis spiral, on the theory the same machinery is reused.
@@ -681,7 +690,7 @@
 
 <a id="t-cosmic-matrixsumlist-literal-vs-numeric"></a>
 #### matrixsumlist as literal word vs. as the numeric row/col sums
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The ingredient matrixsumlist in two byte-forms: (a) the literal word 'matrixsumlist'; (b) the numeric value = genesis row-sums '610876654997879' concatenated with col-sums '8108108736759668' = '6108766549978798108108736759668' (rows[6,10,8,7,6,6,5,4,9,9,7,8,7,9], cols[8,10,8,10,8,7,3,6,7,5,9,6,6,8]). Each substituted into the 4-ingredient recipe across 7 separators and 4 orders, single and double sha (final_recipes.py, recipe.py, megacombine.py).
 - **Method:** It was verified byte-exact that the soup's 104-bit 'binary1' chunk literally spells the WORD 'matrixsumlist' (a=0,b=1, 8-bit ASCII), proving the soup tokens are self-labeling — the token names itself, and its VALUE is the genesis row/col sums. Both interpretations (literal word and true numeric value) were therefore tested as the matrixsumlist slot of the recipe so an otherwise-correct recipe could not fail merely on this slot's encoding.
@@ -690,7 +699,7 @@
 
 <a id="t-cosmic-no-partial-progress-oracle"></a>
 #### Structural 'no partial-progress oracle' on the cosmic recipe
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Cross-cutting structural observation over the entire cosmic-recipe search (~20,000 targeted attempts + full 370k-word dictionary × {literal, sha256hex} ≈ 1.5M decrypts). The cosmic key requires THREE unknowns simultaneously: the value of yellowblueprimes, the value of yinyang, AND the exact combine operation/separator.
 - **Method:** Across every recipe family above, results were analyzed for any signal short of a full solve. Because each test reduces to AES-256-CBC decryption, and AES only yields valid PKCS7 + readable text when the ENTIRE passphrase is exactly right, two-of-three components perfect still produces pure random bytes. This was confirmed empirically: no recipe ever scored above chance printability, with no gradient toward a solution.
@@ -707,7 +716,7 @@
 
 <a id="t-cosmic-3ingredient-omit-yinyang"></a>
 #### 3-ingredient recipe omitting yinyang (faed may be 'another puzzle')
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Recipes built from only THREE ingredients {yellowblueprimes, matrixsumlist, lastwordsbeforearchichoice} (yinyang/faed dropped), in candidate value-forms and orders, hashed and tested vs all 3 blobs (recipe.py / combine families; ybp value-candidates from genesis prime/blue/yellow char readings).
 - **Method:** The creator stated 'the second half [faed] will probably be used for ANOTHER PUZZLE, or not at all,' so the cosmic recipe was tried WITHOUT the yinyang slot — combining only the three remaining ingredients (with yellowblueprimes drawn from genesis prime/colored-cell char readings) to test the hypothesis that yinyang is not actually a cosmic ingredient.
@@ -715,7 +724,7 @@
 
 <a id="t-cosmic-kdf-variants-md5-sha1-sha512-pbkdf2"></a>
 #### Alternate KDFs (MD5/SHA-1/SHA-512 EVP, PBKDF2) on top candidate keys
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Top candidate passphrases (soup tokens, ingredients, 'our first hint is your last command', causality, hashthetext, theseedisplanted, the entry string, etc.) run through non-standard KDFs: MD5-EVP, SHA-1/SHA-512-EVP, and PBKDF2-HMAC-{sha256,sha1} with {1, 1k, 10k} iterations; also trailing-newline passphrase variants. Tested vs salph_inner & p32_trailing (and cosmic in the berserk KDF pass) (kdf_variants.py, lens4_salph.py, ENDGAME §8c).
 - **Method:** All confirmed blobs use OpenSSL EVP_BytesToKey with SHA-256, but to rule out a different key-derivation the strongest candidate passphrases were re-run through MD5/SHA-1/SHA-512 EVP and PBKDF2 (varied iteration counts), plus trailing-newline forms (a common OpenSSL pitfall).
@@ -731,7 +740,7 @@
 
 <a id="t-cosmic-double-sha-shabef"></a>
 #### Double-SHA ('shabef' = sha256 applied twice / N times)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The recipe assembly hashed with sha256 nested N times, N∈{2,5,6} (the soup token 'shabef' = a1z26 sha + b,e,f = 2,5,6 → sha256, appearing TWICE in the soup). Applied to the 4-ingredient concat (and per-ingredient forms) as the EVP passphrase, vs cosmic/salph_inner/p32_trailing (n5_recipe.py, combine_unknowns.py, literal_recipe.py double-sha form).
 - **Method:** 'shabef' brackets the inner-blob region twice and decodes to 'sha256' with the digits {2,5,6}; this was read as a possible instruction to apply sha256 two (or 2/5/6) times. The assembled recipe string was therefore iterated through sha256 multiple times and the resulting hex/raw digest used as the passphrase.
@@ -739,7 +748,7 @@
 
 <a id="t-faed-as-cosmic-passphrase-direct"></a>
 #### faed (and its base-9 integer forms) used directly as the cosmic passphrase/ingredient
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** faed literal, faed a1z26-digit string, faed true-base-9 integer, and decimal integers of the digit strings, used directly as the yellowblueprimes / yinyang ingredient value in the cosmic combine (sha256 -> AES). Included in the ~50 numeric assemblies feeding raw base-9 integers of dbbi & faed as ingredient values.
 - **Method:** If faed IS the home of the 'yinyang' cosmic ingredient, its raw value (number or string) should slot directly into the combine recipe and produce a valid decrypt against the real SalPhaseIon / cosmic blob. This skips decoding faed to a word and just uses it as the ingredient.
@@ -763,7 +772,7 @@
 
 <a id="t-cosmic-4ingredient-literal-sha256-all-orders"></a>
 #### Literal 4-ingredient SHA-256 assembly (every order and separator)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2023
 
 - **Input:** The four named cosmic ingredients as their LITERAL label words: yellowblueprimes . matrixsumlist . lastwordsbeforearchichoice . yinyang. All 24 permutations (4!) of the four words, joined with each of 8 separators {'', '.', ' ', '-', '_', '+', ',', '\n'}. Tested against all 3 open blobs (cosmic 1328B, salph_inner 80B, p32_trailing 80B). ~6,900 assemblies (literal_recipe.py).
 - **Method:** The 2023 reverse-binary master hint names four ingredients to combine. The simplest reading is that the puzzle wants sha256 of the four literal label words concatenated. Each assembled string was run through 5 key-forms (sha256hex, raw-sha256-hex, double-sha hex, sha-of-hex, and the literal string itself) as the OpenSSL EVP passphrase, then AES-256-CBC decrypted and the plaintext scored for printable/PKCS7-valid text.
@@ -771,7 +780,7 @@
 
 <a id="t-cosmic-per-ingredient-sha-then-concat-and-xor"></a>
 #### Per-ingredient SHA then concat, and XOR-of-N-ingredient-hashes
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Two structural combine variants: (a) sha256hex each of the 4 ingredients then concatenate the four 64-hex digests (then optionally re-sha); (b) XOR of the 4 per-ingredient sha256 digests → 32-byte key, used as EVP-raw passphrase and as direct AES key. Also generalized to XOR-of-N token hashes, N=4..8. Ingredient values included dbbi/faed raw-byte and field-decoded forms (combine_unknowns.py, final_recipes.py, combine_values.py).
 - **Method:** Beyond plain concatenation, the recipe might combine ingredients by hashing each separately. Two natural schemes were tested: concatenating the per-ingredient hashes (then sha), and XOR-ing the per-ingredient hashes into one 32-byte key. dbbi was treated as the yellowblueprimes raw/field-decoded ingredient and faed as yinyang, in addition to the literal words.
@@ -779,7 +788,7 @@
 
 <a id="t-cosmic-include-enter-thispassword-tokens"></a>
 #### Recipe including the unused soup tokens 'enter' and 'thispassword'
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The 4 master ingredients plus the two 'unused' soup tokens, in combinations: all 24 permutations of {yellowblueprimes, matrixsumlist, lastwordsbeforearchichoice, yinyang} × extra ∈ {∅, ['enter'], ['thispassword'], ['enter','thispassword']}; also the on-chain soup-4 string 'matrixsumlistenterlastwordsbeforearchichoicethispassword'. Forms {sha256hex, literal, raw-sha, double-sha} vs all 3 blobs (combine_values.py §C, literal_recipe.py).
 - **Method:** The soup contains two decoded tokens — 'enter' and 'thispassword' — that are NOT among the 4 master ingredients, suggesting they might be additional recipe components (e.g. 'enter this password'). They were appended/interleaved into the 4-ingredient assembly in every order and hashed, plus the exact soup-order concatenation that solvers posted on-chain.
@@ -787,7 +796,7 @@
 
 <a id="t-cosmic-phase-chain-key-reuse"></a>
 #### Reusing the phase-2/3/3.2/entry chain keys as cosmic ingredients/keys
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The verified phase chain keys used as passphrase material on the blobs: phase2 sha256('causality')=eb3efb…e5bf; phase3 1a57c572…30d5; phase3.2 sha256('jacquefresco…principle')=250f3772…ce4c; SalPhaseIon entry sha256('GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe')=89727c59…6a32. Tested literal, as sha256-of-key, and (for 64-hex) as direct 32-byte AES keys with IV∈{0, salt*2} (combine_values.py, final_recipes.py, attack_double.py).
 - **Method:** The Architect speaks of 'seven intertwined passwords' and reusing earlier material, so each already-solved phase key was tried directly as the cosmic/small-blob passphrase, as a hashed passphrase, and (being 64-hex) as a raw AES key. attack_double.py additionally checked whether any chain key produces a nested 'Salted__' header (double encryption).
@@ -795,7 +804,7 @@
 
 <a id="t-cosmic-full-master-hint-string-as-key"></a>
 #### The full master-hint string (ingredients + taunt block) as the key
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The complete 161-byte (=7·23) master-hint string: the 4 ingredients followed by the trailing taunt block wewontgiveawaythepassword · itsinfrontofyoureyesbutyourenotseeingit · verylaststepisatruegiveaway · promised (taunt lengths [25,39,27,8]). Tested as a single passphrase in forms {literal, sha256hex, raw-sha, double-sha}, with separators, vs all 3 blobs (literal_recipe.py 'taunt', combine_values.py PHR pool).
 - **Method:** Rather than treating the taunts as flavor, the entire reverse-binary master-hint payload (ingredients + four taunt phrases) was concatenated and hashed as one passphrase, on the theory that the whole 161-byte string is the key material. Each taunt phrase was also tried individually as literal/sha passphrase.
@@ -803,7 +812,7 @@
 
 <a id="t-cosmic-ybp-yinyang-as-rawbytes-from-dbbi-faed"></a>
 #### yellowblueprimes/yinyang as RAW decoded bytes of dbbi/faed in the recipe
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** yellowblueprimes := dbbi in forms {literal, a-i→1-9 digits, field-decoded bytes hex, sha256(dbbi)}; yinyang := faed in forms {literal, digits, field-decoded hex, complement, sha256(faed), 'yinyang'}; slotted with matrixsumlist-numeric and lastwordsbeforearchichoice in both ingredient orders; combined via sha256(concat), XOR-of-sha, and shabef-nesting (combine_unknowns.py, n5_recipe.py).
 - **Method:** Since dbbi/faed are believed to ENCODE yellowblueprimes/yinyang, the creator might concatenate their decoded bytes (not words). Each dbbi/faed byte-interpretation was substituted into the recipe and combined three ways (sha256-concat, XOR-of-per-ingredient-sha, multi-sha) against all 3 blobs, gating on printable+English plaintext.
@@ -813,7 +822,7 @@
 
 <a id="t-cosmic-1327-byte-blob-103x103-matrix"></a>
 #### The Cosmic Duality decrypt (1327 bytes) reshapes to a 103×103 bit matrix — 103 is prime, a second genesis-style grid
-💡 **Verified — new insight** · community · *community reproducibility audit (Telegram, 2026-02)*
+💡 **Verified — new insight** · community · *community reproducibility audit (Telegram, 2026-02)* · 📅 ~2026
 
 - **Input:** The AES-decrypted output of the Cosmic Duality stage: reported as a 1327-byte blob whose SHA256 is 4f7a1e4efe4bf6c5581e32505c019657cb7b030e90232d33f011aca6a5e9c081 (the known checkpoint hash already in this catalog).
 - **Method:** Read the 1327-byte decrypt as a bit stream and reshape: 1327 bytes = 10616 bits = 103*103 (=10609) + 7 padding bits, so it folds cleanly into a 103x103 grid. The blob was rebuilt into that matrix directly.
@@ -824,7 +833,7 @@
 
 <a id="t-blob-independence-conclusion"></a>
 #### Decisive conclusion: the four blobs are cryptographically independent containers
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Synthesis of all blob-combination negatives: no shared 16-byte blocks, random 80B-XOR (printable 0.48), random salt-concat, no multi-blob key (4 chance events), no cross-keying, no ciphertext-concat decrypt.
 - **Method:** The combined structural evidence was evaluated against the 'one scattered AES' hypothesis. Each blob is standard OpenSSL aes-256-cbc -md sha256 with its OWN random 8-byte salt, so each requires its OWN passphrase; the connection between blobs is at the key-derivation/narrative layer (shared ingredients feeding different blobs), not at the ciphertext/salt layer.
@@ -833,7 +842,7 @@
 
 <a id="t-blob-multi-blob-detection-scattered-signature"></a>
 #### Multi-blob detection — explicit search for any key opening >=2 blobs
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Across the full ~35,000-combination value sweep, each candidate hashed {sha256hex, literal, raw-sha256, double-sha256} and tested against all 4 blobs, flagging any key that yields PKCS7-valid output on 2 or more blobs.
 - **Method:** A key that opens two-plus blobs would be the unmistakable signature of one scattered AES message. The harness logged every multi-blob event and scored its plaintext for readability rather than relying on PKCS7 alone.
@@ -842,7 +851,7 @@
 
 <a id="t-blob-repeated-block-shared-block-scan"></a>
 #### Repeated-block / shared 16-byte ciphertext block scan across all blobs
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** All 16-byte ciphertext blocks of cosmic (83), salph_inner (5), p32_trailing (5), urlblob (6), compared within and across blobs.
 - **Method:** In CBC, identical plaintext blocks under the same key/IV produce identical ciphertext blocks; a shared message scattered across blobs would likely leave repeated blocks. Every 16-byte block was hashed and compared within each blob and across all pairs.
@@ -851,7 +860,7 @@
 
 <a id="t-urlblob-4th-orphaned-blob-salt-74c974e3"></a>
 #### The urlblob — 4th orphaned OpenSSL blob (salt 74c974e3) located in a gsmg.io URL path
-💡 **Verified — new insight** · this project · *this session (Wayback CDX hex URL + urlblob.bin)*
+💡 **Verified — new insight** · this project · *this session (Wayback CDX hex URL + urlblob.bin)* · 📅 2026-02-07
 
 - **Input:** A hex-encoded Salted__ blob found as a literal gsmg.io URL path in the CDX: gsmg.io/53616c7465645f5f74c974e3f92e64b5…0607 (captured 2026-02-07, returns the SPA shell). Decoded to urlblob.bin (112 bytes total) = magic 'Salted__' + salt 74c974e3f92e64b5 + 96-byte ciphertext (6 AES blocks). This is the FOURTH distinct OpenSSL blob, alongside cosmic (2d3f6fe0…), salph_inner (3ab58534…) and p32_trailing (b45a5e3d…).
 - **Method:** Spotted a long hex string used as a URL path in the Wayback CDX, recognized its prefix 53616c7465645f5f as ASCII 'Salted__' (the OpenSSL enc magic), and hex-decoded it to recover a complete fourth AES-256-CBC blob with its own random salt. Reasoning: a self-contained 96-byte blob would be an instantly-verifiable oracle (a correct key yields ≤95 readable bytes), so it was worth cataloguing and adding to the candidate-key sweeps.
@@ -860,7 +869,7 @@
 
 <a id="t-blob-xor-two-80byte-blobs"></a>
 #### XOR of the two equal-size 80-byte blobs (salph_inner xor p32_trailing)
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** salph_inner ciphertext (80 bytes, salt 3ab585348552415d) XOR p32_trailing ciphertext (80 bytes, salt b45a5e3d827593ca).
 - **Method:** If two blobs encrypted the same plaintext under the same keystream (e.g. key/IV reuse), their XOR would cancel the keystream and expose plaintext-XOR-plaintext structure. The two only equal-length blobs were XORed byte-for-byte and the result scored for printability.
@@ -869,7 +878,7 @@
 
 <a id="t-blob-aes-key-wrap-format-hypothesis"></a>
 #### The 'Salted__' prefix does NOT prove aes-256-cbc — an unsolved blob could be openssl AES-KEY-WRAP (id-aes256-wrap-pad)
-🟡 **Unverified** · community · *community discussion (Telegram, 2026-05)*
+🟡 **Unverified** · community · *community discussion (Telegram, 2026-05)* · 📅 ~2026
 
 - **Input:** The unsolved 'Salted__' blobs (U2FsdGVkX18..., notably the small 80-byte salph_inner / p32_trailing), universally assumed to be aes-256-cbc.
 - **Method:** Showed that `openssl enc` writes the SAME 'Salted__' + 8-byte-salt header for ANY -pass-driven cipher (EVP_BytesToKey), including the RFC-3394 AES key-wrap cipher -id-aes256-wrap-pad. Demonstration: `openssl enc -id-aes256-wrap-pad -e -pass pass:<hex> -in keyfile | base64` produces a U2FsdGVkX18... blob, recovered by `base64 -d | openssl enc -id-aes256-wrap-pad -d -pass pass:<hex>`. So the Salted__ prefix alone does not identify the cipher mode.
@@ -877,7 +886,7 @@
 
 <a id="t-endgame-bip38-ec-multiply-hypothesis"></a>
 #### The endgame may encode a BIP38 (EC-multiply) passphrase-protected key — 'shabef four first' = BIP38's addresshash step
-🟡 **Unverified** · community · *community discussion (Telegram, 2025-08)*
+🟡 **Unverified** · community · *community discussion (Telegram, 2025-08)* · 📅 ~2024
 
 - **Input:** The Phase-3.2 / INCASE / salph instructions and their oddly specific phrasing: '23 ciphers, 16 encryptions and/or 7 intertwined passwords', '24 random bytes', 'shabefourfirsthintisyourlastcommand', 'shabefanstoo', and the 'half and better half' two-key framing.
 - **Method:** Read those instructions as the construction of a BIP38 passphrase-protected private key in EC-multiply mode (record = 0x01 0x43 + flagbyte + addresshash[4] + ownerentropy[8] + encryptedpart1[8] + encryptedpart2[16]). Concretely: 'shabef FOUR FIRST hint is your last command' -> take the FIRST FOUR bytes of SHA256(SHA256(generated address)) = BIP38's addresshash; 'shabef ans too' -> the double-SHA; '7 intertwined passwords' -> seedb[16..23] XOR derivedhalf1[16..31] with key = derivedhalf2.
@@ -885,7 +894,7 @@
 
 <a id="t-blob-3salt-2salt-subset-keys"></a>
 #### 3-salt and 2-salt subset concatenations as key material
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** All ordered 3-permutations (24-byte) and 2-permutations (16-byte) of the same four salts, used as EVP passphrase (raw and hex) on each of the 4 blobs.
 - **Method:** Same scattered-key hypothesis but allowing that only some salts form the key. Subset concatenations were fed as EVP_BytesToKey passphrases (raw bytes and hex string) and, where length permitted, as direct key material against every blob.
@@ -893,7 +902,7 @@
 
 <a id="t-blob-ciphertext-concatenation-decrypt"></a>
 #### Concatenate all four ciphertexts and decrypt as one blob
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** All 24 orderings of the 4 ciphertexts joined into one byte stream, decrypted using each blob's own salt plus chain keys (eb3efb51..., 250f3772..., 89727c59...) and token keys (thispassword, yinyang).
 - **Method:** Tests the literal reading that the blobs are fragments of one larger ciphertext that was split and scattered. Every permutation of the four ciphertexts was concatenated and run through EVP decryption under each candidate salt and key.
@@ -901,7 +910,7 @@
 
 <a id="t-blob-cross-keying-ct-as-key"></a>
 #### Cross-blob keying — one blob's ciphertext used as the key for another
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** For every ordered pair (src, dst) of the 4 blobs: src's ciphertext in forms ct-sha=sha256(ct), ct-shahex, ct-first32=ct[:32], ct-b64=base64(ct), used as the passphrase/key for dst.
 - **Method:** Hypothesis that the blobs chain — decrypting one yields the key to the next. Each source blob's raw ciphertext (and several derived forms) was used as the EVP passphrase, and the 32-byte forms also as a direct AES key with zero IV, against every other blob.
@@ -909,7 +918,7 @@
 
 <a id="t-blob-value-combos-cross-type"></a>
 #### Cross-type value pairs (every token x every sum/salt/number/phrase)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Every token x every {sum, salt, number, phrase}, both orders, separators in {'', '+', '_'}, hashed in four conventions, tested vs all 4 blobs. Total across the value sweep ~35,000 combinations.
 - **Method:** Broadens the combination hypothesis across categories — e.g. a token joined to a number or a salt. Each cross-type pair in both orders and three separators was hashed four ways and used as an EVP passphrase against every blob, with explicit logging of any key opening >=2 blobs.
@@ -917,7 +926,7 @@
 
 <a id="t-blob-4salts-as-aes256-key-all-orderings"></a>
 #### Four 8-byte salts concatenated into a 32-byte AES-256 key, all orderings, direct + EVP
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The 4 OpenSSL salts: cosmic=2d3f6fe06dc950e6, salph_inner=3ab585348552415d, p32_trailing=b45a5e3d827593ca, urlblob=74c974e3f92e64b5. Concatenated 8+8+8+8 = 32 bytes, tried in all 24 permutations against all 4 blobs.
 - **Method:** Hypothesis: the four blobs are one 'scattered' AES message and the four salts are really the 256-bit key split four ways. Each 32-byte ordering was used (a) as a DIRECT AES-256-CBC key with IV in {all-zero, salt||salt, key[:16]}, (b) as an EVP_BytesToKey raw passphrase, (c) as a hex-string passphrase, and (d) as sha256(key) — on every blob. About 1008 tests.
@@ -925,7 +934,7 @@
 
 <a id="t-blob-salt-math-xor-sum-sha"></a>
 #### Salt arithmetic (XOR / byte-sum / sha256-of-concat) as a derived key
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** xor4 = byte-wise XOR of all 4 salts (8 bytes); sum4 = byte-sum mod 256 of the 4 salts (8 bytes); sha-concat4 = sha256(salt_cosmic||salt_salph||salt_p32||salt_url) (32 bytes). Tested on all 4 blobs.
 - **Method:** If a single key were hidden across the salts via a simple combiner, recovering it might need XOR, modular sum, or hashing the concatenation. Each derived value was used as an EVP passphrase (raw and hex), and the 32-byte sha form additionally as a direct AES key with zero IV, on every blob.
@@ -933,7 +942,7 @@
 
 <a id="t-blob-four-ingredients-plus-enter-thispassword"></a>
 #### The 4 narrative ingredients combined with enter/thispassword, all orders
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The 4 ingredients {yellowblueprimes, matrixsumlist (concat 610876654997879+8108108736759668 and arithmetic sum 8718985391757547), lastwordsbeforearchichoice, yinyang} in all 24 orders, each crossed with {none, enter, thispassword, both}, separators {'', '.', ' ', '+'}.
 - **Method:** Directly encodes the SalPhaseIon master-hint recipe (the four named ingredients plus the 'enter/thispassword' framing) as a passphrase. Each ordering+suffix+separator was hashed (sha256, double-sha) and tested as the EVP passphrase against cosmic, salph_inner, and p32_trailing.
@@ -941,7 +950,7 @@
 
 <a id="t-blob-value-combos-within-type"></a>
 #### Within-type value combinations (tokens, sums+salts, numbers) as passphrases
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** 2- and 3-permutations within each type: TOKENS {yellowblueprimes, matrixsumlist, lastwordsbeforearchichoice, yinyang, enter, thispassword}; SUMS+SALTS; NUMBERS {11110,140,104,91,570,23,16,7,1141,2357,42}; SALTS.
 - **Method:** Tests that the answer is two or three same-category loose ends combined. Each within-type permutation was joined (separators '', '+', '_'), hashed in four conventions {sha256hex, literal, raw-sha256, double-sha256}, and tested as a passphrase against all 4 blobs.
@@ -949,7 +958,7 @@
 
 <a id="t-blob-xor-of-n-sha256-hashes"></a>
 #### XOR of N sha256 token-hashes as a 32-byte key (issue #56 style)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** XOR of sha256 of N tokens for N=4..8 drawn from {yellowblueprimes, matrixsumlist, lastwordsbeforearchichoice, yinyang, thispassword, enter, sha256, itsinfront..., 8718985391757547, shabef}; the 32-byte XOR used as EVP raw/hex passphrase and as a direct key (IV=zero and IV=salt||0).
 - **Method:** Implements the community 'XOR the hashes together' idea: hash each chosen token, XOR the digests into one 256-bit value, and use it as the key. Every N-combination's XOR was tested in four key roles against the three open blobs.
@@ -959,7 +968,7 @@
 
 <a id="t-keysweep-pkcs7-chance-calibration"></a>
 #### Calibration: PKCS7-valid-but-garbage at ~1/256 is chance, not a hit
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Across all of the above sweeps (token battery, harvested phrases, ~1.5M-word dictionary, 288 phase-3.2 answers, Matrix quotes, chain keys, page-hash) the detection threshold was: PKCS7 padding valid AND printable ratio > ~0.90 (English-word scoring for the strict harnesses). The combine/blob-combination work separately logged 4 multi-blob PKCS7 events out of ~35,000 combinations.
 - **Method:** AES-CBC with a random key produces a structurally-valid PKCS7 pad by pure chance roughly 1 time in 256 (the last byte landing on 0x01 etc.), and those decrypts are still random bytes. Every sweep therefore treats 'PKCS7-valid' as NECESSARY but NOT sufficient, and only flags decrypts whose CONTENT is readable English/printable. This calibration is what distinguishes a real key-hit from background noise in a feedback-free search.
@@ -968,7 +977,7 @@
 
 <a id="t-keysweep-full-english-dictionary-1p5m"></a>
 #### Full ~370k-word English dictionary sweep (~1.5M decrypts)
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The entire ~370,000-entry English word list (words.txt). Each word tested in up to four forms (literal, sha256hex, raw-sha32, double-sha) against the open blobs, predominantly the two 80-byte oracle blobs salph_inner and p32_trailing (dictattack.py). Total on the order of ~1.5 million AES decrypt attempts.
 - **Method:** A brute-force last resort taking the Architect's 'BRUTE FORCING MIGHT BE REQUIRED' literally: if the key is any ordinary English word, the 80-byte blobs (only 5 AES blocks) are cheap to test exhaustively. Each derived key decrypts the ciphertext; results are kept only if printable ratio exceeds 0.90 (a real English plaintext would score ~0.99).
@@ -976,7 +985,7 @@
 
 <a id="t-keysweep-harvested-plaintext-phrases"></a>
 #### Harvested phrases from every decrypted plaintext + Architect speech + VIC sentence
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Every word (>=3 chars) and every normalized whole-line phrase harvested from the project's two write-ups (puzzlehunt.md, naddiseo.md) and from the recovered plaintexts: the full ~300-word Architect speech ('YOUR LIFE IS THE SUM OF A REMAINDER...CIAO BELLA O', including the misspellings WAISTING/THROPHIES/PRICES), the VIC sentence 'IN CASE YOU MANAGE TO CRACK THIS THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF...NEED FUNDS TO LIVE', plus memorable assembled phrases (reinsertingtheprimebasics, returntothesourcecodes, privatekeynote, hopeyouretheone, ciaobellao, hundredfourty, beautifulstrategicposition, etc.). Hundreds of candidates, each in many normalizations (upper/lower/alpha-only/alnum-only/no-space) and each tested as literal, sha256hex, raw-sha32, double-sha32, and sha-of-hex (attack_harvest.py, fullspeech.py, lens_attack.py).
 - **Method:** The hypothesis is that the blob key is a phrase that already appears in plaintext the solver has decrypted (the puzzle is self-referential: earlier answers feed later keys). Every line/word was collapsed to a canonical form, hashed in the puzzle's standard ways, and used to derive the AES key for each blob; outputs were scored against an English-word list (not just printable) so a real plaintext would surface.
@@ -984,7 +993,7 @@
 
 <a id="t-keysweep-matrix-reloaded-quotes"></a>
 #### Matrix Reloaded Architect quotes as passphrases
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** Canonical Matrix Reloaded Architect quotes (lens_attack.py): 'The problem is choice' / theproblemischoice, 'Choice. The problem is choice.', 'Ergo, vis-a-vis, concordantly', 'There are only two possible explanations', 'You are here because Zion is about to be destroyed', 'Your life is the sum of a remainder of an unbalanced equation', 'Denial is the most predictable of all human responses', 'Hope. It is the quintessential human delusion', 'The matrix is older than you know'. Each in multiple normalizations and as literal/sha256hex/raw-sha/double-sha against salph_inner and p32_trailing.
 - **Method:** The phase-3.2 speech is a paraphrase of the Matrix Reloaded Architect monologue, so the canonical movie quotes (which the puzzle author clearly drew on) were tested as candidate blob keys, hashed in the puzzle's standard ways and scored for real dictionary words.
@@ -992,7 +1001,7 @@
 
 <a id="t-keysweep-token-battery-named-tokens"></a>
 #### Named-token passphrase battery against cosmic / salph_inner / p32_trailing
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** A hand-curated battery of ~40 puzzle-vocabulary tokens (battery.py / finalbattery.py): the four soup tokens (thispassword, lastwordsbeforearchichoice, enter, matrixsumlist), the two unknown ingredient labels (yellowblueprimes, yinyang), causality, THEMATRIXHASYOU and case/whitespace variants, the SalPhaseIon entry string GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe, its hash 89727c59..., halfandbetterhalf/half/betterhalf, salphaseion/cosmicduality, freewill, thechoiceisanillusion, the four master-hint taunts, oneforonefourforone, fubcdking/oracle/queen, anstoo/shabef/fanstoo. Each tested in two forms (literal string AND its 64-char sha256-hex), plus raw-sha32, against all three blobs.
 - **Method:** Each token is run through OpenSSL-equivalent EVP_BytesToKey(SHA-256) to derive the AES-256-CBC key+IV from the blob's own salt, the ciphertext is decrypted, PKCS7 padding checked, and the result scored for printable bytes. The reasoning: these are the only strings the puzzle ever names as 'passwords' or ingredients, so if a small blob's key is one of them a correct decrypt would be instantly readable (<=79 bytes).
@@ -1000,7 +1009,7 @@
 
 <a id="t-keysweep-chain-keys-reused"></a>
 #### Reusing the verified phase chain keys as blob passphrases
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The already-verified per-phase AES keys reused as passphrases on the open blobs (sweep.py, chains.py, attack_double.py): phase3 key 1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5, phase3.2 key 250f37726d6862939f723edc4f993fde9d33c6004aab4f2203d9ee489d61ce4c, sha256('causality') (phase2), plus chained/nested-hash combinations of the soup tokens (sha256(sha256hex(a)+b), progressive ingredient chains, double/triple-sha to depth 7). Each tested as literal, hex, raw, double, against cosmic / salph_inner / p32_trailing.
 - **Method:** Some puzzle chains reuse the previous stage's key/answer as the next key, so each verified chain key (and hashes thereof) was used to derive AES keys for the open blobs. attack_double.py additionally checked whether any first-layer decrypt yields a fresh 'Salted__' header (double-encryption), which would chain into a second decrypt.
@@ -1008,7 +1017,7 @@
 
 <a id="t-keysweep-page-hash-89727c59"></a>
 #### SalPhaseIon page-hash 89727c59 as a blob passphrase
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The SalPhaseIon entry hash 89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32 = sha256('GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe') -- the URL path of the page that hosts cosmic. Tested as literal passphrase, as the pre-image string, and as sha256-of-the-hash, against cosmic / salph_inner / p32_trailing (battery.py, firsthint.py, lens2_salph.py, final_recipes.py).
 - **Method:** The narrative 'our first hint is your last command' suggested the last OpenSSL pass used (the page hash that opened SalPhaseIon) might be the key to the next blob. The hash and its pre-image were hashed in the puzzle's conventions and used to derive the AES keys for the open blobs.
@@ -1018,7 +1027,7 @@
 
 <a id="t-cosmic-txt-authenticity-archived-2023"></a>
 #### cosmic.txt authenticity confirmed against the archived 2023 SalPhaseIon page
-💡 **Verified — new insight** · this project · *this session (Wayback capture of gsmg.io/89727c59…, 2023-06-01)*
+💡 **Verified — new insight** · this project · *this session (Wayback capture of gsmg.io/89727c59…, 2023-06-01)* · 📅 2023-06-01
 
 - **Input:** The local prize blob ciphertexts/cosmic.txt (OpenSSL Salted__ blob, salt 2d3f6fe06dc950e6, 1328-byte ciphertext, base64 begins U2FsdGVkX18tP2/g…) versus the archived SalPhaseIon page at gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32, captured 2023-06-01 at exactly 4592 bytes (the SalPhaseIon entry-hash = sha256('GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe') = 89727c59…).
 - **Method:** Located the only REAL archived SalPhaseIon page (small 4592-byte capture, dated 2023, not the later SPA shell) and compared its embedded content to the working files used in this project. Reasoning: if the local cosmic blob and the soup match the page the creator actually published, then the dataset every attack runs against is authentic and complete — ruling out the possibility that we are attacking corrupted or fabricated ciphertext.
@@ -1027,7 +1036,7 @@
 
 <a id="t-onchain-ecdsa-nonce-reuse-ruled-out"></a>
 #### ECDSA nonce-reuse (repeated-r) key recovery checked on the GSMG signatures + prize address — no reuse
-💡 **Verified — new insight** · community · *community discussion (Telegram, 2024-12)*
+💡 **Verified — new insight** · community · *community discussion (Telegram, 2024-12)* · 📅 ~2024
 
 - **Input:** The on-chain ECDSA signatures of the GSMG creator's spends (pre/post-halving) and the prize address. The classic repeated-nonce leak: if two signatures share the same r (same nonce k), the signer's private key is directly recoverable from (r, s1, s2, z1, z2) modulo the secp256k1 order n.
 - **Method:** Extracted the r values from the relevant signatures (e.g. r1=dbe31ca9440892ab... vs r2=1df5cf8403c93099...) and checked for a repeated nonce; ran the standard sympy mod_inverse recovery end-to-end (including WIF output), validated against a known nonce-reuse demo address 1BFhrfTTZP3Nw4BNy4eX4KFLsn9ZeijcMm, and tested the prize address directly.
@@ -1036,7 +1045,7 @@
 
 <a id="t-opreturn-50-messages-discovered"></a>
 #### On-chain OP_RETURN layer: 50 distinct messages mined from the prize and split-off addresses
-💡 **Verified — new insight** · this project · *on-chain*
+💡 **Verified — new insight** · this project · *on-chain* · 📅 ~2026-06
 
 - **Input:** All OP_RETURN outputs on prize 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe and split-off 17ucy1K9ZUAaoY6JVtM932W9jUp5LXfyHa (blockstream.info), 50 distinct payloads, mostly 546-sat solver dust.
 - **Method:** Bitcoin transactions can carry short text in OP_RETURN outputs. Every OP_RETURN on the two funded GSMG addresses was harvested and catalogued, because this layer (never catalogued in any walkthrough) records years of community guesses and possibly creator hints. The messages were classified into thematic pointers, encoded payloads, solver addresses, and bravado.
@@ -1045,7 +1054,7 @@
 
 <a id="t-opreturn-soup-token-concat"></a>
 #### OP_RETURN 'matrixsumlistenterlastwordsbeforearchichoicethispassword' (soup-4 concat) as a key
-💡 **Verified — new insight** · this project · *on-chain*
+💡 **Verified — new insight** · this project · *on-chain* · 📅 ~2026-06
 
 - **Input:** OP_RETURN payload 'matrixsumlistenterlastwordsbeforearchichoicethispassword' — the four SOUP tokens concatenated in soup order (posted on BOTH addresses by multiple solvers). Also the related solver tokens yourlastcommand / secondanswer / yourlastcommandsecondanswer and 'fourfirsthintisyourlastcommand' / 'fanstoo'.
 - **Method:** This is a community recipe attempt that uses the soup-order four tokens (including the 'unused' enter + thispassword), distinct from the master-hint four ingredients. It was tested as a passphrase in literal and sha forms against the AES blobs; the related solver tokens were also recorded as the origin of issue #56's (refuted) recipe.
@@ -1054,7 +1063,7 @@
 
 <a id="t-vanity-address-kills-brainwallet"></a>
 #### The 1GSMG1 prefix proves the prize address is a VANITY address, so its private key is random
-💡 **Verified — new insight** · this project · *this session*
+💡 **Verified — new insight** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The prize address 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe, whose leading characters spell '1GSMG1' (the project's own brand).
 - **Method:** A human-readable prefix like '1GSMG1' cannot occur by chance in a normally-derived key; it can only be produced by brute-forcing random keys until one yields the desired address prefix (a 'vanity' generation). That means the private key behind the prize address is RANDOM, not derived from any phrase or puzzle answer. This structurally explains why the brainwallet and split-key sweeps must fail, and confirms the only path to the key is decrypting the cosmic blob that contains it.
@@ -1063,7 +1072,7 @@
 
 <a id="t-wayback-cdx-gsmg-urls-spa-shell"></a>
 #### Wayback Machine CDX of all gsmg.io URLs — no hidden stage; the 64-hex 'stage' pages are just the SPA shell
-💡 **Verified — new insight** · this project · *this session (cdx_full.txt, 397 captured URLs)*
+💡 **Verified — new insight** · this project · *this session (cdx_full.txt, 397 captured URLs)* · 📅 2020-11-12
 
 - **Input:** The complete Internet Archive CDX index for the domain gsmg.io (397 distinct captured URL/timestamp rows, saved as cdx_full.txt). Of interest: the genuinely-small real puzzle pages — gsmg.io/theseedisplanted (1245 bytes, captured 2020-11-12), gsmg.io/choiceisanillusion...iwroteitmyself (7253 bytes, 2020), and the SalPhaseIon page gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32 (4592 bytes, captured 2023-06-01) — versus the dozens of 64-hex 'stage' URLs, /final_stage, /followthewhiterabbit, /TheArchitectChoice, /banking-war, /cryptogic etc., all captured 2024-2026 at ~11,800-12,900 bytes each.
 - **Method:** Pulled the full CDX (capture index) for gsmg.io from the Wayback Machine and sorted every archived URL by capture date and stored byte-size, looking for any genuine post-cosmic puzzle stage hidden in the archive. Reasoning: a real puzzle page has small, specific content (like theseedisplanted's 1245 bytes); a single-page-app (SPA) shell that just renders 'page not found / app boot' is large and identical regardless of path. Compared sizes and dates to separate authored pages from community URL-guesses that the server simply answered with the generic app.
@@ -1072,7 +1081,7 @@
 
 <a id="t-brainwallet-sweep-sha256-phrase-to-privkey"></a>
 #### Brainwallet sweep: sha256(puzzle phrase) used directly as a Bitcoin private key vs the three known GSMG addresses
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** A pool of puzzle-vocabulary phrases: the 4 cosmic ingredients (yellowblueprimes, matrixsumlist, lastwordsbeforearchichoice, yinyang) in all 24 orders x 3 separators (literal + numeric matrixsumlist '6108766549978798108108736759668'), the 6 soup tokens, the taunt phrases (wewontgiveawaythepassword, itsinfrontofyoureyesbutyourenotseeingit, verylaststepisatruegiveaway, promised), halfandbetterhalf / theprivatekeysbelongtohalfandbetterhalf, causality, thematrixhasyou, ciaobellao, the full 7-part phase-3.2 password, and the full master-hint string. Each phrase x {sha256, double-sha256, sha256(sha256hex), raw-bytes-if-64-hex}. Targets: prize 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe, split-off 17ucy1K9ZUAaoY6JVtM932W9jUp5LXfyHa, donation 1JK27jtvE1wS4VG9k7Zpo8wBufMbYwy3r8. Total 86,310 derivations.
 - **Method:** A 'brainwallet' turns a memorable phrase into a Bitcoin key by hashing it; if the puzzle's answer were such a phrase, hashing it would reproduce one of the known GSMG addresses and instantly confirm the answer with no AES needed. Each candidate phrase was hashed (and double/nested-hashed) to a 32-byte scalar, used as a secp256k1 private key, and turned into both compressed and uncompressed P2PKH addresses (brain.py via coincurve), then compared against all three target addresses. This is the rare self-verifying oracle that needs no blob decrypt.
@@ -1080,7 +1089,7 @@
 
 <a id="t-dbbi-faed-bytes-as-private-key"></a>
 #### dbbi / faed decoded bytes tried directly as the secp256k1 private key
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The dbbi (91 base-9 symbols) and faed (570 base-9 symbols) blocks reduced to scalars via roughly 17 different forms (raw field-decode int, sha256 of the string, the binary-rule bitstream packed to bytes, base-9 integer, etc.).
 - **Method:** Since dbbi/faed are the hypothesized homes of yellowblueprimes/yinyang, their decoded byte values were tested as a private key in ~17 scalar interpretations, each producing compressed and uncompressed P2PKH addresses compared against the three GSMG targets. Another would-be self-verifying oracle path.
@@ -1088,7 +1097,7 @@
 
 <a id="t-opreturn-fromn0e-half-betterhalf-pi"></a>
 #### OP_RETURN 'FromN0EHalfABetterHalfBuiltItBellaCiao1_1Pi...' as a combine hint / key
-❌ **Verified fail** · this project · *on-chain*
+❌ **Verified fail** · this project · *on-chain* · 📅 ~2026-06
 
 - **Input:** OP_RETURN payload 'FromN0EHalfABetterHalfBuiltItBellaCiao1_1Pi36y7LJugXwFNDVjR1p8p5JoB7eN5zSZ' = 'From Neo, Half A Better Half Built It, Bella Ciao, 1_1, Pi, [30-char base58 tail]'.
 - **Method:** This message ties the Architect's HALF/BETTER HALF + CIAO BELLA themes to two concrete numbers '1_1' and 'Pi' plus a base58 tail, making it the strongest candidate combine-operator hint. Its components (1_1 as ratio/underscore-concat, Pi as 3.14159/'theory of everything', the base58 tail) were tested as keys/combine operators against the blobs.
@@ -1096,7 +1105,7 @@
 
 <a id="t-opreturn-little-prince-quote"></a>
 #### OP_RETURN 'itisonlywiththeheart...invisibletotheeye' (Little Prince) tested as a key
-❌ **Verified fail** · this project · *on-chain*
+❌ **Verified fail** · this project · *on-chain* · 📅 ~2026-06
 
 - **Input:** OP_RETURN payload 'itisonlywiththeheartthatoneseesrightlywhatisessentialisinvisibletotheeye' and its short form 'whatisessentialisinvisibletotheeye'.
 - **Method:** This Little Prince quote on-chain directly echoes the master-hint taunt 'its in front of your eyes but youre not seeing it', suggesting the answer is 'invisible/seen with the heart'. The full quote and short form were tested as passphrases (literal / sha forms) against the cosmic and small blobs.
@@ -1104,7 +1113,7 @@
 
 <a id="t-split-key-half-and-better-half-combinations"></a>
 #### Split-key 'HALF and BETTER HALF' combinations as a private key vs the GSMG addresses
-❌ **Verified fail** · this project · *this session*
+❌ **Verified fail** · this project · *this session* · 📅 ~2026-06
 
 - **Input:** The phase-3.2 VIC clue 'THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF' interpreted as a two-piece (split) secret. 1,204 derivations combining candidate 'half' and 'better half' material (the dbbi/faed-derived bytes, the HALF/BETTERHALF phrases, ingredient pairs) by concat / XOR / add, then hashing to a 32-byte scalar and deriving P2PKH addresses, vs prize / split-off / donation addresses.
 - **Method:** The 'HALF and BETTER HALF' line plausibly says the secret is split into two pieces that must be combined. Each of 1,204 candidate (half, better-half) combinations was joined and reduced to a private key, then turned into compressed and uncompressed addresses and checked against the three known GSMG addresses. Like the brainwallet sweep, a hit would be self-verifying without any AES.
