@@ -875,3 +875,26 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 @media (prefers-reduced-motion: reduce) {
   .phase-card > h2, .phase-card > h3, .phase-card .tried-cat, .phase-card .sum-title { animation:none; text-shadow:0 0 14px var(--phase-glow); }
 }
+
+/* ── overflow safety: keep long base64 / hex / code strings inside their boxes (desktop + phone) ──
+   Long unbreakable tokens (cosmic blob, salts, keys) otherwise widen grid/flex tracks and spill out. */
+.tried-io { grid-template-columns:84px minmax(0,1fr); }            /* let the value column shrink, not overflow */
+.tried-io dd { overflow-wrap:anywhere; word-break:break-word; min-width:0; }
+.tried-meta { overflow-wrap:anywhere; }
+.tried-head { flex-wrap:wrap; }
+.tried-head h4 { min-width:0; overflow-wrap:anywhere; }
+.tried-entry, .phase-card, .sum-phase, .demo { max-width:100%; min-width:0; }
+.sum-insights > li { overflow-wrap:anywhere; }
+.sum-ins, .sum-title { overflow-wrap:anywhere; }
+.sum-alist li { flex-wrap:wrap; }
+.sum-alist a { min-width:0; overflow-wrap:anywhere; }
+.chain-step { min-width:0; }
+.chain-body { min-width:0; }
+.chain-body p, .chain-body code, .sum-ins code, .tried-io dd code { overflow-wrap:anywhere; word-break:break-word; }
+.demo-body { min-width:0; }
+.demo-code { max-width:100%; }
+.demo-out { overflow-wrap:anywhere; }
+.demo-step-b { overflow-wrap:anywhere; }
+.demo-controls { flex-wrap:wrap; }
+.concl-list li, .chain-concl li { overflow-wrap:anywhere; }
+@media (max-width:620px){ .tried-io { grid-template-columns:minmax(0,1fr); } }
