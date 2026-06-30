@@ -5,7 +5,7 @@
 import { ATTEMPTS, PHASE_LABELS, PHASE_ORDER, OUTCOMES, byPhase } from '../../../content/attempts.js';
 import { esc, qs, qsa } from '../util.js';
 import { demoHtml, mountDemos } from '../components/demo.js';
-import { toItem, initSearch } from '../components/search.js';
+import { toItem, initSearch, fmtDate } from '../components/search.js';
 import { commentsHtml, mountComments } from '../components/comments.js';
 
 function entryHtml(a) {
@@ -16,7 +16,7 @@ function entryHtml(a) {
       <span class="tbadge ${o.cls}" title="${esc(o.desc)}">${o.label}</span>
       ${a.author ? `<span class="tbadge badge-author" title="The author — the contributor who uncovered this (verified Telegram @handle)">👤 The author · ${esc(a.author)}</span>` : ''}
     </div>
-    <div class="tried-meta"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span> · <span class="src">${esc(a.source)}</span></div>
+    <div class="tried-meta"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span> · <span class="src">${esc(a.source)}</span>${a.date ? ` · <span class="tdate" title="when this attempt was made / recorded">📅 ${esc(fmtDate(a))}</span>` : ''}</div>
     <dl class="tried-io">
       <dt>Input</dt><dd>${esc(a.input)}</dd>
       <dt>Method</dt><dd>${esc(a.method)}</dd>
