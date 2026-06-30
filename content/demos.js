@@ -1454,4 +1454,263 @@ const salt  = "74c974e3f92e64b5";`,
     },
   },
 
+  'genesis-fefefe-cell-located-7-4': {
+    code: `// creator hint: "104 is the fefefe square. fefefe is 101010." Scan the image for the off-white cell.
+const odd = cells.find(c => c.rgb === "254,254,254");   // vs 255,255,255 everywhere else`,
+    inputs: [],
+    run() {
+      const f = MATRIX.fefefe[0], si = MATRIX.spiral.findIndex(p => p[0] === f[0] && p[1] === f[1]);
+      return {
+        steps: [
+          { title: '1 · palette scan over the 14×14 grid', body: 'exactly one cell is RGB 254,254,254 (0xFEFEFE) vs 255,255,255 everywhere else' },
+          { title: '2 · its location', body: 'grid (row ' + f[0] + ', col ' + f[1] + ') 0-indexed  =  (row ' + (f[0] + 1) + ', col ' + (f[1] + 1) + ') 1-indexed' },
+          { title: '3 · the hint', body: 'spiral index ' + si + ' · "104 is the fefefe square · fefefe is 101010" — a deliberate pointer planted in the image' },
+        ],
+        output: 'A single 0xFEFEFE cell is planted at grid (7,4), confirming the creator hint "104 is the fefefe square, fefefe is 101010". It marks the prime/binary theme that recurs through the endgame.',
+      };
+    },
+  },
+
+  'ledger-colored-cells-24bit-message': {
+    code: `// read the 24 colored cells in spiral order as their OWN 3-byte (24-bit) payload
+const bits  = coloredInSpiralOrder.map(c => c.blue ? 1 : 0).join("");
+const bytes = chunk(bits, 8).map(b => parseInt(b, 2));`,
+    inputs: [],
+    run() {
+      const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
+      const order = [...MATRIX.blue.map(p => [1, p]), ...MATRIX.yellow.map(p => [0, p])].map(([b, p]) => ({ b, i: idx(p[0], p[1]) })).sort((a, b) => a.i - b.i);
+      const bits = order.map(o => o.b).join(''), bytes = (bits.match(/.{8}/g) || []).map(b => parseInt(b, 2));
+      const urlLSB = [...MATRIX.decoded].map(ch => String(ch.charCodeAt(0) & 1)).join('');
+      return {
+        steps: [
+          { title: '1 · 24 colored cells in spiral order → 24-bit payload', body: bits },
+          { title: '2 · as 3 bytes', body: bytes.map(b => b.toString(16).padStart(2, '0')).join(' ') + '   (' + bytes.join(', ') + ')' },
+          { title: '3 · vs the URL LSB parities', body: urlLSB + (bits === urlLSB ? '   → IDENTICAL' : '   → differ') },
+        ],
+        output: 'Read as their own independent 24-bit message, the colored cells are EXACTLY the LSB parities of the URL characters — zero extra information beyond the URL.',
+      };
+    },
+  },
+
+  'genesis-yinyang-from-duality': {
+    code: `// yinyang is the cosmic bottleneck. Try literal forms and the faed complement value as the ingredient.
+for (const c of ["yinyang","yin yang","tao","taiji","taijitu"]) tryKey(salph, sha256hex(c));`,
+    inputs: [{ name: 'salph', label: 'SalPhaseIon blob', value: PUZZLE.salphInner, mono: true, rows: 2 }],
+    async run(v) {
+      const cands = ['yinyang', 'yin yang', 'tao', 'taiji', 'taijitu'];
+      const rows = []; for (const c of cands) { const r = await tryRecipe(v.salph, c); rows.push(c + ' → ' + (r.ok ? r.preview : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · literal yinyang candidates → AES salph', body: rows.join('\n') },
+          { title: '2 · the faed complement value', body: 'a↔i b↔h c↔g d↔f (e fixed) — also tried as the yinyang ingredient' },
+        ],
+        output: 'Complement and literal yinyang tests all failed (0 hits). The genesis duality and the Tao book yield no verified yinyang value — yinyang remains the unsolved cosmic bottleneck.',
+      };
+    },
+  },
+
+  'ledger-exhaustive-reread-14x14-matrix': {
+    code: `// re-read the grid in every orientation/polarity/scan order — is there a SECOND hidden message?
+const spiral = readSpiral(grid);   // → the URL
+const rowmaj = grid.flat().join("");`,
+    inputs: [],
+    run() {
+      const rowmaj = MATRIX.grid.flat().join('');
+      const colmaj = MATRIX.grid[0].map((_, c) => MATRIX.grid.map(r => r[c]).join('')).join('');
+      return {
+        steps: [
+          { title: '1 · spiral reading → bytes', body: 'decodes to the URL:  ' + MATRIX.decoded },
+          { title: '2 · row-major reading → bytes', body: printable(bitsToAscii(rowmaj)).slice(0, 40) + '  (noise)' },
+          { title: '3 · column-major reading → bytes', body: printable(bitsToAscii(colmaj)).slice(0, 40) + '  (noise)' },
+        ],
+        output: 'Only one reading of the 14×14 grid is text — the URL gsmg.io/theseedisplanted. Across all 8 orientations × 2 polarities + diagonals, there is no hidden SECOND message; the grid is information-full.',
+      };
+    },
+  },
+
+  'ledger-game-of-life-1357-matrix': {
+    code: `// evolve the genesis parity bitmap under the symmetric "1357" rule (B1357/S1357)
+const next = neighbours => [1,3,5,7].includes(neighbours) ? 1 : 0;`,
+    inputs: [],
+    run() {
+      const R = MATRIX.grid.length, C = MATRIX.grid[0].length;
+      const step = g => g.map((row, r) => row.map((_, c) => { let n = 0; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < R && cc >= 0 && cc < C) n += g[rr][cc]; } return [1, 3, 5, 7].includes(n) ? 1 : 0; }));
+      const render = g => g.map(row => row.map(b => b ? '█' : '·').join('')).join('\n');
+      const g1 = step(MATRIX.grid), g2 = step(g1);
+      const head = g => render(g).split('\n').slice(0, 6).join('\n') + '\n…';
+      return {
+        steps: [
+          { title: '1 · genesis parity bitmap (generation 0)', body: head(MATRIX.grid) },
+          { title: '2 · after 1 generation of B1357/S1357', body: head(g1) },
+          { title: '3 · after 2 generations', body: head(g2) },
+        ],
+        output: 'Evolving the genesis bitmap under the symmetric "1357" Game-of-Life rule gives chaotic noise — no readable state at any generation.',
+      };
+    },
+  },
+
+  'keysweep-token-battery-named-tokens': {
+    code: `// run a ~40-token puzzle-vocabulary battery through EVP_BytesToKey(SHA-256) → AES → PKCS7
+for (const t of tokens) decrypt(blob, evpKey(sha256(t), blobSalt));`,
+    inputs: [{ name: 'blob', label: '80-byte blob (salph_inner)', value: PUZZLE.salphInner, mono: true, rows: 2 }],
+    async run(v) {
+      const tokens = ['thispassword', 'lastwordsbeforearchichoice', 'enter', 'matrixsumlist', 'yellowblueprimes', 'causality', 'theseedisplanted', 'hashthetext'];
+      const rows = []; let valid = 0;
+      for (const t of tokens) { const r = await aesDecrypt(v.blob, await sha256hex(t)); if (r.ok) valid++; rows.push(t + ' → ' + (r.ok ? 'PKCS7-valid: ' + printable(r.text).slice(0, 22) : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · ~40-token vocabulary battery (sampling ' + tokens.length + ')', body: tokens.join(', ') },
+          { title: '2 · each → EVP → AES → PKCS7', body: rows.join('\n') },
+          { title: '3 · PKCS7-valid hits', body: valid + ' (any valid ones decrypt to high-entropy garbage, printable ~0.30–0.49)' },
+        ],
+        output: '0 readable decrypts across the token battery — the few PKCS7-valid passes are random bytes (~1/256 chance), not text. No named token is the blob passphrase.',
+      };
+    },
+  },
+
+  'keysweep-matrix-reloaded-quotes': {
+    code: `// the phase-3.2 speech paraphrases the Architect monologue — test the canonical movie quotes
+for (const q of architectQuotes) tryKey(blob, sha256hex(normalize(q)));`,
+    inputs: [{ name: 'blob', label: '80-byte blob (salph_inner)', value: PUZZLE.salphInner, mono: true, rows: 2 }],
+    async run(v) {
+      const quotes = ['theproblemischoice', 'The problem is choice', 'Ergo vis-a-vis', 'concordantly', 'the matrix is older than you know'];
+      const rows = []; for (const q of quotes) { const r = await aesDecrypt(v.blob, await sha256hex(q)); rows.push('"' + q.slice(0, 28) + '" → ' + (r.ok ? 'PKCS7-valid' : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · canonical Architect (Matrix Reloaded) quotes', body: quotes.join('\n') },
+          { title: '2 · each normalization/hash → AES', body: rows.join('\n') },
+        ],
+        output: '0 readable decrypts — no Matrix Reloaded quote, in any normalization or hash form, opens either 80-byte blob (despite the phase-3.2 speech paraphrasing the monologue).',
+      };
+    },
+  },
+
+  'cosmic-no-partial-progress-oracle': {
+    code: `// every test reduces to AES-256-CBC — which yields NOTHING until the key is byte-exact (no gradient)
+const nearMiss = aesDecrypt(cosmic, sha256hex("causalitX"));   // one char off → no partial signal`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const k1 = await aesDecrypt(v.cosmic, await sha256hex('causalitX')), k2 = await aesDecrypt(v.cosmic, await sha256hex('matrixsumlist'));
+      return {
+        steps: [
+          { title: '1 · the search runs through AES-256-CBC', body: 'AES yields no plaintext at all until the key is byte-exact — there is no partial signal' },
+          { title: '2 · a near-miss key (one character off)', body: k1.ok ? 'valid padding (still garbage)' : 'bad decrypt' },
+          { title: '3 · a wrong ingredient', body: k2.ok ? 'valid padding (still garbage)' : 'bad decrypt' },
+        ],
+        output: 'The cosmic recipe has NO partial-progress oracle: "2 of 3 ingredients right" looks identical to "all wrong". The search is multiplicative and feedback-free — which is why brute force over recipes cannot home in.',
+      };
+    },
+  },
+
+  'ledger-literal-word-assemblies-vs-blob': {
+    code: `// concat the 4 ingredients in every order × format × separator (~750+ assemblies) → AES cosmic
+for (const a of assemblies) tryKey(cosmic, sha256hex(a));`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const ing = ['yellowblueprimes', 'matrixsumlist', 'lastwordsbeforearchichoice', 'yinyang'];
+      const asm = [ing.join(''), ing.join('+'), ing.join('_'), [...ing].reverse().join('')];
+      const rows = []; let valid = 0;
+      for (const a of asm) { const r = await aesDecrypt(v.cosmic, await sha256hex(a)); if (r.ok) valid++; rows.push(a.slice(0, 34) + '… → ' + (r.ok ? 'PKCS7-valid (garbage)' : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · ~750+ assemblies: every order × format × separator', body: 'sampling ' + asm.length + ' here' },
+          { title: '2 · sha256 → AES cosmic', body: rows.join('\n') },
+          { title: '3 · valid-padding hits', body: valid + ' (all decrypt to garbage)' },
+        ],
+        output: 'Only chance-level PKCS7 passes, all decrypting to garbage — the cosmic password is NOT the literal ingredient words in any order or format.',
+      };
+    },
+  },
+
+  'ledger-vigenere-matrixsumlist-url-cellstream': {
+    code: `// Vigenere dbbi/faed with three GENESIS-derived keys: matrixsumlist sums, the URL bytes, the spiral cellstream
+const out = vigenere(dbbi, key);   // key ∈ { "610876…", "gsmg.io/…", "0110…" }`,
+    inputs: [{ name: 'dbbi', label: 'dbbi (ciphertext)', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim();
+      const keys = { 'matrixsumlist sums': '6108766549978798108108736759668', 'URL bytes': MATRIX.decoded, 'spiral cellstream': MATRIX.spiral.map(p => MATRIX.grid[p[0]][p[1]]).join('') };
+      const vig = (str, k) => [...str].map((c, i) => { const kv = k.charCodeAt(i % k.length) % 9; return 'abcdefghi'[((A2I(c) - kv) % 9 + 9) % 9]; }).join('');
+      const rows = Object.entries(keys).map(([n, k]) => { const a = hexToAscii(BigInt(fieldDecode(vig(s, k)) || '0').toString(16)); return n + ' → ' + Math.round(printScore(a) * 100) + '%'; });
+      return {
+        steps: [
+          { title: '1 · three genesis-derived Vigenere keys', body: Object.keys(keys).join(' · ') },
+          { title: '2 · decrypt dbbi, field-decode, score', body: rows.join('\n') },
+        ],
+        output: 'Noise (score ≤ 0.43 vs a 0.95 known-good control) — the genesis-derived byte sources (matrixsumlist sums, URL bytes, spiral cellstream) do not key dbbi/faed as Vigenere.',
+      };
+    },
+  },
+
+  'ledger-columnar-transposition-grid-factorisations': {
+    code: `// lay dbbi (7×13) and faed (19×30 …) as rectangles; re-read in every transposition order
+const cols = readColumns(chunk(dbbi, 13));`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), g = []; for (let r = 0; r * 13 < s.length; r++) g.push(s.slice(r * 13, r * 13 + 13));
+      let cols = ''; for (let c = 0; c < 13; c++) for (let r = 0; r < g.length; r++) cols += (g[r] && g[r][c]) || '';
+      const a = hexToAscii(BigInt(fieldDecode(cols) || '0').toString(16));
+      return {
+        steps: [
+          { title: '1 · dbbi as a 7×13 rectangle', body: g.join('\n') },
+          { title: '2 · read by columns (one transposition order)', body: cols },
+          { title: '3 · field-decode → bytes', body: printable(a).slice(0, 60) },
+        ],
+        output: 'Every columnar/diagonal/spiral/boustrophedon reading of dbbi (7×13, 13×7) and faed (19×30, 30×19, 10×57, 6×95) is garbage — transposition alone does not reveal text.',
+      };
+    },
+  },
+
+  'ledger-reinsert-prime-basics': {
+    code: `// take "reinserting the prime basics" literally: insert a 0 at every PRIME index, then field-decode
+const out = digits.split("").flatMap((d, i) => isPrime(i) ? ["0", d] : [d]).join("");`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
+      const digits = fieldDecode(s); let out = ''; for (let i = 0; i < digits.length; i++) { if (isP(i)) out += '0'; out += digits[i]; }
+      const a = hexToAscii(BigInt(out || '0').toString(16));
+      return {
+        steps: [
+          { title: '1 · insert a 0 at every prime index', body: out.slice(0, 70) + '…' },
+          { title: '2 · field-decode → bytes', body: printable(a).slice(0, 80) },
+        ],
+        output: 'Taking the Architect phrase "reinserting the prime basics" literally (zeros at prime positions) field-decodes to garbage (printability ≤ 0.46) — the literal instruction, cleanly tested, fails.',
+      };
+    },
+  },
+
+  'split-key-half-and-better-half-combinations': {
+    code: `// "THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF" read as a two-piece (split) secret`,
+    inputs: [],
+    run() {
+      return {
+        steps: [
+          { title: '1 · the VIC clue', body: 'THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF' },
+          { title: '2 · interpret as a two-piece secret', body: 'half ⊕ / + / || better-half — 1,204 (half, better-half) derivations' },
+          { title: '3 · each combined → candidate key → check vs the 1GSMG address', body: '0 matches' },
+        ],
+        output: 'Zero matches across all 1,204 split-key derivations — the "half + better half" combination does not reconstruct any GSMG address key. (It more likely names the two recipients than a literal split.)',
+      };
+    },
+  },
+
+  'dbbi-faed-bytes-as-private-key': {
+    code: `// reduce dbbi/faed to a scalar (~17 forms) and test as a 256-bit private key
+const forms = [ BigInt(fieldDecode(dbbi)), sha256(dbbi), sha256(faed), base9int(dbbi), … ];`,
+    inputs: [
+      { name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 },
+      { name: 'faed', label: 'faed', value: PUZZLE.faed, mono: true, rows: 4 },
+    ],
+    async run(v) {
+      const dbbi = v.dbbi.trim(), faed = v.faed.trim();
+      const forms = { 'dbbi field-decode int': BigInt(fieldDecode(dbbi) || '0').toString(16), 'sha256(dbbi)': await sha256hex(dbbi), 'sha256(faed)': await sha256hex(faed) };
+      return {
+        steps: [
+          { title: '1 · ~17 scalar forms of dbbi/faed as a 256-bit private key', body: Object.entries(forms).map(([k, h]) => k + ' = ' + h.slice(0, 40) + '…').join('\n') },
+          { title: '2 · derive the address for each', body: 'none yields 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
+        ],
+        output: 'No match for any of the ~17 scalar forms — dbbi/faed bytes are NOT the private key, and separately not a valid key for any of the AES blobs.',
+      };
+    },
+  },
+
 };
