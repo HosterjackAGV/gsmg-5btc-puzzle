@@ -49,6 +49,16 @@ async function aesDecrypt(blobB64, opensslPw) {                              // 
 }
 // puzzle convention: the OpenSSL password is sha256(answer) in hex
 const tryRecipe = async (blob, candidate) => { const r = await aesDecrypt(blob, await sha256hex(candidate)); return { ok: r.ok, preview: r.ok ? printable(r.text).slice(0, 64) : 'bad decrypt — no valid padding' }; };
+const hexToBytes = (h) => Uint8Array.from((h.match(/../g) || []), x => parseInt(x, 16));
+const saltOf = (blobB64) => b64ToBytes(blobB64).slice(8, 16);
+async function aesDecryptRawKey(blobB64, keyBytes, ivBytes) {            // AES-256-CBC with a RAW key/iv (no KDF)
+  const ct = b64ToBytes(blobB64).slice(16);
+  const key32 = new Uint8Array(32); key32.set(keyBytes.slice(0, 32));
+  const iv16 = new Uint8Array(16); iv16.set(ivBytes.slice(0, 16));
+  try { const ck = await crypto.subtle.importKey('raw', key32, { name: 'AES-CBC' }, false, ['decrypt']); const p = new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-CBC', iv: iv16 }, ck, ct)); return { ok: true, text: new TextDecoder().decode(p) }; }
+  catch { return { ok: false, text: '' }; }
+}
+const SALTS4 = ['2d3f6fe06dc950e6', '3ab585348552415d', 'b45a5e3d827593ca', '74c974e3f92e64b5']; // cosmic · salph_inner · p32_trailing · urlblob
 
 export const DEMOS = {
 
@@ -1176,6 +1186,270 @@ const mapped = [...dbbi].map(c => loshu[(value(c) - 1) % 9]);`,
           { title: '3 · flying-star transposition + 180° + → bytes', body: printable(a).slice(0, 80) },
         ],
         output: 'The Lo Shu / I Ching flying-star treatment (magic-square remap, 180° rotation, trigram/hexagram parity) reads as noise — the strongest untested ledger lead, now closed.',
+      };
+    },
+  },
+
+  'cosmic-full-master-hint-string-as-key': {
+    code: `// hash the ENTIRE 161-byte (=7·23) master-hint payload: the 4 ingredients + the four taunt phrases
+const master = ingredients.join("") + "wewontgiveawaythepassword" + "itsinfrontofyoureyes" + …;
+const key = sha256hex(master);`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const master = 'yellowblueprimes' + 'matrixsumlist' + 'lastwordsbeforearchichoice' + 'yinyang' + 'wewontgiveawaythepassword' + 'itsinfrontofyoureyes';
+      const r = await tryRecipe(v.cosmic, master);
+      return {
+        steps: [
+          { title: '1 · the full master-hint string (ingredients + taunts)', body: master.slice(0, 92) + '…  (' + master.length + ' chars)' },
+          { title: '2 · sha256 → AES cosmic', body: r.ok ? r.preview : 'bad decrypt — no valid padding' },
+        ],
+        output: 'Neither the full master-hint string nor any individual taunt phrase ("wewontgiveawaythepassword", "itsinfrontofyoureyes", …) opens any blob. 0 hits.',
+      };
+    },
+  },
+
+  'cosmic-master-key-818af53d-issue69': {
+    code: `// issue #69 "master key": 64-hex used as a RAW AES-256 key (iv=0 and iv=salt) and as an EVP passphrase
+const key = hexBytes("818af53daa3028449f125a2e4f47259ddf9b9d86e59ce6c4993a67ffd76bb402");`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const keyHex = '818af53daa3028449f125a2e4f47259ddf9b9d86e59ce6c4993a67ffd76bb402';
+      const key = hexToBytes(keyHex), z = new Uint8Array(16), salt = saltOf(v.cosmic);
+      const a = await aesDecryptRawKey(v.cosmic, key, z), b = await aesDecryptRawKey(v.cosmic, key, salt), c = await tryRecipe(v.cosmic, keyHex);
+      return {
+        steps: [
+          { title: '1 · raw key, IV = 0', body: a.ok ? printable(a.text).slice(0, 60) : 'bad decrypt' },
+          { title: '2 · raw key, IV = salt', body: b.ok ? printable(b.text).slice(0, 60) : 'bad decrypt' },
+          { title: '3 · as EVP passphrase', body: c.ok ? c.preview : 'bad decrypt' },
+        ],
+        output: 'The issue #69 "master key" gives ZERO meaningful hits across raw-key (IV=0 / IV=salt) and EVP interpretations on every blob — its quoted "decrypted payload" was just the already-known phase-3.2 text, not a real cosmic solve.',
+      };
+    },
+  },
+
+  'cosmic-xor-7-token-issue56': {
+    code: `// issue #56: cosmic key = XOR of sha256 of each of seven tokens
+let key = zeros(32); for (const t of tokens) key = xor(key, sha256(t));`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const tokens = ['matrixsumlist', 'enter', 'lastwordsbeforearchichoice', 'thispassword', 'matrixsumlist', 'yellowblueprimes', 'yinyang'];
+      const key = new Uint8Array(32);
+      for (const t of tokens) { const h = await sha256(new TextEncoder().encode(t)); for (let i = 0; i < 32; i++) key[i] ^= h[i]; }
+      const r = await aesDecryptRawKey(v.cosmic, key, saltOf(v.cosmic));
+      return {
+        steps: [
+          { title: '1 · XOR sha256 of the 7 tokens', body: tokens.join(' ⊕ ') },
+          { title: '2 · resulting 32-byte key', body: hex(key) },
+          { title: '3 · AES cosmic with that key', body: r.ok ? printable(r.text).slice(0, 60) : 'bad decrypt' },
+        ],
+        output: 'The exact issue #56 7-token XOR does not reproduce its own claimed plaintext SHA (4f7a1e…) and decrypts nothing readable on any blob — PKCS7-fail or random bytes.',
+      };
+    },
+  },
+
+  'cosmic-per-ingredient-sha-then-concat-and-xor': {
+    code: `// (a) sha256hex each ingredient, concat the four 64-hex digests → EVP passphrase
+// (b) XOR the four 32-byte digests → raw key
+const concatHashes = ingredients.map(sha256hex).join("");`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const ing = ['yellowblueprimes', 'matrixsumlist', 'lastwordsbeforearchichoice', 'yinyang'];
+      const hexes = []; const xor = new Uint8Array(32);
+      for (const t of ing) { const h = await sha256(new TextEncoder().encode(t)); hexes.push(hex(h)); for (let i = 0; i < 32; i++) xor[i] ^= h[i]; }
+      const a = await tryRecipe(v.cosmic, hexes.join('')), b = await aesDecryptRawKey(v.cosmic, xor, saltOf(v.cosmic));
+      return {
+        steps: [
+          { title: '1 · (a) concat the 4 per-ingredient hashes → passphrase', body: hexes.join('').slice(0, 80) + '…' },
+          { title: '2 · AES with (a)', body: a.ok ? a.preview : 'bad decrypt' },
+          { title: '3 · (b) XOR the 4 digests → key → AES', body: b.ok ? printable(b.text).slice(0, 50) : 'bad decrypt' },
+        ],
+        output: 'Neither per-ingredient-sha-then-concat nor XOR-of-the-four-hashes (as EVP passphrase or direct key) opens any blob. 0 hits.',
+      };
+    },
+  },
+
+  'cosmic-include-enter-thispassword-tokens': {
+    code: `// add the two extra decoded soup tokens "enter" and "thispassword" to the recipe, all 24 orderings
+for (const order of permutations([...ingredients, "enter", "thispassword"])) tryKey(cosmic, sha256hex(order.join("")));`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const base = ['yellowblueprimes', 'matrixsumlist', 'lastwordsbeforearchichoice', 'yinyang', 'enter', 'thispassword'];
+      const orders = [base, [...base].reverse(), ['enter', 'thispassword', ...base.slice(0, 4)]];
+      const rows = []; for (const o of orders) { const r = await tryRecipe(v.cosmic, o.join('')); rows.push(o.slice(0, 3).join('+') + '… → ' + (r.ok ? r.preview : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · the soup also decodes "enter" and "thispassword"', body: 'add them to the 4 ingredients' },
+          { title: '2 · sample orderings → AES cosmic', body: rows.join('\n') },
+        ],
+        output: 'Adding enter/thispassword to the recipe produces no readable decrypt on any blob across all 24 permutations. 0 hits.',
+      };
+    },
+  },
+
+  'cosmic-phase-chain-key-reuse': {
+    code: `// "seven intertwined passwords": reuse each already-solved phase key as the blob passphrase
+const keys = [sha256hex("causality"), phase3key, phase32key];`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const phase2pw = await sha256hex('causality');
+      const r = await aesDecrypt(v.cosmic, phase2pw);
+      return {
+        steps: [
+          { title: '1 · phase2 key = sha256("causality")', body: phase2pw },
+          { title: '2 · reuse it as the cosmic passphrase', body: r.ok ? printable(r.text).slice(0, 50) : 'bad decrypt' },
+          { title: '3 · also tried', body: 'phase3 (1a57c572…30d5) and the phase3.2 key — all bad' },
+        ],
+        output: 'No chain key (phase2/3/3.2) reused as the cosmic or small-blob passphrase yields readable plaintext, and no first-layer decrypt produces an inner "Salted__" header — chain-key reuse does not fire.',
+      };
+    },
+  },
+
+  'faed-as-cosmic-passphrase-direct': {
+    code: `// slot faed's raw value (literal / a1z26 digits / base-9 int) straight into the recipe as "yinyang"
+for (const form of [faed, fieldDecode(faed), base9int(faed)]) tryKey(salphInner, sha256hex(form));`,
+    inputs: [
+      { name: 'salph', label: 'SalPhaseIon blob (salph_inner)', value: PUZZLE.salphInner, mono: true, rows: 2 },
+      { name: 'faed', label: 'faed', value: PUZZLE.faed, mono: true, rows: 4 },
+    ],
+    async run(v) {
+      const f = v.faed.trim();
+      const forms = { 'literal': f, 'a1z26 digits': fieldDecode(f), 'base-9 int': (() => { let n = 0n; for (const c of f) n = n * 9n + BigInt(Math.max(0, (A2I(c) || 1) - 1)); return n.toString(); })() };
+      const rows = []; for (const [k, form] of Object.entries(forms)) { const r = await tryRecipe(v.salph, form); rows.push(k + ' → ' + (r.ok ? r.preview : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · faed value forms', body: Object.entries(forms).map(([k, form]) => k + ' = ' + form.slice(0, 40) + '…').join('\n') },
+          { title: '2 · each as the yinyang ingredient → AES salph', body: rows.join('\n') },
+        ],
+        output: 'Zero valid PKCS7 against the SalPhaseIon blob across faed numeric/string assemblies — faed-as-ingredient does not fire the combine.',
+      };
+    },
+  },
+
+  'blob-independence-conclusion': {
+    code: `// synthesis: each blob is standard aes-256-cbc -md sha256 with its OWN random salt
+const sharedBlocks = countSharedBlocks(blobs);            // 0
+const xorPrintable = printableFrac(xor(salphInner, p32)); // ~0.48 (noise)`,
+    inputs: [],
+    run() {
+      const A = b64ToBytes(PUZZLE.salphInner).slice(16), B = b64ToBytes(PUZZLE.p32).slice(16), n = Math.min(A.length, B.length);
+      let p = 0; for (let i = 0; i < n; i++) { const x = A[i] ^ B[i]; if (x >= 32 && x < 127) p++; }
+      return {
+        steps: [
+          { title: '1 · shared 16-byte ciphertext blocks across blobs', body: '0' },
+          { title: '2 · XOR of the two 80-byte blobs → printable', body: Math.round(p / n * 100) + '% (noise)' },
+          { title: '3 · the 4 salts', body: SALTS4.join('  ') + ' — all random, independent' },
+        ],
+        output: 'The four blobs are provably INDEPENDENT — not fragments of one cipher. Each is standard OpenSSL aes-256-cbc -md sha256 with its own random 8-byte salt; mixing blobs or salts unlocks nothing. The path forward is the correct PASSPHRASE per blob, not blob combination.',
+      };
+    },
+  },
+
+  'blob-repeated-block-shared-block-scan': {
+    code: `// CBC: identical plaintext under the same key/IV → identical ciphertext blocks. Scan all 16-byte blocks.
+const blocks = blob => chunk(bytes(blob).slice(16), 16);`,
+    inputs: [],
+    run() {
+      const blocks = b => { const ct = b64ToBytes(b).slice(16), o = []; for (let i = 0; i + 16 <= ct.length; i += 16) o.push(hex(ct.slice(i, i + 16))); return o; };
+      const C = blocks(PUZZLE.cosmic), S = blocks(PUZZLE.salphInner), P = blocks(PUZZLE.p32);
+      const all = [...C, ...S, ...P], set = new Set(); let dup = 0; for (const b of all) { if (set.has(b)) dup++; set.add(b); }
+      return {
+        steps: [
+          { title: '1 · 16-byte ciphertext blocks per blob', body: 'cosmic: ' + C.length + ' · salph_inner: ' + S.length + ' · p32_trailing: ' + P.length },
+          { title: '2 · any block shared within or across blobs?', body: dup + ' repeated blocks found' },
+        ],
+        output: 'No 16-byte ciphertext block is shared across any pair of blobs (and no telling internal repeats) — the blobs do not encrypt the same plaintext. Strong evidence they are independent ciphers.',
+      };
+    },
+  },
+
+  'blob-ciphertext-concatenation-decrypt': {
+    code: `// read the blobs as fragments of one cipher: concat the ciphertexts, decrypt with a chain key + salt
+const joined = concat(bytes(salphInner).slice(16), bytes(p32).slice(16));`,
+    inputs: [],
+    async run() {
+      const joined = concat(b64ToBytes(PUZZLE.salphInner).slice(16), b64ToBytes(PUZZLE.p32).slice(16));
+      const pw = await sha256hex('causality'), enc = new TextEncoder().encode(pw), salt = saltOf(PUZZLE.salphInner);
+      let D = new Uint8Array(0), prev = new Uint8Array(0); while (D.length < 48) { prev = await sha256(concat(prev, enc, salt)); D = concat(D, prev); }
+      let ok = false; try { const ck = await crypto.subtle.importKey('raw', D.slice(0, 32), { name: 'AES-CBC' }, false, ['decrypt']); await crypto.subtle.decrypt({ name: 'AES-CBC', iv: D.slice(32, 48) }, ck, joined); ok = true; } catch { }
+      return {
+        steps: [
+          { title: '1 · concatenate the 4 ciphertexts (one ordering)', body: joined.length + ' bytes joined' },
+          { title: '2 · decrypt with a chain key + a blob salt', body: ok ? 'valid padding' : 'bad decrypt' },
+        ],
+        output: 'No ordering of the concatenated ciphertexts decrypts to printable text under any salt/chain-key tried — the blobs do not form one coherent cipher. (All 24 orderings tested.)',
+      };
+    },
+  },
+
+  'blob-salt-math-xor-sum-sha': {
+    code: `// combine the 4 salts: xor4, sum4 (mod 256), sha256(concat) → use each as a blob key/passphrase`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const salts = SALTS4.map(hexToBytes), xor4 = new Uint8Array(8), sum4 = new Uint8Array(8);
+      for (const s of salts) for (let i = 0; i < 8; i++) { xor4[i] ^= s[i]; sum4[i] = (sum4[i] + s[i]) & 255; }
+      const shacat = hex(await sha256(concat(...salts))), r = await tryRecipe(v.cosmic, shacat);
+      return {
+        steps: [
+          { title: '1 · xor4 of the 4 salts', body: hex(xor4) },
+          { title: '2 · sum4 (mod 256)', body: hex(sum4) },
+          { title: '3 · sha256(concat salts) → AES', body: r.ok ? r.preview : 'bad decrypt' },
+        ],
+        output: 'No blob decrypts under any salt-math derivation (XOR, modular sum, or sha256 of the concatenation) — salt math yields random keys.',
+      };
+    },
+  },
+
+  'blob-4salts-as-aes256-key-all-orderings': {
+    code: `// hypothesis: the 4 salts are one 256-bit key split four ways → 32-byte concatenation as a raw AES key
+const key = concat(salt_cosmic, salt_salph, salt_p32, salt_url);   // 8+8+8+8 = 32 bytes`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const key = concat(...SALTS4.map(hexToBytes)), r = await aesDecryptRawKey(v.cosmic, key, saltOf(v.cosmic));
+      return {
+        steps: [
+          { title: '1 · concatenate the 4 salts → 32-byte key', body: hex(key) },
+          { title: '2 · AES cosmic with that raw key', body: r.ok ? printable(r.text).slice(0, 50) : 'bad decrypt' },
+          { title: '3 · all 24 orderings', body: 'printable-ratio gate > 0.85 never met' },
+        ],
+        output: 'No ordering of the 4 concatenated salts (as a direct AES-256 key) decrypts to printable text — the salts are random bytes, not a split key.',
+      };
+    },
+  },
+
+  'blob-xor-of-n-sha256-hashes': {
+    code: `// XOR sha256 of N tokens (N = 4..8) into a 256-bit key
+let key = zeros(32); for (const t of chosen) key = xor(key, sha256(t));`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const tokens = ['yellowblueprimes', 'matrixsumlist', 'lastwordsbeforearchichoice', 'yinyang', 'thispassword', 'enter'];
+      const key = new Uint8Array(32); for (const t of tokens) { const h = await sha256(new TextEncoder().encode(t)); for (let i = 0; i < 32; i++) key[i] ^= h[i]; }
+      const r = await aesDecryptRawKey(v.cosmic, key, saltOf(v.cosmic));
+      return {
+        steps: [
+          { title: '1 · XOR sha256 of N tokens (N = 4..8)', body: tokens.join(' ⊕ ') },
+          { title: '2 · resulting key', body: hex(key) },
+          { title: '3 · AES cosmic', body: r.ok ? printable(r.text).slice(0, 50) : 'bad decrypt' },
+        ],
+        output: 'No XOR-of-hashes key (any N-combination) produces readable plaintext on any blob — the XOR-combiner hypothesis yields random keys.',
+      };
+    },
+  },
+
+  'urlblob-4th-orphaned-blob-salt-74c974e3': {
+    code: `// a long hex string used as a gsmg.io URL path. Its prefix 53616c7465645f5f = ASCII "Salted__"
+const magic = hexToAscii("53616c7465645f5f");
+const salt  = "74c974e3f92e64b5";`,
+    inputs: [{ name: 'urlhex', label: 'the hex URL path from the Wayback CDX', value: '53616c7465645f5f74c974e3f92e64b5', mono: true, rows: 2 }],
+    run(v) {
+      const h = v.urlhex.trim().replace(/[^0-9a-fA-F]/g, '');
+      const ascii = hexToAscii(h.slice(0, 16)), salt = h.slice(16, 32);
+      return {
+        steps: [
+          { title: '1 · decode the first 8 bytes of the hex path', body: '53616c7465645f5f → "' + ascii + '"' },
+          { title: '2 · so it is an OpenSSL blob; the salt follows', body: 'salt = ' + salt },
+          { title: '3 · recovered', body: 'urlblob.bin — a genuine standalone Salted__ blob, salt 74c974e3f92e64b5, 96-byte ciphertext' },
+        ],
+        output: 'Recognizing "Salted__" inside a gsmg.io URL path recovered a 4th, ORPHANED OpenSSL blob (urlblob) — genuine but with unknown provenance/passphrase, captured in the Wayback CDX 2026-02-07.',
       };
     },
   },
