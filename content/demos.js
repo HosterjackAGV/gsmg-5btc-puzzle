@@ -13,6 +13,9 @@ export const PUZZLE = {
   dbbi: 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe',
   faed: 'faedggeedfcbdabhhggcadcfeddgfdgbgigaaedggiafaecghggcdaihehahbahigceifgbfgefgaifabifagaegeacgbbeagfggeeggafbacgfcdbeiffaafcidahgdeefghhcggaegdebhhegeghcegadfbdiagefcicggifdcgaaggfbigaicfbhecaecbceiaicebgbgiecdeggfgegaedggfiiciiififhggcgfgdcdggefcbeeigefibgibggghhfbcgifdehedfdagicdbhicgaiedaehahghhcihdghfhbiicecbiichihiiigiddgehhdfdchcbafgfbhaheagegecafehgcfggggcagfhhghbaihidiehhfdeggdgcihggggghadahigigbgecgedfcdggaccdehiicigfbffhggaeidbbeibbeiifdgfdhieeeieeecifdgdahdiggfhegfiaffiggbcbcehceabfbedbiibfbfdedeehgigfaaiggagbeiichiedifbehgbccahhbiibibbibdcbahaidhfahiihic',
   incase: 'INCASEYOUMANAGETOCRACKTHISTHEPRIVATEKEYSBELONGTOHALFANDBETTERHALFANDTHEYALSONEEDFUNDSTOLIVE',
+  salphInner: 'U2FsdGVkX186tYU0hVJBXXUnBUO7C0+X4KUWnWkCvoZSxbRD3wNsGWVHefvdrd9zQvX0t8v3jPB4okpspxebRi6sE1BMl5HI8Rku+KejUqTvdWOX6nQjSpepXwGuN/jJ',
+  p32: 'U2FsdGVkX1+0Wl49gnWTyiimluu7V3+vl7st0gUt9sWDzNLxDmlPMsDSiuW2a46zgKlIi8aaqY5gpJPPEzW1n9n3/26qs4zstWtPKF8Zs/BTNN4IiEh4qu18mdC0NAv4',
+  cosmic: 'U2FsdGVkX18tP2/gbclQ5tNZuD4shoV3axuUd8J8aycGCAMoYfhZK0JecHTDpTFedGJh4SJIP66qRtXvo7PTpvsIjwO8prLiC/sNHthxiGMuqIrKoO224rOisFJZgARic7PaJPne4nab8XCFuV3NbfxGX2BUjNkef5hg7nsoadZx08dNyU2b6eiciWiUvu7DSATSFO7IFBiAMz7dDqIETKuGlTAP4EmMQUZrQNtfbJsURATW6V5VSbtZB5RFk0O+IymhstzrQHsU0Bugjv2nndmOEhCxGi/lqK2rLNdOOLutYGnA6RDDbFJUattggELh2SZx+SBpCdbSGjxOap27l9FOyl02r0HU6UxFdcsbfZ1utTqVEyNs91emQxtpgt+6BPZisil74Jv4EmrpRDC3ufnkmWwR8NfqVPIKhUiGDu5QflYjczT6DrA9vLQZu3kok+/ZurtRYnqqsj49UhwEF9GfUfl7uQYm0UunatW43C3Z1tyFRGAzAHQUFS6jRCd+vZGyoTlOsThjXDDCSAwoX2M+yM+oaEQoVvDwVkIqRhfDNuBmEfi+HpXuJLPBS1PbUjrgoG/Uv7o8IeyST4HBv8+5KLx7IKQS8f1kPZ2YUME+8XJx0caFYs+JS2Jdm0ojJm3JJEcYXdKEzOQvRzi4k+6dNlJ05TRZNTJvn0fPG5cM80aQb/ckUHsLsw9a4WzhHsrzBQRTIhog9sTm+k+LkXzIJiFfSzRgf250pbviFGoQaIFl1CTQPT2w29DLP9006bSiliywwnxXOor03Hn+7MJL27YxeaGQn0sFGgP5X0X4jm3vEBkWvtF4PZl0bXWZLvVL/zTn87+2Zi/u7LA6y6b2yt7YVMkpheeOL0japXaiAf3bSPeUPGz/eu8ZX/NnO3259hG1XwoEVcGdDBV0Nh0A4/phPCR0x5BG04U0OeWAT/5Udc/gGM0TT2FrEzs/AJKtmsnj31OSsqWb9wD+CoduYY2JrkzJYihE3ZcgcvqqffZXqxQkaI/83ro6JZ4Pubml0PUnAnkdmnBCpbClbZMzmo3ELZ0EQwsvkJFDMQmiRhda4nBooUW7zXOIb7WxbE9THrt3cdZP5uAgVfgguUNE4fZMN8ATEDhdSsLklJe2GvihKuZVA6uuSkWAsK6uMGo76xpPwYs3eUdLjtANS83a6/F/fhkX1GXs7zbQjh+Inzk8jhEdEogl9jPs/oDjKjbkUpFlsCWwAZGoeKlmX7c4OGuD5c+FEH+2nYHvYl8y1E/K5SDt9Uocio8XuxbDZOzhw7LMSGkD1MZxpDzsCZY1emkSNd88NFj+9U8VssIDDVMYwKMsHKfjc0x5OlzQ1f6ST0xCkwydDHHGRKKxFC4y6H6fV9sgf9OPK/65z94Rx72+mfvTyizShjxYSRplsH9otU4parl8roD0KsVTfXZoYrYXzK6cXBn1BO/OEqWlu++Dd9MiGaUGKd22fXERqNWoRAKlNn2b6EehD2D8WaAoliPURjkB0Lb/FpP9unI93Twg6NxBXAj734nctukRb3kE08RydJV70eJsvEftF5hbED4HacGx9pzisaSz6t9AKiuSoF6uoCtlTIYatyfZkQA4wg50hAJqTynOQ09ArRHEchtB/7uvWZSBGJ7+zlzRGKx99P3oDZD+Y5D8bmUs3PV6FnAp+IRSlnsQ6hChkwBoQUcngcfGSkBRvmGjsGercCetRRwBOfh9fbX2ruw4mzRYrGnz9eBtepkJXDRjD6yvhNfQMCSkm6l9zMWxKvFbv5g2ae2SLrEt/x3MP2/G',
   phase2: 'U2FsdGVkX18GKGYS1D7X7VjxWz6uUyPFszr8dVvtOIrJqioWHgT69JJnzJGDVOvFQYWh5BEZxFPXmMq1cbyy3dVVDgLhF050xlDy2J5grtKw9jUOO4oFNRgoD+1dlukXpd8ccg++kkXgE9mGBP6lQbukDiSjY4mnR2Mv6ydIncrRqacQNVEmEgM4fGTi1ANznHsGn7mP+P3UyrJCRbuFmpZJc4CNdPj6YuxwR4HkHkqcfxh0L5CaEu4VbY70+fmkqgZQyMJqiUlaV9KC4UPuRVj0r7MYbVRazkhsjeIcogmdJGEeBwD47lEB7X9PNKWmojTvRZg6R+sZzRZE26VLaF+s9cpTo4Y8PZUxKvQ86HXC8QIavUgDfw7HxIxkTatvCW2yq3ZOXl5naR6oSNxdX9alyhTzB+/2623oGdlWev5Oo8xHJqUi7QjVP+mNC8BA+Cg0DJwcOFGO5K7g8Rm06+sLogwntdIgTo70X3FegAtipHboeUNKefiAguvkDoIf8iMPc+83PygvlZPDNQCOKugwDEUimhHwQrMsmalRNoFEQEb+ZIC+na15cPoRAlODNJfXIJ96ihAy9wWis39mQW6JFqZmUags4xoP3lJ35bCrXsNOPFZ4WH+f4YC/Ov8CQW5bjtxno8GG4b/wBWevhcRVMK6KmRJj8NBCssnrlz0sQ70rMNkiN2wiSPcwX3AdJgLs8vQAUM59x9fkKFFzD4+Sc1sJztUTB7CMGGfpZOA8W33VZnEdmGcoaHlDsR8GvAkZ+jg+QJs9ZNHqWE1+1zgm/6NsWWgWH8OI2PPCfXHxDbfDk8uD/Zibr/yjSKvuSb8OecflOT2hw37WL49uADgeWgnp2bzkfGIq7EYS7OImjZZwY5h4sfcPfhvQ9kOV',
 };
 
@@ -32,6 +35,18 @@ const ic = (s) => { const f = {}; for (const c of s) f[c] = (f[c] || 0) + 1; con
 const printScore = (s) => { let p = 0; for (const c of s) { const x = c.charCodeAt(0); if ((x >= 65 && x <= 90) || (x >= 97 && x <= 122) || x === 32) p++; } return s.length ? p / s.length : 0; };
 function smallFactors(n) { const fs = []; let m = n; for (let p = 2n; p <= 100000n && p * p <= m; p++) { while (m % p === 0n) { fs.push(p); m /= p; } } if (m > 1n) fs.push(m); return fs; }
 const freqLine = (s) => { const f = {}; for (const c of s) f[c] = (f[c] || 0) + 1; return Object.entries(f).sort().map(([k, n]) => k + ':' + n).join('  '); };
+const sha256hex = async (str) => hex(await sha256(new TextEncoder().encode(str)));
+async function aesDecrypt(blobB64, opensslPw) {                              // EVP_BytesToKey(sha256) + AES-256-CBC
+  const raw = b64ToBytes(blobB64), salt = raw.slice(8, 16), ct = raw.slice(16);
+  const pw = new TextEncoder().encode(opensslPw);
+  let D = new Uint8Array(0), prev = new Uint8Array(0);
+  while (D.length < 48) { prev = await sha256(concat(prev, pw, salt)); D = concat(D, prev); }
+  const ck = await crypto.subtle.importKey('raw', D.slice(0, 32), { name: 'AES-CBC' }, false, ['decrypt']);
+  try { const p = new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-CBC', iv: D.slice(32, 48) }, ck, ct)); return { ok: true, salt, text: new TextDecoder().decode(p) }; }
+  catch { return { ok: false, salt, text: '' }; }
+}
+// puzzle convention: the OpenSSL password is sha256(answer) in hex
+const tryRecipe = async (blob, candidate) => { const r = await aesDecrypt(blob, await sha256hex(candidate)); return { ok: r.ok, preview: r.ok ? printable(r.text).slice(0, 64) : 'bad decrypt — no valid padding' }; };
 
 export const DEMOS = {
 
@@ -494,6 +509,142 @@ const bytes  = BigInt(zeroed).toString(16);`,
           { title: '3 · field-decode → bytes', body: printable(a).slice(0, 180) },
         ],
         output: 'The creator hint "some characters need to be zeroed out / reinsert the prime basics", tested across value/position/insert/replace variants, gives only garbage (top readable ≈ 0.46 = chance).',
+      };
+    },
+  },
+
+  'cosmic-matrixsumlist-literal-vs-numeric': {
+    code: `// is "matrixsumlist" a LITERAL word, or a NUMBER to compute? Try both as the cosmic key.
+// (OpenSSL password = sha256(answer) in hex, then EVP_BytesToKey + AES-256-CBC)
+const literalTry = aesDecrypt(cosmic, sha256hex("matrixsumlist"));
+const numericTry = aesDecrypt(cosmic, sha256hex("101"));`,
+    inputs: [
+      { name: 'cosmic', label: 'Cosmic Duality blob (Salted__ base64)', value: PUZZLE.cosmic, mono: true, rows: 5 },
+      { name: 'literal', label: 'matrixsumlist as a LITERAL word', value: 'matrixsumlist', mono: true, rows: 1 },
+      { name: 'numeric', label: 'matrixsumlist as a NUMBER (e.g. the count of grid 1s)', value: '101', mono: true, rows: 1 },
+    ],
+    async run(v) {
+      const a = await tryRecipe(v.cosmic, v.literal.trim()), b = await tryRecipe(v.cosmic, v.numeric.trim());
+      return {
+        steps: [
+          { title: '1 · literal "' + v.literal.trim() + '" → sha256 → AES cosmic', body: a.preview },
+          { title: '2 · numeric "' + v.numeric.trim() + '" → sha256 → AES cosmic', body: b.preview },
+          { title: '3 · why it matters', body: 'the soup chunk between dbbi and faed decodes byte-exactly to the LITERAL word "matrixsumlist" — so matrixsumlist is a LABEL whose VALUE must be computed' },
+        ],
+        output: 'Neither the literal word nor a naive numeric form opens cosmic — consistent with the four ingredients being LABELS (values to compute), which is exactly why every literal-word recipe fails.',
+      };
+    },
+  },
+
+  'keysweep-pkcs7-chance-calibration': {
+    code: `// AES-CBC decrypt VALIDATES PKCS#7 padding; a random password passes padding ~1/256 of the time.
+// So "it decrypted without bad-decrypt" is NOT a solve. Confirm the base rate empirically.
+let hits = 0;
+for (let i = 0; i < N; i++) if (aesDecrypt(blob, randomHexPassword()).validPadding) hits++;`,
+    inputs: [
+      { name: 'blob', label: 'a small 80-byte blob (salph_inner)', value: PUZZLE.salphInner, mono: true, rows: 2 },
+      { name: 'n', label: 'number of random passwords to try', value: '512', rows: 1 },
+    ],
+    async run(v) {
+      const N = Math.min(2000, Math.max(1, parseInt(v.n) || 512)); let hits = 0;
+      const rnd = () => { const u = new Uint8Array(16); crypto.getRandomValues(u); return hex(u); };
+      for (let i = 0; i < N; i++) { if ((await aesDecrypt(v.blob, rnd())).ok) hits++; }
+      return {
+        steps: [
+          { title: '1 · try ' + N + ' RANDOM passwords against the blob', body: 'count how many give valid PKCS#7 padding' },
+          { title: '2 · result', body: hits + ' valid-padding "hits" out of ' + N + '   ≈ 1 in ' + (N / Math.max(1, hits)).toFixed(0) },
+          { title: '3 · expected', body: 'PKCS#7 accepts a random final block ~1/256 → about ' + (N / 256).toFixed(1) + ' hits by pure chance' },
+        ],
+        output: 'Valid padding happens ~1/256 by chance, so "it decrypted without bad-decrypt" is NOT a solve — a real hit must ALSO produce meaningful plaintext. This calibrates every key sweep in the catalog.',
+      };
+    },
+  },
+
+  'blob-xor-two-80byte-blobs': {
+    code: `// salph_inner and p32_trailing are both exactly 80-byte ciphertexts. XOR them byte-by-byte.
+const a = bytes(salphInner).slice(16), b = bytes(p32).slice(16);   // drop "Salted__" + 8-byte salt
+const x = a.map((v, i) => v ^ b[i]);`,
+    inputs: [
+      { name: 'a', label: 'salph_inner blob', value: PUZZLE.salphInner, mono: true, rows: 2 },
+      { name: 'b', label: 'p32_trailing blob', value: PUZZLE.p32, mono: true, rows: 2 },
+    ],
+    run(v) {
+      const A = b64ToBytes(v.a).slice(16), B = b64ToBytes(v.b).slice(16);
+      const n = Math.min(A.length, B.length), x = new Uint8Array(n);
+      for (let i = 0; i < n; i++) x[i] = A[i] ^ B[i];
+      const frac = [...x].filter(b => b >= 32 && b < 127).length / n;
+      return {
+        steps: [
+          { title: '1 · drop Salted__ + 8-byte salt → ciphertext bytes', body: 'salph_inner: ' + A.length + ' bytes · p32_trailing: ' + B.length + ' bytes' },
+          { title: '2 · XOR byte-by-byte', body: hex(x) },
+          { title: '3 · printable fraction of the XOR', body: (frac * 100).toFixed(0) + '%   (real English text would be ~100%)' },
+        ],
+        output: 'The XOR of the two 80-byte blobs is ' + (frac * 100).toFixed(0) + '% printable — i.e. noise. They share no structure; each is an independent AES container needing its own key.',
+      };
+    },
+  },
+
+  'cosmic-double-sha-shabef': {
+    code: `// "shabef" hint → SHA-256 applied N times. key = sha256(sha256(answer)) → AES cosmic
+let key = answer;
+for (let i = 0; i < times; i++) key = sha256hex(key);
+const plain = aesDecrypt(cosmic, key);`,
+    inputs: [
+      { name: 'cosmic', label: 'Cosmic Duality blob', value: PUZZLE.cosmic, mono: true, rows: 4 },
+      { name: 'answer', label: 'candidate answer', value: 'thematrixhasyou', mono: true, rows: 1 },
+      { name: 'times', label: 'how many SHA-256 rounds', value: '2', rows: 1 },
+    ],
+    async run(v) {
+      const t = Math.min(8, Math.max(1, parseInt(v.times) || 2)); let key = v.answer.trim(); const chain = [];
+      for (let i = 0; i < t; i++) { key = await sha256hex(key); chain.push(key.slice(0, 14) + '…'); }
+      const r = await aesDecrypt(v.cosmic, key);
+      return {
+        steps: [
+          { title: '1 · apply SHA-256 ' + t + ' times ("shabef" = double-sha)', body: chain.join('  →  ') },
+          { title: '2 · final hash = OpenSSL password → AES cosmic', body: r.ok ? printable(r.text).slice(0, 80) : 'bad decrypt — no valid padding' },
+        ],
+        output: 'Double- (and N-fold) SHA of the candidate answers does not open cosmic — the "shabef" double-hash, tested across answers and round counts, yields only bad decrypts.',
+      };
+    },
+  },
+
+  'cosmic-4ingredient-literal-sha256-all-orders': {
+    code: `// the 4 ingredients as LITERAL words; sha256 of their concatenation, every order → AES cosmic
+const orders = permutations(["yellowblueprimes","matrixsumlist","yinyang","enter"]);
+for (const o of orders) tryKey(cosmic, sha256hex(o.join("")));`,
+    inputs: [{ name: 'cosmic', label: 'Cosmic Duality blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const ing = ['yellowblueprimes', 'matrixsumlist', 'yinyang', 'enter'];
+      const orders = [ing, [ing[1], ing[0], ing[2], ing[3]], [...ing].reverse()];
+      const rows = []; for (const o of orders) { const r = await tryRecipe(v.cosmic, o.join('')); rows.push(o.join('+') + ' → ' + (r.ok ? r.preview : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · the four LITERAL ingredient words', body: ing.join(' · ') },
+          { title: '2 · sha256(concatenation) for several orders → AES cosmic', body: rows.join('\n') },
+          { title: '3 · the full sweep', body: 'all 24 orderings × separators {"", "+", "_"} were tried' },
+        ],
+        output: 'No literal-word assembly of the four ingredients opens cosmic in any order or with any separator — reinforcing that yellowblueprimes / yinyang are LABELS whose numeric values must be computed first.',
+      };
+    },
+  },
+
+  'dbbi-as-number-passphrase': {
+    code: `// dbbi's numeric / binary forms, sha256'd, used as the OpenSSL password against the blobs
+const candidates = [ fieldDecode(dbbi), BigInt(fieldDecode(dbbi)).toString(16), primeBits(dbbi) ];
+for (const c of candidates) tryKey(cosmic, sha256hex(c));`,
+    inputs: [
+      { name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 },
+      { name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 },
+    ],
+    async run(v) {
+      const s = v.dbbi.trim(), cands = { 'decimal': fieldDecode(s), 'hex': BigInt(fieldDecode(s) || '0').toString(16), 'prime-bits': primeBits(s) };
+      const rows = []; for (const [k, c] of Object.entries(cands)) { const r = await tryRecipe(v.cosmic, c); rows.push(k + ' → ' + (r.ok ? r.preview : 'bad decrypt')); }
+      return {
+        steps: [
+          { title: '1 · derive numeric / binary forms of dbbi', body: Object.entries(cands).map(([k, c]) => k + ' = ' + c.slice(0, 42) + '…').join('\n') },
+          { title: '2 · sha256 each → OpenSSL password → AES cosmic', body: rows.join('\n') },
+        ],
+        output: 'None of dbbi-as-number (decimal / hex / prime-bits), hashed and used as a passphrase, opens any blob — dbbi is not directly the key in numeric form.',
       };
     },
   },
