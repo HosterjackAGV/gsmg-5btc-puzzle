@@ -42,7 +42,7 @@ export default async function triedView(ctx = {}) {
     const catHtml = Object.entries(cats).map(([cat, list]) =>
       `<h3 class="tried-cat">${esc(cat)} <span class="faint">· ${list.length}</span></h3>${list.map(entryHtml).join('')}`
     ).join('');
-    return `<section class="tried-phase"><h2 id="phase-${ph}">${esc(PHASE_LABELS[ph])} <span class="faint" style="font-size:14px">· ${items.length} attempts</span></h2>${catHtml}</section>`;
+    return `<section class="tried-phase phase-card phase-${ph}"><div class="phase-tag">${({ genesis: 'Phase 0', mrrobot: 'Phase 2', architect: 'Phase 3.2', salphaseion: 'Endgame' })[ph] || ph}</div><h2 id="phase-${ph}">${esc(PHASE_LABELS[ph])} <span class="faint" style="font-size:14px">· ${items.length} attempts</span></h2>${catHtml}</section>`;
   }).join('');
 
   const html = `

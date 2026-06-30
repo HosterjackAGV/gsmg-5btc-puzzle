@@ -843,3 +843,35 @@ b.pc-in { color:#d6b545; } b.pc-me { color:#9fb4f0; } b.pc-out { color:#5fe9c4; 
 .sk-power.pu-mult { color:#ffd24a; background:#1a1708; border:1px solid #5f4a1c; }
 .sk-power.pu-mult.pu-shield { color:#9fe6ff; background:#08161c; border:1px solid #2a5566; }
 .sk-power.pu-shield { color:#9fe6ff; background:#08161c; border:1px solid #2a5566; }
+
+/* ── per-phase colored cards (What was tried · Insights) ─────────────────────
+   Each phase gets one card with its own accent color so phases are distinct at a glance. */
+.phase-genesis     { --phase:#5b9dff; --phase-soft:rgba(91,157,255,.085); --phase-line:rgba(91,157,255,.34); --phase-glow:rgba(91,157,255,.40); }
+.phase-mrrobot     { --phase:#46d39a; --phase-soft:rgba(70,211,154,.085); --phase-line:rgba(70,211,154,.34); --phase-glow:rgba(70,211,154,.40); }
+.phase-architect   { --phase:#e3a94a; --phase-soft:rgba(227,169,74,.10);  --phase-line:rgba(227,169,74,.36); --phase-glow:rgba(227,169,74,.42); }
+.phase-salphaseion { --phase:#b07cff; --phase-soft:rgba(176,124,255,.10); --phase-line:rgba(176,124,255,.36); --phase-glow:rgba(176,124,255,.44); }
+
+.phase-card { position:relative; border:1px solid var(--phase-line); border-left:4px solid var(--phase);
+  border-radius:14px; background:linear-gradient(180deg, var(--phase-soft), rgba(12,15,22,0) 260px);
+  padding:16px 20px 22px; margin:24px 0; }
+.phase-card > h2, .phase-card > h3 { color:var(--phase) !important; border-bottom:1px solid var(--phase-line) !important;
+  animation:none !important; text-shadow:0 0 18px var(--phase-glow); margin-top:4px; padding-right:96px; }
+.phase-card > h2 .faint, .phase-card > h3 .faint { color:var(--phase); opacity:.6; }
+
+/* a small phase chip in the card's top-right corner */
+.phase-tag { position:absolute; top:13px; right:15px; font-size:10px; font-weight:800; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--phase); background:var(--phase-soft); border:1px solid var(--phase-line);
+  padding:3px 10px; border-radius:999px; white-space:nowrap; }
+
+/* tint the inner pieces so the whole card reads as one phase */
+.phase-card .tried-cat { color:var(--phase) !important; opacity:.92; animation:none !important; text-shadow:0 0 12px var(--phase-glow); }
+.phase-card .tried-entry { border-left:3px solid var(--phase-line); }
+.phase-card .tried-entry.tried-focus { border-left-color:var(--phase); }
+.phase-card .tried-head h4 { animation:none !important; text-shadow:none; }
+.phase-card .sum-insights > li { border-left-color:var(--phase); }
+.phase-card .sum-title { color:var(--phase); animation:none !important; text-shadow:0 0 10px var(--phase-glow); }
+.phase-card .sum-h.sum-b { color:var(--phase); }
+@media (max-width:620px){ .phase-card { padding:14px 14px 18px; } .phase-card > h2, .phase-card > h3 { padding-right:0; } .phase-tag { position:static; display:inline-block; margin-bottom:8px; } }
+@media (prefers-reduced-motion: reduce) {
+  .phase-card > h2, .phase-card > h3, .phase-card .tried-cat, .phase-card .sum-title { animation:none; text-shadow:0 0 14px var(--phase-glow); }
+}

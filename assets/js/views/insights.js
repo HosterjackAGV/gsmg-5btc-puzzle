@@ -55,7 +55,7 @@ export default async function insightsView() {
     const aHtml = A.length ? `
       <details class="sum-noins"><summary>No insight · ${A.length} trials (tested, ruled out)</summary>
       <ul class="sum-alist">${A.map(a => { const o = OUTCOMES[a.outcome] || OUTCOMES['unverified']; return `<li><a href="#/tried/${encodeURIComponent(a.id)}">${esc(a.title)}</a> <span class="tbadge ${o.cls} sm">${o.label}</span>${a.author ? ` <span class="tbadge badge-author sm" title="The author — verified Telegram @handle">👤 ${esc(a.author)}</span>` : ''}</li>`; }).join('')}</ul></details>` : '';
-    return `<section class="sum-phase"><h3 id="sum-${ph}">${esc(PHASE_LABELS[ph])}</h3>${bHtml}${aHtml}</section>`;
+    return `<section class="sum-phase phase-card phase-${ph}"><div class="phase-tag">${({ genesis: 'Phase 0', mrrobot: 'Phase 2', architect: 'Phase 3.2', salphaseion: 'Endgame' })[ph] || ph}</div><h3 id="sum-${ph}">${esc(PHASE_LABELS[ph])}</h3>${bHtml}${aHtml}</section>`;
   }).join('');
 
   const chainHtml = CHAIN.map((s, i) => `<li class="chain-step"><div class="chain-n">${i + 1}</div><div class="chain-body"><p>${s.t}</p><div class="chain-refs">${refLinks(s.refs)}</div></div></li>`).join('');
