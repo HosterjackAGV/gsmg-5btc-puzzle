@@ -471,6 +471,40 @@ table.board td.bh{background:var(--panel2);color:var(--gold);font-weight:700}
 .badge-unverified{ background:rgba(220,170,60,.12); color:#f2cf73; border-color:rgba(220,170,60,.42); }
 .badge-author    { background:rgba(150,110,255,.13); color:#c7a8ff; border-color:rgba(150,110,255,.42); }
 
+/* ── "try it yourself" demo player (What-Was-Tried) ───────────────────────── */
+.demo { margin:12px 0 4px; border:1px solid #213; border-radius:11px; background:#0a0d14; overflow:hidden; }
+.demo > summary { cursor:pointer; list-style:none; padding:9px 13px; font-size:12.5px; color:#9fe6c4;
+  font-family:'Space Grotesk',system-ui,sans-serif; background:#0c1119; user-select:none; }
+.demo > summary::-webkit-details-marker { display:none; }
+.demo > summary::before { content:'▸ '; color:#5f8c7a; }
+.demo[open] > summary::before { content:'▾ '; }
+.demo-body { padding:12px 13px; }
+.demo-code { margin:0 0 12px; padding:11px 13px; background:#06090f; border:1px solid #18202c; border-radius:8px;
+  font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.55; color:#bcd0c8; white-space:pre;
+  overflow-x:auto; tab-size:2; }
+.demo-inputs { display:flex; flex-direction:column; gap:9px; margin-bottom:10px; }
+.demo-field label { display:block; font-size:11px; color:#8fa0b4; margin-bottom:3px; }
+.demo-in { width:100%; box-sizing:border-box; resize:vertical; padding:7px 9px; border-radius:7px;
+  border:1px solid #233; background:#070a10; color:#cfe; font-size:12.5px; line-height:1.45; }
+.demo-in.mono { font-family:'JetBrains Mono',monospace; font-size:11.5px; word-break:break-all; }
+.demo-in:focus { outline:none; border-color:#2e8c70; }
+.demo-controls { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+.demo-run { white-space:nowrap; }
+.demo-hint { font-size:11px; }
+.demo-steps { list-style:none; margin:10px 0 0; padding:0; counter-reset:none; }
+.demo-step { opacity:0; transform:translateY(7px); transition:opacity .28s ease, transform .28s ease;
+  margin:8px 0; padding:8px 11px; border-left:2px solid #2e8c70; background:#0b1017; border-radius:0 7px 7px 0; }
+.demo-step.in { opacity:1; transform:none; }
+.demo-step-t { font-size:11.5px; font-weight:700; color:#7fd9b6; margin-bottom:4px; }
+.demo-step-b { margin:0; font-family:'JetBrains Mono',monospace; font-size:11.5px; line-height:1.5; color:#c4cdda;
+  white-space:pre-wrap; word-break:break-all; max-height:170px; overflow:auto; }
+.demo-out { margin-top:11px; padding:10px 13px; border-radius:8px; background:rgba(46,200,160,.10);
+  border:1px solid rgba(46,200,160,.4); color:#cfeee2; font-size:12.5px; line-height:1.55;
+  opacity:0; transform:translateY(6px); transition:opacity .3s ease, transform .3s ease; }
+.demo-out.in { opacity:1; transform:none; }
+.demo-out.err { background:rgba(214,69,69,.1); border-color:rgba(214,69,69,.4); color:#ffb0b0; }
+@media (prefers-reduced-motion: reduce) { .demo-step, .demo-out { transition:none; } }
+
 /* per-phase panel inside the walkthrough */
 .tried-panel { margin:14px 0 22px; border:1px solid #1c2330; border-radius:12px; background:#0c0f16; overflow:hidden; }
 .tried-panel > summary { cursor:pointer; padding:12px 16px; font-weight:700; font-family:'Space Grotesk',system-ui,sans-serif;

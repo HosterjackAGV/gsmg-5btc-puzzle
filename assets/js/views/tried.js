@@ -4,6 +4,7 @@
 
 import { ATTEMPTS, PHASE_LABELS, PHASE_ORDER, OUTCOMES, byPhase } from '../../../content/attempts.js';
 import { esc, qs, qsa } from '../util.js';
+import { demoHtml, mountDemos } from '../components/demo.js';
 
 function entryHtml(a) {
   const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
@@ -20,6 +21,7 @@ function entryHtml(a) {
       <dt>Output</dt><dd>${esc(a.output)}</dd>
       ${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}
     </dl>
+    ${demoHtml(a.id)}
   </article>`;
 }
 
@@ -59,6 +61,7 @@ export default async function triedView(ctx = {}) {
   </div></section>`;
 
   function mount(root) {
+    mountDemos(root);
     if (focus) {
       const el = qs('#t-' + (window.CSS && CSS.escape ? CSS.escape(focus) : focus), root) || document.getElementById('t-' + focus);
       if (el) {
