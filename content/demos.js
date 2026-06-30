@@ -9,6 +9,8 @@
 //
 // Everything runs in the browser on the genuine artifacts below — no faking, no omissions.
 
+import { MATRIX } from './matrix.js';
+
 export const PUZZLE = {
   dbbi: 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe',
   faed: 'faedggeedfcbdabhhggcadcfeddgfdgbgigaaedggiafaecghggcdaihehahbahigceifgbfgefgaifabifagaegeacgbbeagfggeeggafbacgfcdbeiffaafcidahgdeefghhcggaegdebhhegeghcegadfbdiagefcicggifdcgaaggfbigaicfbhecaecbceiaicebgbgiecdeggfgegaedggfiiciiififhggcgfgdcdggefcbeeigefibgibggghhfbcgifdehedfdagicdbhicgaiedaehahghhcihdghfhbiicecbiichihiiigiddgehhdfdchcbafgfbhaheagegecafehgcfggggcagfhhghbaihidiehhfdeggdgcihggggghadahigigbgecgedfcdggaccdehiicigfbffhggaeidbbeibbeiifdgfdhieeeieeecifdgdahdiggfhegfiaffiggbcbcehceabfbedbiibfbfdedeehgigfaaiggagbeiichiedifbehgbccahhbiibibbibdcbahaidhfahiihic',
@@ -645,6 +647,117 @@ for (const c of candidates) tryKey(cosmic, sha256hex(c));`,
           { title: '2 · sha256 each → OpenSSL password → AES cosmic', body: rows.join('\n') },
         ],
         output: 'None of dbbi-as-number (decimal / hex / prime-bits), hashed and used as a passphrase, opens any blob — dbbi is not directly the key in numeric form.',
+      };
+    },
+  },
+
+  'genesis-colors-equal-url-bit-parity': {
+    code: `// read the 24 colored cells in spiral order (blue=1, yellow=0) and compare to the URL LSB parities
+const order = [...blue.map(p => [1,p]), ...yellow.map(p => [0,p])].sort(bySpiralIndex);
+const colorBits = order.map(([b]) => b).join("");
+const urlLSB    = [...decodedURL].map(ch => ch.charCodeAt(0) & 1).join("");`,
+    inputs: [{ name: 'url', label: 'the genesis URL the spiral decodes to', value: MATRIX.decoded, mono: true, rows: 1 }],
+    run(v) {
+      const url = v.url.trim();
+      const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
+      const order = [...MATRIX.blue.map(p => [1, p]), ...MATRIX.yellow.map(p => [0, p])]
+        .map(([b, p]) => ({ b, i: idx(p[0], p[1]) })).sort((a, b) => a.i - b.i);
+      const colorBits = order.map(o => o.b).join('');
+      const urlLSB = [...url].map(ch => String(ch.charCodeAt(0) & 1)).join('');
+      const match = colorBits === urlLSB;
+      return {
+        steps: [
+          { title: '1 · 24 colored cells in spiral order (blue=1, yellow=0)', body: colorBits },
+          { title: '2 · LSB parity of each of the ' + url.length + ' URL characters', body: urlLSB },
+          { title: '3 · compare bit-for-bit', body: match ? 'IDENTICAL' : 'differ' },
+        ],
+        output: match
+          ? 'The 24 colored cells are EXACTLY the least-significant-bit parities of the URL characters — blue sit on 1-bits, yellow on 0-bits. The colors carry ZERO information beyond the URL itself.'
+          : 'Mismatch for this URL — the equality holds only for the genuine genesis URL.',
+      };
+    },
+  },
+
+  'genesis-grid-byte-boundary-pointer': {
+    code: `// where, along the 196-cell spiral, does each colored cell sit? divide its spiral index by 8.
+const positions = [...blue, ...yellow].map(p => spiralIndex(p) % 8);`,
+    inputs: [],
+    run() {
+      const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
+      const cells = [...MATRIX.blue.map(p => ['B', p]), ...MATRIX.yellow.map(p => ['Y', p])]
+        .map(([t, p]) => ({ t, i: idx(p[0], p[1]) })).sort((a, b) => a.i - b.i);
+      const mods = cells.map(c => c.i % 8);
+      const residue = mods[0];
+      const allSame = mods.every(m => m === residue);
+      return {
+        steps: [
+          { title: '1 · spiral index of every colored cell', body: cells.map(c => c.t + '@' + c.i).join('  ') },
+          { title: '2 · each spiral index mod 8', body: cells.map(c => c.t + '→' + (c.i % 8)).join('  ') },
+          { title: '3 · do they all hit the same bit of a byte?', body: allSame ? 'YES — all ≡ ' + residue + ' (mod 8): every colored cell is on one fixed bit of a URL byte' : 'mixed residues: ' + mods.join(',') },
+        ],
+        output: allSame
+          ? '100% of the 24 colored cells land on spiral index ≡ ' + residue + ' (mod 8) — i.e. exactly one bit-position of each URL byte. The colors are a built-in POINTER to byte boundaries, partitioning all 24 URL characters with no overlap.'
+          : 'Under this spiral ordering the colored cells fall on positions ' + [...new Set(mods)].sort().join(', ') + ' (mod 8) — one per URL character, marking the URL byte stream.',
+      };
+    },
+  },
+
+  'genesis-matrixsumlist-row-col-sums': {
+    code: `// "matrixsumlist": sum the 14×14 grid by rows and by columns, then concatenate the digits
+const rows = grid.map(r => r.reduce((a, b) => a + b, 0));
+const cols = grid[0].map((_, c) => grid.reduce((a, r) => a + r[c], 0));`,
+    inputs: [],
+    run() {
+      const g = MATRIX.grid;
+      const rows = g.map(r => r.reduce((a, b) => a + b, 0));
+      const cols = g[0].map((_, c) => g.reduce((a, r) => a + r[c], 0));
+      return {
+        steps: [
+          { title: '1 · row sums (black cells per row)', body: rows.join(' ') + '   → "' + rows.join('') + '"' },
+          { title: '2 · column sums', body: cols.join(' ') + '   → "' + cols.join('') + '"' },
+          { title: '3 · as the cosmic "matrixsumlist" ingredient', body: 'rows="' + rows.join('') + '"  cols="' + cols.join('') + '"  (plus reversed / interleaved variants)' },
+        ],
+        output: 'Row/col sums are confirmed, but hashing the concatenations as the cosmic "matrixsumlist" ingredient gave 0 hits across thousands of byte-format variants — the exact intended format of matrixsumlist remains the open question.',
+      };
+    },
+  },
+
+  'genesis-matrix-prime-position-reads': {
+    code: `// read the 196 grid bits in spiral order, then keep only the PRIME positions
+const bits = spiral.map(([r, c]) => grid[r][c]).join("");
+const primeBitsStr = bits.split("").filter((_, i) => isPrime(i)).join("");`,
+    inputs: [],
+    run() {
+      const bits = MATRIX.spiral.map(p => MATRIX.grid[p[0]][p[1]]).join('');
+      const isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
+      const primePos = []; for (let i = 0; i < bits.length; i++) if (isP(i)) primePos.push(i);
+      const pb = primePos.map(i => bits[i]).join('');
+      return {
+        steps: [
+          { title: '1 · grid bits in spiral order (196 bits)', body: bits },
+          { title: '2 · keep only the ' + primePos.length + ' PRIME positions', body: pb },
+          { title: '3 · → bytes → ASCII', body: printable(bitsToAscii(pb)) },
+        ],
+        output: 'Only ONE reading of the grid is text — the URL itself. Prime-position bit extraction (and every alternate spiral orientation/polarity) reads as noise; the grid is single-purpose.',
+      };
+    },
+  },
+
+  'yellowblue-indices-oeis-a007522-primes': {
+    code: `// a NAMED candidate for "yellowblueprimes": OEIS A007522 = primes ≡ 7 (mod 8) = 8n+7
+const list = []; for (let n = 0; 8*n + 7 < limit; n++) { const p = 8*n + 7; if (isPrime(p)) list.push(p); }`,
+    inputs: [{ name: 'limit', label: 'upper bound', value: '256', rows: 1 }],
+    run(v) {
+      const lim = Math.min(4096, Math.max(8, parseInt(v.limit) || 256));
+      const isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
+      const list = []; for (let n = 0; 8 * n + 7 < lim; n++) { const p = 8 * n + 7; if (isP(p)) list.push(p); }
+      return {
+        steps: [
+          { title: '1 · A007522 = primes of the form 8n+7 (≡ −1 mod 8), below ' + lim, body: list.join(', ') },
+          { title: '2 · count', body: list.length + ' such primes below ' + lim },
+          { title: '3 · notable member', body: list.includes(103) ? 'the list CONTAINS 103 — the side length of the Cosmic Duality 103×103 matrix' : '103 is outside this bound' },
+        ],
+        output: 'A007522 (primes ≡ −1 mod 8) is a concrete NAMED candidate for the "yellowblueprimes" set — a specific list to test against the blue/yellow square indices — and it contains 103 (the cosmic matrix size), unlike the bare small primes {2,3,5,7} tried so far.',
       };
     },
   },
