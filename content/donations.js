@@ -2,8 +2,9 @@
 // top of the walkthrough. All endpoints used by the engine are FREE + keyless + CORS-enabled
 // (verified): esplora (blockstream/mempool), publicnode RPCs, xrplcluster, Blockscout, CoinGecko.
 //
-// IMPORTANT: these are the maintainer's own donation addresses. No third-party / other-repo
-// donation address appears anywhere in this project.
+// IMPORTANT: these are Hosterjack's own donation addresses (the site's author, @DaneelOlivaw on
+// Telegram). Donations go directly to the author; no third-party / other-repo donation address
+// appears anywhere in this project.
 
 // ---- public RPC / API pools (primary first, rest are fallbacks) ----
 // Every endpoint below was verified to return Access-Control-Allow-Origin:* (browser-usable).

@@ -10,6 +10,9 @@ Open it here → **https://hosterjackagv.github.io/gsmg-5btc-puzzle/** *(GitHub 
 > Built so the puzzle stays openable by anyone, forever. No guessing — verified findings only, all
 > negatives documented.
 
+**Author:** researched, built &amp; maintained by **Hosterjack** — [@DaneelOlivaw on Telegram](https://t.me/DaneelOlivaw).
+Independent work, *not affiliated with GSMG* or the puzzle's anonymous creator. Released CC0.
+
 ---
 
 ## What this is

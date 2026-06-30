@@ -1,4 +1,4 @@
-// views/donations.js — the Donations section: the maintainer's six addresses (copy / wallet
+// views/donations.js — the Donations section: Hosterjack's (the site author, @DaneelOlivaw) six addresses (copy / wallet
 // deep-link / offline QR / explorer), a live "total held", and an auto-updating Hall of Fame
 // of incoming donations across all chains. All data is fetched client-side from free, keyless
 // public explorers via the rate-safe engine in onchain.js.
@@ -40,7 +40,7 @@ export default async function donationsView() {
   const html = `
   <section class="section"><div class="wrap">
     <div class="sec-head"><div class="sec-num">SUPPORT</div><h2>Donations</h2>
-      <p>This is a free, ad-free, open reference — the authoritative, source-merged record of the GSMG.io 5 BTC puzzle. If it helped you, a tip toward its upkeep is welcome and entirely optional. <b>These are the maintainer's own addresses</b>; no third-party or other-repo donation address appears anywhere on this site.</p>
+      <p>This is a free, ad-free, open reference — the authoritative, source-merged record of the GSMG.io 5 BTC puzzle, researched and built by <b>Hosterjack</b> (<a href="https://t.me/DaneelOlivaw" target="_blank" rel="noopener">@DaneelOlivaw</a>). If it helped you, a tip toward its upkeep is welcome and entirely optional. <b>These addresses are mine — Hosterjack's own wallets</b>; donations go directly to me, the site's author, and no third-party or other-repo donation address appears anywhere on this site.</p>
     </div>
 
     <div class="don-total card">
