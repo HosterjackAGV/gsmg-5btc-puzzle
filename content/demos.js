@@ -2542,4 +2542,40 @@ const priv = sha256hex(phrase);`,
     },
   },
 
+  'grid-dbbi-mixed-origin-zero-vs-one-indexing': {
+    code: `// the fefefe cell is a DUAL-prime ONLY across DIFFERENT origins: spiral 163 (from 0), row-major 103 (from 1).
+// read "zero out" as "which counting origin?" — e.g. the COLOUR picks it: yellow=0 ("zeroed"), blue=1.
+const val = cell => cell.color === "blue" ? spiralIndex(cell) + 1 : spiralIndex(cell);   // colour decides origin
+const candidate = cells.map(val).filter(isPrime).join("");        // keep the primes  (…851 candidates in all)
+const plain = aesDecrypt(salph_inner, sha256hex(candidate));`,
+    inputs: [],
+    async run() {
+      const isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
+      const f = MATRIX.fefefe[0];
+      const si = MATRIX.spiral.findIndex(p => p[0] === f[0] && p[1] === f[1]);     // spiral index (0-based)
+      const rm = f[0] * 14 + f[1];                                                 // row-major (0-based)
+      const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
+      const cells = [...MATRIX.blue.map(p => ({ k: 'b', r: p[0], c: p[1] })), ...MATRIX.yellow.map(p => ({ k: 'y', r: p[0], c: p[1] }))]
+        .map(c => ({ ...c, s: idx(c.r, c.c) })).sort((a, b) => a.s - b.s);
+      const colourOrigin = c => c.k === 'b' ? c.s + 1 : c.s;                       // blue 1-based, yellow 0-based ("zeroed")
+      const candKeepPrime = cells.map(colourOrigin).filter(isP).join('');
+      const candAll = cells.map(colourOrigin).join('');
+      const candSum = String(cells.map(colourOrigin).reduce((s, v) => s + v, 0));
+      const cands = [['keep-prime', candKeepPrime], ['all-cells', candAll], ['sum', candSum]];
+      const rows = [];
+      for (const [n, cand] of cands) { const r = await tryRecipe(PUZZLE.salphInner, cand); rows.push(n + ': ' + cand.slice(0, 22) + '… → ' + (r.ok ? r.preview : 'bad decrypt')); }
+      let pad = 0; const N = 256;
+      for (let i = 0; i < N; i++) { const u = new Uint8Array(16); crypto.getRandomValues(u); if ((await aesDecrypt(PUZZLE.salphInner, hex(u))).ok) pad++; }
+      return {
+        steps: [
+          { title: '1 · the fefefe cell is dual-prime ONLY across mixed origins', body: 'spiral   ' + si + ' (from 0) = ' + (isP(si) ? 'PRIME' : 'not') + '   ·   ' + (si + 1) + ' (from 1) = ' + (isP(si + 1) ? 'PRIME' : 'not') + '\nrow-major ' + rm + ' (from 0) = ' + (isP(rm) ? 'PRIME' : 'not') + '   ·   ' + (rm + 1) + ' (from 1) = ' + (isP(rm + 1) ? 'PRIME' : 'not') + '\n→ the two primes need DIFFERENT counting origins — the "zero out / which origin?" idea' },
+          { title: '2 · colour decides the origin (yellow=0 "zeroed", blue=1), keep the primes', body: candKeepPrime || '(none prime)' },
+          { title: '3 · sha256 each candidate → AES the salph_inner oracle', body: rows.join('\n') },
+          { title: '4 · chance calibration (256 random keys)', body: pad + ' of ' + N + ' pass PKCS7 by luck (~1/256) — the noise floor any real "hit" has to beat' },
+        ],
+        output: 'No mixed-origin candidate opens a blob. The full sweep — 851 grid/colored-cell candidates + dbbi/faed per-position rules, ~13,300 decrypts — found 0 readable hits and exactly the chance PKCS7 floor (52 vs 51.2). The 0-vs-1 "zero out" reading is coherent but UNTESTABLE to confirm: yellowblueprimes only validates in the cosmic combine with the still-unknown yinyang.',
+      };
+    },
+  },
+
 };
