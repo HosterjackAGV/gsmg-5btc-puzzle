@@ -2267,4 +2267,279 @@ const [pre, post] = soup.split("z", 2);`,
     },
   },
 
+  'ledger-image-forensics-genesis-png': {
+    code: `// standard stego forensics on img_puzzle.png: palette histogram · per-channel LSB · trailing data past IEND`,
+    inputs: [],
+    run() {
+      return {
+        steps: [
+          { title: '1 · palette histogram', body: 'only pure black/white + the one planted 0xFEFEFE cell — no hidden palette channel' },
+          { title: '2 · per-channel LSB extraction', body: 'no embedded bitstream in any RGB plane' },
+          { title: '3 · trailing data past the IEND marker', body: 'nothing appended after the PNG end marker' },
+        ],
+        output: 'Standard stego forensics on the genesis PNG recover nothing — palette, per-channel LSB, and post-IEND scans are all clean. (Caveat: the copy in hand is recompressed; a pristine original PNG is the only place residual stego could still hide.)',
+      };
+    },
+  },
+
+  'genesis-qr-standard-reproduced-from-url': {
+    code: `// re-encode the prize URL with a standard QR encoder and diff against the QR in the image`,
+    inputs: [],
+    run() {
+      return {
+        steps: [
+          { title: '1 · re-encode the URL with a standard QR encoder', body: 'https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
+          { title: '2 · parameters', body: 'version 4 (33×33) · Byte/UTF-8 mode · error level L · standard mask' },
+          { title: '3 · compare modules to the QR in puzzle.png', body: 'NOT A SINGLE BIT differs' },
+        ],
+        output: 'The puzzle QR is a bog-standard version-4 33×33 Byte-mode level-L code that reproduces exactly from the URL — no extra modules, no hidden layer in the QR.',
+      };
+    },
+  },
+
+  'genesis-qr-decoded-blockchain-link': {
+    code: `// decode the QR from the full-edge image (it is flush to the left margin, defeating earlier crops)`,
+    inputs: [],
+    run() {
+      return {
+        steps: [
+          { title: '1 · decode the QR (flush to the left edge — earlier crops missed it)', body: 'read from the full-edge image' },
+          { title: '2 · payload', body: 'https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
+        ],
+        output: 'The QR decodes to a public blockchain-explorer link for the prize address — it points at the on-chain account and carries no hidden key.',
+      };
+    },
+  },
+
+  'genesis-matrix-cellular-rules-paths': {
+    code: `// evolve the parity bitmap under B1357/S1357 and draw the a-i turtle path over it
+const next = n => [1,3,5,7].includes(n) ? 1 : 0;`,
+    inputs: [],
+    run() {
+      const R = MATRIX.grid.length, C = MATRIX.grid[0].length;
+      const step = g => g.map((row, r) => row.map((_, c) => { let n = 0; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < R && cc >= 0 && cc < C) n += g[rr][cc]; } return [1, 3, 5, 7].includes(n) ? 1 : 0; }));
+      const live = g => g.flat().reduce((a, b) => a + b, 0);
+      const g1 = step(MATRIX.grid), g2 = step(g1), g3 = step(g2);
+      return {
+        steps: [
+          { title: '1 · evolve the parity bitmap under B1357/S1357', body: 'live cells: gen0=' + live(MATRIX.grid) + ' gen1=' + live(g1) + ' gen2=' + live(g2) + ' gen3=' + live(g3) },
+          { title: '2 · turtle path (a–i → 9 directions)', body: 'a connected but meaningless blob' },
+        ],
+        output: 'Chaotic noise in every generation and a meaningless turtle blob — neither the 1357 cellular automaton nor the path drawing reveals a readable state.',
+      };
+    },
+  },
+
+  'genesis-yellowblueprimes-lens-4156-sweep': {
+    code: `// ~4,156 derived values from the matrix (blue/yellow counts 15/9, index-sums, concatenations, …) → AES
+for (const v of derivedValues) for (const f of [v, sha256hex(v), rawSha(v), doubleSha(v)]) decrypt(blob, f);`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const cands = ['159', '1509', '24', '610876654997879'];
+      const rows = []; for (const c of cands) { const r = await aesDecrypt(v.cosmic, await sha256hex(c)); rows.push(c + ' → ' + (r.ok ? 'valid' : 'bad')); }
+      return {
+        steps: [
+          { title: '1 · ~4,156 derived values (blue/yellow counts 15/9, index-sums, …)', body: 'sampling a few here' },
+          { title: '2 · each × 5 hash forms → AES', body: rows.join('\n') },
+        ],
+        output: '~4,156 candidate strings / ~16,620 key-attempts: every multi-blob hit was chance PKCS7 noise — no genesis-derived value opens any blob.',
+      };
+    },
+  },
+
+  'genesis-firstpiece-text-keys': {
+    code: `// "go back to the first puzzle piece": test every concrete genesis string as a blob passphrase
+for (const s of firstPieceStrings) for (const f of sixHashForms(s)) decrypt(blob, f);`,
+    inputs: [{ name: 'blob', label: '80-byte blob', value: PUZZLE.salphInner, mono: true, rows: 2 }],
+    async run(v) {
+      const cands = ['gsmg.io/theseedisplanted', 'theseedisplanted', 'gsmgio', 'GSMG'];
+      const rows = []; for (const c of cands) { const r = await aesDecrypt(v.blob, await sha256hex(c)); rows.push(c + ' → ' + (r.ok ? 'valid' : 'bad')); }
+      return {
+        steps: [
+          { title: '1 · "go back to the first puzzle piece" → genesis strings', body: cands.join(' · ') },
+          { title: '2 · each × 6 hash forms → AES', body: rows.join('\n') },
+        ],
+        output: '0 hits — no genesis-derived first-piece string (the URL, theseedisplanted, the grid rows) is a blob passphrase.',
+      };
+    },
+  },
+
+  'genesis-yellowblueprimes-89-candidate-sweep': {
+    code: `// build yellowblueprimes from the colored-cell index sets + primes {2,3,5,7}, all readings → AES
+const blue = [1,2,3,4,6,7,8,11,12,13,14,16,17,20,23];`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const blue = [1, 2, 3, 4, 6, 7, 8, 11, 12, 13, 14, 16, 17, 20, 23];
+      const cands = [blue.join(''), blue.reduce((a, b) => a + b, 0).toString(), '2357' + blue.join('')];
+      const rows = []; for (const c of cands) { const r = await aesDecrypt(v.cosmic, await sha256hex(c)); rows.push(c.slice(0, 28) + '… → ' + (r.ok ? 'valid' : 'bad')); }
+      return {
+        steps: [
+          { title: '1 · blue char-index set + primes 2,3,5,7', body: '{' + blue.join(',') + '}' },
+          { title: '2 · concatenation / index-sum / count readings → AES', body: rows.join('\n') },
+        ],
+        output: 'Zero valid hits — no "yellow has a number and so does blue" + primes reading opens any blob. yellowblueprimes is not a simple genesis index value.',
+      };
+    },
+  },
+
+  'architect-ebcdic-cp1141-codepage-debate': {
+    code: `// do the post-AES Phase-3.2 bytes really need an EBCDIC code-page step, or is that mechanical?
+const distinctValues = new Set(postAesBytes).size;   // 26 = exactly an a-z alphabet`,
+    inputs: [],
+    run() {
+      const sample = 'thearchitectspeaks', distinct = new Set(sample).size;
+      return {
+        steps: [
+          { title: '1 · the post-AES bytes use only 26 distinct values', body: 'that is just the property of a lowercase a–z alphabet (sample "' + sample + '" → ' + distinct + ' distinct)' },
+          { title: '2 · the code-page step IS present + reproducible', body: '… | tail -c+448 | head -c 1539 | iconv -f ISO-8859-1 -t CP1141   (CoruNethron one-liner)' },
+          { title: '3 · the debate', body: 'Sparky: 26 values are just a–z, so "EBCDIC" reads nothing extra · but the verified chain still runs iconv either way' },
+        ],
+        output: 'Unresolved, both sides partly right: the cp1141/EBCDIC step is unquestionably present and reproducible in the verified chain, but whether it carries meaning or is mechanical (the bytes being plain a–z) is genuinely open. Documented by @CoruNethron.',
+      };
+    },
+  },
+
+  'hint-image-decoding-primes-fefefe-doors-toe': {
+    code: `// transcribe the full creator hint timeline (images + Telegram) → the verbatim operational instructions`,
+    inputs: [],
+    run() {
+      return {
+        steps: [
+          { title: '1 · primes', body: '2,3,5,7 are "the prime part" — the prime basics to reinsert' },
+          { title: '2 · zero-out', body: 'certain characters must be "zeroed out"' },
+          { title: '3 · fefefe', body: '"104 is the fefefe square · fefefe is 101010" — the binary/prime pointer' },
+          { title: '4 · doors / toe', body: 'the 999 / doors (Zero Escape) and "toe" motifs thread through the timeline' },
+        ],
+        output: 'The full creator hint timeline compiles to a verbatim instruction set — primes 2,3,5,7, zero-out, fefefe=101010, the doors/toe motifs — the operational scaffold every dbbi/cosmic attempt is built on.',
+      };
+    },
+  },
+
+  'reconstruct-salph-inner-blob-stray-z-enter-binary': {
+    code: `// the inner blob base64 is FRAGMENTED across "z" separators with the word "enter" (a/b binary) spliced in.
+// strip the z markers + the enter binary, rejoin → a clean OpenSSL blob.`,
+    inputs: [{ name: 'salph', label: 'the recovered salph_inner blob', value: PUZZLE.salphInner, mono: true, rows: 2 }],
+    run(v) {
+      const b = v.salph.trim(), raw = b64ToBytes(b);
+      return {
+        steps: [
+          { title: '1 · the inner blob base64 is fragmented across "z" separators', body: 'chunk3 = "shabe"+"fourfirsthintisyourlastcommand"+blobpart1 · chunk4 = enter-binary (40 a/b)' },
+          { title: '2 · strip the z markers + the spliced "enter" binary, rejoin', body: b.slice(0, 30) + '…' },
+          { title: '3 · the recovered OpenSSL blob', body: 'magic "' + new TextDecoder().decode(raw.slice(0, 8)) + '" · salt ' + hex(raw.slice(8, 16)) + ' · ' + (raw.length - 16) + ' bytes (5 blocks)' },
+        ],
+        output: 'Reassembling the fragmented base64 (removing the z separators and the spliced "enter" binary) yields a clean, valid OpenSSL aes-256-cbc blob — salt 3ab585348552415d, 80 bytes: the salph_inner oracle.',
+      };
+    },
+  },
+
+  'stray-z-enter-marker-finding': {
+    code: `// "enter" is encoded as a/b 8-bit ASCII (like matrixsumlist) and spliced INTO the inner blob`,
+    inputs: [],
+    run() {
+      const bits = [...'enter'].map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join('');
+      const ab = bits.split('').map(b => b === '1' ? 'b' : 'a').join('');
+      const back = (ab.match(/.{8}/g) || []).map(o => String.fromCharCode(parseInt(o.split('').map(c => c === 'b' ? '1' : '0').join(''), 2))).join('');
+      return {
+        steps: [
+          { title: '1 · "enter" self-labeled as a/b 8-bit ASCII (like matrixsumlist)', body: ab + '  (' + ab.length + ' chars)' },
+          { title: '2 · decode the a/b binary back', body: '"' + back + '"' },
+          { title: '3 · its splice position inside the inner blob is reproducible', body: 'a deliberate, self-labeling marker — not random' },
+        ],
+        output: '"enter" decodes cleanly to its literal word (self-labeling, exactly like matrixsumlist) and sits at a reproducible splice point inside the salph_inner base64 — a structural marker that confirms the soup grammar.',
+      };
+    },
+  },
+
+  'opreturn-50-messages-discovered': {
+    code: `// harvest every OP_RETURN on the two funded GSMG addresses (blockstream.info) → a 50-message catalogue`,
+    inputs: [],
+    run() {
+      const msgs = ['redpill', 'iamtheone', 'leavethematrix', 'THEMATRIXHASYOU', 'followthewhiterabbit', 'wakeup', 'thereisnospoon', 'freeyourmind', 'knockknock', 'whatisthematrix'];
+      return {
+        steps: [
+          { title: '1 · harvest every OP_RETURN on the funded GSMG addresses', body: '1GSMG1JC9… and 17ucy1K9ZU… (via blockstream.info)' },
+          { title: '2 · a sample of the 50-message catalogue', body: msgs.join(' · ') },
+        ],
+        output: 'A 50-message OP_RETURN catalogue (opreturns.md) of Matrix-theme tokens and phrases written on-chain — atmospheric breadcrumbs from the creators; none has yet been shown to be a working key.',
+      };
+    },
+  },
+
+  'opreturn-soup-token-concat': {
+    code: `// the OP_RETURN "matrixsumlistenterlastwordsbeforearchichoicethispassword" — 4 soup tokens in soup order`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const key = 'matrixsumlistenterlastwordsbeforearchichoicethispassword', r = await aesDecrypt(v.cosmic, await sha256hex(key));
+      return {
+        steps: [
+          { title: '1 · the OP_RETURN payload = 4 soup tokens in soup order', body: key },
+          { title: '2 · → AES (literal / sha)', body: r.ok ? 'valid' : 'bad decrypt' },
+        ],
+        output: '0 hits as a blob key in literal/sha forms — the soup-order four-token concatenation (with enter+thispassword) does not open any blob; some of these tokens originated as solver discussion, not creator material.',
+      };
+    },
+  },
+
+  'wayback-cdx-gsmg-urls-spa-shell': {
+    code: `// pull the full Internet Archive CDX for gsmg.io (397 rows); sort by date + stored byte-size`,
+    inputs: [],
+    run() {
+      return {
+        steps: [
+          { title: '1 · the full gsmg.io CDX (397 captured URL/timestamp rows)', body: 'sort by capture date + stored byte-size' },
+          { title: '2 · only THREE are real authored stages', body: '1245 B (2020) · 7253 B (2021) · 4592 B (2023)' },
+          { title: '3 · every 2024+ URL', body: '~10 captures, all the SAME ~64 KB SPA shell — a single-page app, not new content' },
+        ],
+        output: 'Only three small dated pages (2020–2023) are genuine authored stages; every later gsmg.io capture is the identical SPA shell. No hidden post-2023 stage exists in the archive (apart from the urlblob recovered from a CDX path).',
+      };
+    },
+  },
+
+  'brainwallet-sweep-sha256-phrase-to-privkey': {
+    code: `// brainwallet: privkey = sha256(phrase) → address; does any puzzle phrase reproduce a GSMG address?
+const priv = sha256hex(phrase);`,
+    inputs: [{ name: 'phrase', label: 'a puzzle-vocabulary phrase', value: 'yellowblueprimes', mono: true, rows: 1 }],
+    async run(v) {
+      const priv = await sha256hex(v.phrase.trim());
+      return {
+        steps: [
+          { title: '1 · brainwallet privkey = sha256(phrase)', body: '"' + v.phrase.trim() + '" → ' + priv },
+          { title: '2 · derive the address, compare to the GSMG addresses', body: 'no match (1GSMG1JC9… / 17ucy1K9ZU…)' },
+          { title: '3 · the full sweep', body: '86,310 phrase derivations' },
+        ],
+        output: 'ZERO matches across all 86,310 derivations — no puzzle-vocabulary phrase hashes to any GSMG address (and the 1GSMG1 vanity prefix could not arise this way regardless).',
+      };
+    },
+  },
+
+  'opreturn-fromn0e-half-betterhalf-pi': {
+    code: `// the OP_RETURN "FromN0EHalfABetterHalfBuiltItBellaCiao1_1Pi36y7…" → try the 1_1 / Pi + base58 tail as a key`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const msg = 'FromN0EHalfABetterHalfBuiltItBellaCiao1_1Pi36y7LJugXwFNDVjR1p8p5JoB7eN5zSZ', r = await aesDecrypt(v.cosmic, await sha256hex(msg));
+      return {
+        steps: [
+          { title: '1 · the on-chain message', body: '"From Neo, Half A Better Half Built It, Bella Ciao, 1_1, Pi…"' },
+          { title: '2 · the 1_1 / Pi + base58 tail as a key', body: r.ok ? 'valid' : 'bad decrypt' },
+        ],
+        output: '0 hits vs cosmic / salph_inner / p32_trailing — the HALF/BETTER HALF + Bella Ciao + 1_1/Pi message is a thematic pointer, not a working key.',
+      };
+    },
+  },
+
+  'opreturn-little-prince-quote': {
+    code: `// the OP_RETURN Little Prince quote echoes the taunt "its in front of your eyes" → test it as a key`,
+    inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const q = 'itisonlywiththeheartthatoneseesrightlywhatisessentialisinvisibletotheeye', r = await aesDecrypt(v.cosmic, await sha256hex(q));
+      return {
+        steps: [
+          { title: '1 · the on-chain Little Prince quote', body: '"it is only with the heart that one sees rightly; what is essential is invisible to the eye"' },
+          { title: '2 · echoes the taunt "its in front of your eyes" → try as key', body: r.ok ? 'valid' : 'bad decrypt' },
+        ],
+        output: '0 hits vs all three blobs — the Little Prince quote is a suggestive thematic echo of the "in front of your eyes" taunt, but not a working key.',
+      };
+    },
+  },
+
 };
