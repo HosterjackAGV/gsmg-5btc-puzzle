@@ -5,6 +5,7 @@
 import { ATTEMPTS, PHASE_LABELS, PHASE_ORDER, OUTCOMES, byPhase } from '../../../content/attempts.js';
 import { esc, qs, qsa } from '../util.js';
 import { demoHtml, mountDemos } from '../components/demo.js';
+import { toItem, initSearch } from '../components/search.js';
 
 function entryHtml(a) {
   const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
@@ -57,11 +58,13 @@ export default async function triedView(ctx = {}) {
       </div>
       ${total === 0 ? '<div class="note warn" style="margin-top:14px"><h4>Catalog loading…</h4><p>The attempts data could not load. Serve over http.</p></div>' : ''}
     </div>
+    <div id="search-host"></div>
     ${sections}
   </div></section>`;
 
   function mount(root) {
     mountDemos(root);
+    try { initSearch(root, 'tried', ATTEMPTS.map(a => toItem(a, PHASE_LABELS[a.phase])), { phases: PHASE_ORDER }); } catch (e) { console.error('search', e); }
     if (focus) {
       const el = qs('#t-' + (window.CSS && CSS.escape ? CSS.escape(focus) : focus), root) || document.getElementById('t-' + focus);
       if (el) {
