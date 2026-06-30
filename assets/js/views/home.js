@@ -26,10 +26,11 @@ export default async function homeView() {
     </div>
     <h1>GSMG.io <span class="yin">5&nbsp;BTC</span> <span class="yang">Puzzle</span></h1>
     <p class="lede">The complete, <b>authoritative, source-merged</b> walkthrough of the unsolved <b>GSMG.io 5 BTC cryptographic puzzle</b> — every phase, every exact value, and every image, assembled from all public sources into one reference. Solved and reproducible through <b>Phase 3.2</b>; the final <b>Cosmic Duality</b> lock is still open.</p>
-    <div class="row" style="gap:12px;margin-bottom:26px">
+    <div class="row" style="gap:12px;margin-bottom:14px">
       <a class="btn primary lg" href="#/walkthrough">▶ Read the complete walkthrough</a>
       <a class="btn ghost lg" href="#/reference">Reference sheet</a>
     </div>
+    <p class="hero-by">A complete, independent community reference, researched &amp; built by <a href="https://t.me/DaneelOlivaw" target="_blank" rel="noopener"><b>Hosterjack</b> · @DaneelOlivaw</a>.</p>
     <div class="statbar">
       <div class="s"><div class="k">Prize wallet</div><div class="v sm ok">unclaimed</div></div>
       <div class="s"><div class="k">Bounty now</div><div class="v live">~1.25 BTC<span class="faint" style="font-size:11px"> · was 5</span></div></div>
