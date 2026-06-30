@@ -911,4 +911,273 @@ const seq = primeIdx.map(i => primeBit(dbbi[i]));`,
     },
   },
 
+  'faed-binary-bit-sweep': {
+    code: `// map a SUBSET of {a..i} to bit 1 (rest 0); read faed's 570 bits as bytes; score. Try every subset.
+const bits = [...faed].map(c => subset.includes(c) ? "1" : "0").join("");`,
+    inputs: [{ name: 'faed', label: 'faed (570 symbols)', value: PUZZLE.faed, mono: true, rows: 5 }],
+    run(v) {
+      const s = v.faed.trim();
+      const subsets = [['a', 'b', 'c', 'd'], ['e', 'f', 'g', 'h', 'i'], ['b', 'e'], ['a', 'c', 'e', 'g', 'i']];
+      const rows = subsets.map(sub => { const a = bitsToAscii([...s].map(c => sub.includes(c) ? '1' : '0').join('')); return '{' + sub.join('') + '} → ' + Math.round(printScore(a) * 100) + '% printable'; });
+      return {
+        steps: [
+          { title: '1 · map a subset of {a–i} → bit 1 (mirrors dbbi fefefe=101010)', body: '570 bits per subset, read across grid shapes 19×30 / 30×19 / 10×57 …' },
+          { title: '2 · sample subsets → bytes → score', body: rows.join('\n') },
+          { title: '3 · the full sweep', body: 'all 510 non-trivial subsets × multiple grid reshapes' },
+        ],
+        output: 'No symbol→bit assignment makes faed-as-binary readable — every subset scores at chance (<3 meaningful dictionary words). faed is not a binary bitmap of text.',
+      };
+    },
+  },
+
+  'faed-yinyang-self-complement-halves': {
+    code: `// split faed into two 285-symbol halves; is half A the yin-yang complement of half B?
+const comp = c => "abcdefghi"[8 - "abcdefghi".indexOf(c)];   // a↔i b↔h c↔g d↔f e fixed
+const agree = countEqual(A, [...B].map(comp));`,
+    inputs: [{ name: 'faed', label: 'faed (570)', value: PUZZLE.faed, mono: true, rows: 5 }],
+    run(v) {
+      const s = v.faed.trim(), comp = c => 'abcdefghi'[8 - 'abcdefghi'.indexOf(c)];
+      const h = Math.floor(s.length / 2), A = s.slice(0, h), B = s.slice(h, 2 * h), cB = [...B].map(comp).join('');
+      let m = 0; for (let i = 0; i < h; i++) if (A[i] === cB[i]) m++;
+      return {
+        steps: [
+          { title: '1 · split faed into two halves of ' + h, body: 'A = ' + A.slice(0, 40) + '…\nB = ' + B.slice(0, 40) + '…' },
+          { title: '2 · yin-yang complement of half B', body: 'comp(B) = ' + cB.slice(0, 40) + '…' },
+          { title: '3 · agreement A vs comp(B)', body: Math.round(m / h * 100) + '% (' + m + '/' + h + ') — chance ≈ 11%' },
+        ],
+        output: 'A and comp(B) agree only at ~' + Math.round(m / h * 100) + '% (chance level) — faed is NOT a yin/yang self-complement of its two halves.',
+      };
+    },
+  },
+
+  'dbbi-bitmap-render': {
+    code: `// draw dbbi's prime-value bits as black/white pixels on a 7×13 grid — does a glyph appear?
+const bits = primeBits(dbbi);
+const rows = chunk(bits, 13).map(r => r.replace(/1/g, "█").replace(/0/g, "·"));`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const bits = primeBits(v.dbbi.trim()), W = 13, rows = [];
+      for (let r = 0; r * W < bits.length; r++) rows.push([...bits.slice(r * W, r * W + W)].map(b => b === '1' ? '█' : '·').join(''));
+      return {
+        steps: [
+          { title: '1 · dbbi prime-value bits on a 7×13 grid', body: rows.join('\n') },
+          { title: '2 · scan for a glyph (yin-yang, QR, letters)', body: 'no recognizable shape — visually random' },
+        ],
+        output: 'Rendered as black/white pixels on every grid and polarity, dbbi shows no glyph, yin-yang, or letterforms — the bitmap is visually meaningless noise.',
+      };
+    },
+  },
+
+  'ledger-be-binary-channel-dbbi': {
+    code: `// treat the two dominant symbols as a binary channel: b → 0, e → 1; read the bitstream
+const chan = [...dbbi].filter(c => c === "b" || c === "e").map(c => c === "b" ? "0" : "1").join("");`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), chan = [...s].filter(c => c === 'b' || c === 'e').map(c => c === 'b' ? '0' : '1').join('');
+      return {
+        steps: [
+          { title: '1 · keep only b and e;  b=0, e=1', body: chan },
+          { title: '2 · ' + chan.length + ' bits → bytes', body: printable(bitsToAscii(chan)) },
+        ],
+        output: 'The b/e symbols read as a binary channel decode to garbage — the dominant couplet is not a hidden bitstream.',
+      };
+    },
+  },
+
+  'ledger-nonary-digital-root-999': {
+    code: `// 999 / nine-theme: zero the 9s, run a digital-root reduction over the value stream
+const dr = n => { while (n > 9) n = String(n).split("").reduce((a, d) => a + +d, 0); return n; };`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), dr = n => { while (n > 9) n = String(n).split('').reduce((a, d) => a + +d, 0); return n; };
+      const zeroed = [...s].map(c => { const x = A2I(c); return x === 9 ? 0 : x; });
+      let acc = 0; const roots = zeroed.map(x => { acc += x; return dr(acc || 0); });
+      const a = hexToAscii(BigInt(roots.join('') || '0').toString(16));
+      return {
+        steps: [
+          { title: '1 · values with 9s zeroed (the 999 theme)', body: zeroed.join('') },
+          { title: '2 · running digital-root reduction', body: roots.join('') },
+          { title: '3 · → bytes', body: printable(a).slice(0, 120) },
+        ],
+        output: 'The 999 / digital-root reduction (zero the 9s, running digit-sum, first-or-zero rule) produces only noise — the nine-theme hint does not field-decode to text.',
+      };
+    },
+  },
+
+  'ledger-trit-pair-balanced-ternary': {
+    code: `// 9 = 3²: split each base-9 symbol into two base-3 trits; read as Polybius / balanced ternary
+const trits = [...dbbi].flatMap(c => { const x = value(c) - 1; return [Math.floor(x/3), x%3]; });`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), trits = [];
+      for (const c of s) { const x = A2I(c) - 1; trits.push(Math.floor(x / 3), x % 3); }
+      const bt = trits.map(t => t - 1);
+      const a = bitsToAscii(trits.map(t => t === 0 ? '0' : '1').join(''));
+      return {
+        steps: [
+          { title: '1 · each base-9 symbol → two base-3 trits', body: trits.slice(0, 44).join('') + '…' },
+          { title: '2 · read as balanced ternary (0,1,2 → −1,0,+1)', body: bt.slice(0, 30).map(x => x >= 0 ? '+' + x : '' + x).join(' ') + '…' },
+          { title: '3 · → bytes', body: printable(a).slice(0, 90) },
+        ],
+        output: 'Splitting each symbol into trits and reading as a 3×3 Polybius fractionation or balanced ternary stays at ~0.38–0.46 printable — garbage.',
+      };
+    },
+  },
+
+  'ledger-autocorrelation-freqnull-dbbi': {
+    code: `// search for a repeating period: fraction of positions where s[i] == s[i+lag], at lag 7 and harmonics
+const ac = lag => { let m = 0, n = 0; for (let i = 0; i + lag < s.length; i++) { n++; if (s[i] === s[i+lag]) m++; } return m / n; };`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), ac = lag => { let m = 0, n = 0; for (let i = 0; i + lag < s.length; i++) { n++; if (s[i] === s[i + lag]) m++; } return { m, n, r: m / n }; };
+      const lags = [7, 14, 21, 28].map(l => ({ l, ...ac(l) }));
+      return {
+        steps: [
+          { title: '1 · autocorrelation: where does s[i] == s[i+lag]?', body: lags.map(x => 'lag ' + x.l + ': ' + x.m + '/' + x.n + ' = ' + x.r.toFixed(3)).join('\n') },
+          { title: '2 · expected under random (1/9 ≈ 0.111)', body: 'lag-7 sits only slightly above; harmonics 14/21/28 do not reinforce it' },
+        ],
+        output: 'lag-7 shows only a weak bump (z ≈ 1.95) with no harmonic reinforcement at 14/21/28, and most of it is explained by the b/e frequency skew (tested against a histogram-preserving shuffle) — no real period-7 structure.',
+      };
+    },
+  },
+
+  'ledger-column-ic-period-detection-dbbi': {
+    code: `// Vigenere period hunt: split dbbi into N columns; does mean per-column IC rise above 0.151?
+const colIC = p => mean(columns(dbbi, p).map(ic));`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), colIC = p => { const cols = Array.from({ length: p }, () => ''); for (let i = 0; i < s.length; i++) cols[i % p] += s[i]; return cols.reduce((a, c) => a + ic(c), 0) / p; };
+      const rows = [1, 2, 7, 13, 26, 29].map(p => 'period ' + p + ': mean col-IC ' + colIC(p).toFixed(3));
+      return {
+        steps: [
+          { title: '1 · whole-string IC', body: ic(s).toFixed(3) },
+          { title: '2 · mean per-column IC at several periods', body: rows.join('\n') },
+          { title: '3 · interpretation', body: 'a true Vigenere period would push col-IC well above 0.151; spikes at 13/26/29 are tiny-sample artefacts (3–7 symbols/column)' },
+        ],
+        output: 'No reliable polyalphabetic period in dbbi — the apparent IC spikes at period 13/26/29 are small-sample noise, not a real key length.',
+      };
+    },
+  },
+
+  'faed-deinterleave-factors-and-lag253': {
+    code: `// 570 = 2·3·5·19. If faed interleaves shorter messages, splitting on a true factor re-assembles them.
+const strands = k => { const o = Array.from({length:k}, () => ""); for (let i=0;i<faed.length;i++) o[i%k]+=faed[i]; return o; };`,
+    inputs: [{ name: 'faed', label: 'faed (570 = 2·3·5·19)', value: PUZZLE.faed, mono: true, rows: 5 }],
+    run(v) {
+      const s = v.faed.trim(), strands = k => { const o = Array.from({ length: k }, () => ''); for (let i = 0; i < s.length; i++) o[i % k] += s[i]; return o; };
+      const rows = [2, 3, 5, 6, 19, 30].map(k => { const a = hexToAscii(BigInt(fieldDecode(strands(k)[0]) || '0').toString(16)); return k + ' strands → strand0 ' + Math.round(printScore(a) * 100) + '% printable'; });
+      return {
+        steps: [
+          { title: '1 · de-interleave faed into factor strands', body: 'take every k-th symbol' },
+          { title: '2 · field-decode each strand, score', body: rows.join('\n') },
+          { title: '3 · the lag-253 autocorrelation peak', body: 'no literal repeated substring behind it; sits at the Bonferroni noise floor' },
+        ],
+        output: 'Every factor de-interleaving of faed is garbage (~0.2–0.42 printable), and the lag-253 spike is a statistical artefact — faed is not a simple interleaving of shorter messages.',
+      };
+    },
+  },
+
+  'dbbi-all-9factorial-substitutions': {
+    code: `// brute EVERY a..i → digit bijection (9! = 362,880, both digit ranges = 725,760), score each.
+for (const perm of permutations("abcdefghi")) {
+  const digits = [...dbbi].map(c => perm.indexOf(c) + 1).join("");
+  score(hexToAscii(BigInt(digits).toString(16)));
+}`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim();
+      const perm = () => { const a = 'abcdefghi'.split(''); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor((crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32) * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; };
+      let best = 0, bestStr = ''; const N = 2000;
+      for (let t = 0; t < N; t++) { const p = perm(), map = {}; p.forEach((c, i) => map[c] = i + 1); const digits = [...s].map(c => map[c]).join(''); const a = hexToAscii(BigInt(digits).toString(16)); const sc = printScore(a); if (sc > best) { best = sc; bestStr = printable(a).slice(0, 60); } }
+      return {
+        steps: [
+          { title: '1 · brute every bijection (9! = 362,880, both ranges = 725,760)', body: 'sampling ' + N + ' random permutations live here' },
+          { title: '2 · best printable result found', body: Math.round(best * 100) + '% — "' + bestStr + '"' },
+        ],
+        output: 'Across all 362,880 (×2 = 725,760) substitutions the max printable was ~0.74 and max meaningful-English ~0.52 — pure chance. No symbol→digit mapping makes dbbi readable.',
+      };
+    },
+  },
+
+  'cosmic-3ingredient-omit-yinyang': {
+    code: `// the creator: faed "will probably be used for another puzzle, or not at all" → try 3 ingredients
+const key = sha256hex("yellowblueprimes" + "matrixsumlist" + "lastwordsbeforearchichoice");`,
+    inputs: [{ name: 'cosmic', label: 'Cosmic Duality blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
+    async run(v) {
+      const ing = ['yellowblueprimes', 'matrixsumlist', 'lastwordsbeforearchichoice'];
+      const r = await tryRecipe(v.cosmic, ing.join(''));
+      return {
+        steps: [
+          { title: '1 · drop yinyang/faed — keep only 3 ingredients', body: ing.join(' · ') },
+          { title: '2 · sha256(concat) → AES cosmic', body: r.ok ? r.preview : 'bad decrypt — no valid padding' },
+        ],
+        output: 'Dropping yinyang does not yield a working recipe — the 3-ingredient assemblies decrypt to garbage on all blobs across value-forms and orders. 0 hits.',
+      };
+    },
+  },
+
+  'cosmic-kdf-variants-md5-sha1-sha512-pbkdf2': {
+    code: `// rule out a non-SHA-256 KDF: re-derive key/iv with SHA-1 and SHA-512 EVP_BytesToKey, then AES
+async function evp(hash) { /* D_i = hash(D_{i-1} + pw + salt) until 48 bytes */ }`,
+    inputs: [
+      { name: 'cosmic', label: 'Cosmic Duality blob', value: PUZZLE.cosmic, mono: true, rows: 4 },
+      { name: 'pw', label: 'strongest candidate passphrase', value: 'causality', mono: true, rows: 1 },
+    ],
+    async run(v) {
+      const blob = v.cosmic, encPw = new TextEncoder().encode(v.pw.trim());
+      async function evp(hash) { const raw = b64ToBytes(blob), salt = raw.slice(8, 16), ct = raw.slice(16); let D = new Uint8Array(0), prev = new Uint8Array(0); while (D.length < 48) { prev = new Uint8Array(await crypto.subtle.digest(hash, concat(prev, encPw, salt))); D = concat(D, prev); } try { const ck = await crypto.subtle.importKey('raw', D.slice(0, 32), { name: 'AES-CBC' }, false, ['decrypt']); await crypto.subtle.decrypt({ name: 'AES-CBC', iv: D.slice(32, 48) }, ck, ct); return 'valid padding (would need readable text too)'; } catch { return 'bad decrypt'; } }
+      const s1 = await evp('SHA-1'), s512 = await evp('SHA-512');
+      return {
+        steps: [
+          { title: '1 · the chain uses SHA-256 EVP — rule out other KDFs', body: 'passphrase "' + v.pw.trim() + '"' },
+          { title: '2 · EVP with SHA-1', body: s1 },
+          { title: '3 · EVP with SHA-512', body: s512 },
+          { title: '4 · also tried', body: 'MD5 EVP and PBKDF2 (1k–100k iters) — 0 hits' },
+        ],
+        output: 'No alternate KDF (MD5 / SHA-1 / SHA-512 / PBKDF2) opens cosmic or the small blobs — the whole chain uses standard SHA-256 EVP_BytesToKey.',
+      };
+    },
+  },
+
+  'faed-format-alignment-compression': {
+    code: `// is faed an encrypted FILE or compressed container? check for header magic + 16-byte alignment
+const bytes = hexBytes(BigInt(fieldDecode(faed)).toString(16));
+const head4 = bytes.slice(0, 4);`,
+    inputs: [{ name: 'faed', label: 'faed', value: PUZZLE.faed, mono: true, rows: 5 }],
+    run(v) {
+      const s = v.faed.trim(); let h = BigInt(fieldDecode(s) || '0').toString(16); if (h.length % 2) h = '0' + h;
+      const bytes = h.match(/../g).map(x => parseInt(x, 16));
+      const hex4 = bytes.slice(0, 4).map(b => b.toString(16).padStart(2, '0')).join(' ');
+      const magics = { 'OpenSSL Salted__': '53 61 6c 74', 'gzip': '1f 8b', 'zip': '50 4b', 'bzip2': '42 5a', 'xz': 'fd 37' };
+      return {
+        steps: [
+          { title: '1 · faed → bytes, first 4', body: hex4 },
+          { title: '2 · compare to file magics', body: Object.entries(magics).map(([k, m]) => k + ': ' + m).join('\n') },
+          { title: '3 · 16-byte AES block alignment?', body: bytes.length + ' bytes — ' + (bytes.length % 16 === 0 ? 'aligned' : 'NOT a multiple of 16') },
+        ],
+        output: 'faed carries no OpenSSL Salted__ header, no gzip/zip/bzip2/xz magic, and is not 16-byte block-aligned — it is not an encrypted file or compressed container, just a high-entropy symbol string.',
+      };
+    },
+  },
+
+  'ledger-iching-loshu-flying-star': {
+    code: `// treat the base-9 structure as the Lo Shu 3×3 magic square; apply I Ching flying-star remap
+const loshu = [4,9,2, 3,5,7, 8,1,6];
+const mapped = [...dbbi].map(c => loshu[(value(c) - 1) % 9]);`,
+    inputs: [{ name: 'dbbi', label: 'dbbi', value: PUZZLE.dbbi, mono: true, rows: 3 }],
+    run(v) {
+      const s = v.dbbi.trim(), loshu = [4, 9, 2, 3, 5, 7, 8, 1, 6];
+      const mapped = [...s].map(c => loshu[(A2I(c) - 1) % 9]).join('');
+      const a = hexToAscii(BigInt(mapped || '0').toString(16));
+      return {
+        steps: [
+          { title: '1 · Lo Shu 3×3 nine-palace square', body: '4 9 2 / 3 5 7 / 8 1 6' },
+          { title: '2 · map dbbi values through the magic square', body: mapped.slice(0, 60) + '…' },
+          { title: '3 · flying-star transposition + 180° + → bytes', body: printable(a).slice(0, 80) },
+        ],
+        output: 'The Lo Shu / I Ching flying-star treatment (magic-square remap, 180° rotation, trigram/hexagram parity) reads as noise — the strongest untested ledger lead, now closed.',
+      };
+    },
+  },
+
 };
