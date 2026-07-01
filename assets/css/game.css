@@ -1016,3 +1016,30 @@ mark { background:rgba(242,193,74,.30); color:#ffe9b0; border-radius:3px; paddin
 .glab-out-s { font-size:11px; margin-top:3px; }
 .glab-hint { margin-top:12px; font-size:12.5px; }
 @media (max-width:560px){ .glab { --cell:20px; } }
+
+/* ── parametric labs (AES oracle · dbbi/faed decoder · cosmic recipe) ───────── */
+.lab { font-size:13px; }
+.lab-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin-bottom:10px; }
+.lab-ings { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:10px; }
+.lab-f { display:flex; flex-direction:column; gap:4px; }
+.lab-f.wide { margin-bottom:10px; }
+.lab-f > span { font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:#7f8ca0; }
+.lab-f select, .lab-in, .lab textarea.lab-in { font:inherit; font-size:12.5px; padding:6px 8px; border-radius:7px;
+  background:#0c1420; color:#dce6f5; border:1px solid #21324a; width:100%; box-sizing:border-box; }
+.lab-in.mono, .lab textarea.lab-in { font-family:ui-monospace,Menlo,Consolas,monospace; }
+.lab-f select:focus, .lab-in:focus { outline:none; border-color:#2f7fb0; }
+.lab-ctrl { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:4px 0 12px; }
+.lab-ctrl code { background:#0c1524; padding:1px 5px; border-radius:4px; color:#9fd0ff; }
+.lab-res { display:flex; flex-direction:column; gap:8px; }
+.lab-verdict { font-weight:600; font-size:13px; padding:8px 11px; border-radius:8px; border:1px solid; }
+.lab-verdict.bad { background:#1a0f14; border-color:#5a2530; color:#e79aa8; }
+.lab-verdict.good { background:#0e1c16; border-color:#2f6f5a; color:#8fe6c4; }
+.lab-verdict.win { background:#122a10; border-color:#4fae3a; color:#bff0a8; box-shadow:0 0 14px #3ad29f55; }
+.lab-meter { position:relative; height:20px; background:#0c1420; border:1px solid #1c2c44; border-radius:6px; overflow:hidden; }
+.lab-meter-f { position:absolute; inset:0 auto 0 0; transition:width .3s; opacity:.5; }
+.lab-meter span { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:11px; color:#dce6f5; }
+.lab-out-h { font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:#7f8ca0; margin-top:4px; }
+.lab-out-v { color:#dce6f5; word-break:break-all; line-height:1.4; font-size:12px; }
+.lab-out-pre { background:#0c1420; border:1px solid #1c2c44; border-radius:7px; padding:8px 10px; margin:2px 0 0;
+  white-space:pre-wrap; word-break:break-all; color:#c3cede; font-size:12px; max-height:150px; overflow:auto; }
+.lab-out-s { font-size:11.5px; }
