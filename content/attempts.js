@@ -36,7 +36,7 @@ export function phaseKeyForHeading(text) {
 
 export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 
-// ── the catalog (128 attempts) ─────────────────────────────────────────
+// ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
   "id": "ledger-image-forensics-genesis-png",
@@ -1972,6 +1972,21 @@ export const ATTEMPTS = [
   "output": "The word HASHTHETEXT appears in the spectrogram's high frequencies. Hashing the opening image's full text (GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe -- 59 chars, no trailing newline) with sha256 gives 89727c59...152f6a32, which is the SalPhaseIon page URL.",
   "outcome": "verified-insight",
   "insight": "The entrance to SalPhaseIon is an AUDIO-steganography step: a phase-inverted stereo mix reveals HASHTHETEXT in the spectrogram, which instructs you to sha256 the genesis image's text to reach the next page. The interactive spectral lab reproduces this in-browser (a real FFT on the genuine audio)."
+ },
+ {
+  "id": "cosmic-computed-genesis-values-full-recipe-sweep",
+  "phase": "salphaseion",
+  "category": "cosmic combine recipe",
+  "title": "COMPUTED genesis-numeric yellowblueprimes/yinyang candidates woven into the full 4-ingredient recipe (24 orders x separators x combine modes) -- 0 opens",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "source": "this session (2026-07-01) -- independent re-attack closing the 'the labels are COMPUTED values, not literal words' frontier that the literal-word sweep left open",
+  "date": "2026-07-01",
+  "input": "The 2023 master-hint recipe with its two OPEN ingredients supplied as COMPUTED values rather than literal label words. yellowblueprimes candidates built from the genesis coloured-cell index sets filtered by primes: blue-prime positions {2,3,7,11,13,17,23}, yellow-prime {5,19}, their concatenations both orders, the URL characters at those positions, and the primes {2,3,5,7} selecting the first four coloured cells. yinyang candidates from the blue<->yellow / black<->white duality: complement bitstrings, halfandbetterhalf, cosmicduality, bellaciao, theone. matrixsumlist in six numeric byte-forms (rows+cols concat, zero-padded two-digit, reversed, cols-first, comma-listed, and the literal word). lastwordsbeforearchichoice literal.",
+  "method": "The LITERAL-word recipe (cosmic-4ingredient-literal-sha256-all-orders) and the dbbi/faed-as-value recipe (cosmic-per-ingredient-sha-then-concat-and-xor) were already exhausted; this closes the complementary hypothesis the creator's hints most support -- that yellowblueprimes/yinyang are LABELS whose VALUES are computed from the genesis ('go back to the first puzzle piece', 'Yellow has a number and so does Blue', 'the prime part'). Every (yellowblue x matrixsumlist-form x yinyang) tuple was assembled in all 24 ingredient orders x 5 separators {'', '+', '_', ' ', '.'} x 3 combine modes (sha256hex(joined) as EVP passphrase; joined literal as passphrase; per-ingredient sha256 concatenated, with and without a final sha), then AES-256-CBC decrypted against all three open blobs (cosmic 1328B, salph_inner 80B, p32_trailing 80B) with a WIF-shape + printable detector. ~358,000 candidate passphrases (~1.07M decrypts).",
+  "output": "0 printable and 0 WIF-shaped hits on any of the three blobs; every PKCS7-valid decrypt was high-entropy noise. The computed-value recipe space -- the natural successor to the exhausted literal-word space -- is empty for every genesis-derived yellowblueprimes/yinyang candidate reachable from the coloured-cell + primes {2,3,5,7} rule.",
+  "outcome": "verified-fail",
+  "insight": ""
  }
 ];
 
