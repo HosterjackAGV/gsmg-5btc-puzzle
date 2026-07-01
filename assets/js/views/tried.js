@@ -63,7 +63,7 @@ export default async function triedView(ctx = {}) {
           <article class="tried-family">
             <div class="fam-blurb">${fam.blurb}</div>
             ${labs}
-            <details class="fam-list"><summary>show the ${list.length} individual trials</summary>${list.map(a => compactHtml(a, false)).join('')}</details>
+            <details class="fam-list"><summary>show the ${list.length} individual trials — each with its own “try it yourself”</summary>${list.map(a => compactHtml(a, true)).join('')}</details>
           </article>`;
       }
       return `<h3 class="tried-cat">${esc(cat)} <span class="faint">· ${list.length}</span></h3>${list.map(entryHtml).join('')}`;

@@ -1959,6 +1959,19 @@ export const ATTEMPTS = [
   "output": "The soup holds SEVEN data pieces (dbbi, matrixsumlist, faed, lastwords, thispassword, salph_inner, enter) -- matching Phase 2's SEVEN-part password and the Architect's 'seven intertwined passwords'. The master-hint recipe order (ybp . matrixsumlist . lastwords . yinyang) is exactly the PHASE chronology (ybp + matrixsumlist from Genesis P0, lastwords from the Architect P3.2, yinyang from the endgame), while the soup STORES them scrambled (yinyang/lastwords swapped). 'our first hint is your last command' plus the reverse-binary master hint are reversal markers pointing the final step back to the genesis. The two 'shabef' (=sha256) bracket salph_inner -> a two-stage sha (only single-sha had been tried). All ordering tests -> null (order was never the unknown).",
   "outcome": "verified-insight",
   "insight": "SalPhaseIon is Phase 2's 'N parts -> concatenate in order -> sha256 -> decrypt' pattern repeated at the endgame, with N=7 ('seven intertwined passwords') but the pieces ENCODED and INTERTWINED (scrambled). The correct assembly order is the phase chronology (already given by the master hint), so the order is solved -- the wall is the piece VALUES (ybp, yinyang) plus the salph_inner intermediate, not their arrangement. The genuinely new structural fact is the two-shabef = two-stage sha256, with salph_inner as the crackable intermediate."
+ },
+ {
+  "id": "decentraland-audio-spectrogram-hashthetext",
+  "phase": "salphaseion",
+  "category": "SalPhaseIon entrance (Decentraland audio)",
+  "title": "Decentraland audio → phase-invert → spectrogram → HASHTHETEXT (the SalPhaseIon entrance)",
+  "who": "community",
+  "source": "community walkthrough (Decentraland GSMG plot LAND -41,-17; audio_source.wav / puzzlepiece.mp3)",
+  "input": "The audio clip played by the interactive box on the GSMG plot in Decentraland (saved as puzzlepiece.mp3): a stereo file whose two channels share the music but differ in a planted high-frequency signal.",
+  "method": "Split the stereo into Left/Right, phase-invert (flip) one channel and mix to mono so the shared music cancels and only the planted difference survives, then view the result as a SPECTROGRAM (a Short-Time Fourier Transform picture of the sound). The hidden text sits in the high-frequency band.",
+  "output": "The word HASHTHETEXT appears in the spectrogram's high frequencies. Hashing the opening image's full text (GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe -- 59 chars, no trailing newline) with sha256 gives 89727c59...152f6a32, which is the SalPhaseIon page URL.",
+  "outcome": "verified-insight",
+  "insight": "The entrance to SalPhaseIon is an AUDIO-steganography step: a phase-inverted stereo mix reveals HASHTHETEXT in the spectrogram, which instructs you to sha256 the genesis image's text to reach the next page. The interactive spectral lab reproduces this in-browser (a real FFT on the genuine audio)."
  }
 ];
 
@@ -2013,3 +2026,12 @@ export const FAMILIES = {
   'salphaseion :: on-chain forensics': {
     blurb: `<b>The Bitcoin side.</b> 50 OP_RETURN messages mined from the prize address; the vanity-prefix finding (the key is <b>random</b> → no brainwallet / split-key shortcut, 86k + 1.2k derivations, zero address matches); an ECDSA nonce-reuse check; the Wayback CDX of all gsmg.io URLs (no hidden post-cosmic stage); and cosmic.txt authenticity (verbatim on the 2023 archive). Establishes: the key exists only <i>inside</i> the cosmic blob — there is no external shortcut.` },
 };
+
+// Point each family at the interactive lab that actually matches its methods.
+FAMILIES['salphaseion :: dbbi / faed — binary & bitmap'].lab = 'dbbi-faed-exhaustive-decode-ic-characterization';   // analysis workbench (bitmap render)
+FAMILIES['salphaseion :: polyalphabetic & fractionation'].lab = 'dbbi-faed-exhaustive-decode-ic-characterization';  // analysis workbench (Vigenère/Beaufort)
+FAMILIES['salphaseion :: dbbi / faed — statistical'].lab = 'dbbi-faed-exhaustive-decode-ic-characterization';       // analysis workbench (freq/IC/autocorr)
+FAMILIES['salphaseion :: blob combination & format'].lab = 'cosmic-kdf-variants-md5-sha1-sha512-pbkdf2';            // AES oracle
+FAMILIES['salphaseion :: key sweep (passphrase battery)'].lab = 'cosmic-kdf-variants-md5-sha1-sha512-pbkdf2';       // AES oracle
+FAMILIES['genesis :: matrix structure'].lab = 'ledger-exhaustive-reread-14x14-matrix';                             // interactive genesis grid
+FAMILIES['genesis :: genesis derivations'].lab = 'ledger-exhaustive-reread-14x14-matrix';                          // interactive genesis grid
