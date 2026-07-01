@@ -94,6 +94,7 @@ export default async function triedView(ctx = {}) {
     if (focus) {
       const el = qs('#t-' + (window.CSS && CSS.escape ? CSS.escape(focus) : focus), root) || document.getElementById('t-' + focus);
       if (el) {
+        for (let p = el.parentElement; p; p = p.parentElement) if (p.tagName === 'DETAILS') p.open = true;  // reveal folded/compact
         setTimeout(() => {
           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
           el.classList.add('tried-focus');
