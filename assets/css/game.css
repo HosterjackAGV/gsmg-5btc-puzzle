@@ -1054,3 +1054,15 @@ mark { background:rgba(242,193,74,.30); color:#ffe9b0; border-radius:3px; paddin
 .tc-more > summary::before { content:'▸ '; }
 .tc-more[open] > summary::before { content:'▾ '; }
 .tc-more[open] > summary { margin-bottom:8px; }
+
+/* ── family cards (big clusters folded into one dense summary + its lab) ─────── */
+.tried-family { padding:14px 16px; background:#0a1220; border:1px solid #1c2c44; border-radius:12px; margin:6px 0 16px; }
+.fam-blurb { font-size:13.5px; line-height:1.55; color:#c7d2e2; margin-bottom:6px; }
+.fam-blurb code { background:#0c1524; padding:1px 5px; border-radius:4px; font-size:12px; color:#9fd0ff; }
+.fam-blurb b { color:#e7eefb; }
+.fam-list { margin-top:12px; border-top:1px solid #1c2c44; padding-top:10px; }
+.fam-list > summary { font-size:12px; color:#7f8ca0; cursor:pointer; list-style:none; }
+.fam-list > summary::before { content:'▸ '; }
+.fam-list[open] > summary::before { content:'▾ '; }
+.fam-list[open] > summary { margin-bottom:10px; }
+.fam-list .tried-compact { border-left:2px solid #223148; margin-bottom:6px; padding:7px 11px; }

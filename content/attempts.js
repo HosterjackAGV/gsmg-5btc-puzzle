@@ -1976,3 +1976,40 @@ const COMPACT_IDS = new Set([
   'wayback-cdx-gsmg-urls-spa-shell', 'onchain-ecdsa-nonce-reuse-ruled-out',
 ]);
 for (const a of ATTEMPTS) if (COMPACT_IDS.has(a.id)) a.compact = true;
+
+// Family cards: big clusters of near-duplicate trials collapse into ONE dense summary (+ the
+// cluster's interactive lab), with every individual trial nested compactly beneath — nothing
+// deleted, but the shared conclusion is stated once. Keyed by "<phase> :: <category>".
+export const FAMILIES = {
+  'genesis :: matrix structure': {
+    blurb: `<b>What the grid's structure encodes.</b> The coloured cells sit <i>exactly</i> on the URL's byte-boundaries — a deliberate <b>pointer</b> mechanism, not decoration — and the colours equal the URL characters' bit-parity (so they carry no separate message). Game-of-Life / cellular-automata rules and prime-position re-reads yield nothing beyond the URL.` },
+  'genesis :: genesis derivations': {
+    blurb: `<b>Computing <code>yellowblueprimes</code> / <code>yinyang</code> from the genesis.</b> The 4156-lens sweep, the 89-candidate sweep, the matrixsumlist row/col sums, first-piece text keys, yinyang from the blue↔yellow duality, and mixed 0-vs-1-origin ("zero out") indexing. The values ARE genesis-derived numbers — but none can be confirmed without the cosmic combine, which also needs the unknown <code>yinyang</code> (no standalone oracle).` },
+  'salphaseion :: dbbi / faed — field & number decode': {
+    blurb: `<b>Reading the a–i blocks as NUMBERS.</b> Field-decode (a=1…i=9) → big integer → hex → ASCII; <b>all 362,880 (9!)</b> symbol→digit permutations; base-81 pairs; the block as a decimal passphrase; primality/factoring; repeating-key and one-time-pad subtraction against the 91-char "INCASE…" line; and a direct search for the literal word "yellowblueprimes" in every base. All → high-entropy garbage, no blob key. dbbi is only 91 bits (≤13 chars) so it <i>cannot</i> hold a 16-char word — it must encode a computed number, not text.`,
+    lab: 'dbbi-all-9factorial-substitutions' },
+  'salphaseion :: dbbi / faed — binary & bitmap': {
+    blurb: `<b>Reading the blocks as BITS.</b> The verified "fefefe = 101010" prime-value map (2,3,5,7 → 0, else → 1) packed into 8-bit ASCII; grid re-indexing (rows/cols/diagonal/boustrophedon); the matrixsumlist-104 mask; and rendering dbbi as a 7×13 bitmap looking for a glyph. All noise — and 91 bits is simply too little information to carry the target string.`,
+    lab: 'dbbi-all-9factorial-substitutions' },
+  'salphaseion :: dbbi / faed — zero-out schemes': {
+    blurb: `<b>The creator's "some characters need to be zeroed out" — read literally.</b> Zero the prime-valued symbols; or insert a single 0 at every indexed / prime position before field-decoding; exploiting that dbbi/faed uniquely <i>lack</i> the "o"(=0) symbol. Every insertion rule → garbage.`,
+    lab: 'dbbi-all-9factorial-substitutions' },
+  'salphaseion :: polyalphabetic & fractionation': {
+    blurb: `<b>Classical hand-ciphers on the a–i blocks.</b> Vigenère / Beaufort (periods 1–6, and keyed by matrixsumlist / the colour-prime bits / the "INCASE…" alphabet); bifid over every 3×3 square and period; columnar transposition across all grid factorisations; balanced-ternary trit-pairs; the "seven intertwined passwords" reading. All → garbage — and faed's Index of Coincidence (≈ 0.118) statistically rules out any monoalphabetic or short-period cipher.`,
+    lab: 'dbbi-all-9factorial-substitutions' },
+  'salphaseion :: dbbi / faed — statistical': {
+    blurb: `<b>Information-theoretic characterisation.</b> Symbol frequency, Index of Coincidence, autocorrelation / lag-253, column-IC period detection, and compression / file-format probes. Verdict: <b>dbbi is STRUCTURED</b> (IC 0.151, "b"-skewed) — a real numeric encoding whose scheme matches nothing in the toolkit; <b>faed is RANDOM</b> (IC 0.118) — encrypted or filler, matching the creator's "faed may be for another puzzle."`,
+    lab: 'dbbi-all-9factorial-substitutions' },
+  'salphaseion :: dbbi / faed — exotic transforms': {
+    blurb: `<b>Long-shot symbol systems.</b> EBCDIC / VIC transforms, I-Ching / Lo-Shu / flying-star, nonary digital-root (mod 9), turtle / numpad path-drawing, and the prime-index "rabbit cells" reading. None produces text or a key.`,
+    lab: 'dbbi-all-9factorial-substitutions' },
+  'salphaseion :: cosmic combine recipe': {
+    blurb: `<b>Every way to build the final cosmic key.</b> The four literal words in all orders / separators; matrixsumlist literal vs numeric; 3-ingredient (omit yinyang); include enter / thispassword; the full master-hint string; per-ingredient-sha-then-concat and XOR; double-sha (the two "shabef"); dbbi/faed bytes as raw ingredients; KDF variants (md5 / sha1 / sha512 / pbkdf2); and the fabricated issue-#56 XOR-of-7 and issue-#69 master-key. None opens the blob — because two ingredients (ybp, yinyang) are unknown and there is <b>no partial-progress oracle</b>.`,
+    lab: ['cosmic-4ingredient-literal-sha256-all-orders', 'cosmic-kdf-variants-md5-sha1-sha512-pbkdf2'] },
+  'salphaseion :: blob combination & format': {
+    blurb: `<b>Treating the four AES blobs as linked.</b> XOR of pairs, ciphertext concatenation, cross-keying (one blob's ciphertext as another's key), shared / repeated-block scans, the four salts as an AES key in all orderings, salt-math (xor / sum / sha), AES-key-wrap and BIP38 hypotheses, and the orphaned 4th blob (salt 74c974e3). Conclusion: the blobs are <b>independent</b> containers (own salts, no shared block, XOR to noise) — the linkage is in key-derivation, not in combining ciphertexts.` },
+  'salphaseion :: key sweep (passphrase battery)': {
+    blurb: `<b>Spraying passphrase batteries at the blobs.</b> The full 370k-word English dictionary (× literal / sha256hex, ~1.5M decrypts), harvested plaintext phrases, Matrix-Reloaded quotes, the named-token battery, reused chain keys, and the SalPhaseIon page-hash — PKCS7-chance-calibrated, every result at the noise floor. Blind spraying is hopeless without a value that first opens a small blob.` },
+  'salphaseion :: on-chain forensics': {
+    blurb: `<b>The Bitcoin side.</b> 50 OP_RETURN messages mined from the prize address; the vanity-prefix finding (the key is <b>random</b> → no brainwallet / split-key shortcut, 86k + 1.2k derivations, zero address matches); an ECDSA nonce-reuse check; the Wayback CDX of all gsmg.io URLs (no hidden post-cosmic stage); and cosmic.txt authenticity (verbatim on the 2023 archive). Establishes: the key exists only <i>inside</i> the cosmic blob — there is no external shortcut.` },
+};
