@@ -11,6 +11,9 @@
 
 import { MATRIX } from './matrix.js';
 import { genesisLab } from '../assets/js/labs/genesis-lab.js';
+import { aesOracleLab } from '../assets/js/labs/aes-oracle.js';
+import { dbbiFaedLab } from '../assets/js/labs/dbbi-faed-lab.js';
+import { cosmicRecipeLab } from '../assets/js/labs/cosmic-recipe.js';
 
 export const PUZZLE = {
   dbbi: 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe',
@@ -2587,4 +2590,19 @@ DEMOS['ledger-exhaustive-reread-14x14-matrix'] = {
   lab: genesisLab, open: false,
   summary: 'Interactive genesis grid — read it, colour it, split it, EDIT it yourself',
   intro: 'The real Phase-0 image as a live 14×14 grid. Animate the counter-clockwise spiral to watch bits become the URL; toggle the colour cells, the prime (A007522) indices, the #fefefe seed, and the yin-yang split; and <b>click any cell to flip it</b> and watch <code>matrixsumlist</code>, the 24-bit colour stream and <code>yellowblueprimes</code> recompute instantly.',
+};
+DEMOS['cosmic-kdf-variants-md5-sha1-sha512-pbkdf2'] = {
+  lab: aesOracleLab,
+  summary: 'AES oracle — decrypt any blob with any candidate & convention',
+  intro: 'Pick a blob, type any candidate, and choose the password form + KDF digest + key size. Phase 2 opens with <code>causality</code> (watch it read); the endgame blobs return noise for everything — that is the wall, live.',
+};
+DEMOS['dbbi-all-9factorial-substitutions'] = {
+  lab: dbbiFaedLab,
+  summary: 'dbbi / faed decoder — every map × order × target',
+  intro: 'Choose the block, the symbol→digit map (including one letter = the missing zero), the reading order, and the decode target. Output, printability and Index of Coincidence update live — every combination has been swept to noise.',
+};
+DEMOS['cosmic-4ingredient-literal-sha256-all-orders'] = {
+  lab: cosmicRecipeLab,
+  summary: 'Cosmic recipe builder — assemble the key &amp; test it live',
+  intro: 'Edit each of the four ingredients, choose the order and the combine operation, and test the resulting <code>sha256</code> key against the REAL prize blob. A readable decrypt (a WIF starting 5/K/L) would be the 5 BTC solve.',
 };
