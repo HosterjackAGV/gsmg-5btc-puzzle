@@ -1066,3 +1066,32 @@ mark { background:rgba(242,193,74,.30); color:#ffe9b0; border-radius:3px; paddin
 .fam-list[open] > summary::before { content:'▾ '; }
 .fam-list[open] > summary { margin-bottom:10px; }
 .fam-list .tried-compact { border-left:2px solid #223148; margin-bottom:6px; padding:7px 11px; }
+
+/* ── spectral lab (spectrogram) ─────────────────────────────────────────────── */
+.spectro-wrap { position:relative; margin:6px 0; }
+.spectro { width:100%; max-width:900px; height:auto; background:#05080e; border:1px solid #1c2c44; border-radius:8px; display:block; }
+.spectro-axis { display:flex; justify-content:space-between; font-size:10px; color:#7f8ca0; margin-top:3px; }
+/* ── analysis workbench ─────────────────────────────────────────────────────── */
+.lab-quick { display:flex; gap:6px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+.lab-quick .glab-btn { padding:3px 8px; font-size:11px; }
+.an-stats { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 12px; }
+.an-chip { background:#0c1420; border:1px solid #1c2c44; border-radius:6px; padding:4px 8px; font-size:12px; color:#c3cede; }
+.an-chip b { color:#bfe6ff; }
+.an-cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin-bottom:12px; }
+.an-freq { display:flex; flex-direction:column; gap:2px; max-height:180px; overflow:auto; }
+.fb { display:flex; align-items:center; gap:6px; font-size:11px; }
+.fb-k { width:14px; color:#9fd0ff; } .fb-v { width:26px; color:#7f8ca0; text-align:right; }
+.fb-bar { height:11px; background:linear-gradient(90deg,#2f7fb0,#7ff0e6); border-radius:2px; min-width:2px; }
+.an-auto, .an-bmp { background:#05080e; border:1px solid #1c2c44; border-radius:6px; max-width:100%; }
+.an-bmp-wrap { margin-bottom:12px; }
+.an-tf { min-height:2em; }
+/* ── chess / VIC lab ────────────────────────────────────────────────────────── */
+.cv-cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-bottom:12px; }
+.chessboard { display:grid; grid-template-columns:repeat(8,30px); grid-template-rows:repeat(8,30px); border:2px solid #21324a; width:max-content; }
+.cq { display:flex; align-items:center; justify-content:center; font-size:20px; line-height:1; }
+.cq.light { background:#c9d4e4; } .cq.dark { background:#5b708c; }
+.cp.w { color:#fff; text-shadow:0 0 2px #333,0 0 1px #000; } .cp.b { color:#111; }
+.vic-table { border-collapse:collapse; font-size:12px; }
+.vic-table td { border:1px solid #21324a; width:20px; height:20px; text-align:center; color:#dce6f5; }
+.vic-table .vh { background:#101a2c; color:#7ff0e6; font-weight:600; }
+.cv-vic, .cv-beau { background:#0c1420; border:1px solid #1c2c44; border-radius:7px; padding:8px 10px; min-height:1.6em; word-break:break-all; color:#bfe6ff; }

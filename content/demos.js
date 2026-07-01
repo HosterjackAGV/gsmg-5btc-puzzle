@@ -14,6 +14,9 @@ import { genesisLab } from '../assets/js/labs/genesis-lab.js';
 import { aesOracleLab } from '../assets/js/labs/aes-oracle.js';
 import { dbbiFaedLab } from '../assets/js/labs/dbbi-faed-lab.js';
 import { cosmicRecipeLab } from '../assets/js/labs/cosmic-recipe.js';
+import { spectralLab } from '../assets/js/labs/spectral-lab.js';
+import { analysisLab } from '../assets/js/labs/analysis-lab.js';
+import { chessVicLab } from '../assets/js/labs/chess-vic-lab.js';
 
 export const PUZZLE = {
   dbbi: 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe',
@@ -2605,4 +2608,34 @@ DEMOS['cosmic-4ingredient-literal-sha256-all-orders'] = {
   lab: cosmicRecipeLab,
   summary: 'Cosmic recipe builder — assemble the key &amp; test it live',
   intro: 'Edit each of the four ingredients, choose the order and the combine operation, and test the resulting <code>sha256</code> key against the REAL prize blob. A readable decrypt (a WIF starting 5/K/L) would be the 5 BTC solve.',
+};
+DEMOS['dbbi-faed-exhaustive-decode-ic-characterization'] = {
+  lab: analysisLab,
+  summary: 'Analysis workbench — frequency · IC · entropy · autocorrelation · bitmap · ciphers',
+  intro: 'Paste any string (a block, a candidate, anything) and get the full non-spectral analysis suite live: symbol frequency, Index of Coincidence, Shannon entropy, factorisation, an autocorrelation scan, a colour <b>bitmap render</b> (reshape to any factor dims), and editable cipher transforms.',
+};
+DEMOS['vic-straddling-checkerboard-reverse-engineering'] = {
+  lab: chessVicLab,
+  summary: 'Phase 3.2 lab — the chess board + VIC checkerboard + Beaufort, live',
+  intro: 'The Architect stage, interactive: the chess position, the VIC straddling-checkerboard (decode the real 144-digit code → the "HALF AND BETTER HALF" message), and a Beaufort decoder (key <code>THEMATRIXHASYOU</code>). Edit any input and watch both ciphers run.',
+};
+DEMOS['hint-image-decoding-primes-fefefe-doors-toe'] = {
+  lab: spectralLab,
+  summary: 'Spectral lab — the Decentraland audio → spectrogram (find HASHTHETEXT)',
+  intro: 'The genuine <code>puzzlepiece.mp3</code>, analysed in your browser: pick the channel mix (the <b>L − R</b> phase-invert cancels the music), and an in-browser FFT renders the <b>spectrogram</b> — the picture that hides <code>HASHTHETEXT</code> in the high frequencies.',
+};
+DEMOS['salph-inner-exhaustive-self-verifying-attack'] = {
+  lab: aesOracleLab,
+  summary: 'AES oracle — attack salph_inner (and any blob) yourself',
+  intro: 'Decrypt any real blob with any candidate + password form + KDF + key size, live. Select <b>salph_inner</b> and try your own keys — a readable result would be the first crack past the wall.',
+};
+DEMOS['salphaseion-soup-seven-part-structure-phase-order'] = {
+  lab: cosmicRecipeLab,
+  summary: 'Cosmic recipe builder — assemble the key &amp; test it live',
+  intro: 'Build the final key from its ingredients in any order and combine operation, and test it against the real prize blob.',
+};
+DEMOS['genesis-yinyang-architecture-cover-logo-a007522'] = {
+  lab: genesisLab,
+  summary: 'Interactive genesis grid — see the yin-yang split &amp; the A007522 primes',
+  intro: 'Toggle the <b>yin-yang split</b> and the <b>prime (A007522)</b> indices on the live grid to see the blue-upper-left / yellow-lower-right duality and the prime-indexed colour cells for yourself.',
 };
