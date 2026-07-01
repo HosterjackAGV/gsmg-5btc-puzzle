@@ -2619,7 +2619,7 @@ DEMOS['vic-straddling-checkerboard-reverse-engineering'] = {
   summary: 'Phase 3.2 lab — the chess board + VIC checkerboard + Beaufort, live',
   intro: 'The Architect stage, interactive: the chess position, the VIC straddling-checkerboard (decode the real 144-digit code → the "HALF AND BETTER HALF" message), and a Beaufort decoder (key <code>THEMATRIXHASYOU</code>). Edit any input and watch both ciphers run.',
 };
-DEMOS['hint-image-decoding-primes-fefefe-doors-toe'] = {
+DEMOS['decentraland-audio-spectrogram-hashthetext'] = {
   lab: spectralLab,
   summary: 'Spectral lab — the Decentraland audio → spectrogram (find HASHTHETEXT)',
   intro: 'The genuine <code>puzzlepiece.mp3</code>, analysed in your browser: pick the channel mix (the <b>L − R</b> phase-invert cancels the music), and an in-browser FFT renders the <b>spectrogram</b> — the picture that hides <code>HASHTHETEXT</code> in the high frequencies.',
