@@ -10,6 +10,17 @@ import { commentsHtml, mountComments } from '../components/comments.js';
 
 function entryHtml(a) {
   const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
+  if (a.compact) {
+    const line = a.insight || a.output || '';
+    return `<article class="tried-entry tried-compact" id="t-${esc(a.id)}">
+      <div class="tc-row"><span class="tbadge ${o.cls} sm" title="${esc(o.desc)}">${o.label}</span><b class="tc-title">${esc(a.title)}</b></div>
+      <div class="tc-line">${esc(line.length > 240 ? line.slice(0, 240) + '…' : line)}</div>
+      <details class="tc-more"><summary>full input · method · output</summary>
+        <dl class="tried-io"><dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd><dt>Output</dt><dd>${esc(a.output)}</dd>${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
+        ${demoHtml(a.id)}${commentsHtml(a.id)}
+      </details>
+    </article>`;
+  }
   return `<article class="tried-entry" id="t-${esc(a.id)}">
     <div class="tried-head">
       <h4>${esc(a.title)}</h4>

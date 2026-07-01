@@ -1961,3 +1961,18 @@ export const ATTEMPTS = [
   "insight": "SalPhaseIon is Phase 2's 'N parts -> concatenate in order -> sha256 -> decrypt' pattern repeated at the endgame, with N=7 ('seven intertwined passwords') but the pieces ENCODED and INTERTWINED (scrambled). The correct assembly order is the phase chronology (already given by the master hint), so the order is solved -- the wall is the piece VALUES (ybp, yinyang) plus the salph_inner intermediate, not their arrangement. The genuinely new structural fact is the two-shabef = two-stage sha256, with salph_inner as the crackable intermediate."
  }
 ];
+
+// Obvious facts / identities / settled conclusions render as COMPACT cards (terse, one line,
+// with a collapsible "details" for the full input/method/output) so they don't crowd the catalog.
+const COMPACT_IDS = new Set([
+  'genesis-qr-decoded-blockchain-link', 'genesis-qr-standard-reproduced-from-url',
+  'genesis-fefefe-cell-located-7-4', 'genesis-colors-equal-url-bit-parity',
+  'genesis-grid-byte-boundary-pointer', 'chain-reproduce-phase2-3-32-byteexact',
+  'verify-embedded-salphaseion-equals-repo', 'cosmic-txt-authenticity-archived-2023',
+  'blob-independence-conclusion', 'cosmic-no-partial-progress-oracle',
+  'vanity-address-kills-brainwallet', 'faed-ic-near-random-118',
+  'dbbi-symbol-frequency-analysis', 'keysweep-pkcs7-chance-calibration',
+  'onchain-ecdsa-nonce-reuse-ruled-out', 'architect-ebcdic-cp1141-codepage-debate',
+  'wayback-cdx-gsmg-urls-spa-shell', 'onchain-ecdsa-nonce-reuse-ruled-out',
+]);
+for (const a of ATTEMPTS) if (COMPACT_IDS.has(a.id)) a.compact = true;
