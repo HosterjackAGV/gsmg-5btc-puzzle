@@ -9,6 +9,16 @@ import { esc } from '../util.js';
 export function demoHtml(id) {
   const d = DEMOS[id];
   if (!d) return '';
+  // Graphical lab mode: a self-contained interactive tool mounts into .demo-lab.
+  if (d.lab) {
+    return `<details class="demo demo-lab-wrap"${d.open ? ' open' : ''}>
+    <summary>🔬 ${esc(d.summary || 'Interactive lab — try it yourself')}</summary>
+    <div class="demo-body" data-demo="${esc(id)}">
+      ${d.intro ? `<div class="demo-intro">${d.intro}</div>` : ''}
+      <div class="demo-lab" data-lab="${esc(id)}"></div>
+    </div>
+  </details>`;
+  }
   const fields = d.inputs.map(inp => `
       <div class="demo-field">
         <label>${esc(inp.label || inp.name)}</label>
@@ -36,6 +46,11 @@ export function mountDemos(root) {
     const d = DEMOS[id];
     if (!d || body._wired) return;
     body._wired = true;
+    if (d.lab) {
+      const labEl = body.querySelector('.demo-lab');
+      if (labEl) { try { d.lab(labEl); } catch (e) { labEl.innerHTML = '<div class="demo-out err">Lab error: ' + esc(String((e && e.message) || e)) + '</div>'; } }
+      return;
+    }
     const btn = body.querySelector('.demo-run');
     const stepsEl = body.querySelector('.demo-steps');
     const outEl = body.querySelector('.demo-out');
