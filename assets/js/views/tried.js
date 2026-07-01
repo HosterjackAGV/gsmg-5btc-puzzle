@@ -2,25 +2,27 @@
 // the endgame, grouped by phase then category, each with an outcome badge and an
 // id anchor. Deep-linkable: #/tried/<id> scrolls to and highlights that entry.
 
-import { ATTEMPTS, PHASE_LABELS, PHASE_ORDER, OUTCOMES, byPhase } from '../../../content/attempts.js';
+import { ATTEMPTS, PHASE_LABELS, PHASE_ORDER, OUTCOMES, byPhase, FAMILIES } from '../../../content/attempts.js';
 import { esc, qs, qsa } from '../util.js';
 import { demoHtml, mountDemos } from '../components/demo.js';
 import { toItem, initSearch, fmtDate } from '../components/search.js';
 import { commentsHtml, mountComments } from '../components/comments.js';
 
-function entryHtml(a) {
+function compactHtml(a, withDemo = true) {
   const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
-  if (a.compact) {
-    const line = a.insight || a.output || '';
-    return `<article class="tried-entry tried-compact" id="t-${esc(a.id)}">
-      <div class="tc-row"><span class="tbadge ${o.cls} sm" title="${esc(o.desc)}">${o.label}</span><b class="tc-title">${esc(a.title)}</b></div>
-      <div class="tc-line">${esc(line.length > 240 ? line.slice(0, 240) + '…' : line)}</div>
-      <details class="tc-more"><summary>full input · method · output</summary>
-        <dl class="tried-io"><dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd><dt>Output</dt><dd>${esc(a.output)}</dd>${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
-        ${demoHtml(a.id)}${commentsHtml(a.id)}
-      </details>
-    </article>`;
-  }
+  const line = a.insight || a.output || '';
+  return `<article class="tried-entry tried-compact" id="t-${esc(a.id)}">
+    <div class="tc-row"><span class="tbadge ${o.cls} sm" title="${esc(o.desc)}">${o.label}</span><b class="tc-title">${esc(a.title)}</b>${a.author ? ` <span class="tbadge badge-author sm" title="The author">👤 ${esc(a.author)}</span>` : ''}</div>
+    <div class="tc-line">${esc(line.length > 240 ? line.slice(0, 240) + '…' : line)}</div>
+    <details class="tc-more"><summary>full input · method · output</summary>
+      <dl class="tried-io"><dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd><dt>Output</dt><dd>${esc(a.output)}</dd>${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
+      ${withDemo ? demoHtml(a.id) + commentsHtml(a.id) : ''}
+    </details>
+  </article>`;
+}
+function entryHtml(a) {
+  if (a.compact) return compactHtml(a, true);
+  const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
   return `<article class="tried-entry" id="t-${esc(a.id)}">
     <div class="tried-head">
       <h4>${esc(a.title)}</h4>
@@ -53,9 +55,19 @@ export default async function triedView(ctx = {}) {
     if (!items.length) return '';
     const cats = {};
     for (const a of items) (cats[a.category] = cats[a.category] || []).push(a);
-    const catHtml = Object.entries(cats).map(([cat, list]) =>
-      `<h3 class="tried-cat">${esc(cat)} <span class="faint">· ${list.length}</span></h3>${list.map(entryHtml).join('')}`
-    ).join('');
+    const catHtml = Object.entries(cats).map(([cat, list]) => {
+      const fam = FAMILIES[ph + ' :: ' + cat];
+      if (fam && list.length > 3) {
+        const labs = (Array.isArray(fam.lab) ? fam.lab : fam.lab ? [fam.lab] : []).map(demoHtml).join('');
+        return `<h3 class="tried-cat">${esc(cat)} <span class="faint">· ${list.length} trials, folded</span></h3>
+          <article class="tried-family">
+            <div class="fam-blurb">${fam.blurb}</div>
+            ${labs}
+            <details class="fam-list"><summary>show the ${list.length} individual trials</summary>${list.map(a => compactHtml(a, false)).join('')}</details>
+          </article>`;
+      }
+      return `<h3 class="tried-cat">${esc(cat)} <span class="faint">· ${list.length}</span></h3>${list.map(entryHtml).join('')}`;
+    }).join('');
     return `<section class="tried-phase phase-card phase-${ph}"><div class="phase-tag">${({ genesis: 'Phase 0', mrrobot: 'Phase 2', architect: 'Phase 3.2', salphaseion: 'Endgame' })[ph] || ph}</div><h2 id="phase-${ph}">${esc(PHASE_LABELS[ph])} <span class="faint" style="font-size:14px">· ${items.length} attempts</span></h2>${catHtml}</section>`;
   }).join('');
 
