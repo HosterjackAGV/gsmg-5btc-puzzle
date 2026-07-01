@@ -37,3 +37,10 @@ CLAUDE.local.md
 .mcp.json
 .anthropic/
 claude-*.local.*
+
+# ── AI memory / scratch (belt-and-suspenders; these live outside the repo, but never track them) ──
+memory/
+MEMORY.md
+scratch/
+scratchpad/
+*.scratch
