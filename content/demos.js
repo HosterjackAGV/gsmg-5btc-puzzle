@@ -10,6 +10,7 @@
 // Everything runs in the browser on the genuine artifacts below — no faking, no omissions.
 
 import { MATRIX } from './matrix.js';
+import { genesisLab } from '../assets/js/labs/genesis-lab.js';
 
 export const PUZZLE = {
   dbbi: 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe',
@@ -2578,4 +2579,12 @@ const plain = aesDecrypt(salph_inner, sha256hex(candidate));`,
     },
   },
 
+};
+
+// ── graphical LAB overrides: replace selected text-demos with fully interactive tools ──
+// The interactive genesis grid supersedes the old text re-read demo (read / colour / split / EDIT live).
+DEMOS['ledger-exhaustive-reread-14x14-matrix'] = {
+  lab: genesisLab, open: false,
+  summary: 'Interactive genesis grid — read it, colour it, split it, EDIT it yourself',
+  intro: 'The real Phase-0 image as a live 14×14 grid. Animate the counter-clockwise spiral to watch bits become the URL; toggle the colour cells, the prime (A007522) indices, the #fefefe seed, and the yin-yang split; and <b>click any cell to flip it</b> and watch <code>matrixsumlist</code>, the 24-bit colour stream and <code>yellowblueprimes</code> recompute instantly.',
 };
