@@ -159,7 +159,7 @@ export function initSearch(root, mode, items, order) {
 
   // collect the entry elements + their highlightable fields per mode
   const entries = mode === 'tried'
-    ? qsa('.tried-entry', root).map(el => ({ el, id: el.id.replace(/^t-/, ''), hi: [el.querySelector('.tried-head h4'), ...qsa('.tried-io dd', el)] }))
+    ? qsa('.tried-entry', root).map(el => ({ el, id: el.id.replace(/^t-/, ''), hi: [el.querySelector('.tried-head h4'), el.querySelector('.tc-title'), el.querySelector('.tc-line'), ...qsa('.tried-io dd', el)].filter(Boolean) }))
     : qsa('.sum-insights > li, .sum-alist li', root).map(el => ({ el, id: el.getAttribute('data-id') || '', hi: [el.querySelector('.sum-title'), el.querySelector('.sum-ins'), el.querySelector('a')].filter(Boolean) }));
   entries.forEach((e, i) => { e.el._ord = i; });
   const idOf = (el) => el.id ? el.id.replace(/^t-/, '') : (el.getAttribute('data-id') || '');
@@ -177,6 +177,7 @@ export function initSearch(root, mode, items, order) {
         const grp = []; for (let n = cat.nextElementSibling; n && !n.classList.contains('tried-cat'); n = n.nextElementSibling) if (n.classList.contains('tried-entry')) grp.push(n);
         grp.sort(cmp); let anchor = cat; for (const en of grp) { anchor.after(en); anchor = en; }
       });
+      qsa('.fam-list', root).forEach(fl => { qsa(':scope > .tried-entry', fl).sort(cmp).forEach(en => fl.appendChild(en)); });
     } else {
       qsa('.sum-insights, .sum-alist', root).forEach(ul => { qsa(':scope > li', ul).sort(cmp).forEach(li => ul.appendChild(li)); });
     }
@@ -202,11 +203,18 @@ export function initSearch(root, mode, items, order) {
       if (ok) { shown++; for (const h of e.hi) highlightInto(h, highlight); }
     }
     // roll up container visibility
+    const activeNow = !!state.q.trim() || Object.values(state.sel).some(s => s.size);
     if (mode === 'tried') {
       qsa('.tried-cat', root).forEach(cat => {
         let any = false;
-        for (let n = cat.nextElementSibling; n && !n.classList.contains('tried-cat'); n = n.nextElementSibling)
-          if (n.classList.contains('tried-entry') && !n.hidden) { any = true; break; }
+        for (let n = cat.nextElementSibling; n && !n.classList.contains('tried-cat'); n = n.nextElementSibling) {
+          if (n.classList.contains('tried-entry')) { if (!n.hidden) any = true; }
+          else if (n.classList.contains('tried-family')) {          // entries are nested in the folded family
+            const kids = qsa('.tried-entry', n), famAny = kids.some(en => !en.hidden);
+            n.hidden = !famAny; if (famAny) any = true;
+            const det = n.querySelector('details.fam-list'); if (det) det.open = activeNow && famAny;   // reveal matches while filtering
+          }
+        }
         cat.hidden = !any;
       });
       qsa('.tried-phase', root).forEach(ph => { ph.hidden = !qsa('.tried-entry', ph).some(en => !en.hidden); });
