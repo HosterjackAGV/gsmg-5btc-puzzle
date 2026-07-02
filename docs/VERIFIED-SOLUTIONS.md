@@ -348,7 +348,7 @@ These are **genuinely unsolved**. Confidence: HIGH that they are open (the coins
 - http://web.archive.org/web/20260110051955/https://gsmg.io/ ; https://archive.org/wayback/available?url=gsmg.io&timestamp=20260110
 
 **Local artifacts (this repo, ✅ salts & decrypts verified directly)**
-- `ciphertexts/phase2.txt`, `phase3.txt`, `phase32.txt`, `salphaseion.txt`, `cosmic.txt`
+- `ciphertexts/phase2.txt`, `phase3.txt`, `phase32.txt`, `salphaseion.txt`, `cosmic.txt` — ⚠️ naming: `salphaseion.txt` is the **80-byte inner blob** (salt `3ab585…`) embedded in the SalPhaseIon *soup*, **not** the full SalPhaseIon page; it is byte-identical to the duplicate `salph_inner.txt` (the site fetches it under the id `salphaseion`, the docs call it `salph_inner` — same 80 bytes).
 - `index.html`, `README.md`, `CLAUDE.md`
 
 ---

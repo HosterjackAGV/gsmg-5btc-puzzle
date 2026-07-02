@@ -587,6 +587,7 @@ Two conventions established here carry through the **entire** rest of the puzzle
 | Song identified | "The Warning" by **Logic** (Inner Mix) | ✅ CONFIRMED |
 | Image fragments | `warning`, `crypto` (red herring), `logic`, `can you`, `dig it`, `+ -` | ✅ CONFIRMED |
 | Passphrase | `theflowerblossomsthroughwhatseemstobeaconcretesurface` | ✅ CONFIRMED |
+| Creator artifact confirming the answer | Jrk released `sha256(answer)` = `5ac407837447fba24ba2802e4d1e9aecb4580aa29fef1088cc387c180b746f75` (2019-04-22) — recomputing `sha256("theflowerblossoms…concretesurface")` reproduces it exactly | ✅ CONFIRMED (independently recomputed) |
 | Redirect / Phase 2 URL | `http://gsmg.io/choiceisanillusioncreatedbetweenthosewithpowerandthosewithoutaveryspecialdessertiwroteitmyself` | ✅ CONFIRMED |
 | Source of the redirect URL | Two **Merovingian** quotes, *The Matrix Reloaded* | ✅ CONFIRMED |
 | Private key revealed this phase | None (navigation gate only) | ✅ CONFIRMED |
@@ -672,11 +673,11 @@ So choice isn't power — it's an illusion — and **causality** is "the only re
 `sha256("causality")` = **`eb3efb5151e6255994711fe8f2264427ceeebf88109e1d7fad5b0a8b6d07e5bf`** (✅ recomputed)
 
 ```
-openssl enc -aes-256-cbc -d -a -md sha256 -in phase2.txt \
+openssl enc -aes-256-cbc -d -a -A -md sha256 -in phase2.txt \
   -pass pass:eb3efb5151e6255994711fe8f2264427ceeebf88109e1d7fad5b0a8b6d07e5bf
 ```
 
-> **Note on `-md sha256`:** Modern OpenSSL (≥1.1.0) defaults the key-derivation digest to SHA-256, so the puzzlehunt README's command (which omits `-md`) works on new builds. On old OpenSSL (≤1.0.2) the default is MD5 and the decrypt fails — so always add `-md sha256` for portability. (Phase-2 AES salt, read from the file header: `06286612d43ed7ed`. ✅ extracted.)
+> **Note on `-md sha256`:** Modern OpenSSL (≥1.1.0) defaults the key-derivation digest to SHA-256, so the puzzlehunt README's command (which omits `-md`) works on new builds. On old OpenSSL (≤1.0.2) the default is MD5 and the decrypt fails — so always add `-md sha256` for portability. **Note on `-A`:** the `ciphertexts/*.txt` files are stored as a **single unwrapped base64 line**, and `openssl enc -a` expects newline-wrapped base64 — so the **`-A`** flag (base64 on one line) is required or you get `error reading input file` / a bad decrypt. (If you re-wrap the file at 64 columns, plain `-a` works too.) (Phase-2 AES salt, read from the file header: `06286612d43ed7ed`. ✅ extracted.)
 
 A Python reproduction of the guess-and-decrypt loop:
 
@@ -1046,7 +1047,7 @@ SHA-256 of that full string is the **Phase 3 key**:
 ✅ CONFIRMED (recomputed, and it chain-decrypts Phase 3).
 
 ```
-openssl enc -aes-256-cbc -d -a -md sha256 -in phase3.txt \
+openssl enc -aes-256-cbc -d -a -A -md sha256 -in phase3.txt \
   -pass pass:1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5
 ```
 
@@ -1084,7 +1085,7 @@ openssl enc -aes-256-cbc -d -a -md sha256 -in phase3.txt \
 Decrypt the Phase 3 blob with the Phase-2 key (OpenSSL `aes-256-cbc`, base64-armored, SHA-256 KDF — the same recipe used in every phase):
 
 ```bash
-openssl enc -aes-256-cbc -d -a -md sha256 -in phase3.txt \
+openssl enc -aes-256-cbc -d -a -A -md sha256 -in phase3.txt \
   -pass pass:1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5
 ```
 
@@ -1279,7 +1280,7 @@ The two big payoffs of this phase are the **full "Architect" monologue** (the Be
 > ```
 > Decrypt command:
 > ```bash
-> openssl enc -aes-256-cbc -d -a -md sha256 -in phase32.txt \
+> openssl enc -aes-256-cbc -d -a -A -md sha256 -in phase32.txt \
 >   -pass pass:250f37726d6862939f723edc4f993fde9d33c6004aab4f2203d9ee489d61ce4c
 > ```
 > **Phase 3.2 salt** (read from the file header): `eefc4c5befc1656a`. ✅ CONFIRMED.
@@ -1773,7 +1774,7 @@ Visiting that URL loads the **SalPhaseIon / Cosmic Duality** page — a long "so
 
 ![SalPhaseIon / Cosmic Duality](assets/walkthrough/salphaseion-assets/SalPhaselonCosmicDuality.png)
 
-After the [Decentraland step](#) revealed the command `HASHTHETEXT`, you take **all the text on the opening puzzle image including the prize address**, with no spaces — `GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe` (59 chars, **no trailing newline**) — and SHA-256 it:
+After the Decentraland step (§7) revealed the command `HASHTHETEXT`, you take **all the text on the opening puzzle image including the prize address**, with no spaces — `GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe` (59 chars, **no trailing newline**) — and SHA-256 it:
 
 ```python
 >>> import hashlib
@@ -1937,7 +1938,7 @@ U2FsdGVkX186tYU0hVJBXXUnBUO7C0+X4KUWnWkCvoZSxbRD3wNsGWVHefvdrd9z
 QvX0t8v3jPB4okpspxebRi6sE1BMl5HI8Rku+KejUqTvdWOX6nQjSpepXwGuN/jJ
 ```
 
-> Note the soup *appears* to give unequal-length lines and a trailing `shabefanstoo`; once the framing tokens (`shabef`, `anstoo`) and the embedded `enter` are removed, the clean blob is the two 64-char base64 lines above. ⚠️ The very first `z` in the first line is the separator that the `enter` binary was nested at.
+> Note the soup *appears* to give unequal-length lines and a trailing `shabefanstoo`; once the framing tokens (`shabef`, `anstoo`) and the embedded `enter` are removed, the clean blob is the two 64-char base64 lines above. ⚠️ The `enter` binary is nested **inside** the inner blob's base64: it sits immediately **after** the `z` at position 64 of the first line — and that `z` is itself the blob's 64th base64 character (part of the ciphertext payload), **not** a soup `z`-separator. (Reassembling the blob means concatenating the base64 either side of the nested `enter`, not splitting on that `z`.)
 
 - **salph_inner salt:** `3ab585348552415d` (✅ extracted from the artifact)
 - **Size:** 80-byte ciphertext (so a correct key would yield ≤79 readable bytes — an **instant, self-verifying oracle**).
@@ -2080,7 +2081,7 @@ From the puzzle's **April 2019 launch** onward, the creator — posting in the o
 | Date | Channel | Type | One-line summary |
 |------|---------|------|------------------|
 | 2019-04-20 | Telegram | Event | First code cracked "way faster than expected"; confirms the puzzle has **multiple stages** |
-| 2019-04-22 | Telegram | Hint | Releases the **stage-1 SHA-256 hash** (`5ac4078…746f75`) so solvers can test answers offline; the answer is "**a sticker**" |
+| 2019-04-22 | Telegram | Hint | Releases the **stage-1 SHA-256 hash** (`5ac4078…746f75`) so solvers can test answers offline — this hash **= `sha256(theflowerblossoms…concretesurface)`**, a creator confirmation of the **Phase-1 lyric answer**. (A "a sticker" aside got bundled with it in earlier write-ups; it does **not** hash to this value and is not the stage-1 answer.) |
 | 2019-04-23 | Telegram | Event | **Ewout** is the first to crack the April-1st puzzle |
 | 2019-05-08 | Telegram | Event | Somebody reaches **Phase 3** |
 | 2019-05-14 | Telegram | Meta | The puzzle wasn't promoted and **is** solvable; unrelated "quests" may be scams |
@@ -2152,9 +2153,9 @@ Within hours of launch the first code fell — far faster than expected — and 
 > **Jrk Bgrt** (admin): The first part. Maybe the puzzle has multiple stages.
 > **Jrk Bgrt** (admin) *(asked whether it really does)*: It is.
 
-### 2019-04-22 — The stage-1 SHA-256 hash ("a sticker")
+### 2019-04-22 — The stage-1 SHA-256 hash (= SHA-256 of the Phase-1 answer)
 
-Because the site threw token/CSRF errors on repeated tries (the load-balancer "is a bitch on multiple tries"), Jrk released the **SHA-256 of the stage-1 answer** so solvers could test candidates offline, and pointed them at an online generator. He also let slip that the answer is "**a sticker**."
+Because the site threw token/CSRF errors on repeated tries (the load-balancer "is a bitch on multiple tries"), Jrk released the **SHA-256 of the stage-1 answer** so solvers could test candidates offline, and pointed them at an online generator. **This hash is a creator confirmation of the Phase-1 answer:** `sha256("theflowerblossomsthroughwhatseemstobeaconcretesurface")` = `5ac407837447fba24ba2802e4d1e9aecb4580aa29fef1088cc387c180b746f75` (✅ recomputed independently). ⚠️ The trailing "**a sticker**" remark — which some write-ups paired with this hash as if it were the answer — does **not** hash to this value and is unrelated to the stage-1 answer; treat it as a separate aside, not the Phase-1 solution.
 
 > **Jrk Bgrt** (admin): 5ac407837447fba24ba2802e4d1e9aecb4580aa29fef1088cc387c180b746f75
 > **Jrk Bgrt** (admin): just try hit your options against that hash.

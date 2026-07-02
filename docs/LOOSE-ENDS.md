@@ -401,9 +401,9 @@
 - → potential: key = sha256(assembly of the 4 ingredients) with 2 values unknown + unknown combine/separator. Under-explored: multi-layer encryption ("23/16/7"), label→value for ALL four ingredients, "reinsert the prime basics" as literal key pre-processing.
 
 **hex Salted__ URL blob (urlblob.bin, salt 74c974e3f92e64b5, 96-byte ct)** — `[UNDECODED]`
-- What: a FOURTH valid OpenSSL blob, distinct salt; referenced by NO attack script — orphaned.
-- Used: never; zero key attempts.
-- → potential: 96-byte ct → instantly-obvious oracle if real. Pin down provenance (likely pulled from a gsmg.io page hex). Cheapest high-leverage action: run the standard candidate-key sweep against it.
+- What: a FOURTH valid OpenSSL blob, distinct salt.
+- Used: not decrypted. ⚠️ **CORRECTION** — the earlier "zero key attempts / referenced by no attack script" wording is STALE: `BLOB-COMBINATION-ANALYSIS.md` tested it in the ~35,000-combination battery against all four blobs, and `ENDGAME-ANALYSIS.md` §8c records it as **undecryptable by any tested key**. ⚠️ Also: there is **no `ciphertexts/urlblob.txt` committed** — its salt (`74c974e3f92e64b5`) and 96-byte size are cited in three docs, but the artifact itself is not in the repo, so it cannot be reproduced against locally.
+- → potential: 96-byte ct → instantly-obvious oracle if real. Pin down provenance (likely pulled from a gsmg.io page hex) and commit the artifact so it is reproducible.
 
 **Soup 'z' separators + base64 split points** — `[UNDERUSED]`
 - What: 'z' tokenizes the soup; inner blob base64 split by 'z' + "enter."
@@ -584,8 +584,8 @@ arrangement of all 8 fragments remains unfound. (The Wayback hex-`Salted__` URL 
 7. **Zero-INSERTION at prime-indexed positions before field-decoding dbbi/faed.**
    Experiment: in the correct grid shape (7×13 / 13×7 for dbbi; 19×30 / 30×19 for faed), insert '0' at prime positions (or prime-valued cells) per "some characters need to be zeroed out," then run the a1z26→int→hex→ASCII field-decode and score for printable words.
 
-8. **urlblob.bin (4th orphaned AES blob, salt 74c974e3f92e64b5) — zero attempts ever.**
-   Experiment: pin its provenance, then run the entire existing candidate-key sweep (all soup tokens, 4-ingredient assemblies, poem/first-hint phrases × literal/sha/raw/double) against its 96-byte ciphertext — cheapest high-leverage action.
+8. **urlblob.bin (4th blob, salt 74c974e3f92e64b5) — already tested (NOT "zero attempts"; see §8c / BLOB-COMBINATION-ANALYSIS), and not committed as an artifact.**
+   Experiment: commit the actual ciphertext (there is currently no `ciphertexts/urlblob.txt`), pin its provenance, then re-run the candidate-key sweep against its 96-byte ciphertext. The prior battery already found nothing.
 
 9. **matrixsumlist (104 bits) as a MASK/index over dbbi & faed, not just a label.**
    Experiment: align the 104-bit a/b string against dbbi/faed and use it to select/zero characters (the "array indexing" the creator cites), then re-field-decode the masked symbols; also fix the lossy concatenation format (two-digit / base-14 / interleaved) before any cosmic hash.
