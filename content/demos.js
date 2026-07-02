@@ -17,6 +17,7 @@ import { cosmicRecipeLab } from '../assets/js/labs/cosmic-recipe.js';
 import { spectralLab } from '../assets/js/labs/spectral-lab.js';
 import { analysisLab } from '../assets/js/labs/analysis-lab.js';
 import { chessVicLab } from '../assets/js/labs/chess-vic-lab.js';
+import { reverseBinaryLab } from '../assets/js/labs/reverse-binary-lab.js';
 
 export const PUZZLE = {
   dbbi: 'dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe',
@@ -2638,4 +2639,9 @@ DEMOS['genesis-yinyang-architecture-cover-logo-a007522'] = {
   lab: genesisLab,
   summary: 'Interactive genesis grid — see the yin-yang split &amp; the A007522 primes',
   intro: 'Toggle the <b>yin-yang split</b> and the <b>prime (A007522)</b> indices on the live grid to see the blue-upper-left / yellow-lower-right duality and the prime-indexed colour cells for yourself.',
+};
+DEMOS['reverse-binary-hint-involution-prime-length-structure'] = {
+  lab: reverseBinaryLab,
+  summary: 'Reverse-binary lab — decode jrk’s hint live, see the prime-length anatomy, test the combine',
+  intro: 'The 2023-02-23 master hint, made interactive: toggle the two reversals to <b>decode jrk’s verbatim 161-byte post</b> into the recipe (and prove the transform is its own inverse); see the <b>token/prime-length anatomy</b> (×13 = known, prime-powers = "the prime part"); check the <b>wordplay</b> identities (promised = anagram of PRIMES+DO); and <b>reproduce the combine sweep</b> against the real oracle blob.',
 };

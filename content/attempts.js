@@ -1987,6 +1987,21 @@ export const ATTEMPTS = [
   "output": "0 printable and 0 WIF-shaped hits on any of the three blobs; every PKCS7-valid decrypt was high-entropy noise. The computed-value recipe space -- the natural successor to the exhausted literal-word space -- is empty for every genesis-derived yellowblueprimes/yinyang candidate reachable from the coloured-cell + primes {2,3,5,7} rule.",
   "outcome": "verified-fail",
   "insight": ""
+ },
+ {
+  "id": "reverse-binary-hint-involution-prime-length-structure",
+  "phase": "salphaseion",
+  "category": "the reverse-binary master hint",
+  "title": "The 2023-02-23 master hint decoded byte-exact -- an INVOLUTION whose token-lengths encode 'the prime part'; the combine sweeps it implies are still null",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "source": "this session (2026-07-02) -- verbatim binary recovered from jrk's Telegram post, then a five-lens meaning analysis with every structural claim recomputed and every implied value swept",
+  "date": "2026-07-02",
+  "input": "jrk's verbatim 2023-02-23 'reverse binary' post (161 bytes, recovered byte-exact from the Telegram export; now in docs/WALKTHROUGH.md). Decoded via reverse-the-bits-in-each-byte THEN reverse-the-byte-order into the 8-token master hint: the 4 INGREDIENTS (yellowblueprimes . matrixsumlist . lastwordsbeforearchichoice . yinyang) and the 4 TAUNTS (wewontgiveawaythepassword . itsinfrontofyoureyesbutyourenotseeingit . verylaststepisatruegiveaway . promised).",
+  "method": "Recomputed every structural claim, then swept the value/combine families the structure implies against the real blobs on a plant-validated harness. STRUCTURE verified: the decode is an INVOLUTION (op(op(x))=x, equal to reversing the whole bitstream once); the token lengths [16,13,26,7,25,39,27,8] sum to 161=7x23 and the 8 tokens concatenate with ZERO separators; the three x13 lengths {13,26,39} are exactly the KNOWN/pointer tokens while the other five {16,7,25,27,8} are prime-powers with bases {2,3,5,7}; 'promised' minus 'primes' = {d,o} (anagram of 'PRIMES'+'DO'); 'yellowblueprimes' minus 'primes' = anagram of 'yellowblue'; SalPhaseIon is an anagram of ALPHANOISES. SWEEP (~270k decrypts): concat / concat-then-reverse / XOR-of-4-hashes / Beaufort combines x forward+reversed order x char/byte/full-bit reversal of the assembled key x matrixsumlist mirror byte-forms x genesis-derived and complement yellowblueprimes/yinyang candidates, against cosmic + both 80-byte oracle blobs, ranked by printable score against an empirical noise floor.",
+  "output": "STRUCTURE (all recomputed, verified): the master hint's METHOD is its message -- the operation that READS it (an end-to-end mirror) is self-inverse, so the combine belongs to the involution/symmetric family, not an exotic forward transform; the hint self-labels a zero-separator concatenation; and its token-length geometry literally sorts 'known/pointer' (x13) from 'the prime part' (prime-power lengths, bases {2,3,5,7}). VALUES (swept): 0 readable decrypts, 0 keys -- top printable 0.53 vs a random-key max of 0.60 (noise floor ~0.37). Every combine/reversal/genesis-value family lands at noise. The genesis derivation FRAMEWORK is confirmed exact (blue-prime index set {2,3,7,11,13,17,23}, yellow {5,19}) yet no value read from it opens anything.",
+  "outcome": "verified-insight",
+  "insight": "The reverse-binary hint is the puzzle's Rosetta Stone, and its METHOD is the message: the decode is an INVOLUTION (self-inverse, like Beaufort where encrypt=decrypt and the yin-yang's 180-degree symmetry), so the endgame's final combine is almost certainly self-inverse/symmetric -- and the hint quietly performs the very combine it 'withholds' (zero-separator concatenation, then a mirror). Newly verified structure: the token lengths encode 'the prime part' (prime-power lengths with bases {2,3,5,7}; x13 flags the KNOWN tokens), and 'promised' is an anagram of PRIMES+DO. But every VALUE these readings imply was swept to noise, which sharpens the diagnosis: the wall is the yinyang VALUE -- the short, dominant unknown ('once you hit a yinyang you solve it the same day') -- not the combine operation, which the evidence says is trivial. The interactive lab reproduces the decode, the prime-length anatomy, the wordplay identities, and the combine sweep in-browser."
  }
 ];
 
