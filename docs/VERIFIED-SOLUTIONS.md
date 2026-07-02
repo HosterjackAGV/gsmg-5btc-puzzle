@@ -1,5 +1,3 @@
-All canonical crypto values reproduce exactly: the four phase hashes, the base64 `Salted__` prefix, and all five salts read straight from the artifacts. Now I'll write the complete reference document.
-
 # GSMG.io 5 BTC Puzzle — The Definitive Verified Reference
 
 > A beginner-friendly, rigorously fact-checked compendium of the GSMG.io 5 BTC Bitcoin puzzle. Every value below is tagged with a verification status. Nothing past Phase 3.2 is solved — and this document never pretends otherwise.

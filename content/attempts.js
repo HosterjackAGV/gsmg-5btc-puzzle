@@ -131,7 +131,7 @@ export const ATTEMPTS = [
   "dateApprox": true,
   "input": "The genesis grid's blue + yellow colored-cell indices vs OEIS A007522 = primes of the form 8n+7 (primes congruent to -1 mod 8): 7, 23, 31, 47, 71, 79, 103, 127, 151, 167, 191, 199, 223, 239, ... (14 of them below 256).",
   "method": "Compared the prime indices of the blue/yellow squares against named OEIS prime sequences; A007522 (8n+7 primes) lines up -- the first 11 primes of A007522 are reported to match the primes at the blue+yellow square indices.",
-  "output": "A concrete, NAMED candidate for the 'yellowblueprimes' prime set: A007522 (primes = -1 mod 8), with 49 (=7x7) primes in range, 14 below 256 -- and notably it CONTAINS 103, the dimension of the Cosmic Duality 103x103 matrix. A specific, checkable prime list to test against dbbi/faed and the genesis Y/B cells, where prior public work used only the small primes {2,3,5,7}.",
+  "output": "A concrete, NAMED candidate for the 'yellowblueprimes' prime set: A007522 (primes = -1 mod 8), with 49 (=7x7) primes in range, 14 below 256 -- and notably it CONTAINS 103 (a prime that also surfaces in the -- separately debunked -- community '103x103 reshape' claim about the endgame blob; see cosmic-1327-byte-blob-103x103-matrix). A specific, checkable prime list to test against dbbi/faed and the genesis Y/B cells, where prior public work used only the small primes {2,3,5,7}.",
   "outcome": "unverified",
   "insight": ""
  },
@@ -1368,16 +1368,16 @@ export const ATTEMPTS = [
   "id": "cosmic-1327-byte-blob-103x103-matrix",
   "phase": "salphaseion",
   "category": "cosmic duality structure",
-  "title": "The Cosmic Duality decrypt (1327 bytes) reshapes to a 103×103 bit matrix — 103 is prime, a second genesis-style grid",
+  "title": "DEBUNK: the '1327-byte Cosmic Duality decrypt → 103×103 matrix' claim rests on a FABRICATED decrypt (issue #56's fake 4f7a1e page); only the arithmetic is real",
   "who": "community",
-  "source": "community reproducibility audit (Telegram, 2026-02)",
+  "source": "community reproducibility audit (Telegram, 2026-02); premise traced and refuted here",
   "date": "2026-01-01",
   "dateApprox": true,
-  "input": "The AES-decrypted output of the Cosmic Duality stage: reported as a 1327-byte blob whose SHA256 is 4f7a1e4efe4bf6c5581e32505c019657cb7b030e90232d33f011aca6a5e9c081 (the known checkpoint hash already in this catalog).",
-  "method": "Read the 1327-byte decrypt as a bit stream and reshape: 1327 bytes = 10616 bits = 103*103 (=10609) + 7 padding bits, so it folds cleanly into a 103x103 grid. The blob was rebuilt into that matrix directly.",
-  "output": "The Cosmic Duality decrypt is not opaque ciphertext -- it fits exactly into a 103x103 bit matrix, and 103 is PRIME, mirroring the genesis 14x14 grid and the puzzle's 'primes are important' theme. That gives a concrete, deterministic structure to attack (rows/cols/spiral/parity, colour-cell analogues) rather than a featureless blob. Novel to the catalog: the 4f7a1e4e hash was recorded, but the 103x103 prime-matrix shape of the decrypt was not.",
-  "outcome": "verified-insight",
-  "insight": "The 1327-byte Cosmic Duality decrypt reshapes exactly to a 103x103 bit matrix (103 prime, +7 pad bits) -- a second, larger genesis-style grid, turning the endgame blob into a structured grid target instead of opaque ciphertext."
+  "input": "A community claim that the AES-decrypted Cosmic Duality output is a 1327-byte blob with SHA256 4f7a1e4efe4bf6c5581e32505c019657cb7b030e90232d33f011aca6a5e9c081, reshaped into a 103x103 bit grid. CRITICAL PREMISE CHECK: the cosmic blob is UNSOLVED, so no such decrypt is known to exist; that 4f7a1e hash is the fabricated 'next page' from GitHub issue #56 -- its only Wayback capture is a 530 server error (never real content), and no cosmic key produces a plaintext hashing to it (see cosmic-xor-7-token-issue56 and ENDGAME-ANALYSIS.md 7/8c).",
+  "method": "Separated the arithmetic from the premise. ARITHMETIC (true): 1327 bytes = 10616 bits = 103*103 (=10609) + 7 leftover bits, so ANY 1327-byte stream folds into a 103x103 grid with 7 spare bits, and 103 is prime. PREMISE (false): there is no verified 1327-byte Cosmic Duality decrypt to reshape -- the endgame is open -- and the specific decrypt cited is the issue-#56 fabrication this catalog independently refutes.",
+  "output": "The reshape is numerology applied to a NON-EXISTENT plaintext. The only real content is the arithmetic (any 1327-byte stream reshapes to 103^2+7 bits; 103 happens to be prime). There is no known cosmic decrypt, and the cited 4f7a1e 'decrypt' is fabricated -- so this is NOT a structural finding about the real endgame, and '103' is not a verified lead. Logged as a cautionary correction. (Same lineage: GitHub issue #84's 'reshape / 35 blocks' talk traces back through the same Bitcointalk thread.)",
+  "outcome": "verified-fail",
+  "insight": "A widely-repeated claim that dissolves under scrutiny: '103x103' is correct arithmetic applied to a FAKE decrypt (issue #56's 4f7a1e 'next page', a Wayback 530 error). Because the cosmic blob is unsolved there is no plaintext to reshape, so the 103-is-prime coincidence proves nothing about the endgame. Kept as a debunk so the number 103 is not mistaken for a verified structural lead."
  },
  {
   "id": "blob-independence-conclusion",
