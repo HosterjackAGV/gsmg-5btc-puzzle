@@ -2544,7 +2544,7 @@ A single message reinforcing the **theory-of-everything / answer-to-everything**
 
 ### 2023-02-23 — Official Hint: binary string
 
-A long binary string was posted. Each group is 8 bits, written **bit-reversed (LSB-first) within each byte** (the recurring trailing `…110` pattern), **and the byte order is reversed too**. The complete decode is therefore: reverse the bits in each byte, **then** reverse the whole sequence of bytes, then read as ASCII. The source image is authoritative:
+A long binary string was posted. Each group is 8 bits, written **bit-reversed (LSB-first) within each byte** (the recurring trailing `…110` pattern), **and the byte order is reversed too**. The complete decode is therefore: reverse the bits in each byte, **then** reverse the whole sequence of bytes, then read as ASCII. The full binary exactly as posted (161 bytes, transcribed verbatim and verified to decode cleanly):
 
 ![Binary string hint, Telegram 2023-02-23](assets/walkthrough/hints/2023-02-23.png)
 
@@ -2554,35 +2554,37 @@ A long binary string was posted. Each group is 8 bits, written **bit-reversed (L
 11101110 10000110 10100110 01101110 10010110
 11100110 10100110 10101110 01001110 00101110
 10000110 11001110 10010110 00001110 10100110
-01000110 11001110 00101110 11001110 10000110
+00101110 11001110 00101110 11001110 10000110
 00110110 10011110 01001110 10100110 01101110
 00101110 10010110 11100110 01110110 10010110
 10100110 10100110 11001110 00101110 11110110
-01100110 10100110 01001110 10101110 11110110
+01110110 10100110 01001110 10101110 11110110
 10011110 00101110 10101110 01000110 11001110
 10100110 10011110 10100110 01001110 10101110
 11110110 10011110 01100110 11110110 00101110
-01010110 11110110 10100110 01100110 01110110
-10010110 10100110 00101110 10010110 00100110
+01110110 11110110 01001110 01100110 01110110
+10010110 11001110 00101110 10010110 00100110
 01001110 11110110 11101110 11001110 11001110
-10000110 00001110 10010110 00010110 00101110
+10000110 00001110 10100110 00010110 00101110
 10011110 10000110 11101110 10000110 10100110
-01101110 10010110 11100110 00010110 01110110
+01101110 10010110 11100110 00101110 01110110
 11110110 11101110 10100110 11101110 11100110
 01110110 10000110 10011110 01110110 10010110
 10011110 10100110 11000110 10010110 11110110
-00101110 11001110 10010110 00010110 11000110
+00010110 11000110 10010110 00010110 11000110
 01001110 10000110 10100110 01001110 11110110
 01100110 10100110 01000110 11001110 00100110
-00110110 11110110 11101110 00101110 11001110
-10000110 00111110 10100110 11001110 00011110
+01001110 11110110 11101110 00101110 11001110
+10000110 00110110 00101110 11001110 10010110
+00110110 10110110 10101110 11001110 00011110
 10010110 01001110 00101110 10000110 10110110
 11001110 10100110 10110110 10010110 01001110
-00010110 10100110 00101110 01000110 11101110
-11110110 00110110 00110110 10100110 10011110
+00001110 10100110 10101110 00110110 01000110
+11101110 11110110 00110110 00110110 10100110
+10011110
 ```
 
-> ⚠️ **The binary block above is a lossy screenshot transcription — do not rely on the exact bits.** Applying the full method (reverse each byte's bits, then reverse the byte order) reproduces the message only *approximately*: the first byte decodes to `y` (`yellowb…`) but transcription drift accumulates after that, and the block is **155 bytes vs the 161 characters** of the real message (≈6 bytes short). For byte-exact bits, re-transcribe from the source image above. The **authoritative, independently-corroborated decode** (the well-known 2023 master hint) is:
+Decoding — reverse the bits in each byte, then reverse the whole sequence of bytes, then read as ASCII (**161 bytes → 161 characters, verified byte-exact**) — it reads:
 
 ```
 yellowblueprimes matrixsumlist lastwordsbeforearchichoice yinyang
