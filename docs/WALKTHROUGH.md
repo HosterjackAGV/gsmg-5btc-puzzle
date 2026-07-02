@@ -1833,7 +1833,7 @@ a b b a b b a b a b b a a a a b a b b b a b a a a b b b a a b a a b b a b a a b 
 ```
 
 ```python
-s = 'abbabbababbaaaababaaababbabaaaabbbaababaabbabaababbbbaaaabbbaababbabbbababababbabbababbabbaaabbabaababbbaabbabbbabaa'  # a→0, b→1
+s = 'abbabbababbaaaababbbabaaabbbaabaabbabaababbbbaaaabbbaabbabbbabababbabbababbabbaaabbabaababbbaabbabbbabaa'  # a→0, b→1  (104 bits)
 s = s.replace('a','0').replace('b','1')
 parts = [s[i:i+8] for i in range(0, len(s), 8)]
 digits = [int(p, 2) for p in parts]
@@ -1849,7 +1849,7 @@ a b b a a b a b a b b a b b b a a b b b a b a a a b b a a b a b a b b b a a b a
 ```
 
 ```python
-s = 'abbaababababbabbbaabbbabaaabbaababab...'  # same method, a→0,b→1
+s = 'abbaabababbabbbaabbbabaaabbaabababbbaaba'  # same method, a→0,b→1  (40 bits)
 # → 'enter'
 ```
 
@@ -2544,7 +2544,7 @@ A single message reinforcing the **theory-of-everything / answer-to-everything**
 
 ### 2023-02-23 — Official Hint: binary string
 
-A long binary string was posted. Each group is 8 bits; note that these bytes are written **LSB-first / reversed** within each byte (the trailing `…110` pattern), so a straight MSB decode does not work without reversing. The full ciphertext as posted:
+A long binary string was posted. Each group is 8 bits, written **bit-reversed (LSB-first) within each byte** (the recurring trailing `…110` pattern), **and the byte order is reversed too**. The complete decode is therefore: reverse the bits in each byte, **then** reverse the whole sequence of bytes, then read as ASCII. The source image is authoritative:
 
 ![Binary string hint, Telegram 2023-02-23](assets/walkthrough/hints/2023-02-23.png)
 
@@ -2582,13 +2582,15 @@ A long binary string was posted. Each group is 8 bits; note that these bytes are
 11110110 00110110 00110110 10100110 10011110
 ```
 
-Decoded (after reversing each byte), it reads:
+> ⚠️ **The binary block above is a lossy screenshot transcription — do not rely on the exact bits.** Applying the full method (reverse each byte's bits, then reverse the byte order) reproduces the message only *approximately*: the first byte decodes to `y` (`yellowb…`) but transcription drift accumulates after that, and the block is **155 bytes vs the 161 characters** of the real message (≈6 bytes short). For byte-exact bits, re-transcribe from the source image above. The **authoritative, independently-corroborated decode** (the well-known 2023 master hint) is:
 
 ```
-yellow blue primes matrix sumlist last words before archichoice yinyang 
-we wont give away thepassword its in front of  your eyes but youre 
-not seeing it very last step is a true give away promised
+yellowblueprimes matrixsumlist lastwordsbeforearchichoice yinyang
+wewontgiveawaythepassword itsinfrontofyoureyesbutyourenotseeingit
+verylaststepisatruegiveaway promised
 ```
+
+The first four tokens are the believed Cosmic-Duality ingredients; the last four are the taunt ("we won't give away the password; it's in front of your eyes but you're not seeing it; the very last step is a true giveaway; promised").
 
 ### 2023-08-03 — Official Hint: "Are you really looking for just the btc…?"
 
