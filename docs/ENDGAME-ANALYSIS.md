@@ -55,12 +55,17 @@ binary2=enter] "shabef" "anstoo"`.
   lastwordsbeforearchichoice (literal).
 - **UNKNOWN: yellowblueprimes, yinyang.** These are the wall.
 
-## 5. NEW hint intelligence (creator Telegram, assembled here for the first time)
-- 2020-01-14: "Roses are White but often Red. **Yellow has a number and so does Blue**. Go back to the
+## 5. Hint intelligence (creator + community Telegram, assembled here) — with provenance flagged
+> ⚠️ Provenance matters: several lines long treated as "creator hints" were actually written by
+> *community* solvers. Jrk (the creator) confirmed only a few of them. Attribution is marked below.
+- 2020-01-14 (creator): "Roses are White but often Red. **Yellow has a number and so does Blue**. Go back to the
   first puzzle piece… the rabbit's nest may contain a whole lot more." (NOBODY publicly decoded this.)
-- 2021-03-01: "which primes **2,3,5,7** we need use"; Jrk: "You are at THE PRIME PART already???"; "too
-  many combinations". 2021-03-01b: "**fefefe is 101010**… if you know how the **array is indexed**."
-- 2021-12-25: "prime numbers… required to proceed. … **some characters need to be 'zeroed out'**."
+- 2021-03-01 (**community, not creator**): a solver (Telegram id394589394) asks "which primes **2,3,5,7** we need
+  use" and separately posts "**104 is the fefefe square**… **fefefe is 101010**… if you know how the **array is
+  indexed**". Jrk's ONLY replies that day were "You are at THE PRIME PART already???" (confirming a prime part
+  EXISTS — not the set {2,3,5,7}) and, to the fefefe line, "Ancient spelling 😅. One of the many many typos."
+  → **{2,3,5,7} and fefefe=101010/104 are community inferences / working assumptions, NOT confirmed creator hints.**
+- 2021-12-25 (**creator**): "prime numbers… required to proceed. … **some characters need to be 'zeroed out'**."
 - 2021-12-02 / 2021-12-25 / 2020-08-02: "There is **another DOOR**" nobody found; "the second half
   [faed?] will probably be used for ANOTHER PUZZLE, or not at all."
 - 2021-03-14: "Breaking salphation should give the FEELING OF THE PHASE'S NAME" (SalPhaseIon≈salvation).

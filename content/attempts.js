@@ -73,7 +73,7 @@ export const ATTEMPTS = [
   "source": "this session (image forensics on img_puzzle.png)",
   "date": "2026-06-01",
   "dateApprox": true,
-  "input": "Original genesis image img_puzzle.png (1048x1556). Creator hint: '104 is the fefefe square. fefefe is 101010.' Palette scan for an off-white cell rendered 254,254,254 instead of 255,255,255.",
+  "input": "Original genesis image img_puzzle.png (1048x1556). Community claim (Telegram, 2021-03-01, from a solver -- NOT the creator; Jrk's only reply that day was 'Ancient spelling, one of the many many typos'): '104 is the fefefe square. fefefe is 101010.' Palette scan for an off-white cell rendered 254,254,254 instead of 255,255,255.",
   "method": "Ran a pixel-by-pixel palette histogram and per-cell color scan over the 14x14 grid to find the single planted off-white cell. Computed its spiral index and row-major index to test the creator's '104' / 'array indexing' claim. The cell's grid value and indices were then checked against dbbi/faed/matrixsumlist as a possible 'zero-out' pointer.",
   "output": "Exactly ONE cell is 254,254,254 (vs 255,255,255 everywhere else): grid (row 7, col 4) — counting rows/cols from 0; that is row 8, col 5 counting from 1 — grid value 0 (white). Its spiral index = 163 (PRIME) counting from 0 / 164 counting from 1; row-major index = 102 (0-based) / 103 (1-based). It sits at a DUAL-PRIME index, though the two primes come from DIFFERENT origins: spiral 163 (counted from 0) and row-major 103 (counted from 1) are both prime. Spiral 164 is not divisible by 8, so it tags a single BIT (the 4th bit of URL char 21 = 'n', counting chars from 1), unlike blue/yellow which tag whole chars. Note: row-major 104 (1-based) is the adjacent cell (row 7, col 5) [0-based; = row 8, col 6 from 1] — the creator's '104' may intend that neighbor (verify on a pristine PNG).",
   "outcome": "verified-insight",
@@ -384,7 +384,7 @@ export const ATTEMPTS = [
   "method": "Transcribed and cross-referenced the full creator hint timeline (images + Telegram) to extract the precise operational instructions for the endgame rather than treating them as flavor. Reasoning: these hints name the exact mechanism — primes {2,3,5,7}, 'zero out characters', the binary rule fefefe=101010 (so the per-symbol bit map f=1/e=0), an unfound 'another door', and an alternate 'theory of everything' path — so pinning the verbatim wording is what makes the dbbi/faed and yinyang attacks targetable.",
   "output": "Compiled the verbatim instruction set: primes 2,3,5,7 are 'the prime part'; certain characters must be 'zeroed out'; fefefe=101010 establishes the binary digit map and ties to 'how the array is indexed'; an unfound 'another door' exists; faed may be a separate puzzle entirely; 'theory of everything' is a named alternate path; 'a prime number is very important'. These guided (but did not solve) every dbbi/faed prime/zero-out attack; no decode tested against them produced text.",
   "outcome": "verified-insight",
-  "insight": "The creator's own hints precisely specify the endgame mechanism — primes {2,3,5,7} ('the prime part'), 'zero out' certain characters, fefefe=101010 as the per-symbol binary/array-index rule, an unfound 'another door', faed possibly being a separate puzzle, and 'theory of everything' as a named alternate path."
+  "insight": "PROVENANCE (corrected 2026-07-02): the creator (Jrk) confirmed only that a 'PRIME PART' exists (his reply 'You are at the prime part already???'), plus 'zero out some characters', 'another door', faed possibly being a separate puzzle, and 'theory of everything' as a named path. The specific prime SET {2,3,5,7} and the 'fefefe=101010 / 104 is the fefefe square' equation were COMMUNITY inferences (a solver's Telegram messages, id394589394), NOT creator statements — Jrk's only same-day reply was 'Ancient spelling, one of the many many typos'. Much endgame work is keyed on these, so treat {2,3,5,7} and fefefe=101010 as unconfirmed working assumptions, not creator instructions."
  },
  {
   "id": "rulers-riddle-john-mcafee",
@@ -406,16 +406,15 @@ export const ATTEMPTS = [
   "id": "verify-embedded-salphaseion-equals-repo",
   "phase": "salphaseion",
   "category": "solved-chain verification",
-  "title": "Confirmed the on-page SalPhaseIon blob embedded in phase-3.2 plaintext matches the repo salphaseion.txt",
+  "title": "CORRECTION: the phase-3.2 plaintext contains ONE embedded Salted__ blob (p32_trailing) — the salph_inner (salphaseion.txt) blob lives in the SalPhaseIon SOUP, not here",
   "who": "this project",
-  "source": "this session",
-  "date": "2026-06-01",
-  "dateApprox": true,
-  "input": "The first 'U2FsdGVkX1' base64 run found in the phase-3.2 plaintext vs ciphertexts/salphaseion.txt (whitespace-stripped).",
-  "method": "While scanning the phase-3.2 plaintext for embedded blobs (extract.py), compared the first reconstructed base64 run against the repo's salphaseion.txt by common-prefix length and equality (ignoring '=' padding). This separates the genuine on-page salphaseion blob from the distinct trailing p32_trailing blob.",
-  "output": "The first embedded blob equals the repo salphaseion ciphertext, confirming the salphaseion blob is authentic and correctly carried through the chain; the p32_trailing blob at the tail is a genuinely separate artifact.",
+  "source": "this session; corrected 2026-07-02 after re-decrypting phase32.txt (independent-solver cross-check)",
+  "date": "2026-07-02",
+  "input": "Every 'U2FsdGVkX1' base64 run in the AES-decrypted phase-3.2 plaintext (decrypt of phase32.txt under key 250f3772…), vs ciphertexts/p32_trailing.txt and ciphertexts/salphaseion.txt.",
+  "method": "Re-decrypted phase32.txt and scanned the 2422-byte plaintext for embedded Salted__ blobs, and separately reassembled the SalPhaseIon soup's inner blob. This CORRECTS an earlier version of this entry, which wrongly claimed the 3.2 plaintext held TWO blobs including the salphaseion one.",
+  "output": "The phase-3.2 plaintext contains EXACTLY ONE embedded Salted__ blob: p32_trailing (starts 'U2FsdGVkX1+0Wl49…', its first 64-char line ending 'iuW2a46z'), matching ciphertexts/p32_trailing.txt. The salph_inner blob (== ciphertexts/salphaseion.txt, which ends 'GuN/jJ') is NOT in the 3.2 plaintext -- it is embedded in the SalPhaseIon SOUP (base64 split across the 'z' separators + the nested 'enter' binary), as the soup-reconstruction entry documents.",
   "outcome": "verified-insight",
-  "insight": "The phase-3.2 plaintext contains TWO distinct Salted__ blobs — the known salphaseion blob (matches repo) and a separate trailing p32_trailing blob — verifying the chain data and isolating the new artifact."
+  "insight": "p32_trailing is the SOLE Salted__ blob embedded in the phase-3.2 plaintext -- a distinct artifact from the soup's salph_inner blob. (An earlier version of this entry mis-stated that the 3.2 plaintext held two blobs including salphaseion; in fact the salphaseion/salph_inner blob is reassembled from the SOUP, not the 3.2 plaintext.)"
  },
  {
   "id": "reconstruct-salph-inner-blob-stray-z-enter-binary",
@@ -718,7 +717,7 @@ export const ATTEMPTS = [
   "source": "this session",
   "date": "2026-06-01",
   "dateApprox": true,
-  "input": "dbbi (91 symbols); creator rule 'fefefe is 101010' verified: f(6)->1, e(5)->0, i.e. symbol whose a1z26 value is prime {2,3,5,7}->0 else ->1, giving a 91-bit string. Swept all subsets of {2,3,5,7} as the zero-set, both polarities, widths 7 and 8, plus rules even/odd/>=5/f-only.",
+  "input": "dbbi (91 symbols); the community-derived rule 'fefefe is 101010' (a solver's claim, not a creator hint), verified to reproduce: f(6)->1, e(5)->0, i.e. symbol whose a1z26 value is prime {2,3,5,7}->0 else ->1, giving a 91-bit string. Swept all subsets of {2,3,5,7} as the zero-set, both polarities, widths 7 and 8, plus rules even/odd/>=5/f-only.",
   "method": "Map each symbol to one bit per the creator's confirmed fefefe rule, producing a 91-bit stream, then chop into 7- or 8-bit chars to read ASCII. Try every variant of which prime values become 0 and both inversions, since the creator said 'if you know how the array is indexed'.",
   "output": "All readings noise; the fefefe sanity check confirmed 'fefefe'->'101010' correctly, but no width/subset/polarity produced readable text. Note: 91 bits holds at most 13 chars (8-bit) - mathematically too little to encode the 16-char 'yellowblueprimes'.",
   "outcome": "verified-insight",
@@ -764,7 +763,7 @@ export const ATTEMPTS = [
   "date": "2026-06-01",
   "dateApprox": true,
   "input": "dbbi prime-value bitstream (91 bits, both polarities); MSL = ASCII bits of the literal word 'matrixsumlist' (104 bits). Operations: XOR MSL (repeated) onto the dbbi bits; select dbbi symbols where the 104-bit 'a/b' mask is 1 vs 0 (using first 91 of 104); widths 7/8.",
-  "method": "matrixsumlist physically SITS BETWEEN dbbi and faed in the soup and is 104 bits, matching the '104 is the fefefe square' hint - so test it as the 'array index'/mask that selects or XORs exactly the dbbi characters to keep or zero. Re-decode the masked/XORed bits and also test outputs as blob keys.",
+  "method": "matrixsumlist physically SITS BETWEEN dbbi and faed in the soup and is 104 bits, matching the community '104 is the fefefe square' claim (a solver's inference, not a creator hint) - so test it as the 'array index'/mask that selects or XORs exactly the dbbi characters to keep or zero. Re-decode the masked/XORed bits and also test outputs as blob keys.",
   "output": "All noise; no readable text and zero blob hits. The mask-over-dbbi interpretation does not fire.",
   "outcome": "verified-fail",
   "insight": ""
