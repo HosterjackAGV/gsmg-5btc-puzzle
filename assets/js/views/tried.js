@@ -12,10 +12,10 @@ function compactHtml(a, withDemo = true) {
   const o = OUTCOMES[a.outcome] || OUTCOMES['unverified'];
   const line = a.insight || a.output || '';
   return `<article class="tried-entry tried-compact" id="t-${esc(a.id)}">
-    <div class="tc-row"><span class="tbadge ${o.cls} sm" title="${esc(o.desc)}">${o.label}</span><b class="tc-title">${esc(a.title)}</b>${a.author ? ` <span class="tbadge badge-author sm" title="The author">👤 ${esc(a.author)}</span>` : ''}</div>
+    <div class="tc-row"><span class="tbadge ${o.cls} sm" title="${esc(o.desc)}">${o.label}</span><b class="tc-title">${esc(a.title)}</b>${a.author ? ` <span class="tbadge badge-author sm" title="The author">👤 ${esc(a.author)}</span>` : ''}${(a.authors && a.authors.length) ? a.authors.map(h => ` <span class="tbadge badge-author sm" title="Contributor">👤 ${esc(h)}</span>`).join('') : ''}${a.date ? ` <span class="sum-date">📅 ${esc(fmtDate(a))}</span>` : ''}</div>
     <div class="tc-line">${esc(line.length > 240 ? line.slice(0, 240) + '…' : line)}</div>
-    <details class="tc-more"><summary>full input · method · output</summary>
-      <dl class="tried-io"><dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd><dt>Output</dt><dd>${esc(a.output)}</dd>${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
+    <details class="tc-more"><summary>full history · input · method · output · evidence</summary>
+      <dl class="tried-io">${a.history ? `<dt>History</dt><dd class="history-line">${esc(a.history)}</dd>` : ''}<dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd><dt>Output</dt><dd>${esc(a.output)}</dd>${a.evidence ? `<dt>Evidence</dt><dd class="evidence-line">${esc(a.evidence)}</dd>` : ''}${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
       ${withDemo ? demoHtml(a.id) + commentsHtml(a.id) : ''}
     </details>
   </article>`;
@@ -28,12 +28,15 @@ function entryHtml(a) {
       <h4>${esc(a.title)}</h4>
       <span class="tbadge ${o.cls}" title="${esc(o.desc)}">${o.label}</span>
       ${a.author ? `<span class="tbadge badge-author" title="The author — the contributor who uncovered this (verified Telegram @handle)">👤 The author · ${esc(a.author)}</span>` : ''}
+      ${(a.authors && a.authors.length) ? a.authors.map(h => `<span class="tbadge badge-author" title="Contributor / author of this attempt">👤 ${esc(h)}</span>`).join('') : ''}
     </div>
     <div class="tried-meta"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span> · <span class="src">${esc(a.source)}</span>${a.date ? ` · <span class="tdate" title="when this attempt was made / recorded">📅 ${esc(fmtDate(a))}</span>` : ''}</div>
     <dl class="tried-io">
+      ${a.history ? `<dt>History</dt><dd class="history-line">${esc(a.history)}</dd>` : ''}
       <dt>Input</dt><dd>${esc(a.input)}</dd>
       <dt>Method</dt><dd>${esc(a.method)}</dd>
       <dt>Output</dt><dd>${esc(a.output)}</dd>
+      ${a.evidence ? `<dt>Evidence</dt><dd class="evidence-line">${esc(a.evidence)}</dd>` : ''}
       ${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}
     </dl>
     ${demoHtml(a.id)}

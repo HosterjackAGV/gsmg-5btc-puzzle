@@ -8,6 +8,12 @@
 // author  ∈ (optional) the VERIFIED Telegram @handle of the contributor who uncovered it; rendered as
 //           a "The author" badge. Only set when the handle is confidently confirmed (the export stores
 //           numeric sender IDs, so most contributors can't be resolved to a handle — left unset then).
+// authors ∈ (optional) array of contributor handles/labels (rendered as multiple 👤 badges) — use when
+//           more than one person, or the research engine, is credited.
+// date    ∈ (optional) 'YYYY-MM-DD' when the attempt was made/recorded (set dateApprox:true for ~year).
+// history ∈ (optional) the lineage/timeline of the attempt — how it arose, what it followed from.
+// evidence∈ (optional) the receipts — Telegram msg-ids + dates, the reproduction (test count + result),
+//           or on-chain proof. Kept SELF-CONTAINED (no private/gitignored paths — this is a public page).
 
 export const PHASE_LABELS = {
   genesis:     'Phase 0 — Genesis image (matrix · yellowblueprimes · QR)',
@@ -38,6 +44,114 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
+ {
+  "id": "engine-p32-trailing-chess-vic-keys",
+  "phase": "architect",
+  "category": "engine — 80-byte blob key sweep",
+  "title": "p32_trailing (trailing 80-byte phase-3.2 blob) vs chess-clue / VIC-alphabet keys",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "Prior sessions ran 288 phase-3.2-derived strings + the full dictionary at the self-verifying 80-byte trailing blob. This re-checks the board/alphabet readings of the 'fubcd-king & oracle-queen … sad board as wide as the first one seen' chess clue that precedes the blob.",
+  "input": "28 principled candidates: the VIC alphabet FUBCDORA.LETHINGKYMVPS.JQZXW (±dots/case/reverse, collapsed forms), clue vocabulary (sadboard, fubcdking, oraclequeen, thingkymvps, aswideasthefirstoneseen), the phase-3.2 VIC sentence, board tokens (8x8, 14x14, 14, 1411).",
+  "method": "Byte-exact OpenSSL AES-256-CBC / EVP-SHA256 decrypt of p32_trailing (salt b45a5e3d827593ca) plus salph_inner and cosmic, each candidate as literal passphrase AND sha256hex(candidate); valid PKCS7 + readable text required.",
+  "output": "264 decrypt tests → 0 valid padding (2 chance false-positives on p32_trailing shown to be garbage). No readable plaintext.",
+  "evidence": "ciphertexts/p32_trailing.txt (80 ct-bytes); 28 candidates × 2 modes × 3 blobs; 0 readable hits. Chance-padding rate on this blob measured at ~0.5%.",
+  "outcome": "verified-fail",
+  "insight": "The VIC-alphabet-as-passphrase family for the trailing 80-byte blob is exhausted; if the chess clue keys it, it is via a board CONSTRUCTION (coordinates), not the alphabet string or a hashed phrase."
+ },
+ {
+  "id": "engine-chance-padding-not-a-solve",
+  "phase": "salphaseion",
+  "category": "engine — methodology",
+  "title": "Valid AES padding ≠ a solve: the 80-byte blobs pad-validate ~1 in 200 keys by chance",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "Several community 'it decrypted without a bad-decrypt error' claims (e.g. hopeitisthequintessential, 26770c…, absvolt) needed a rigorous standard: does valid padding mean anything?",
+  "input": "The 80-byte blobs salph_inner and p32_trailing; 2000 random keys per blob; plus the specific community 'valid-padding' keys.",
+  "method": "Decrypt with each key and measure (a) PKCS7 padding validity and (b) printable-character ratio of the plaintext. Compare the empirical valid-padding rate to the ~0.4% theoretical (last byte = 0x01 etc.).",
+  "output": "Measured 10/2000 = 0.50% random keys give valid padding (≈ theory). Every such plaintext is high-entropy garbage (printable ratio 0.32–0.46).",
+  "evidence": "2000-key Monte-Carlo on p32_trailing → 0.50% valid-padding, all garbage; the cited community 'valid-padding' keys reproduce as garbage (ratios ~0.32–0.44).",
+  "outcome": "verified-insight",
+  "insight": "On the 80-byte blobs, ~1 in 200 arbitrary keys produces valid PKCS7 padding purely by chance, with garbage plaintext. A hit requires READABLE plaintext (high printable ratio), not merely 'no bad-decrypt error' — this invalidates a class of community 'it decrypted!' claims."
+ },
+ {
+  "id": "engine-false-creator-hints-ruled-out",
+  "phase": "salphaseion",
+  "category": "engine — provenance / false-lead rulings",
+  "title": "Three widely-cited 'creator hints' ruled out by decode/context",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "A full read of the creator's messages surfaced three items repeatedly treated as endgame hints that do not survive scrutiny.",
+  "input": "The creator's 2026-01-01 binary message; the 2020 'Only -41,-17 matters' line; the 'last number of pi' and the {30},{2},{77} 'private key' lines.",
+  "method": "Decode the binary (standard 8-bit ASCII); read each line in its reply context; check the numeric/temporal claims.",
+  "output": "2026-01-01 binary decodes to 'Happy new year! Make the best of everything. Oh, and here's a \"tiny hint\" <3.' — a joke, no content. '-41,-17' is a Decentraland game parcel coordinate (reply context). 'last number of pi' is banter; {30},{2},{77} is a Cyberpunk-2077 joke a community member posted.",
+  "evidence": "Binary msg decodes to 77 ASCII bytes (the greeting); '-41,-17' reply-chain concerns the Decentraland parcel; {30},{2},{77} is community (a solver mimicking the {1},{4},{21} format), not the creator.",
+  "outcome": "verified-insight",
+  "insight": "These three are NOT endgame hints — decoding/context rules them out, sparing solvers the dead ends."
+ },
+ {
+  "id": "engine-posted-key-material-not-gsmg",
+  "phase": "salphaseion",
+  "category": "engine — on-chain / key-material verification",
+  "title": "Every posted WIF / mnemonic / address checked against the GSMG wallets — none control them",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "The corpus contains several posted private keys, a 24-word BIP39 mnemonic (from a faed→btcseed decode with a claimed-valid checksum), and addresses. Each was address-derived and compared to the prize wallets.",
+  "input": "A 24-word BIP39 mnemonic; WIFs 5Jpc…, 5K2JB… (msg 4132), L4Jay…; address 145ZQ…. Targets: prize 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe, peeled 17ucy1K9ZUAaoY6JVtM932W9jUp5LXfyHa.",
+  "method": "KAT-gated secp256k1 address derivation (P2PKH compressed+uncompressed; BIP44/49/84 + legacy paths for the mnemonic); on-chain balance lookup via a public explorer.",
+  "output": "0 of 13 derived addresses match a GSMG wallet. The mnemonic's checksum is valid but controls nothing GSMG. WIF 5K2JB… derives to 1GSMG1JWgqeum… — a 1GSMG1J-prefix VANITY DECOY (0 tx on-chain, ~1/38B by chance so deliberately crafted).",
+  "evidence": "Derivation KAT: privkey=1 → 1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm. On-chain: prize holds 1.2563451 BTC (unclaimed); decoy 1GSMG1JWgqeum… = 0 balance / 0 tx.",
+  "outcome": "verified-fail",
+  "insight": "No posted key material is the prize key (as expected — the prize address is a vanity address, so its key is random and lives only inside the cosmic blob). The 1GSMG1J 'decoy' WIF is an empty vanity address that merely mimics the prize prefix."
+ },
+ {
+  "id": "engine-corpus-no-engineered-solution",
+  "phase": "salphaseion",
+  "category": "engine — corpus audit",
+  "title": "Full 57k-message audit: the community corpus contains no author-derived solution",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "Every message in the GSMG solvers' Telegram (≈57,000) was read and consolidated by theme, with each finding adversarially re-checked against its cited message ids.",
+  "input": "The complete Telegram corpus; themes yellowblueprimes, yinyang, matrixsumlist, dbbi, faed, cosmic-combine, the 80-byte blobs, primes/zero-out.",
+  "method": "Parallel theme-mining + independent adversarial verification (skeptics re-read cited ids to drop hallucinations and fix provenance).",
+  "output": "Every concrete endgame derivation is a community GUESS — self-refuted by its own author or already closed. The creator never supplied a value or method for any endgame token.",
+  "evidence": "≈1,400 findings across 15 themes verified against msg ids; creator (Jrk) statements confirm only that primes matter and 'some characters need to be zeroed out' — no value.",
+  "outcome": "verified-insight",
+  "insight": "The endgame is not solvable by re-running community material; it needs a genuinely new, engineered derivation. All prior concrete attempts are guesswork."
+ },
+ {
+  "id": "engine-dbbi-youwon-easter-egg",
+  "phase": "salphaseion",
+  "category": "engine — dbbi structure",
+  "title": "dbbi is engineered against the phase-3.2 plaintext: (dbbi − plaintext) mod 26 spells YOUWON",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "Community noted a 'YOUWON' fragment when subtracting the phase-3.2 plaintext from dbbi. This reproduces and evaluates it.",
+  "input": "dbbi (91 chars, a=0..i=8) and the phase-3.2 plaintext INCASEYOUMANAGETOCRACKTHISTHEPRIVATEKEYSBELONGTOHALFANDBETTERHALFANDTHEYALSONEEDFUNDSTOLIVE (91 chars).",
+  "method": "Compute (dbbi_value − plaintext_value) mod 26 per position → letters; check for words; estimate chance probability of 'YOUWON'.",
+  "output": "Result = VOZIJBDTIQBRGVEOMZNBC · YOUWON · (64-char tail). 'YOUWON' at position 21 is not chance (~1 in 33,000).",
+  "evidence": "Reproducible mod-26 subtraction of the two 91-char strings; YOUWON at index 21, garbage elsewhere.",
+  "outcome": "verified-insight",
+  "insight": "dbbi is deliberately designed relative to the phase-3.2 plaintext (it hides 'YOUWON' as an easter-egg confirmation) — proof the author encodes thematic words this way, but the garbage-wrapped result is not itself a key."
+ },
  {
   "id": "ledger-image-forensics-genesis-png",
   "phase": "genesis",

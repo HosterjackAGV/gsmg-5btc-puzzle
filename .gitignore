@@ -44,3 +44,13 @@ MEMORY.md
 scratch/
 scratchpad/
 *.scratch
+
+# ── Private puzzle-research engine + Telegram tooling (LOCAL ONLY — never pushed) ─────────────
+# research/ holds unverified work-in-progress; only APPROVED findings are promoted INTO docs/*.md by
+# hand. A .session file is full access to the maintainer's Telegram account; tg_*.py embed API creds.
+research/
+*.session
+*.session-journal
+tg_downloader.py
+tg_sync.py
+tg_*.py
