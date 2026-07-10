@@ -54,3 +54,18 @@ research/
 tg_downloader.py
 tg_sync.py
 tg_*.py
+
+# ── Telegram BOT credentials + any secrets (NEVER track or push — contains the alert bot token) ──
+Telegram Data/
+**/Telegram Data/
+.env
+*.env
+**/.env
+secrets.*
+*.secret
+
+# ── Python caches ────────────────────────────────────────────────────────────
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo

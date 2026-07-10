@@ -27,6 +27,8 @@ export const PUZZLE = {
   p32: 'U2FsdGVkX1+0Wl49gnWTyiimluu7V3+vl7st0gUt9sWDzNLxDmlPMsDSiuW2a46zgKlIi8aaqY5gpJPPEzW1n9n3/26qs4zstWtPKF8Zs/BTNN4IiEh4qu18mdC0NAv4',
   cosmic: 'U2FsdGVkX18tP2/gbclQ5tNZuD4shoV3axuUd8J8aycGCAMoYfhZK0JecHTDpTFedGJh4SJIP66qRtXvo7PTpvsIjwO8prLiC/sNHthxiGMuqIrKoO224rOisFJZgARic7PaJPne4nab8XCFuV3NbfxGX2BUjNkef5hg7nsoadZx08dNyU2b6eiciWiUvu7DSATSFO7IFBiAMz7dDqIETKuGlTAP4EmMQUZrQNtfbJsURATW6V5VSbtZB5RFk0O+IymhstzrQHsU0Bugjv2nndmOEhCxGi/lqK2rLNdOOLutYGnA6RDDbFJUattggELh2SZx+SBpCdbSGjxOap27l9FOyl02r0HU6UxFdcsbfZ1utTqVEyNs91emQxtpgt+6BPZisil74Jv4EmrpRDC3ufnkmWwR8NfqVPIKhUiGDu5QflYjczT6DrA9vLQZu3kok+/ZurtRYnqqsj49UhwEF9GfUfl7uQYm0UunatW43C3Z1tyFRGAzAHQUFS6jRCd+vZGyoTlOsThjXDDCSAwoX2M+yM+oaEQoVvDwVkIqRhfDNuBmEfi+HpXuJLPBS1PbUjrgoG/Uv7o8IeyST4HBv8+5KLx7IKQS8f1kPZ2YUME+8XJx0caFYs+JS2Jdm0ojJm3JJEcYXdKEzOQvRzi4k+6dNlJ05TRZNTJvn0fPG5cM80aQb/ckUHsLsw9a4WzhHsrzBQRTIhog9sTm+k+LkXzIJiFfSzRgf250pbviFGoQaIFl1CTQPT2w29DLP9006bSiliywwnxXOor03Hn+7MJL27YxeaGQn0sFGgP5X0X4jm3vEBkWvtF4PZl0bXWZLvVL/zTn87+2Zi/u7LA6y6b2yt7YVMkpheeOL0japXaiAf3bSPeUPGz/eu8ZX/NnO3259hG1XwoEVcGdDBV0Nh0A4/phPCR0x5BG04U0OeWAT/5Udc/gGM0TT2FrEzs/AJKtmsnj31OSsqWb9wD+CoduYY2JrkzJYihE3ZcgcvqqffZXqxQkaI/83ro6JZ4Pubml0PUnAnkdmnBCpbClbZMzmo3ELZ0EQwsvkJFDMQmiRhda4nBooUW7zXOIb7WxbE9THrt3cdZP5uAgVfgguUNE4fZMN8ATEDhdSsLklJe2GvihKuZVA6uuSkWAsK6uMGo76xpPwYs3eUdLjtANS83a6/F/fhkX1GXs7zbQjh+Inzk8jhEdEogl9jPs/oDjKjbkUpFlsCWwAZGoeKlmX7c4OGuD5c+FEH+2nYHvYl8y1E/K5SDt9Uocio8XuxbDZOzhw7LMSGkD1MZxpDzsCZY1emkSNd88NFj+9U8VssIDDVMYwKMsHKfjc0x5OlzQ1f6ST0xCkwydDHHGRKKxFC4y6H6fV9sgf9OPK/65z94Rx72+mfvTyizShjxYSRplsH9otU4parl8roD0KsVTfXZoYrYXzK6cXBn1BO/OEqWlu++Dd9MiGaUGKd22fXERqNWoRAKlNn2b6EehD2D8WaAoliPURjkB0Lb/FpP9unI93Twg6NxBXAj734nctukRb3kE08RydJV70eJsvEftF5hbED4HacGx9pzisaSz6t9AKiuSoF6uoCtlTIYatyfZkQA4wg50hAJqTynOQ09ArRHEchtB/7uvWZSBGJ7+zlzRGKx99P3oDZD+Y5D8bmUs3PV6FnAp+IRSlnsQ6hChkwBoQUcngcfGSkBRvmGjsGercCetRRwBOfh9fbX2ruw4mzRYrGnz9eBtepkJXDRjD6yvhNfQMCSkm6l9zMWxKvFbv5g2ae2SLrEt/x3MP2/G',
   phase2: 'U2FsdGVkX18GKGYS1D7X7VjxWz6uUyPFszr8dVvtOIrJqioWHgT69JJnzJGDVOvFQYWh5BEZxFPXmMq1cbyy3dVVDgLhF050xlDy2J5grtKw9jUOO4oFNRgoD+1dlukXpd8ccg++kkXgE9mGBP6lQbukDiSjY4mnR2Mv6ydIncrRqacQNVEmEgM4fGTi1ANznHsGn7mP+P3UyrJCRbuFmpZJc4CNdPj6YuxwR4HkHkqcfxh0L5CaEu4VbY70+fmkqgZQyMJqiUlaV9KC4UPuRVj0r7MYbVRazkhsjeIcogmdJGEeBwD47lEB7X9PNKWmojTvRZg6R+sZzRZE26VLaF+s9cpTo4Y8PZUxKvQ86HXC8QIavUgDfw7HxIxkTatvCW2yq3ZOXl5naR6oSNxdX9alyhTzB+/2623oGdlWev5Oo8xHJqUi7QjVP+mNC8BA+Cg0DJwcOFGO5K7g8Rm06+sLogwntdIgTo70X3FegAtipHboeUNKefiAguvkDoIf8iMPc+83PygvlZPDNQCOKugwDEUimhHwQrMsmalRNoFEQEb+ZIC+na15cPoRAlODNJfXIJ96ihAy9wWis39mQW6JFqZmUags4xoP3lJ35bCrXsNOPFZ4WH+f4YC/Ov8CQW5bjtxno8GG4b/wBWevhcRVMK6KmRJj8NBCssnrlz0sQ70rMNkiN2wiSPcwX3AdJgLs8vQAUM59x9fkKFFzD4+Sc1sJztUTB7CMGGfpZOA8W33VZnEdmGcoaHlDsR8GvAkZ+jg+QJs9ZNHqWE1+1zgm/6NsWWgWH8OI2PPCfXHxDbfDk8uD/Zibr/yjSKvuSb8OecflOT2hw37WL49uADgeWgnp2bzkfGIq7EYS7OImjZZwY5h4sfcPfhvQ9kOV',
+  // 4th blob (urlblob) — recovered from a Wayback CDX URL-path hex; community-provenance, resists all keys.
+  urlblob: 'U2FsdGVkX190yXTj+S5ktZ9+oipQ3LDUKJ0XbUzp26f5mmlbjQeXtcd5HmWo0raKWHn10xrl6KJjUgXeMbhRz0OyU09YdlaW08KgH386QfcoT7vMg2UXy/e6YTxDqRnZ3GaeSCS6umpcrrd9/D4GBw==',
 };
 
 // ---- shared helpers ----
@@ -2644,4 +2646,193 @@ DEMOS['reverse-binary-hint-involution-prime-length-structure'] = {
   lab: reverseBinaryLab,
   summary: 'Reverse-binary lab — decode jrk’s hint live, see the prime-length anatomy, test the combine',
   intro: 'The 2023-02-23 master hint, made interactive: toggle the two reversals to <b>decode jrk’s verbatim 161-byte post</b> into the recipe (and prove the transform is its own inverse); see the <b>token/prime-length anatomy</b> (×13 = known, prime-powers = "the prime part"); check the <b>wordplay</b> identities (promised = anagram of PRIMES+DO); and <b>reproduce the combine sweep</b> against the real oracle blob.',
+};
+
+// ── engine research-loop cards — interactive, editable "try it yourself" attempts ─────────────
+// Each reproduces that card's REAL sweep on the genuine blobs; edit any input and re-run. A readable
+// (or WIF) decrypt would be the 5 BTC solve — everything below returns the noise floor, live.
+const readablePreview = (p) => { if (!p || p.length < 8) return false; const good = [...p].filter(c => c !== '·').length; return good / p.length >= 0.85; };
+const SWEEP_CODE = `// puzzle convention: key = sha256(candidate) → EVP_BytesToKey(sha256) → AES-256-CBC
+for (const cand of candidates) {
+  const pt = aesDecrypt(blob, sha256hex(cand));   // fails on wrong PKCS#7 padding
+  if (pt.ok && readable(pt.text)) return SOLVE(cand);   // ≤79 readable bytes = the crack
+}
+// none readable → the wall holds (valid padding alone is a ~1/256 accident, not a solve)`;
+function aesSweep({ blobLabel, blob, keys, note }) {
+  return {
+    summary: '🔬 Reproduce this sweep — try it yourself',
+    intro: 'Edit the blob or the candidate list (one key per line — add your own) and re-run the real AES-256-CBC / sha256 harness in your browser. A <b>★ readable</b> result would be the solve; <b>≈</b> is a chance valid-padding (garbage); <b>✕</b> is wrong padding.',
+    code: SWEEP_CODE,
+    inputs: [
+      { name: 'blob', label: (blobLabel || 'blob') + ' — base64 (editable)', value: blob, mono: true, rows: 2 },
+      { name: 'keys', label: 'candidate keys — one per line (edit / add your own)', value: keys.join('\n'), mono: true, rows: Math.min(11, keys.length + 1) },
+    ],
+    async run(v) {
+      const list = v.keys.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 48);
+      const steps = []; let solve = null;
+      for (const cand of list) {
+        const r = await tryRecipe(v.blob.trim(), cand);
+        const good = r.ok && readablePreview(r.preview);
+        if (good && !solve) solve = { cand, preview: r.preview };
+        steps.push({ title: (good ? '★ ' : (r.ok ? '≈ ' : '✕ ')) + (cand.length > 46 ? cand.slice(0, 46) + '…' : cand), body: r.ok ? r.preview : 'invalid padding — wrong key' });
+      }
+      return {
+        steps,
+        output: solve
+          ? '★ "' + solve.cand + '" decrypts to readable text (' + solve.preview.slice(0, 40) + '…). That would be a solve — verify off-site before ever touching the wallet.'
+          : list.length + ' candidates → 0 readable. ' + note + ' (Valid padding ≠ a solve: the ~1/256 noise floor throws the odd garbage "≈".)',
+      };
+    },
+  };
+}
+
+DEMOS['engine-first-hint-poem-salph-inner'] = aesSweep({
+  blobLabel: 'salph_inner', blob: PUZZLE.salphInner,
+  keys: ['rosesarewhitebutoftenredyellowhasanumberandsodoesbluegobacktothefirstpuzzlepiecewithoutfurtheradoitmighthaveshownyouonlyonedoorbewarethattherabbitsnestmaycontainawholelotmorehushhush', 'rosesarewhitebutoftenred', 'yellowhasanumberandsodoesblue', 'gobacktothefirstpuzzlepiece', 'therabbitsnestmaycontainawholelotmore', 'hushhush'],
+  note: 'Read literally, the soup’s "our first hint" = the 2020 Roses poem — but no normalization of it keys salph_inner.',
+});
+
+DEMOS['engine-p32-board-as-data'] = aesSweep({
+  blobLabel: 'p32_trailing', blob: PUZZLE.p32,
+  keys: ['a8g8h8b7h7c6c5e5g5c4e4g4b3e3h3b2e2h2d1f1', 'g8e4', 'e4g8', 'c6', 'Rc6', 'rookc6', 'c182045454929228', '20', '8', 'B5KR1r5B2R52b1p1p12P1k1P11p2P2p1P2P2P3N1N2'],
+  note: 'The confirmed Phase-2 chess board used as DATA (occupied-square coordinates / a 64-bit occupancy bitmask / king squares / the moved piece) does not key p32_trailing.',
+});
+
+DEMOS['engine-matrixsumlist-byteform-enumeration'] = aesSweep({
+  blobLabel: 'salph_inner', blob: PUZZLE.salphInner,
+  keys: ['610876654997879', '8108108736759668', '6108766549978798108108736759668', '0610080706060504090907080709', '6a8766549978799', '78', '78101', '101', '95101', '10195'],
+  note: 'None of the 24 principled matrixsumlist byte-forms is a standalone oracle key (which form the cosmic combine wants stays unverifiable — cosmic gives no oracle).',
+});
+
+DEMOS['engine-urlblob-recovered-and-swept'] = aesSweep({
+  blobLabel: 'urlblob (4th blob)', blob: PUZZLE.urlblob,
+  keys: ['causality', 'jacquefrescogiveitjustonesecondheisenbergsuncertaintyprinciple', 'GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', '2347', '95101', 'matrixsumlist', 'yellowblueprimes', 'yinyang', '74c974e3f92e64b5'],
+  note: 'The recovered 4th blob (community-provenance URL-path hex) resists every derived key under the authoritative harness.',
+});
+
+DEMOS['engine-salph-inner-integrity-and-combos'] = aesSweep({
+  blobLabel: 'salph_inner', blob: PUZZLE.salphInner,
+  keys: ['thispassword', 'enter', 'ourfirsthintisyourlastcommand', 'anstoo', 'enterthispassword', 'thispasswordourfirsthintisyourlastcommand', 'enterthispasswordourfirsthintisyourlastcommand', 'thispasswordanstoo', 'shabefthispassword'],
+  note: 'The soup’s own adjacent tokens and their combinations do not key salph_inner (whose reconstruction is verified byte-correct — an 80-byte ct — so this null is real, not a corrupted target).',
+});
+
+DEMOS['engine-salph-inner-soup-grammar-keys'] = aesSweep({
+  blobLabel: 'salph_inner', blob: PUZZLE.salphInner,
+  keys: ['shabefourfirsthintisyourlastcommand', 'ourfirsthintisyourlastcommand', 'shabefanstoo', 'anstoo', 'firsthint', 'lastcommand', '2347', '127'],
+  note: 'The bracketing soup-grammar phrases (shabef "our first hint is your last command" … shabef "anstoo") and their engineered substitutions do not key salph_inner.',
+});
+
+DEMOS['engine-nihilist-matrix-sumlist-combine'] = aesSweep({
+  blobLabel: 'salph_inner', blob: PUZZLE.salphInner,
+  keys: ['99665289278645', '4281541913121812194', 'matrixsumlist', 'sumlist'],
+  note: 'Reading "matrixsumlist" as a Nihilist cipher (Polybius keyword MATRIX + key SUMLIST) yields number-strings — e.g. nihilist("YINYANG","SUMLIST") = 99665289278645 — that open nothing. (Edit in any base you like and re-run.)',
+});
+
+DEMOS['engine-nested-detection-no-partial-oracle'] = aesSweep({
+  blobLabel: 'cosmic (prize blob)', blob: PUZZLE.cosmic,
+  keys: ['2347', '95101', '10195', 'matrixsumlist', 'causality', 'yellowblueprimes'],
+  note: 'Decrypting cosmic with any derived key yields neither readable text nor an inner "Salted__" header — there is no multi-layer / sequential-decrypt partial oracle to exploit.',
+});
+
+DEMOS['engine-cosmic-not-nested-multilayer-aes'] = aesSweep({
+  blobLabel: 'cosmic (prize blob)', blob: PUZZLE.cosmic,
+  keys: ['2347', '95101', 'yellowblueprimes', 'yinyang', 'lastwordsbeforearchichoice', 'thematrixhasyou'],
+  note: 'cosmic is not an onion of AES layers under these keys — no decrypt produces a nested Salted__ envelope, so the "peel one layer at a time" idea is ruled out.',
+});
+
+DEMOS['engine-chance-padding-not-a-solve'] = {
+  summary: '🔬 Why "valid padding" is NOT a solve — measure the noise floor yourself',
+  intro: 'PKCS#7 padding is valid whenever the final byte B∈(1..16) and the last B bytes all equal B — on random plaintext that happens ~1/256 of the time. So <b>wrong</b> keys occasionally "decrypt" to garbage with valid padding. Run a batch of random keys and watch the rate land near 0.4% — and none of them readable. That is why the engine only ever escalates on <b>readable</b> text.',
+  code: `for (i = 0; i < N; i++) {
+  const pt = aesDecrypt(blob, sha256hex(randomKey()));
+  if (pt.ok) validPad++;              // ~1/256 of random keys
+  if (pt.ok && readable(pt.text)) readable++;   // essentially never
+}`,
+  inputs: [
+    { name: 'blob', label: 'blob (base64)', value: PUZZLE.salphInner, mono: true, rows: 2 },
+    { name: 'n', label: 'number of random keys to try', value: '400', rows: 1 },
+  ],
+  async run(v) {
+    const N = Math.min(2000, Math.max(1, parseInt(v.n, 10) || 400));
+    let valid = 0, readable = 0;
+    for (let i = 0; i < N; i++) {
+      const r = await tryRecipe(v.blob.trim(), 'rand-' + i + '-' + Math.random().toString(36).slice(2));
+      if (r.ok) { valid++; if (readablePreview(r.preview)) readable++; }
+    }
+    return {
+      steps: [
+        { title: '1 · tried ' + N + ' random keys', body: 'each key = sha256("rand-…"), then AES-256-CBC' },
+        { title: '2 · valid PKCS#7 padding', body: valid + ' / ' + N + '  ≈ ' + (100 * valid / N).toFixed(2) + '%   (theory ≈ 0.39%)' },
+        { title: '3 · of those, actually readable', body: readable + ' / ' + valid },
+      ],
+      output: readable + ' readable out of ' + valid + ' valid-padding out of ' + N + ' random keys. Valid padding is a ~1/256 accident, not a decrypt — so a "≈" hit is never reported as a solve; only readable/WIF text is.',
+    };
+  },
+};
+
+// ── engine cards backed by the purpose-built graphical labs (edit inputs, run the real crypto) ──
+DEMOS['engine-cosmic-recipe-held-values-24-msl'] = {
+  lab: cosmicRecipeLab,
+  summary: 'Cosmic recipe builder — assemble the key with the held values &amp; test it live',
+  intro: 'Set yellowblueprimes = <code>2347</code> and yinyang = <code>95101</code>, pick any of the matrixsumlist byte-forms, choose the order + combine op, and fire the resulting <code>sha256</code> key at the REAL prize blob. This is the actual solve attempt — across all 24 forms it returns noise, so the block is the <i>combine</i>, not (necessarily) the held values.',
+};
+DEMOS['engine-seven-token-soup-combine'] = {
+  lab: cosmicRecipeLab,
+  summary: 'Cosmic recipe builder — try the "seven intertwined passwords" assembly',
+  intro: 'Assemble the key from the soup tokens in any order and combine operation and test it against the real cosmic blob — the concat / per-token-sha / XOR forms of the seven-token reading all return noise.',
+};
+DEMOS['engine-cipher-combine-beaufort-thematrixhasyou'] = {
+  lab: chessVicLab,
+  summary: 'Phase 3.2 lab — Beaufort keyed THEMATRIXHASYOU, live',
+  intro: 'The author’s confirmed cipher, interactive: Beaufort-decode with key <code>THEMATRIXHASYOU</code>. Feed it the thematic bases and watch the output — none of the enciphered strings key any blob.',
+};
+DEMOS['engine-p32-trailing-checkerboard-encoding'] = {
+  lab: chessVicLab,
+  summary: 'Phase 3.2 lab — the VIC straddling checkerboard, live',
+  intro: 'Decode the real 144-digit VIC code with the <code>FUBCDORA.LETHINGKYMVPS.JQZXW</code> checkerboard, and checkerboard-encode phrases to number-strings — the forms tested against p32_trailing all return noise.',
+};
+DEMOS['engine-p32-trailing-chess-vic-keys'] = {
+  lab: chessVicLab,
+  summary: 'Phase 3.2 lab — the chess board + VIC alphabet that precede p32_trailing',
+  intro: 'The "fubcd-king &amp; oracle-queen … sad board" clue, interactive: the chess position and the VIC alphabet it spells. Every phrase / alphabet / board reading has been swept against p32_trailing to noise.',
+};
+DEMOS['engine-dbbi-faed-fielddecode-zeroout-dual'] = {
+  lab: dbbiFaedLab,
+  summary: 'dbbi / faed decoder — field-decode, zero-out &amp; dual combine, live',
+  intro: 'Choose the block, the symbol→digit map (incl. one letter = the missing zero), the reading order and the decode target — including the prime zero-out schemes and dbbi/faed dual combinations. Every combination decodes to noise.',
+};
+DEMOS['engine-dbbi-faed-reinsert-prime-basics'] = {
+  lab: dbbiFaedLab,
+  summary: 'dbbi / faed decoder — "reinsert the prime basics", live',
+  intro: 'The Architect’s "reinsert the prime basics" read as a prime shift over the a–i field: change the map / order / target and re-decode. Adding the primes (add / subtract / Beaufort, mod 9 &amp; 10) still yields no readable text.',
+};
+DEMOS['engine-dbbi-faed-spiral-reindex'] = {
+  lab: dbbiFaedLab,
+  summary: 'dbbi / faed decoder — genesis-spiral array-reindex, live',
+  intro: 'Re-read dbbi (7×13) / faed (19×30) in the genesis counter-clockwise spiral order before field-decoding — the "if you know how the array is indexed" clue. Every orientation + prime zero-out decodes to noise.',
+};
+DEMOS['engine-dbbi-youwon-easter-egg'] = {
+  lab: analysisLab,
+  summary: 'Analysis workbench — probe the dbbi ↔ Phase-3.2 relationship yourself',
+  intro: 'The designed easter-egg: dbbi minus the Phase-3.2 plaintext (mod 26) surfaces "…YOUWON…". Paste dbbi (or any block) and run the frequency / IC / entropy / cipher suite live — it is a garbage-wrapped signature, not a key.',
+};
+DEMOS['engine-architect-speech-endgame-process'] = {
+  lab: reverseBinaryLab,
+  summary: 'Reverse-binary lab — the master hint that encodes the endgame process',
+  intro: 'The 2023-02-23 hint made interactive: decode jrk’s verbatim post into the recipe, see the token/prime-length anatomy, and reproduce the combine sweep. This is the creator’s own description of the process ("brute forcing might be required", "seven intertwined passwords", "reinsert the prime basics").',
+};
+DEMOS['engine-corpus-no-engineered-solution'] = {
+  lab: aesOracleLab,
+  summary: 'AES oracle — try any community candidate against any blob, live',
+  intro: 'The 57k-message corpus contains no engineered author-derived solution — every community value is a guess. Test that yourself: pick a blob, type any community candidate (1337 / 2357 / yinyang / …) and watch the endgame blobs return noise.',
+};
+DEMOS['engine-posted-key-material-not-gsmg'] = {
+  lab: aesOracleLab,
+  summary: 'AES oracle — the posted "keys" are not the solve, live',
+  intro: 'Posted WIFs / mnemonics derive to non-GSMG addresses, and posted passphrases open nothing. Try any of them here against the real blobs — a WIF starting 5/K/L or readable text would be the solve; everything posted returns noise.',
+};
+DEMOS['engine-false-creator-hints-ruled-out'] = {
+  lab: aesOracleLab,
+  summary: 'AES oracle — the "hints" that were trolls / mis-reads, live',
+  intro: 'The 2026 binary "tiny hint" was a new-year troll; "-41,-17" was a Decentraland parcel; the pi / {30,2,77} lines were banter. Nothing derived from them keys any blob — test candidates yourself and watch the wall hold.',
 };

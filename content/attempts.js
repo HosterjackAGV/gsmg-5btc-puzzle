@@ -45,6 +45,312 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "engine-cosmic-recipe-held-values-24-msl",
+  "phase": "salphaseion",
+  "category": "engine — cosmic combine",
+  "title": "The standard cosmic recipe with the best-held values (2347, 95101) is null across all 24 matrixsumlist forms",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "The cosmic key is meant to be built from yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang. The research engine's strongest derivations are yellowblueprimes=2347 and yinyang=95101, and it had separately enumerated 24 principled matrixsumlist byte-forms. This is the first test that combines all of them in the standard recipe.",
+  "input": "yellowblueprimes=2347; the 24 principled matrixsumlist byte-forms; lastwordsbeforearchichoice (literal token); yinyang in {95101, 10195, 9510195, yinyang}.",
+  "method": "Key = sha256(concat) of the four ingredients in master-hint order (plus 3 ordering variants), tested on cosmic, p32_trailing, and salph_inner via byte-exact AES-256-CBC / EVP-SHA256. 1152 tests. A cosmic decrypt to readable text would halt for human review.",
+  "output": "1152 tests → 3 chance valid-paddings (all ratio 0.39, garbage), 0 readable hits.",
+  "evidence": "Byte-exact harness; the chance valid-padding rate on a 1328-byte blob is ~1/256, consistent with the 3 garbage hits.",
+  "outcome": "verified-fail",
+  "insight": "The obvious assembly — sha256 of the concatenated held values — does not open cosmic for any of the 24 principled matrixsumlist forms or four yinyang forms. This is a BLOCK, not a refutation of the 2347/95101 derivations: the combine operation itself is unproven, so the negative points at the combine op (or lastwords wanting its speech-span value) rather than at the held ingredient values."
+ },
+ {
+  "id": "engine-dbbi-faed-reinsert-prime-basics",
+  "phase": "salphaseion",
+  "category": "engine — dbbi/faed decode",
+  "title": "'Reinsert the prime basics' as a prime Vigenère over dbbi/faed does not decode them",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "The Architect's endgame line — 'return to the source codes, reinserting the prime basics' — plus the creator's 'primes required' had only ever been read as ZEROING OUT characters. The literal 'reinsert/insert the primes' reading (adding a prime key into the field) was never tested, and it is also the natural way to introduce the zeros that dbbi/faed conspicuously lack.",
+  "input": "dbbi (91) and faed (570) as a-i field values (a=1..i=9); prime keys {2,3,5,7}, the first 10 primes (raw and mod 10), the digits 2357, and the matrixsumlist row-sums.",
+  "method": "Vigenère-style transform over the field — add (v+k), subtract (v-k), Beaufort (k-v), mod 10 and mod 9 — then the confirmed field-decode (digit string → big decimal → hex → ASCII). 72 variants, scored by printable ratio and a theme regex.",
+  "output": "72 variants → 0 readable (best printable ratio 0.632), 0 thematic hits.",
+  "evidence": "Deterministic decode; the field-decode is byte-exact (verified in a prior iteration against the known sibling tokens).",
+  "outcome": "verified-fail",
+  "insight": "Reading 'reinsert the prime basics' as an additive/subtractive prime cipher over the a-i field does not decode dbbi/faed. Together with the direct decode, zero-out schemes, all 9! digit permutations, and the genesis-spiral reindex, the dbbi/faed field-decode space is now closed across every author-cited transform — progress there needs a genuinely new external clue (the exact insertion rule), not more sweeps."
+ },
+ {
+  "id": "engine-salph-inner-integrity-and-combos",
+  "phase": "salphaseion",
+  "category": "engine — salph_inner integrity & keys",
+  "title": "salph_inner reconstruction verified byte-correct; soup-token combination keys are null",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "salph_inner is the 80-byte AES blob embedded in the SalPhaseIon soup, 'split by z' with the binary 'enter' token embedded inside its base64. Before trusting the many null key-sweeps against it, this iteration proves the stored blob is the byte-correct reconstruction, then runs the walkthrough's explicitly-UNUSED thread: the soup's own tokens as keys, in combination (never previously tested combined).",
+  "input": "The verbatim soup base64: part1 (63 chars, ends …efvdrd9) + z + part2 (64 chars, QvX0…N/jJ), with the embedded 40-bit run (=enter) removed. Candidate keys: thispassword, enter, ourfirsthintisyourlastcommand, anstoo, shabef, and 19 principled combinations.",
+  "method": "Reconstructed salph_inner from the soup parts and compared to ciphertexts/salph_inner.txt; decoded both the with-z and no-z forms to check ciphertext-length validity. Then tested the soup tokens + combinations (literal + sha256hex) on salph_inner via byte-exact AES-256-CBC / EVP-SHA256.",
+  "output": "Reconstruction (part1+z+part2) is byte-identical to the stored blob and decodes to Salted__ + salt 3ab585348552415d + 80-byte ct (valid); the no-z form gives an invalid 79-byte ct. Combination sweep: 24 keys, 48 tests → 0 valid padding, 0 readable.",
+  "evidence": "byte-exact harness (research/lib/gsmg.mjs); the z is genuine base64 (removing it breaks the block alignment), so all prior salph_inner sweeps hit the correct target; salph_inner === salphaseion.txt.",
+  "outcome": "verified-insight",
+  "insight": "The salph_inner blob is confirmed byte-correctly reconstructed (80-byte ciphertext, salt 3ab585348552415d) — its resistance is real, not a data-corruption artifact — and the soup's own tokens and their combinations do not key it. This rules out the 'corrupted oracle' explanation and closes the walkthrough's 'never tested in combination' thread."
+ },
+ {
+  "id": "engine-dbbi-faed-spiral-reindex",
+  "phase": "salphaseion",
+  "category": "engine — dbbi/faed decode",
+  "title": "Genesis-spiral array-reindex of dbbi/faed + field-decode yields no readable text (80 variants)",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "dbbi and faed are the two undecoded a-i soup blocks — the hoped-for sources of yellowblueprimes and yinyang. The confirmed a-i/o field-decode (that cracked the sibling tokens thispassword and lastwordsbeforearchichoice) gives garbage on them, and dbbi/faed lack the o(=0) symbol. The creator's 'if you know how the array is indexed' + 'primes required' + 'zero out characters' clues point to reindexing by the genesis CCW spiral and inserting zeros before decoding — flagged in the walkthrough as the most promising untried thread.",
+  "input": "dbbi (91 = 7×13) and faed (570 = 19×30), a-i symbols; the genesis CCW spiral traversal (matrix.js style).",
+  "method": "First self-verified the field-decode is byte-exact (it reproduces thispassword and lastwordsbeforearchichoice). Then reindexed dbbi/faed by CCW and CW inward spirals (both read-out and place-in senses, both grid orientations, plus reversal) and field-decoded (32 variants); then combined the spiral orderings with three principled prime zero-out schemes — replace prime positions with 0, insert 0 before prime positions, replace prime-valued cells with 0 (48 variants). Scored printable ratio + a theme regex (yin|yang|prime|yellow|blue|cosmic|dual).",
+  "output": "80 variants → 0 readable (best printable ratio 0.605), 0 thematic hits.",
+  "evidence": "Field-decode proven correct on two known sibling tokens before use, so the nulls are method-correct, not an implementation artifact.",
+  "outcome": "verified-fail",
+  "insight": "Reindexing dbbi/faed by the genesis spiral and applying every creator-cited prime zero-out placement still produces no readable ASCII or thematic (yinyang/yellowblueprimes) output — the walkthrough's 'most promising untried' geometric reading is closed. The only residue is the unbounded arbitrary-zero-insertion space (undetermined count/positions), on top of the already-null 9!-permutation and direct-decode results."
+ },
+ {
+  "id": "engine-urlblob-recovered-and-swept",
+  "phase": "salphaseion",
+  "category": "engine — blob artifact & reproducibility",
+  "title": "The 4th blob (urlblob) recovered in full, committed reproducibly, and re-swept null with the byte-exact harness",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "A fourth OpenSSL Salted__ blob (salt 74c974e3f92e64b5, 96-byte ct) had been spotted earlier as a gsmg.io URL-path hex, but its ciphertext was never committed to the repo, so it was neither reproducible nor loadable by the verifier — and the only prior key sweep was community-era. This closes that gap.",
+  "input": "Wayback CDX captures of gsmg.io URL paths beginning 53616c7465645f5f (=ASCII 'Salted__'). Two exist: a FULL 224-hex capture (2026-01-05, ending …0607) and a TRUNCATED one (2026-02-07, only 24 ct bytes — unusable).",
+  "method": "Recovered the full capture, hex-decoded it (112 B = Salted__ + salt 74c974e3f92e64b5 + 96-byte ct = 6 AES blocks), committed it as base64 (research/blobs/urlblob.txt, salt re-verified by the harness), then ran a 38-key derived sweep — chain keys, soup tokens, derived ingredients (2347/95101/10195/yellowblueprimes/yinyang), matrixsumlist forms, theme strings, all four salts, and the URL-path hex itself — × {literal, sha256hex}.",
+  "output": "76 tests → 0 valid padding, 0 readable hits. The prior null is re-confirmed under the authoritative byte-exact harness; the artifact is now reproducible.",
+  "evidence": "byte-exact AES-256-CBC / EVP-SHA256 (research/lib/gsmg.mjs); base64 U2FsdGVkX190yXTj…D4GBw==, salt self-verified; the blob shares no 16-byte ciphertext block with cosmic/salph_inner/p32_trailing.",
+  "outcome": "verified-insight",
+  "insight": "The 4th blob is now a reproducible byte-exact artifact and its undecryptability is re-confirmed with the authoritative harness. Its provenance is a community-posted URL path (the page returns the empty SPA shell) and it is structurally independent of the three real blobs, so it is very likely community noise rather than creator-authored — worth cataloguing and reproducing, not a promising solve lead."
+ },
+ {
+  "id": "engine-matrixsumlist-byteform-enumeration",
+  "phase": "salphaseion",
+  "category": "engine — cosmic ingredient",
+  "title": "matrixsumlist: the full principled byte-form space enumerated (24 forms) — none is a standalone key",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "One of the four cosmic ingredients is 'matrixsumlist' — the genesis grid's row/column sums. Because several sums equal 10, the digit string 6108… is genuinely ambiguous (parse [6,10,8,…] vs [6,1,0,8,…]). Prior tests covered the naive concat, the 2-hex-digit form, and the total 101; the full principled space had never been enumerated.",
+  "input": "Genesis grid (content/matrix.js), recomputed pixel-exact: rowsums 6,10,8,7,6,6,5,4,9,9,7,8,7,9; colsums 8,10,8,10,8,7,3,6,7,5,9,6,6,8; diagonals 7 and 8; ones 101 / zeros 95.",
+  "method": "Enumerated 24 principled encodings — literal concat, zero-padded 2-digit, single-nibble hex (each sum ≤10 fits one hex digit), rows-first vs cols-first, interleaved rows/cols, diagonals appended, total appended, total/zeros — and tested each (literal + sha256hex) on salph_inner / p32_trailing / cosmic via byte-exact AES-256-CBC / EVP-SHA256.",
+  "output": "24 forms, 144 tests → 0 valid padding, 0 readable hits.",
+  "evidence": "Byte-exact harness (research/lib/gsmg.mjs); grid sums self-verified against the canonical constants. No principled byte-form decrypts an 80-byte oracle.",
+  "outcome": "verified-fail",
+  "insight": "The finite principled space of matrixsumlist byte-forms is now fully enumerated (24 forms) and none is a standalone key for any open blob — this bounds, rather than resolves, the ambiguity: the correct form for the cosmic combine stays unverifiable because cosmic offers no oracle. Bonus cross-check: the grid's diagonals (7,8) and ones/zeros (101,95) are pixel-confirmed — exactly the inputs the community yinyang=95101 guess relies on."
+ },
+ {
+  "id": "engine-p32-board-as-data",
+  "phase": "architect",
+  "category": "engine — p32_trailing key",
+  "title": "The Phase-2 chess board used as DATA does not key the p32_trailing blob",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "Phase-3.2's chess clue ('a fubcd-king & oracle-queen, thingky mvps, on a sad board but as wide as the first one seen') back-references the Phase-2 chess board. Its phrase-hash, VIC-alphabet, and VIC-checkerboard readings were already closed. The one flagged-untried reading was the board POSITION used as raw DATA — only the FEN *string* had ever been hashed (for Phase-2).",
+  "input": "The CONFIRMED Phase-2 FEN board field B5KR/1r5B/2R5/2b1p1p1/2P1k1P1/1p2P2p/1P2P2P/3N1N2 (20 occupied squares).",
+  "method": "Parsed the FEN into 15 principled key constructions — occupied-square algebraic list (FEN order + sorted), (file,rank) coordinate-number string, board-without-slashes, upper-cased list, both kings' squares, the moved piece (c6/Rc6/rookc6), a 64-bit occupancy bitmask c182045454929228 (hex/dec/0x-prefixed), occupied-count 20, board-width 8. Each tested (literal + sha256hex) on p32_trailing / salph_inner / cosmic via byte-exact AES-256-CBC / EVP-SHA256.",
+  "output": "90 tests → 3 chance valid-paddings (ratios 0.30–0.37, garbage — far below the readable bar), 0 readable hits.",
+  "evidence": "Byte-exact harness (research/lib/gsmg.mjs); FEN parse self-verified (20 occupied squares match the documented count). No board-as-data construction yields readable plaintext on any blob.",
+  "outcome": "verified-fail",
+  "insight": "Using the confirmed Phase-2 chess board as raw data (coordinates, occupancy bitmask, king squares, moved-piece) does not key p32_trailing. Combined with the exhausted phrase/alphabet/checkerboard readings, the p32_trailing chess lead is now closed for every logic-pinned construction; the only remaining reading (a hypothetical 3.2-specific king-and-queen board) has no queen on the referenced board and pins no squares, so it is a blind, non-tractable space — progress here needs a genuinely new creator hint."
+ },
+ {
+  "id": "engine-first-hint-poem-salph-inner",
+  "phase": "salphaseion",
+  "category": "engine — salph_inner key",
+  "title": "'our first hint' read as the 2020 Roses poem does not key salph_inner",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "In the Salphaseion soup, salph_inner is bracketed by shabef 'our first hint is your last command' … shabef anstoo (shabef=sha256). Prior work read 'our first hint' abstractly; this reads it literally — the creator's FIRST public hint was the 2020-01-14 'Roses are White but often Red…' poem.",
+  "input": "The 2020-01-14 Roses poem, normalized (lowercase, punctuation/space-stripped), plus 10 salient fragments (first line; the 'Yellow has a number and so does Blue' key line; 'go back to the first puzzle piece'; 'the rabbits nest may contain a whole lot more'; 'hush hush'; +anstoo; +ourfirsthintisyourlastcommand).",
+  "method": "Key each candidate (literal + sha256hex prehash) and AES-256-CBC/EVP-SHA256 decrypt salph_inner / p32_trailing / cosmic. 66 tests. These are self-verifying 80-byte blobs — a correct key yields valid PKCS7 + readable text.",
+  "output": "66 tests → 0 valid padding, 0 readable hits.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 harness (research/lib/gsmg.mjs). No normalization of the first-hint poem produces valid padding on any open blob.",
+  "outcome": "verified-fail",
+  "insight": "Reading the soup's 'our first hint' bracket literally as sha256 of the creator's first-ever hint (the Roses poem) does not key salph_inner or any open 80-byte blob — one more concrete, self-verifying key reading closed."
+ },
+ {
+  "id": "engine-nihilist-matrix-sumlist-combine",
+  "phase": "salphaseion",
+  "category": "engine — cosmic combine",
+  "title": "'matrixsumlist' as a Nihilist cipher (Polybius MATRIX + key SUMLIST) does not key cosmic",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "A community image reads 'matrixsumlist' as a Nihilist cipher instruction — a Polybius square keyed MATRIX with Nihilist key SUMLIST — rather than a literal value. This tests that reading as the endgame combine.",
+  "input": "Polybius square (keyword MATRIX, I/J merged) + Nihilist key SUMLIST; 7 thematic base strings (yinyang, yellowblueprimes, the VIC sentence, the 4-label master-hint string, half-and-better-half, cosmic-duality).",
+  "method": "Nihilist-encipher each base (Polybius-code each letter to a 2-digit number, add the repeating SUMLIST key) → number string; test (literal + sha256hex) on cosmic / salph_inner / p32_trailing.",
+  "output": "42 tests → 0 readable hits. (nihilist('YINYANG','SUMLIST')=99665289278645.)",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256; the Nihilist-enciphered strings produce no readable plaintext on any blob.",
+  "outcome": "verified-fail",
+  "insight": "Reading 'matrixsumlist' as a Nihilist cipher (MATRIX Polybius + SUMLIST key) rather than a literal value does not produce a cosmic or 80-byte-blob key from the natural thematic bases — one more combine reading closed."
+ },
+ {
+  "id": "engine-cipher-combine-beaufort-thematrixhasyou",
+  "phase": "salphaseion",
+  "category": "engine — cosmic combine",
+  "title": "Cipher combine (Beaufort/Vigenère + THEMATRIXHASYOU) does not key cosmic/the blobs",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "The Architect speech names '16 encryptions', suggesting the endgame combine may be cipher-based, not a single hash. The puzzle's one confirmed cipher motif is Beaufort keyed THEMATRIXHASYOU (phase 3.2). This tests that construction on the endgame bases.",
+  "input": "6 thematic base strings (the 4-label master-hint string; the VIC sentence 'privatekeysbelongtohalfandbetterhalf'; 'returntothesourcecodesreinsertingtheprimebasics'; lastwordsbeforearchichoice; yinyang; halfandbetterhalf).",
+  "method": "Vigenère and Beaufort encipher each base with key THEMATRIXHASYOU; test the ciphertext (upper/lower, literal + sha256hex) on cosmic / salph_inner / p32_trailing.",
+  "output": "144 tests → 0 readable hits.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256; the confirmed Beaufort/Vigenère key produces no readable plaintext on any blob from these bases.",
+  "outcome": "verified-fail",
+  "insight": "The puzzle's own confirmed cipher (Beaufort/THEMATRIXHASYOU) does not, on the natural thematic bases, produce a cosmic or 80-byte-blob key. Combined with the closed hash-combine space, the endgame resists both the hash and the confirmed-cipher combine families — the remaining cipher space is astronomically large and, without a partial oracle, not blindly searchable. This maps the wall precisely: the missing piece is a specific construction (or a corrected ingredient) that no amount of undirected search will surface."
+ },
+ {
+  "id": "engine-seven-token-soup-combine",
+  "phase": "salphaseion",
+  "category": "engine — cosmic combine",
+  "title": "The '7 intertwined passwords' = 7 soup tokens combine, and prime-position readings — null",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "The Architect speech says the endgame needs '7 intertwined passwords'. The SalPhaseIon soup has exactly 7 tokens (dbbi, matrixsumlist, faed, lastwordsbeforearchichoice, thispassword, 'our first hint is your last command', anstoo) — so the cosmic key may concat all 7, not just the 4 master-hint ingredients. Also tested: 'reinsert the prime basics'/'in front of your eyes' as a prime-position character selection of the hint string.",
+  "input": "The 7 soup tokens (with the two unknown chunks in candidate value form and the 5 known tokens); the master-hint / 4-label string.",
+  "method": "sha256 of the 7-token concat in 5 principled orders × matrixsumlist byte-forms × yinyang candidate forms × shabef(=sha256 on the two 'shabef'-prefixed tokens); plus prime-position (1-based/0-based) and non-prime-position character selections of the hint strings as keys. On cosmic + the two 80-byte blobs.",
+  "output": "168 tests → 1 chance valid-padding (garbage), 0 readable hits.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256; the 7-token concat and the prime-position selections produce no readable plaintext on any blob.",
+  "outcome": "verified-fail",
+  "insight": "The '7 intertwined passwords' = 7-soup-token concatenation does not open cosmic, and the master-hint string does not hide the password at its prime positions. Combined with the 4-ingredient/nested/per-sha/XOR/raw-key results, the hash-based combine space is now thoroughly closed — pointing at either a cipher/encryption combine (the Architect's '16 encryptions') or a subtly-mis-derived ingredient, neither isolable without a partial oracle."
+ },
+ {
+  "id": "engine-architect-speech-endgame-process",
+  "phase": "architect",
+  "category": "engine — creator intel",
+  "title": "The Architect speech is the creator's endgame process description (brute-force sanctioned; 7 passwords)",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "Re-reading the confirmed phase-3.2 Beaufort plaintext (the Architect monologue) as OPERATIONAL instructions rather than flavour, and re-checking the unresolved cosmic ingredient #3.",
+  "input": "The full phase-3.2 Architect speech (creator-authored, ✅ confirmed) and the cosmic ingredient labels.",
+  "method": "Read the speech for endgame instructions; test the alternative reading of ingredient #3 = lastwordsbeforearchichoice as the actual last speech words ('…ciao bella o' / 'return to the source codes…') rather than the literal token, across cosmic + the 80-byte blobs.",
+  "output": "Verbatim endgame instruction found: 'RETURN TO THE SOURCE CODES … REINSERTING THE PRIME BASICS … SELECT FROM OVER 23 CIPHERS, 16 ENCRYPTIONS AND/OR 7 INTERTWINED PASSWORDS … NOTE THAT ALSO BRUTE FORCING MIGHT BE REQUIRED.' The speech-span reading of ingredient #3 was tested (189 tests) → 0 readable hits.",
+  "evidence": "docs/WALKTHROUGH.md §3.2 (the confirmed Beaufort output); the 189-test recipe sweep of the speech-span #3 reading was null.",
+  "outcome": "verified-insight",
+  "insight": "The creator himself SANCTIONS brute-force ('brute forcing might be required') and frames the endgame as a SELECT-from-many-ciphers/encryptions/passwords process — not a single elegant hash. The number 7 ('seven intertwined passwords') echoes phase-2's 7-answer concatenation, suggesting the final key may be a 7-part structure, and 'reinserting the prime basics' narrates the prime/zero-out operation on a 'source' string. Ingredient #3's exact value (literal token vs the speech span) remains unresolved; the speech-span reading does not open the blobs."
+ },
+ {
+  "id": "engine-p32-trailing-checkerboard-encoding",
+  "phase": "architect",
+  "category": "engine — 80-byte blob key sweep",
+  "title": "p32_trailing vs VIC-checkerboard-encoded thematic phrases (board construction)",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "The trailing 80-byte phase-3.2 blob's chess clue ('fubcd-king & oracle-queen, thingky mvps, on a sad board as wide as the first one seen', alphabet FUBCDORA.LETHINGKYMVPS.JQZXW, markers 1&4) describes the VIC straddling checkerboard. Prior work tried the alphabet-as-passphrase and the raw VIC digit string; this tries the checkerboard-ENCODING of thematic phrases into digit-string keys.",
+  "input": "The reconstructed straddling checkerboard (verified: enc('PRIVATEKEYS')=42815419131218121943); 15 thematic/clue phrases (PRIVATEKEYSBELONGTOHALFANDBETTERHALF, HALFANDBETTERHALF, THEMATRIXHASYOU, FUBCDKINGORACLEQUEEN, THINGKYMVPS, SADBOARD, COSMICDUALITY, THEONE, …).",
+  "method": "Checkerboard-encode each phrase to a digit string; test that digit string AND the plaintext, as literal passphrase and sha256hex, on p32_trailing (+ salph_inner, cosmic). Self-verifying: readable text = success.",
+  "output": "180 tests → 0 valid padding, 0 readable hits.",
+  "evidence": "ciphertexts/p32_trailing.txt (80 ct-bytes); 15 phrases × 2 key-forms × 2 modes × 3 blobs; 0 readable.",
+  "outcome": "verified-fail",
+  "insight": "The trailing 80-byte blob's key is not a VIC-checkerboard-encoded thematic phrase. With the alphabet-string and raw-VIC-digit-string readings also negative, the 'board construction' interpretation of the chess clue is largely exhausted — the blob resists the phase-3.2-derived material it sits next to."
+ },
+ {
+  "id": "engine-nested-detection-no-partial-oracle",
+  "phase": "salphaseion",
+  "category": "engine — blob structure",
+  "title": "No multi-layer / partial oracle: nested-blob detection across all determinable keys",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "Community key tests only checked for READABLE plaintext. But if a blob were multi-layer, the correct outer key would produce an inner Salted__ blob (binary, low printable ratio) that a readability check misses — and a sequential decrypt could produce a readable intermediate (a partial oracle). Neither had been checked.",
+  "input": "cosmic and the two 80-byte blobs; all determinable keys — the soup tokens (matrixsumlist, enter, lastwordsbeforearchichoice, thispassword, shabef, anstoo, 'our first hint is your last command'), the matrixsumlist byte-forms, the chain keys, the VIC sentence, and principled token combines.",
+  "method": "Decrypt each blob with each key (literal + sha256hex) and flag (a) a nested inner blob (plaintext begins 'Salted__'/'U2FsdGVk') or (b) a readable intermediate (printable ratio ≥ 0.7).",
+  "output": "192 attempts → 0 nested inner blobs, 0 readable intermediates.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256; the nested-blob signature and any ratio≥0.7 intermediate are absent for every determinable key on every blob.",
+  "outcome": "verified-fail",
+  "insight": "There is no hidden multi-layer outer-crack or sequential-decrypt partial oracle reachable from the known determinable keys — closing the possibility that the community 'missed' a nested foothold by only checking for readable text. The blobs' resistance is genuine, not a detection gap; the endgame's lack of a partial oracle is confirmed."
+ },
+ {
+  "id": "engine-cosmic-not-nested-multilayer-aes",
+  "phase": "salphaseion",
+  "category": "engine — cosmic combine",
+  "title": "cosmic is not a nested / multi-layer AES with the candidate ingredient keys",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "The Architect boasts of '23 ciphers, 16 encryptions, 7 intertwined passwords', which invites the idea that the final cosmic blob is multi-layer (nested) AES rather than a single decrypt. A single readable-ratio check would miss a nested layer (whose plaintext is another binary Salted__ blob), so a dedicated detector was built.",
+  "input": "cosmic (and the two 80-byte blobs); candidate endgame ingredient keys (the derived genesis values, the matrixsumlist byte-forms, lastwordsbeforearchichoice, and reused chain keys).",
+  "method": "Decrypt each blob with each candidate as the OUTER layer; flag a nested inner blob (plaintext begins 'Salted__'/'U2FsdGVk') or a readable intermediate (printable ratio ≥ 0.7). Plus combine variants: per-ingredient-sha-then-concat-then-sha, XOR of the ingredient hashes as a raw key (IV=0 / IV=salt), and the concat-hash as a raw 32-byte key.",
+  "output": "92 attempts → no nested Salted__ blob, no readable intermediate, 0 readable hits.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256; nested-blob signature and ratio≥0.7 intermediate both absent across all candidates and blobs.",
+  "outcome": "verified-fail",
+  "insight": "cosmic is not a nested/multi-layer AES with the candidate ingredient keys, and a single-ingredient sequential decrypt yields no readable/nested intermediate — so there is no hidden partial oracle to exploit there. The 'multi-layer combine' reading (from the Architect's '16 encryptions') is not borne out; the combine, if concat-based, is not per-ingredient-sha / XOR / raw-key either."
+ },
+ {
+  "id": "engine-dbbi-faed-fielddecode-zeroout-dual",
+  "phase": "salphaseion",
+  "category": "engine — dbbi / faed decoding",
+  "title": "dbbi & faed field-decode with prime zero-out and dual combination — no ASCII",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "The confirmed a–i field-decode (a=1…i=9, o=0 → big number → hex → ASCII) cracked the sibling soup chunks lastwordsbeforearchichoice and thispassword. dbbi/faed are pure a–i (no 0), and the creator said 'some characters need to be zeroed out' — testing whether a prime-based zero-out supplies the 0s that make the confirmed method yield text.",
+  "input": "dbbi (91 a–i chars) and faed (570 a–i chars).",
+  "method": "Field-decode (a=1…i=9 → big int → hex → ASCII) under 5 zero-out schemes (none; zero prime-valued b,c,e,g; zero non-prime-valued; zero at prime positions; zero at non-prime positions) and 4 dual combinations (dbbi+faed, faed+dbbi, dbbi as a base-9 key over faed mod 9, faed−dbbi mod 9). Self-verifying: readable ASCII = success.",
+  "output": "14 variants → all garbage (printable ratios 0.34–0.47; no words). Verified prime coincidences with no decode: faed value-sum = 3079 (prime); 570−91 = 479 (prime); 570+91 = 661 (prime).",
+  "evidence": "Deterministic field-decode of the 91- and 570-char a–i strings; every output high-entropy, ratio < 0.5.",
+  "outcome": "verified-fail",
+  "insight": "dbbi/faed do not yield ASCII via the confirmed field-decode even with a principled prime zero-out or dual combination — the most natural engineered reading of the creator's 'zero out characters' clue is closed for these two chunks. If they encode the endgame values, it is not as field-decoded ASCII text."
+ },
+ {
+  "id": "engine-salph-inner-soup-grammar-keys",
+  "phase": "salphaseion",
+  "category": "engine — 80-byte blob key sweep",
+  "title": "salph_inner (80-byte SalPhaseIon inner blob) vs its exact soup-grammar keys",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-09",
+  "history": "salph_inner is bracketed in the SalPhaseIon soup by shabef \"our first hint is your last command\" [blob] shabef \"anstoo\", where shabef = sha256. The obvious phrase-hashes were already exhausted; this adds engineered readings of the immediate context.",
+  "input": "16 keys from the exact bracketing grammar + engineered substitutions ('our first hint' → the 2020 Roses-poem subject / candidate yellowblueprimes values; 'your last command' → DEL/ASCII-127/anstoo).",
+  "method": "Byte-exact AES-256-CBC / EVP-SHA256 decrypt of salph_inner (salt 3ab585348552415d, 80 ct-bytes), p32_trailing and cosmic, each key in three modes: literal, sha256hex, and sha-of-sha ('shabef' twice). Valid PKCS7 + readable text required.",
+  "output": "144 tests → 0 readable hits.",
+  "evidence": "ciphertexts/salphaseion.txt ≡ salph_inner (80 ct-bytes); 16 keys × 3 modes × 3 blobs; 0 readable plaintext.",
+  "outcome": "verified-fail",
+  "insight": "salph_inner's key is neither the literal bracketing soup phrases nor their engineered substitutions/double-hash forms. Also: 'yinyang is an AES-decode output' is a community inference, not a creator-confirmed fact (the creator only called it 'the next phase') — so the decode-a-blob-to-get-yinyang path is not established."
+ },
+ {
   "id": "engine-p32-trailing-chess-vic-keys",
   "phase": "architect",
   "category": "engine — 80-byte blob key sweep",
