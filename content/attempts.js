@@ -154,7 +154,10 @@ export const ATTEMPTS = [
     "label": "Reference — cosmic ingredients",
     "href": "#/reference"
    }
-  ]
+  ],
+  "image": "assets/walkthrough/community-images/rabbit-grid-yellow-blue-swapped.png",
+  "imageAlt": "followthewhiterabbit genesis grid with yellow and blue colours swapped, rabbit visible in the centre",
+  "imageCaption": "Community diagram (Telegram — id:5260693904, 2023-11-26, msg #16870): the followthewhiterabbit genesis grid with yellow and blue swapped — the 'Night turns into day. Yellow into blue. Reverse the colors.' reading this card's colour-inversion (yin-yang) transform reproduces."
  },
  {
   "id": "engine-p32-board-as-data",
@@ -824,7 +827,10 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "image": "assets/walkthrough/community-images/vic-straddling-checkerboard-decoder.jpg",
+  "imageAlt": "VIC Cipher Decoder loaded with the phase-3.2 144-digit numeric string and a straddling-checkerboard alphabet",
+  "imageCaption": "@Heellrzz, 2024-03-28 (Telegram msg #23359): the phase-3.2 144-digit numeric string loaded into a VIC / straddling-checkerboard decoder with the keyed alphabet FUBCDORA.LETHINGKYMVPS.JQZXW and markers 1,4 — the exact configuration this card reverse-engineers."
  },
  {
   "id": "keysweep-p32-288-phase32-answers",
@@ -1856,7 +1862,10 @@ export const ATTEMPTS = [
     "label": "Walkthrough — genesis colored cells & dbbi",
     "href": "#/walkthrough"
    }
-  ]
+  ],
+  "image": "assets/walkthrough/community-images/genesis-prime-cells-5yellow-7blue.jpg",
+  "imageAlt": "Genesis followthewhiterabbit grid with only prime-position cells left colored: 5 yellow, 7 blue",
+  "imageCaption": "Community diagram (Telegram — id:5260693904, 2024-10-09, msg #27695): the followthewhiterabbit genesis grid re-coloured so only the cells on prime positions keep their colour — leaving 5 yellow and 7 blue. A direct visual of the \"prime-index the Y/B cells\" reading this card tests."
  },
  {
   "id": "dbbi-ebcdic-vic-transforms",
@@ -3096,7 +3105,10 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "image": "assets/walkthrough/community-images/dbbi-faed-symbol-frequencies.jpg",
+  "imageAlt": "Symbol-frequency tables for dbbi (91 symbols) and faed (570 symbols)",
+  "imageCaption": "@tobi0000, 2024-11-15 (Telegram msg #30267): symbol-frequency tables for dbbi (top, 91 symbols) and faed (bottom, 570). Verified byte-exact against the real blocks — dbbi b=25/e=18/f=10/g=10/c=8/h=8/i=5/d=4/a=3; faed g=107/i=75/e=69/h=58/f=57/a=54/c=52/b=49/d=49 — the uneven spectra this card characterises (dbbi structured, faed near-flat/random)."
  },
  {
   "id": "salph-inner-exhaustive-self-verifying-attack",
