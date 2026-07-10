@@ -2652,6 +2652,14 @@ DEMOS['reverse-binary-hint-involution-prime-length-structure'] = {
 // Each reproduces that card's REAL sweep on the genuine blobs; edit any input and re-run. A readable
 // (or WIF) decrypt would be the 5 BTC solve — everything below returns the noise floor, live.
 const readablePreview = (p) => { if (!p || p.length < 8) return false; const good = [...p].filter(c => c !== '·').length; return good / p.length >= 0.85; };
+// tiny graphical byte-map: printable bytes green, non-printable grey — you SEE readable vs noise at a glance.
+function byteStrip(text, max = 72) {
+  const s = String(text || '').slice(0, max); if (!s.length) return '<svg viewBox="0 0 6 14" width="60" height="14"><rect width="6" height="14" fill="#b3202c"/></svg>';
+  const w = 6, h = 14; let cells = '';
+  for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); const ok = (c === 9 || c === 10 || c === 13 || (c >= 32 && c <= 126)); cells += `<rect x="${i * w}" y="0" width="${w - 1}" height="${h}" fill="${ok ? '#2ea043' : '#6e7681'}"/>`; }
+  return `<svg viewBox="0 0 ${s.length * w} ${h}" width="100%" height="14" preserveAspectRatio="none" role="img" aria-label="byte-map: green=readable, grey=noise">${cells}</svg>`;
+}
+const BYTE_LEGEND = '<div class="demo-legend" style="font-size:.8em;margin:.4em 0"><span style="margin-right:1em"><i style="display:inline-block;width:11px;height:11px;background:#2ea043;vertical-align:middle;border-radius:2px"></i> readable byte</span><span style="margin-right:1em"><i style="display:inline-block;width:11px;height:11px;background:#6e7681;vertical-align:middle;border-radius:2px"></i> noise</span><span><i style="display:inline-block;width:11px;height:11px;background:#b3202c;vertical-align:middle;border-radius:2px"></i> wrong padding</span> — a solve would be a <b>mostly-green</b> strip; every candidate here is grey.</div>';
 const SWEEP_CODE = `// puzzle convention: key = sha256(candidate) → EVP_BytesToKey(sha256) → AES-256-CBC
 for (const cand of candidates) {
   const pt = aesDecrypt(blob, sha256hex(cand));   // fails on wrong PKCS#7 padding
@@ -2674,10 +2682,15 @@ function aesSweep({ blobLabel, blob, keys, note }) {
         const r = await tryRecipe(v.blob.trim(), cand);
         const good = r.ok && readablePreview(r.preview);
         if (good && !solve) solve = { cand, preview: r.preview };
-        steps.push({ title: (good ? '★ ' : (r.ok ? '≈ ' : '✕ ')) + (cand.length > 46 ? cand.slice(0, 46) + '…' : cand), body: r.ok ? r.preview : 'invalid padding — wrong key' });
+        steps.push({
+          title: (good ? '★ ' : (r.ok ? '≈ ' : '✕ ')) + (cand.length > 46 ? cand.slice(0, 46) + '…' : cand),
+          body: r.ok ? r.preview : 'invalid padding — wrong key',
+          graphic: byteStrip(r.ok ? r.preview : ''),          // the decrypt bytes, drawn (grey = noise)
+        });
       }
       return {
         steps,
+        viz: BYTE_LEGEND,
         output: solve
           ? '★ "' + solve.cand + '" decrypts to readable text (' + solve.preview.slice(0, 40) + '…). That would be a solve — verify off-site before ever touching the wallet.'
           : list.length + ' candidates → 0 readable. ' + note + ' (Valid padding ≠ a solve: the ~1/256 noise floor throws the odd garbage "≈".)',

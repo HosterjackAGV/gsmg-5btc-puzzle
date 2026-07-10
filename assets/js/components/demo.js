@@ -1,15 +1,17 @@
-// components/demo.js — the "try it yourself" player: a collapsible per attempt showing the actual
-// code, editable real-data inputs, and a Run button that REVEALS each step of the method one at a
-// time (the animation) and ends with the full output. Driven entirely by content/demos.js.
+// components/demo.js — the "try it yourself" workbench per attempt. Standardized to show, for every card:
+//   • the exact code (verbatim, shown)              • editable inputs (pre-filled with the SOURCE's values)
+//   • an AUTHOR'S PASS that auto-runs on open        • a graphical viz per step + an overall result viz
+//   • a reset-to-author's-inputs button
+// A step may carry { title, body, graphic } where `graphic` is trusted inline SVG/HTML from run() (in-repo
+// code, not user input). run() may also return { viz } for an overall graphic. Backward-compatible: demos
+// without graphics still work. Graphical LABS (d.lab) remain the rich interactive tool.
 
 import { DEMOS } from '../../../content/demos.js';
 import { esc } from '../util.js';
 
-// The collapsible HTML for an attempt id (empty string if the attempt has no demo yet).
 export function demoHtml(id) {
   const d = DEMOS[id];
   if (!d) return '';
-  // Graphical lab mode: a self-contained interactive tool mounts into .demo-lab.
   if (d.lab) {
     return `<details class="demo demo-lab-wrap"${d.open ? ' open' : ''}>
     <summary>🔬 ${esc(d.summary || 'Interactive lab — try it yourself')}</summary>
@@ -19,24 +21,26 @@ export function demoHtml(id) {
     </div>
   </details>`;
   }
-  const fields = d.inputs.map(inp => `
+  const fields = (d.inputs || []).map(inp => `
       <div class="demo-field">
         <label>${esc(inp.label || inp.name)}</label>
         <textarea class="demo-in${inp.mono ? ' mono' : ''}" data-name="${esc(inp.name)}" rows="${inp.rows || 1}" spellcheck="false" autocomplete="off">${esc(inp.value)}</textarea>
       </div>`).join('');
   return `<details class="demo">
-    <summary>🔬 The method in code — <b>try it yourself</b></summary>
+    <summary>🔬 ${esc(d.summary || 'The method in code — try it yourself')}</summary>
     <div class="demo-body" data-demo="${esc(id)}">
-      <pre class="demo-code">${esc(d.code)}</pre>
+      ${d.intro ? `<div class="demo-intro">${d.intro}</div>` : ''}
+      <div class="demo-pass-note faint">▶ opens with the <b>author's pass</b> — the original attempt run on the source's own inputs. Then edit any input and re-run.</div>
+      <pre class="demo-code">${esc(d.code || '')}</pre>
       <div class="demo-inputs">${fields}</div>
-      <div class="demo-controls"><button type="button" class="btn teal sm demo-run">▶ Run it</button><span class="demo-hint faint">edit any input and re-run</span></div>
+      <div class="demo-controls"><button type="button" class="btn teal sm demo-run">▶ Run it</button><button type="button" class="btn sm demo-reset" title="restore the source author's original inputs">↺ author's inputs</button><span class="demo-hint faint">edit any input and re-run</span></div>
       <ol class="demo-steps" aria-live="polite"></ol>
+      <div class="demo-viz" aria-hidden="true"></div>
       <div class="demo-out" hidden></div>
     </div>
   </details>`;
 }
 
-// Wire every demo player found under root.
 export function mountDemos(root) {
   if (!root) return;
   const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,32 +56,48 @@ export function mountDemos(root) {
       return;
     }
     const btn = body.querySelector('.demo-run');
+    const resetBtn = body.querySelector('.demo-reset');
     const stepsEl = body.querySelector('.demo-steps');
+    const vizEl = body.querySelector('.demo-viz');
     const outEl = body.querySelector('.demo-out');
-    let running = false;
-    btn.addEventListener('click', async () => {
+    const inputEls = [...body.querySelectorAll('.demo-in')];
+    const authorVals = {};                                        // the author's pass = the source's original inputs
+    inputEls.forEach(t => { authorVals[t.getAttribute('data-name')] = t.value; });
+    let running = false, ranOnce = false;
+
+    async function runIt(isAuthorPass) {
       if (running) return;
       running = true; btn.disabled = true; btn.textContent = 'running…';
-      stepsEl.innerHTML = ''; outEl.hidden = true; outEl.textContent = ''; outEl.className = 'demo-out';
+      stepsEl.innerHTML = ''; vizEl.innerHTML = ''; outEl.hidden = true; outEl.innerHTML = ''; outEl.className = 'demo-out';
       try {
-        const vals = {};
-        body.querySelectorAll('.demo-in').forEach(t => { vals[t.getAttribute('data-name')] = t.value; });
+        const vals = {}; inputEls.forEach(t => { vals[t.getAttribute('data-name')] = t.value; });
         const res = await d.run(vals);
         for (const s of (res.steps || [])) {
           const li = document.createElement('li');
           li.className = 'demo-step';
-          li.innerHTML = `<div class="demo-step-t">${esc(s.title)}</div><pre class="demo-step-b">${esc(String(s.body))}</pre>`;
+          li.innerHTML = `<div class="demo-step-t">${esc(s.title)}</div>`
+            + (s.body != null ? `<pre class="demo-step-b">${esc(String(s.body))}</pre>` : '')
+            + (s.graphic ? `<div class="demo-step-viz">${s.graphic}</div>` : '');   // trusted inline SVG/HTML from run()
           stepsEl.appendChild(li);
           requestAnimationFrame(() => li.classList.add('in'));
-          await sleep(420);
+          await sleep(360);
         }
-        outEl.hidden = false; outEl.textContent = res.output || '';
+        if (res.viz) vizEl.innerHTML = res.viz;                    // trusted overall graphic
+        outEl.hidden = false;
+        outEl.innerHTML = (isAuthorPass ? '<span class="demo-pass-badge" title="the attempt exactly as the source author ran it">author’s pass</span> ' : '') + esc(res.output || '');
         requestAnimationFrame(() => outEl.classList.add('in'));
       } catch (e) {
         outEl.hidden = false; outEl.className = 'demo-out err'; outEl.textContent = 'Error: ' + (e && e.message || e);
         requestAnimationFrame(() => outEl.classList.add('in'));
       }
       running = false; btn.disabled = false; btn.textContent = '▶ Run it';
-    });
+    }
+
+    btn.addEventListener('click', () => runIt(false));
+    if (resetBtn) resetBtn.addEventListener('click', () => { inputEls.forEach(t => { t.value = authorVals[t.getAttribute('data-name')]; }); runIt(true); });
+    // auto-run the author's pass the first time the card's workbench is opened (lazy — not on page load)
+    const det = body.closest('details');
+    const kick = () => { if (det.open && !ranOnce) { ranOnce = true; runIt(true); } };
+    if (det) { det.addEventListener('toggle', kick); kick(); }
   });
 }
