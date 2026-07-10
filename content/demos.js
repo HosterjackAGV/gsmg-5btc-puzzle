@@ -2746,3 +2746,18 @@ DEMOS['community-yellowblueprimes-color-inversion-or'] = aesSweep({
   keys: ['69119', '16382137', '257'],
   note: "@janusz_baran's yin-yang colour-inversion 'harmonic primes' (69119 / 16382137 / 257, msg #16869) key none of the blobs. Edit the values or switch the blob and re-run — yellowblueprimes stays unverifiable without a cosmic oracle.",
 });
+DEMOS['community-interleave-dbbi-faed-by-matrixsumlist'] = {
+  lab: dbbiFaedLab,
+  summary: 'dbbi / faed decoder — try intertwining the two blocks, live',
+  intro: 'The claim (msg #21241): matrixsumlist tells you how to interleave dbbi and faed before decoding. Choose the block, map, order and target and re-decode — every principled weave decodes to noise.',
+};
+DEMOS['community-matrixsumlist-from-fefefe-room101'] = aesSweep({
+  blobLabel: 'cosmic (prize blob)', blob: PUZZLE.cosmic,
+  keys: ['40585734329412479690520338541901772425587069158131163878976'],
+  note: "@janusz_baran's 'read matrixsumlist from the #fefefe room 101 with four re-inserted zeros' value (msg #8434) keys no blob. Edit it or switch the blob and re-run.",
+});
+DEMOS['community-yellow-plane-reversed-not-prime'] = aesSweep({
+  blobLabel: 'cosmic (prize blob)', blob: PUZZLE.cosmic,
+  keys: ['100433436204244105573859228564110291168344943733122168512511', 'ffffdfffffff7ffefffffbfff7ffeeffdffffffffffffdfff'],
+  note: "@barrystyle's reversed+NOT yellow-plane prime (msg #17348) keys no blob. Edit the value/form or switch the blob and re-run.",
+});

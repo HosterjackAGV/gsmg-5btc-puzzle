@@ -45,6 +45,88 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "community-interleave-dbbi-faed-by-matrixsumlist",
+  "phase": "salphaseion",
+  "category": "dbbi / faed — field & number",
+  "title": "matrixsumlist as an instruction to intertwine dbbi & faed before decoding",
+  "who": "community",
+  "author": "id:1690548820",
+  "date": "2024-02-21",
+  "time": "06:41 UTC",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #21241",
+  "sourceQuote": "im 100% sure that matrixsumlist is an instruction on how to intertwine dbbi and faed before it decrypts like cfobfdhgdobdgooiigdocdaoofidh",
+  "history": "A community reading of 'matrixsumlist' not as a value but as a WEAVING instruction: interleave the two undecoded a–i blocks dbbi (91) and faed (570) into one string — driven by the row/column sums — and only then run the confirmed field-decode, expecting a readable chunk like the sibling 'thispassword' block (cfob…).",
+  "input": "dbbi (91 a–i symbols) and faed (570), and the genesis row-sums [6,10,8,7,6,6,5,4,9,9,7,8,7,9] / col-sums as the weave sizes.",
+  "method": "Interleave dbbi & faed several principled ways (alternate char-by-char both orders; concatenate both orders; chunk-weave taking row-sum / col-sum letters alternately) → run the confirmed a–i field-decode (letters→digits a=1..i=9 → big integer → hex → ASCII) on the merged string → score printable ratio + a theme regex (via research/lib/gsmg.mjs).",
+  "provenance": "dbbi and faed are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the weave sizes are the genesis row/column sums from content/matrix.js; the interpretation is from msg #21241.",
+  "output": "7 interleave variants → 0 readable, 0 thematic (best printable ratio 0.415, garbage).",
+  "evidence": "Byte-exact field-decode (verified to reproduce the sibling tokens thispassword/lastwordsbeforearchichoice). No dbbi+faed weaving field-decodes to text.",
+  "outcome": "verified-fail",
+  "insight": "Reading matrixsumlist as a weave instruction for dbbi+faed does not produce a decodable chunk — one more dbbi/faed decode reading closed.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
+ },
+ {
+  "id": "community-matrixsumlist-from-fefefe-room101",
+  "phase": "genesis",
+  "category": "genesis derivations",
+  "title": "matrixsumlist read starting from the #fefefe 'room 101' square (with 4 re-inserted zeros) = a 59-digit decimal",
+  "who": "community",
+  "author": "@janusz_baran",
+  "date": "2023-02-02",
+  "time": "05:18 UTC",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #8434",
+  "sourceQuote": "just start checking matrix from 101 room, you need to start from here NEO, room is fefefe and you will have sumlist … 40585734329412479690520338541901772425587069158131163878976. in the first phase, four zeros were omitted from the matrix",
+  "history": "A community proposal that 'matrixsumlist' is obtained by reading/summing the genesis matrix STARTING at the #fefefe cell (the Matrix 'room 101'), with four zeros re-inserted that were 'omitted' in Phase 1 — yielding one specific 59-digit decimal.",
+  "input": "The genesis grid (content/matrix.js), the #fefefe cell at [row 7, col 4] as the start point, and the asserted value 40585734329412479690520338541901772425587069158131163878976.",
+  "method": "Take the asserted decimal (and sha256hex of it) as the openssl `enc -aes-256-cbc -md sha256` passphrase against cosmic / salph_inner / p32_trailing, and slot it in as the matrixsumlist ingredient of the cosmic combine. A readable/WIF decrypt would be the solve.",
+  "provenance": "The #fefefe cell and grid come from content/matrix.js (pixel-verified against puzzle.png); the reading rule and the 59-digit value are from @janusz_baran's msg #8434.",
+  "output": "The value (literal + sha256hex) on all three open blobs → 6 tests → 0 valid padding, 0 readable.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 (research/lib/gsmg.mjs).",
+  "outcome": "verified-fail",
+  "insight": "The 'read matrixsumlist from the #fefefe room 101 with four re-inserted zeros' value does not key any blob — one more matrixsumlist byte-form ruled out.",
+  "links": [
+   {
+    "label": "Walkthrough — genesis grid & #fefefe cell",
+    "href": "#/walkthrough"
+   }
+  ]
+ },
+ {
+  "id": "community-yellow-plane-reversed-not-prime",
+  "phase": "genesis",
+  "category": "genesis derivations",
+  "title": "Yellow colour-plane as a 196-bit array, reversed + bitwise-NOT → a 60-digit prime as yellowblueprimes",
+  "who": "community",
+  "author": "@barrystyle",
+  "date": "2023-12-12",
+  "time": "16:57 UTC",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #17348 (with #14035)",
+  "sourceQuote": "100433436204244105573859228564110291168344943733122168512511 or ffffdfffffff7ffefffffbfff7ffeeffdffffffffffffdfff … thats off one of the colours … prime number right off the bat",
+  "history": "A community derivation of yellowblueprimes: parse the yellow colour plane of the genesis image as a left-to-right 196-bit array, reverse the bitstream and apply bitwise-NOT, read as a big integer — which comes out prime (100433436204244105573859228564110291168344943733122168512511 = hex ffffdfffffff7ffefffffbfff7ffeeffdffffffffffffdfff).",
+  "input": "The 9 yellow cells of the genesis grid (content/matrix.js) as a 196-bit plane, and the asserted prime 100433436204244105573859228564110291168344943733122168512511.",
+  "method": "Take the asserted value (and its hex form, and sha256hex of each) as the openssl aes-256-cbc -md sha256 passphrase against cosmic / salph_inner / p32_trailing, and as a candidate yellowblueprimes ingredient. A readable/WIF decrypt would be the solve.",
+  "provenance": "The yellow-cell positions come from content/matrix.js (pixel-verified against puzzle.png); the reverse+NOT rule and the prime value are from @barrystyle's msgs #17348/#14035.",
+  "output": "The value + hex form (literal + sha256hex) on all three open blobs → 12 tests → 0 valid padding, 0 readable.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 (research/lib/gsmg.mjs).",
+  "outcome": "verified-fail",
+  "insight": "The reversed+NOT yellow-plane prime does not key any blob — one more yellowblueprimes derivation ruled out; yellowblueprimes stays unverifiable without a cosmic oracle.",
+  "links": [
+   {
+    "label": "Walkthrough — genesis colored cells",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "Reference — cosmic ingredients",
+    "href": "#/reference"
+   }
+  ]
+ },
+ {
   "id": "community-yellowblueprimes-color-inversion-or",
   "phase": "genesis",
   "category": "genesis derivations",
