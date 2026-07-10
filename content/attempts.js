@@ -236,12 +236,13 @@ export const ATTEMPTS = [
   "category": "image & QR forensics",
   "title": "QR reproduced byte-exact from the prize-address URL (Byte/UTF-8/Auto mask/7% EC) — no hidden bits",
   "who": "community",
-  "source": "community cross-check (a solver re-encoded the URL and compared the QR module-for-module)",
+  "source": "Community cross-check (a solver re-encoded the prize-address URL and compared the QR module-for-module); catalogued in docs/ATTEMPTS.md",
   "input": "The QR code in puzzle.png and the string https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe. Standard encoder config: Byte mode, UTF-8, mask = Auto, error-correction level L (7%).",
   "method": "Re-encoded the URL with a standard QR encoder using Byte/UTF-8/Auto-mask/level-L and compared the resulting modules against the QR in the image — the data bits, the Reed-Solomon error-correction (redundancy) bits, the format/version 'service' bits, and the chosen mask — module for module. (Independently re-derived here: that URL at level-L produces a version-4, 33x33 QR.)",
   "output": "The puzzle's QR is a standard version-4 (33x33) Byte-mode, level-L code that reproduces from the URL with NOT A SINGLE BIT swapped — every data, error-correction and format bit matches the textbook encoding. Nothing is smuggled into the redundancy, the mask, or the format bits.",
   "outcome": "verified-insight",
-  "insight": "The genesis QR is a perfectly standard QR of the blockchain.com prize-address URL (Byte/UTF-8/Auto-mask/EC-level-L, version 4) — byte-exactly reproducible, so its error-correction and format/service bits carry zero hidden data. This definitively closes the 'is there steganography in the QR' question, hardening the plain-decode result: the QR is just a convenience link to the prize address, not a puzzle input."
+  "insight": "The genesis QR is a perfectly standard QR of the blockchain.com prize-address URL (Byte/UTF-8/Auto-mask/EC-level-L, version 4) — byte-exactly reproducible, so its error-correction and format/service bits carry zero hidden data. This definitively closes the 'is there steganography in the QR' question, hardening the plain-decode result: the QR is just a convenience link to the prize address, not a puzzle input.",
+  "author": "The Community"
  },
  {
   "id": "genesis-fefefe-cell-located-7-4",
@@ -634,12 +635,13 @@ export const ATTEMPTS = [
   "category": "dbbi / faed — field & number decode",
   "title": "b/e binary channel and presence channel in dbbi",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi. Channel 1: b vs e as a bit. Channel 2: colored-vs-not as a bit.",
   "method": "Treated the two dominant symbols as a binary channel (b=0/e=1) and separately the colored-vs-uncolored status as another bit channel, reading each as a hidden bitstream.",
   "output": "Garbage.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "ledger-cosmic-duality-vic-on-blocks",
@@ -647,12 +649,13 @@ export const ATTEMPTS = [
   "category": "dbbi / faed — field & number decode",
   "title": "Cosmic Duality book / VIC cipher applied to the blocks",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi and faed. Applied the Phase-3.2 VIC straddling-checkerboard (alphabet FUBCDORA.LETHINGKYMVPS.JQZXW) and book-cipher readings.",
   "method": "Reused the Phase-3.2 VIC checkerboard cipher and Cosmic Duality book-cipher readings on dbbi and faed, on the theory that the same cipher machinery from the architect phase continues into the soup blocks.",
   "output": "Garbage -- both the VIC and book-cipher readings eliminated.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "dbbi-base81-pairs",
@@ -690,12 +693,16 @@ export const ATTEMPTS = [
   "category": "dbbi / faed — field & number decode",
   "title": "dbbi used as a repeating key over faed (community 'dbbi keys faed')",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #63520",
   "input": "faed (570 symbols) with dbbi (91 symbols) as a repeating Vigenere-style key: add / subtract / Beaufort, dbbi forward and reversed, with and without its 4-symbol header, plus pairwise operation on the shared 91-symbol prefix.",
   "method": "Because dbbi physically precedes faed in the soup and is shorter, the community theory was that dbbi is the key that deciphers faed. Every additive/subtractive/Beaufort combination and orientation was applied and the result's Index of Coincidence measured.",
   "output": "IoC collapses to 0.108-0.114 (uniform) under every variant -> the 'dbbi keys faed' idea is dead in its additive form. [Also documented separately as \"dbbi used as a repeating polyalphabetic key over faed\" (dead-end ledger): Tested the popular community idea that 'dbbi keys faed' (the first block decrypts the second). They cycled dbbi as a Vigenere-style key over faed using modular add, subtract, and Beaufort, in both orientations and header variants, to see if any alignment produced English. Result: The Index of Coincidence collapses to 0.108-0.114 (uniform/random), so the additive 'dbbi keys faed' idea is dead in its additive form.]",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "@theseedisplanted",
+  "date": "2026-05-22",
+  "time": "10:02 UTC",
+  "sourceQuote": "dbbi row sums form a repeating key — faed is 570 char = 38*15, so splitting it 38 rows of 15 letters and summed; XORing those sums with the key gives text, applying zero masks (zeroed-out hint) from blue/yellow positions of the 14x14 matrix reveals SENDTHE, BLUE, TOSETHEX"
  },
  {
   "id": "dbbi-field-decode-int-hex-ascii",
@@ -876,7 +883,7 @@ export const ATTEMPTS = [
   "dateApprox": false,
   "input": "faed as ciphertext; key/alphabet derived from dbbi -- its first 13 symbols with duplicates removed give the 8-letter Bifid keyword 'dbifhceg'. dbbi is also split into 7 parts (the size of matrixsumlist), used as successive keys.",
   "method": "The popular 'dbbi keys faed, it's a dual system' theory applied with Bifid instead of Vigenere: run a Bifid decode of faed using the dbbi-derived 'dbifhceg' alphabet, feeding dbbi's 7 parts in turn (the first part keys faed, its output keys the next, and so on).",
-  "output": "Surfaces suggestive fragments -- a first part reads as 'btcseed...', the next 'can...' -- but no coherent full plaintext or usable key emerges, and a Trifid + XOR follow-up on the tail found nothing substantial. Like the OTP 'YOUWON' run, a tantalising partial that has not been made to close. @CoruNethron later analysed the Bifid cipher's properties and judged the 'btcseed' hit to be coincidental, not load-bearing.",
+  "output": "Surfaces suggestive fragments -- a first part reads as 'btcseed...', the next 'can...' -- but no coherent full plaintext or usable key emerges, and a Trifid + XOR follow-up on the tail found nothing substantial. Like the OTP 'YOUWON' run, a tantalising partial that has not been made to close. @CoruNethron later analysed the Bifid cipher's properties and judged the 'btcseed' hit to be coincidental, not load-bearing.  ·  [merged: “Bifid cipher with multiple 9-squares and periods”] Garbage.",
   "outcome": "unverified",
   "insight": "",
   "author": "id:6424118990"
@@ -903,25 +910,13 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "'Seven intertwined passwords' de-interleave of dbbi",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community reading of the Architect speech line “seven intertwined passwords” (msg #6100/#10039); de-interleave attempt catalogued in docs/ATTEMPTS.md",
   "input": "dbbi (91 = 7x13). De-interleaved into 7 strands of 13 symbols each; each strand field-decoded plus the concatenation.",
   "method": "Mapped the Architect's 'seven intertwined passwords' onto dbbi's 7x13 factorization: pulled out 7 interleaved strands of 13 symbols and field-decoded each strand individually and concatenated, treating each strand as one of the seven passwords.",
   "output": "Garbage.",
   "outcome": "verified-fail",
-  "insight": ""
- },
- {
-  "id": "ledger-bifid-multiple-squares-periods",
-  "phase": "salphaseion",
-  "category": "polyalphabetic & fractionation",
-  "title": "Bifid cipher with multiple 9-squares and periods",
-  "who": "community",
-  "source": "dead-end ledger",
-  "input": "dbbi and faed. Squares: identity 9-square, Lo Shu 9-square, reversed 9-square. Lengths: full-length and period 7 and period 13.",
-  "method": "Ran the Bifid fractionating cipher (which pairs row/column coordinates of a square) using three candidate 9-squares and three period settings, since Bifid is the natural fractionation cipher for a base-9 alphabet.",
-  "output": "Garbage.",
-  "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "ledger-columnar-transposition-grid-factorisations",
@@ -929,12 +924,16 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "Columnar transposition over grid factorisations of dbbi and faed",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #38162",
   "input": "dbbi as 7x13 and 13x7; faed as 19x30, 30x19, 10x57, 6x95 and other factor pairs. Read orders: row, column, diagonal, spiral, boustrophedon.",
   "method": "Since 91=7x13 and 570=2x3x5x19 factor cleanly, they laid each block out as a rectangle and re-read it in every standard transposition order, looking for a reading that produces text.",
   "output": "Garbage in every reading.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "@KingofCrow",
+  "date": "2025-04-14",
+  "time": "14:36 UTC",
+  "sourceQuote": "Set of 3 to base 9 make a grid and use columnar transposition"
  },
  {
   "id": "ledger-trit-pair-balanced-ternary",
@@ -942,12 +941,16 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "Trit-pair / balanced-ternary split (9 = 3^2)",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #54045",
   "input": "dbbi and faed. Each base-9 symbol split into two base-3 digits; read as a 3x3 Polybius square and as a balanced-ternary stream.",
   "method": "Because 9 = 3^2, each base-9 symbol decomposes into a pair of base-3 trits. They split every symbol into two trits and read the trit stream as a 3x3 Polybius fractionation and as balanced ternary, hunting for hidden structure at the trit level.",
   "output": "Printability ~0.38-0.46 -- garbage.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "@piandonehalf",
+  "date": "2026-01-02",
+  "time": "22:25 UTC",
+  "sourceQuote": "a sort of balanced ternary?"
  },
  {
   "id": "ledger-vigenere-beaufort-incase-alphabet",
@@ -955,12 +958,13 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "Vigenere / Beaufort against the INCASE checkerboard alphabet",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi and faed as ciphertext; key = the INCASE checkerboard ordering. Both cipher directions (encrypt/decrypt sense).",
   "method": "Treated the INCASE straddling-checkerboard letter ordering as a polyalphabetic key and ran Vigenere and Beaufort over each block in both directions, on the theory the checkerboard ordering from an earlier phase was the keystream.",
   "output": "Garbage.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "dbbi-vigenere-beaufort-brute",
@@ -984,12 +988,13 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "Vigenere against colored-prime bits and full 24-bit duality stream",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi and faed as ciphertext. Keys: the blue/yellow LSB sequence (colored-prime bits) and the whole 24-bit colored stream from the genesis grid.",
   "method": "Built keystreams from the genesis colored-cell bits (the blue=1/yellow=0 parities and the full 24-bit stream) and used them as Vigenere keys, on the theory that the colors encode yellowblueprimes/yinyang key material.",
   "output": "Noise.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "ledger-vigenere-matrixsumlist-url-cellstream",
@@ -997,12 +1002,13 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "Vigenere against matrixsumlist / genesis URL / spiral cell-stream",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi and faed as ciphertext. Keys: the matrixsumlist row+col sum digits, the decoded genesis URL bytes (gsmg.io/theseedisplanted), and the 196-cell spiral cell stream.",
   "method": "Used three genesis-derived byte sources as Vigenere keys over the blocks, reasoning the key should come from Phase 0 material the creator keeps pointing back to. Scored against a known-good control to calibrate.",
   "output": "Noise (score <=0.43 versus a 0.95 known-good control).",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "ledger-yinyang-complement-standalone",
@@ -1010,12 +1016,13 @@ export const ATTEMPTS = [
   "category": "yinyang / complement",
   "title": "Yin-yang complement substitution (a<->i, b<->h, c<->g, d<->f, e fixed)",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi and faed. Mapping: a<->i, b<->h, c<->g, d<->f, e fixed (the duality/complement map).",
   "method": "Applied the yin-yang duality complement (each symbol swapped with its mirror around the center 'e') standalone, on the theory that 'yinyang' literally means apply the complement to the blocks.",
   "output": "Fail. [Also documented separately as \"Yin-yang complement chained with prime zeroing\" (dead-end ledger): Combined the duality complement with the prime 'zero out' instruction, sequencing them (complement -> then zero/insert at primes) in fresh permutations to cover orderings the earlier standalone tests missed. Result: Fail.]",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "dbbi-compression-fileformat-probe",
@@ -1114,12 +1121,13 @@ export const ATTEMPTS = [
   "category": "dbbi / faed — exotic transforms",
   "title": "I Ching / Lo Shu nine-palace flying-star transform",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi and faed. Operations: complement substitution, flying-star transposition, 180-degree spatial map, trigram/hexagram parity; then assembly + direct hash.",
   "method": "Treated the base-9 structure as the Lo Shu 3x3 nine-palace magic square and applied I Ching flying-star transpositions, 180-degree rotation, and trigram/hexagram parity readings, which the analysts flagged as the strongest remaining untested numerology lead.",
   "output": "Noise -- the strongest 'untested' lead, now closed.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "ledger-nonary-digital-root-999",
@@ -1127,12 +1135,13 @@ export const ATTEMPTS = [
   "category": "dbbi / faed — exotic transforms",
   "title": "Nonary / digital-root '999' (Zero Escape) scheme",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Community dead-end ledger (group discussion; compiled in docs/ATTEMPTS.md)",
   "input": "dbbi and faed partitioned into door-groups; 9s zeroed; running digital-root computed; 'first-or-zero' rule; then assembly + direct hash.",
   "method": "Inspired by the '999'/Zero Escape and nine-theme hints, they grouped symbols into 'doors', zeroed out the 9s, ran a running digital-root reduction, applied a first-or-zero rule, then both assembled a key and hashed directly.",
   "output": "Noise.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "ledger-turtle-numpad-path-drawing",
@@ -1140,12 +1149,16 @@ export const ATTEMPTS = [
   "category": "dbbi / faed — exotic transforms",
   "title": "Turtle / numpad path-drawing of the symbol streams",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #33517",
   "input": "dbbi (91 moves) and faed (570 moves). Symbols a-i mapped to numpad directions; paths drawn on a grid and rendered to an image.",
   "method": "Mapped each a-i symbol to a numeric-keypad direction and walked a turtle across a grid, drawing the 91-move and 570-move paths, hoping the trace would form a glyph, a yin-yang symbol, or a readable shape.",
   "output": "A connected but meaningless blob (explained entirely by direction bias) -- no glyph, no yin-yang.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "id:6953392511",
+  "date": "2024-12-02",
+  "time": "15:04 UTC",
+  "sourceQuote": "Directions on that numpad"
  },
  {
   "id": "cosmic-no-partial-progress-oracle",
@@ -1213,12 +1226,13 @@ export const ATTEMPTS = [
   "category": "cosmic combine recipe",
   "title": "Issue #56 XOR-of-7-tokens recipe reproduced and refuted",
   "who": "community",
-  "source": "puzzlehunt issue #56",
+  "source": "GitHub — GSMG puzzlehunt repo, issue #56 (community)",
   "input": "The exact 7-token XOR recipe from issue #56: XOR of sha256 of each of [matrixsumlist, enter, lastwordsbeforearchichoice, thispassword, matrixsumlist, yourlastcommand, secondanswer] → 32-byte key. The claimed 'next-page' plaintext SHA target was 4f7a1e4efe4bf6c5581e32505c019657cb7b030e90232d33f011aca6a5e9c081. Reproduced in xor7.py and tested as EVP passphrase (raw + hex), and as a direct AES key with IV∈{0, salt}.",
   "method": "Issue #56 claimed the cosmic key is the XOR of seven token hashes. The recipe was reproduced exactly, the resulting 32-byte XOR computed, and used both as an EVP passphrase and as a direct AES-256 key (IVs zero and salt) against cosmic, salph_inner and p32_trailing. Also swept variations: token pools sized 4–8, all permutations of the 4 core tokens plus extras, as EVP-raw and direct key.",
   "output": "Does not reproduce its own claimed plaintext SHA (4f7a1e…). Decrypts nothing readable on any blob — every result is PKCS7-fail or random bytes. The recipe is FALSE. (Separately, the '4f7a1e…' Wayback 'next page' is itself a 530 server error, never real content; and the tokens yourlastcommand/secondanswer originated as on-chain solver dust, not creator hints.)",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "cosmic-master-key-818af53d-issue69",
@@ -1226,12 +1240,13 @@ export const ATTEMPTS = [
   "category": "cosmic combine recipe",
   "title": "Issue #69 'master key' 818af53d… tested under every interpretation and refuted",
   "who": "community",
-  "source": "puzzlehunt issue #69",
+  "source": "GitHub — GSMG puzzlehunt repo, issue #69 (community)",
   "input": "The claimed 64-hex master key 818af53daa3028449f125a2e4f47259ddf9b9d86e59ce6c4993a67ffd76bb402, tested against cosmic, salph_inner, p32_trailing as: (A) EVP passphrase in 4 forms {literal 64-ascii, sha256(hex64), raw-sha256-of-32-bytes, double-sha} under md5 & sha256 KDFs; (B) the raw 32 bytes as a DIRECT AES-256 key with 6 IVs {0, salt+0pad, salt*2, sha(key)[:16], key[:16], key[16:32]}; (C) ascii[:32] as a direct key with IV∈{0,salt}. (adv_verify_69.py)",
   "method": "Issue #69 posted a single 'master key' allegedly decrypting cosmic. Because the issue's quoted 'decrypted payload' was just a copy-paste of the already-known phase-3.2 VIC text, it was independently re-derived (de-obfuscating tel:-markdown links) and adversarially tested under every plausible cryptographic interpretation — EVP passphrase, direct key, multiple IVs and KDFs — counting a WIN only as meaningful printable plaintext, not mere PKCS7-validity.",
   "output": "ZERO meaningful/printable hits across all interpretations and all 3 blobs (cosmic padding-fails under EVP-hex, raw-key/IV=0, raw-key/IV=salt and ECB). The quoted 'payload' is fabricated (it is the phase-3.2 VIC sentence). The key fails the small 80-byte oracle blobs too, where a correct key would be instantly obvious. FABRICATED.",
   "outcome": "verified-fail",
-  "insight": ""
+  "insight": "",
+  "author": "The Community"
  },
  {
   "id": "cosmic-4ingredient-literal-sha256-all-orders",
