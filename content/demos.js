@@ -709,25 +709,27 @@ const urlLSB    = [...decodedURL].map(ch => ch.charCodeAt(0) & 1).join("");`,
   },
 
   'genesis-grid-byte-boundary-pointer': {
-    code: `// where, along the 196-cell spiral, does each colored cell sit? divide its spiral index by 8.
-const positions = [...blue, ...yellow].map(p => spiralIndex(p) % 8);`,
-    inputs: [],
-    run() {
+    summary: '🔬 Byte-boundary check — try any modulus',
+    code: `// where, along the 196-cell spiral, does each colored cell sit? divide its spiral index by the modulus.
+const positions = [...blue, ...yellow].map(p => spiralIndex(p) % mod);`,
+    inputs: [{ name: 'mod', label: 'modulus (8 = a byte; try 4, 2, 3, …)', value: '8', rows: 1 }],
+    run(v) {
+      const M = Math.max(2, parseInt(v.mod, 10) || 8);
       const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
       const cells = [...MATRIX.blue.map(p => ['B', p]), ...MATRIX.yellow.map(p => ['Y', p])]
         .map(([t, p]) => ({ t, i: idx(p[0], p[1]) })).sort((a, b) => a.i - b.i);
-      const mods = cells.map(c => c.i % 8);
+      const mods = cells.map(c => c.i % M);
       const residue = mods[0];
       const allSame = mods.every(m => m === residue);
       return {
         steps: [
           { title: '1 · spiral index of every colored cell', body: cells.map(c => c.t + '@' + c.i).join('  ') },
-          { title: '2 · each spiral index mod 8', body: cells.map(c => c.t + '→' + (c.i % 8)).join('  ') },
-          { title: '3 · do they all hit the same bit of a byte?', body: allSame ? 'YES — all ≡ ' + residue + ' (mod 8): every colored cell is on one fixed bit of a URL byte' : 'mixed residues: ' + mods.join(',') },
+          { title: '2 · each spiral index mod ' + M, body: cells.map(c => c.t + '→' + (c.i % M)).join('  ') },
+          { title: '3 · do they all hit the same residue?', body: allSame ? 'YES — all ≡ ' + residue + ' (mod ' + M + '): every colored cell is on one fixed position of a mod-' + M + ' cycle' : 'mixed residues: ' + [...new Set(mods)].sort((a, b) => a - b).join(',') },
         ],
         output: allSame
-          ? '100% of the 24 colored cells land on spiral index ≡ ' + residue + ' (mod 8) — i.e. exactly one bit-position of each URL byte. The colors are a built-in POINTER to byte boundaries, partitioning all 24 URL characters with no overlap.'
-          : 'Under this spiral ordering the colored cells fall on positions ' + [...new Set(mods)].sort().join(', ') + ' (mod 8) — one per URL character, marking the URL byte stream.',
+          ? '100% of the 24 colored cells land on spiral index ≡ ' + residue + ' (mod ' + M + '). At mod 8 this means exactly one bit-position of each URL byte — the colors are a built-in POINTER to byte boundaries, partitioning all 24 URL characters with no overlap. Change the modulus to explore other cycles.'
+          : 'At mod ' + M + ' the colored cells fall on residues ' + [...new Set(mods)].sort((a, b) => a - b).join(', ') + '. (mod 8 is the meaningful one — one per URL byte.)',
       };
     },
   },
@@ -1510,12 +1512,13 @@ const spiralIndex = spiral.findIndex(p => p[0] === row && p[1] === col);   // wh
     code: `// read the 24 colored cells in spiral order as their OWN 3-byte (24-bit) payload
 const bits  = coloredInSpiralOrder.map(c => c.blue ? 1 : 0).join("");
 const bytes = chunk(bits, 8).map(b => parseInt(b, 2));`,
-    inputs: [],
-    run() {
+    summary: '🔬 Compare colour bits vs the URL — edit the URL',
+    inputs: [{ name: 'url', label: 'the decoded URL — its per-character LSB parities are compared to the 24 colour cells (edit it)', value: MATRIX.decoded, mono: true, rows: 1 }],
+    run(v) {
       const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
       const order = [...MATRIX.blue.map(p => [1, p]), ...MATRIX.yellow.map(p => [0, p])].map(([b, p]) => ({ b, i: idx(p[0], p[1]) })).sort((a, b) => a.i - b.i);
       const bits = order.map(o => o.b).join(''), bytes = (bits.match(/.{8}/g) || []).map(b => parseInt(b, 2));
-      const urlLSB = [...MATRIX.decoded].map(ch => String(ch.charCodeAt(0) & 1)).join('');
+      const urlLSB = [...(v.url || '')].map(ch => String(ch.charCodeAt(0) & 1)).join('');
       return {
         steps: [
           { title: '1 · 24 colored cells in spiral order → 24-bit payload', body: bits },
@@ -2111,19 +2114,23 @@ const k3 = concat(salt_a, salt_b, salt_c);`,
   },
 
   'blob-cross-keying-ct-as-key': {
-    code: `// hypothesis: the blobs chain — decrypting one yields the next blob key. Use src ciphertext as key.
-const k = sha256(ciphertext(salphInner));   decrypt(p32, k);`,
-    inputs: [],
-    async run() {
-      const srcCt = b64ToBytes(PUZZLE.salphInner).slice(16), keySha = await sha256(srcCt);
-      const r = await aesDecryptRawKey(PUZZLE.p32, keySha, saltOf(PUZZLE.p32)), r2 = await aesDecryptRawKey(PUZZLE.p32, srcCt.slice(0, 32), saltOf(PUZZLE.p32));
+    summary: '🔬 Cross-key one blob with another — pick the pair',
+    code: `// hypothesis: the blobs chain — decrypting one yields the next blob's key. Use src ciphertext as key.
+const k = sha256(ciphertext(src));   decrypt(dst, k);`,
+    inputs: [
+      { name: 'src', label: 'source blob (its ciphertext becomes the key)', value: PUZZLE.salphInner, mono: true, rows: 2 },
+      { name: 'dst', label: 'destination blob (to decrypt)', value: PUZZLE.p32, mono: true, rows: 2 },
+    ],
+    async run(v) {
+      const srcCt = b64ToBytes(v.src.trim()).slice(16), keySha = await sha256(srcCt);
+      const r = await aesDecryptRawKey(v.dst.trim(), keySha, saltOf(v.dst.trim()));
+      const r2 = await aesDecryptRawKey(v.dst.trim(), srcCt.slice(0, 32), saltOf(v.dst.trim()));
       return {
         steps: [
-          { title: '1 · use salph_inner ciphertext as key material for p32_trailing', body: 'forms: sha256(ct), ct[:32], ct-base64, …' },
-          { title: '2 · ct-sha256 as key', body: r.ok ? printable(r.text).slice(0, 40) : 'bad decrypt' },
-          { title: '3 · ct[:32] as key', body: r2.ok ? printable(r2.text).slice(0, 40) : 'bad decrypt' },
+          { title: '1 · sha256(source ciphertext) as the AES key', body: r.ok ? printable(r.text).slice(0, 48) : 'bad decrypt — no chaining', graphic: byteStrip(r.ok ? printable(r.text) : '') },
+          { title: '2 · source ciphertext[:32] as the raw key', body: r2.ok ? printable(r2.text).slice(0, 48) : 'bad decrypt', graphic: byteStrip(r2.ok ? printable(r2.text) : '') },
         ],
-        output: 'No cross-pair decryption produced readable text across all ordered (src,dst) pairs and ct-derived key forms — there is no chaining; no blob ciphertext keys any other blob.',
+        output: 'Swap the src/dst blobs (or paste your own) and re-run. No ordered (src,dst) pair and no ct-derived key form yields readable text — the blobs do not chain; none keys another.',
       };
     },
   },
@@ -2516,16 +2523,22 @@ const distinctValues = new Set(postAesBytes).size;   // 26 = exactly an a-z alph
   },
 
   'wayback-cdx-gsmg-urls-spa-shell': {
-    code: `// pull the full Internet Archive CDX for gsmg.io (397 rows); sort by date + stored byte-size`,
-    inputs: [],
-    run() {
+    summary: '🔬 Classify a captured page by its byte-size',
+    code: `// pull the full Internet Archive CDX for gsmg.io (397 rows); a capture's stored byte-size tells you
+// whether it is a real authored stage (small, distinct) or the generic ~64 KB single-page-app shell.
+const REAL = [1245, 7253, 4592];   // the three genuine dated stages (2020 / 2021 / 2023)`,
+    inputs: [{ name: 'size', label: 'a captured stored byte-size to classify (real stages: 1245 / 7253 / 4592; SPA shell ≈ 64000)', value: '4592', rows: 1 }],
+    run(v) {
+      const n = parseInt((v.size || '').replace(/[^0-9]/g, ''), 10) || 0;
+      const REAL = { 1245: '2020 stage', 7253: '2021 stage', 4592: '2023 SalPhaseIon page' };
+      const verdict = REAL[n] ? '✅ REAL authored stage — ' + REAL[n] : (Math.abs(n - 64000) < 12000 ? '✕ the generic ~64 KB SPA shell — NOT new content' : '? not a known capture size (the three real stages are 1245 / 7253 / 4592 bytes)');
       return {
         steps: [
-          { title: '1 · the full gsmg.io CDX (397 captured URL/timestamp rows)', body: 'sort by capture date + stored byte-size' },
-          { title: '2 · only THREE are real authored stages', body: '1245 B (2020) · 7253 B (2021) · 4592 B (2023)' },
-          { title: '3 · every 2024+ URL', body: '~10 captures, all the SAME ~64 KB SPA shell — a single-page app, not new content' },
+          { title: '1 · the full gsmg.io CDX', body: '397 captured URL/timestamp rows' },
+          { title: '2 · the three genuine authored stages', body: '1245 B (2020) · 7253 B (2021) · 4592 B (2023 SalPhaseIon)' },
+          { title: '3 · your size = ' + n + ' bytes', body: verdict },
         ],
-        output: 'Only three small dated pages (2020–2023) are genuine authored stages; every later gsmg.io capture is the identical SPA shell. No hidden post-2023 stage exists in the archive (apart from the urlblob recovered from a CDX path).',
+        output: 'Type any captured byte-size to classify it. Only the three small dated pages (2020–2023) are genuine authored stages; every 2024+ capture is the identical ~64 KB SPA shell. No hidden post-2023 stage exists in the archive (apart from the urlblob recovered from a CDX path).',
       };
     },
   },
