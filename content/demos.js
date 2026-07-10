@@ -2836,3 +2836,8 @@ DEMOS['engine-false-creator-hints-ruled-out'] = {
   summary: 'AES oracle — the "hints" that were trolls / mis-reads, live',
   intro: 'The 2026 binary "tiny hint" was a new-year troll; "-41,-17" was a Decentraland parcel; the pi / {30,2,77} lines were banter. Nothing derived from them keys any blob — test candidates yourself and watch the wall hold.',
 };
+DEMOS['engine-cosmic-combine-ops-lastwords-closure'] = {
+  lab: cosmicRecipeLab,
+  summary: 'Cosmic recipe builder — change the combine operation &amp; test it live',
+  intro: 'Set the held values (yellowblueprimes = <code>2347</code>, yinyang = <code>95101</code>), pick any matrixsumlist byte-form, and switch the <b>combine operation</b> (concat / per-ingredient-sha / XOR / separators) against the REAL prize blob. Across every principled combine the result is noise — which is why the suspicion now falls on the held <i>values</i>, not the assembly.',
+};

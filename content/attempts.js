@@ -45,6 +45,24 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "engine-cosmic-combine-ops-lastwords-closure",
+  "phase": "salphaseion",
+  "category": "engine — cosmic combine",
+  "title": "No principled combine of the held values fires cosmic — the block now points at the values, not the combine op",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "The cosmic key is built from yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang. A prior sweep showed sha256(concat) of the engine's held values (yellowblueprimes=2347, yinyang=95101) is null across all 24 principled matrixsumlist byte-forms. This closes the two remaining bounded axes: the non-concat combine operations, and lastwords read as the Architect speech-span rather than the literal token.",
+  "input": "yellowblueprimes=2347; yinyang in {95101,10195}; matrixsumlist = all 24 principled byte-forms; lastwordsbeforearchichoice = the literal token AND six Architect speech-spans (ciaobellao / returntothesourcecodes / reinsertingtheprimebasics / …).",
+  "method": "Combine operations tested: sha256(concat); per-ingredient sha256 then concat then sha256; concat with the soup's own 'z' separator; concat with a space; XOR of the four ingredient hashes (as a literal hex key and prehashed). Each recipe keyed cosmic / p32_trailing / salph_inner via byte-exact AES-256-CBC / EVP-SHA256. 1,584 tests this pass (~2,700 cumulative).",
+  "output": "1,584 tests → 3 chance valid-paddings (all ratio ~0.39, garbage), 0 readable hits. Cumulatively the held-value recipe is null across 5 combine families × 24 matrixsumlist forms × 2 yinyang forms × {literal + 6 speech-span} lastwords.",
+  "evidence": "Byte-exact harness (research/lib/gsmg.mjs); chance valid-padding on a 1328-byte blob is ~1/256, consistent with the 3 garbage hits.",
+  "outcome": "verified-fail",
+  "insight": "No principled assembly of the best-held ingredient values opens cosmic. Because the negative is now robust across essentially the whole principled combine + ingredient-form space, the likeliest remaining cause shifts from 'the combine op is exotic' to 'a held VALUE is wrong' — yellowblueprimes=2347 and/or yinyang=95101 need re-derivation. This is a BLOCK, not a refutation (cosmic offers no oracle), but it sharpens where the wall actually sits."
+ },
+ {
   "id": "engine-cosmic-recipe-held-values-24-msl",
   "phase": "salphaseion",
   "category": "engine — cosmic combine",
