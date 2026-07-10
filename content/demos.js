@@ -1474,39 +1474,6 @@ decryptAESCBC(blob, key);                 // valid PKCS7 padding + printable? = 
     },
   },
 
-  'endgame-seven-phase2-parts-braided': {
-    summary: '🔬 Braid the 7 Phase-2 passwords & test an oracle',
-    code: `// The Architect's "7 intertwined passwords" — reuse the 7 CONFIRMED Phase-2 parts,
-// INTERTWINED (round-robin char interleave) instead of concatenated, then key an oracle:
-const braid = roundRobinInterleave(parts);   // char0 of each, then char1 of each, … (skip exhausted)
-decryptAESCBC(blob, EVP(sha256hex(braid), salt));   // valid padding + printable? = a hit`,
-    inputs: [
-      { name: 'parts', label: 'the 7 Phase-2 password parts (one per line — reorder or edit)', value: 'causality\nSafenet\nLuna\nHSM\n11110\n0x736B6E616220726F662074756F6C69616220646E6F63657320666F206B6E697262206E6F20726F6C6C65636E61684320393030322F6E614A2F33302073656D695420656854\nB5KR/1r5B/2R5/2b1p1p1/2P1k1P1/1p2P2p/1P2P2P/3N1N2 b - - 0 1', mono: true, rows: 8 },
-      { name: 'blob', label: 'self-verifying oracle:  salph_inner · p32_trailing', value: 'salph_inner', mono: true, rows: 1 },
-    ],
-    async run(v) {
-      const parts = (v.parts || '').split('\n').filter(s => s.length);
-      let braid = '', idx = 0, any = true;
-      while (any) { any = false; for (const p of parts) { if (idx < p.length) { braid += p[idx]; any = true; } } idx++; }
-      const map = { salph_inner: PUZZLE.salphInner, p32_trailing: PUZZLE.p32, cosmic: PUZZLE.cosmic };
-      const bkey = (v.blob || 'salph_inner').trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
-      const blob = map[bkey] || PUZZLE.salphInner;
-      const pw = await sha256hex(braid), enc = new TextEncoder().encode(pw), salt = saltOf(blob), ct = b64ToBytes(blob).slice(16);
-      let D = new Uint8Array(0), prev = new Uint8Array(0); while (D.length < 48) { prev = await sha256(concat(prev, enc, salt)); D = concat(D, prev); }
-      let ok = false, txt = '';
-      try { const ck = await crypto.subtle.importKey('raw', D.slice(0, 32), { name: 'AES-CBC' }, false, ['decrypt']); const pt = new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-CBC', iv: D.slice(32, 48) }, ck, ct)); ok = true; txt = printable(new TextDecoder('latin1').decode(pt)).slice(0, 80); } catch { }
-      return {
-        steps: [
-          { title: '1 · round-robin braid the ' + parts.length + ' parts', body: braid.slice(0, 90) + (braid.length > 90 ? '…' : ''), graphic: byteStrip(braid.slice(0, 90)) },
-          { title: '2 · sha256(braid) → EVP → AES-256-CBC decrypt ' + (map[bkey] ? bkey : 'salph_inner'), body: ok ? 'VALID padding · ' + txt : 'bad padding — wrong key', graphic: byteStrip(ok ? txt : '') },
-        ],
-        output: ok
-          ? (/[a-z]{4}/i.test(txt) ? 'Readable text — verify carefully before trusting.' : 'Valid padding but garbage (~1/256 chance), not a solve.')
-          : 'No valid padding. All 5040 orderings of this char-braid were tested on both self-verifying oracles (20,160 tests) → 0 readable (parts self-verified: their concat reproduces the real phase-3 key). Reorder or edit the parts and it recomputes live — the literal char-braid of the 7 Phase-2 parts is not the endgame key.',
-      };
-    },
-  },
-
   'blob-salt-math-xor-sum-sha': {
     code: `// combine the 4 salts: xor4, sum4 (mod 256), sha256(concat) → use each as a blob key/passphrase`,
     inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
