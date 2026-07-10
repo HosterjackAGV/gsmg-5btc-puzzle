@@ -561,15 +561,28 @@ export const ATTEMPTS = [
   "category": "decode provenance",
   "title": "Is the EBCDIC / CP1141 code page a real decode step, or just a coincidence of the a-z range? (community debate)",
   "who": "community",
-  "author": "@CoruNethron",
-  "source": "community discussion (Telegram, 2026-06)",
-  "date": "2026-01-01",
-  "dateApprox": true,
+  "author": "id:370469246",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #3856 (cp1141 point later raised by @TrinitasUnitas, msg #5572)",
+  "date": "2020-05-11",
+  "dateApprox": false,
   "input": "The Phase 3.2 'Beaufort blob' (the Architect speech). Sparky's critique: the post-AES bytes use only 26 distinct values, which is simply a property of a lowercase a-z alphabet, so reading an 'EBCDIC 1141 code page' into it is unjustified -- a Beaufort (a wrapped negative shift over a-z) is the real operation and the code page is a post-hoc rationalisation nobody verified for themselves. Counter (the blob's poster, and @CoruNethron): CP1141 is literally the transform in the working pipeline, and CP273 (German/Dutch = 1141 plus the EUR sign) is itself a hint.",
   "method": "Re-examined whether the EBCDIC/CP1141 step carries meaning or is mechanical. @CoruNethron posted a full reproducible one-liner of the Phase 2->3->3.2 chain whose final stage is `... | tail -c+448 | head -c 1539 | iconv -f ISO-8859-1 -t CP1141 | beaufort --decrypt --key=thematrixhasyou --alphabet=abcdefghijklmnopqrstuvwxyz` -- i.e. reinterpret the Latin-1 bytes AS CP1141, then Beaufort-decrypt with key 'thematrixhasyou' over the plain a-z alphabet. He notes you can pipe the bytes through iconv in the 'wrong' code page directly and read the plaintext (he reports it begins 'yourlifeisthesum...'). Reference Beaufort impl: github.com/jwerle/libbeaufort.",
   "output": "Unresolved, with both sides partly right. The code-page step is unquestionably PRESENT and reproducible: this project's own harness and Denis's one-liner both run `iconv ... CP1141` before the Beaufort (key 'thematrixhasyou'), so 'zero use of a code page' overstates it. But Sparky's caution lands too -- 26 distinct byte values follow automatically from an a-z Beaufort, so that property is NOT independent evidence that 'EBCDIC 1141' encodes a hidden clue; the code page may be a mechanical byte-reinterpretation that happens to land the a-z range rather than a deep signal.",
   "outcome": "verified-insight",
-  "insight": "CP1141 + Beaufort (key 'thematrixhasyou', alphabet a-z) is the real, reproducible Phase 3.2 decode -- but the much-repeated 'EBCDIC 1141' framing is over-read: a Beaufort over a-z trivially yields only 26 distinct values, so that fact alone is not evidence the code page is a meaningful clue rather than a mechanical byte-reinterpretation step."
+  "insight": "CP1141 + Beaufort (key 'thematrixhasyou', alphabet a-z) is the real, reproducible Phase 3.2 decode -- but the much-repeated 'EBCDIC 1141' framing is over-read: a Beaufort over a-z trivially yields only 26 distinct values, so that fact alone is not evidence the code page is a meaningful clue rather than a mechanical byte-reinterpretation step.",
+  "time": "13:51 UTC",
+  "sourceQuote": "in the standard config it's a false negative because of the ebcdic bytes. you can either patch & recompile it, write some script … or use go-openssl-bruteforce",
+  "provenance": "The Phase-3.2 ciphertext decrypts to EBCDIC (cp1141-family) bytes before the Beaufort/VIC layer; the false-negative concerns OpenSSL's default codepage handling. Correcting an earlier mis-attribution to @CoruNethron — the actual origin is id:370469246.",
+  "links": [
+   {
+    "label": "Walkthrough — Phase 3.2 (EBCDIC → Architect)",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "go-openssl-bruteforce",
+    "href": "https://github.com/deltaclock/go-openssl-bruteforce"
+   }
+  ]
  },
  {
   "id": "discover-p32-trailing-blob-end-of-phase32",
@@ -637,15 +650,24 @@ export const ATTEMPTS = [
   "category": "creator-hint & narrative decode",
   "title": "The 'competition / rulers' riddle resolves to John McAfee (Norton → McAfee wordplay; Belize; POTUS runs)",
   "who": "community",
-  "author": "@CoruNethron",
-  "source": "community discussion (Telegram, 2026-06)",
-  "date": "2026-01-01",
-  "dateApprox": true,
+  "author": "@zeroxcolombo",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #40518",
+  "date": "2025-05-13",
+  "dateApprox": false,
   "input": "The endgame's cryptic 'competition' / 'rulers' reference (cf. the Thevenin/Norton 'equivalent ... competition ... tried to become a ruler of a piece of land' phrasing seen in the chat).",
   "method": "Resolve the wordplay: 'competition' -> Edward Norton -> Norton antivirus -> its rival McAfee antivirus -> John McAfee; corroborated by 'ruler of a piece of land' (McAfee lived in Belize, home of Belikin beer) and his two US-presidential (POTUS) campaign runs.",
   "output": "The riddle's hidden referent is John McAfee. A narrative/lore decode (not itself a key) that pins a previously-unexplained personal reference in the endgame and yields concrete password/keyword candidates (McAfee / Belize / Belikin). Flagged by its author as a top finding absent from the public github.",
   "outcome": "unverified",
-  "insight": ""
+  "insight": "",
+  "time": "14:56 UTC",
+  "sourceQuote": "Wiseman above hinted about “stop short-term thinking”. It’s about John mcafee",
+  "provenance": "The Architect speech line \"what a wiseman above hinted at is worth hundred fourty\"; the John-McAfee reading is @zeroxcolombo's. Correcting an earlier mis-attribution to @CoruNethron.",
+  "links": [
+   {
+    "label": "Walkthrough — Phase 3.2 (Architect speech)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "verify-embedded-salphaseion-equals-repo",
@@ -1280,14 +1302,23 @@ export const ATTEMPTS = [
   "title": "dbbi Yellow/Blue prime-index vs the genesis rabbit Y/B cells -- reported ~20-bit match did NOT reproduce (statistical artifact)",
   "who": "community",
   "author": "@CoruNethron",
-  "source": "community discussion (Telegram, 2026-06); reconstruction attempt 2026-07-02",
-  "date": "2026-01-01",
-  "dateApprox": true,
+  "source": "Telegram — GSMG Puzzle Solvers, msg #33995/#33996",
+  "date": "2024-12-12",
+  "dateApprox": false,
   "input": "dbbi (dbbibfbhccbeg...beeeabe), the genesis 14x14 rabbit grid's yellow & blue cells (spiral order, blue=1/yellow=0 = 111101110011110110010010), and the prime positions used for 'yellowblueprimes'.",
   "method": "REPORTED rule: index dbbi by prime-number positions while treating certain 'be' occurrences as a SINGLE index, then line the resulting yellow/blue sequence up against the genesis grid's Y/B colored cells. Because the rule was under-specified, it was reconstructed here exhaustively: 1,764 concrete interpretations across 4 independent lenses (be-collapse-then-prime-index; prime-index-then-be-merge; single-scan digraph-emit; broad freeform) x {0-based and 1-based primes} x {~10 symbol->bit mappings incl. b/be->1, prime-value->0, parity} x {forward/reversed dbbi} x {spiral Y/B target, its reverse, blue-position set, yellow-position set}.",
   "output": "REPORTED: the first ~20 bits match the rabbit grid's Y/B cells, suggesting dbbi carries the same Yellow/Blue-prime pointer structure. TESTED HERE (2026-07-02): the exhaustive reconstruction could NOT reproduce a 20-bit leading match. Best leading agreement anywhere was only 10 bits -- and only against the REVERSED target with post-hoc knob-tuning; the most literal reading of the rule yields 0-6 leading matching bits. No interpretation reached even 11 leading bits.",
   "outcome": "verified-fail",
-  "insight": "The reported '~20-bit match' does not reproduce under exhaustive reconstruction, and the apparent agreement is a statistical artifact: the genesis Y/B target opens with a 1-dense prefix (11110111...), so ANY rule that emits mostly 1s early trivially matches the first several bits without encoding real structure. dbbi is not shown to carry the genesis Y/B pointer sequence. Retained -- attributed and honestly labelled -- as a community report that was tested here and did not hold."
+  "insight": "The reported '~20-bit match' does not reproduce under exhaustive reconstruction, and the apparent agreement is a statistical artifact: the genesis Y/B target opens with a 1-dense prefix (11110111...), so ANY rule that emits mostly 1s early trivially matches the first several bits without encoding real structure. dbbi is not shown to carry the genesis Y/B pointer sequence. Retained -- attributed and honestly labelled -- as a community report that was tested here and did not hold.",
+  "time": "20:40 UTC",
+  "sourceQuote": "But no one yellow is prime … Ow. 9 yellows total",
+  "provenance": "dbbi (91 a–i symbols) from the SalPhaseIon soup, and the 9 yellow / 15 blue cells of the genesis grid (content/matrix.js); the Y/B prime-index reading is @CoruNethron's.",
+  "links": [
+   {
+    "label": "Walkthrough — genesis colored cells & dbbi",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "dbbi-ebcdic-vic-transforms",
