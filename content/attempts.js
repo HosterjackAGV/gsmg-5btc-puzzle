@@ -183,7 +183,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-10"
  },
  {
   "id": "engine-nihilist-matrix-sumlist-combine",
@@ -212,7 +213,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-10"
  },
  {
   "id": "engine-cipher-combine-beaufort-thematrixhasyou",
@@ -241,7 +243,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-10"
  },
  {
   "id": "engine-architect-speech-endgame-process",
@@ -270,7 +273,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-10"
  },
  {
   "id": "engine-nested-detection-no-partial-oracle",
@@ -293,7 +297,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-10"
  },
  {
   "id": "engine-false-creator-hints-ruled-out",
@@ -322,7 +327,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-09"
  },
  {
   "id": "engine-posted-key-material-not-gsmg",
@@ -349,7 +355,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-09"
  },
  {
   "id": "engine-corpus-no-engineered-solution",
@@ -378,7 +385,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "source": "GSMG research engine (this project), 2026-07-09"
  },
  {
   "id": "ledger-image-forensics-genesis-png",
@@ -2056,15 +2064,19 @@ export const ATTEMPTS = [
   "category": "cosmic combine recipe",
   "title": "Issue #56 XOR-of-7-tokens recipe reproduced and refuted",
   "who": "community",
-  "source": "GitHub — GSMG puzzlehunt repo, issue #56 (community)",
+  "source": "GitHub — puzzlehunt/gsmgio-5btc-puzzle, issue #56",
   "input": "The exact 7-token XOR recipe from issue #56: XOR of sha256 of each of [matrixsumlist, enter, lastwordsbeforearchichoice, thispassword, matrixsumlist, yourlastcommand, secondanswer] → 32-byte key. The claimed 'next-page' plaintext SHA target was 4f7a1e4efe4bf6c5581e32505c019657cb7b030e90232d33f011aca6a5e9c081. Reproduced in xor7.py and tested as EVP passphrase (raw + hex), and as a direct AES key with IV∈{0, salt}.",
   "method": "Issue #56 claimed the cosmic key is the XOR of seven token hashes. The recipe was reproduced exactly, the resulting 32-byte XOR computed, and used both as an EVP passphrase and as a direct AES-256 key (IVs zero and salt) against cosmic, salph_inner and p32_trailing. Also swept variations: token pools sized 4–8, all permutations of the 4 core tokens plus extras, as EVP-raw and direct key.",
   "output": "Does not reproduce its own claimed plaintext SHA (4f7a1e…). Decrypts nothing readable on any blob — every result is PKCS7-fail or random bytes. The recipe is FALSE. (Separately, the '4f7a1e…' Wayback 'next page' is itself a 530 server error, never real content; and the tokens yourlastcommand/secondanswer originated as on-chain solver dust, not creator hints.)",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community",
+  "author": "dgk5902a-boop",
   "provenance": "The four cosmic ingredients (yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang), the genesis grid (content/matrix.js) they derive from, and the prize blob ciphertexts/cosmic.txt.",
   "links": [
+   {
+    "label": "GitHub — issue #56",
+    "href": "https://github.com/puzzlehunt/gsmgio-5btc-puzzle/issues/56"
+   },
    {
     "label": "Walkthrough",
     "href": "#/walkthrough"
@@ -2073,7 +2085,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "date": "2025-08-31"
  },
  {
   "id": "cosmic-master-key-818af53d-issue69",
@@ -2081,15 +2094,19 @@ export const ATTEMPTS = [
   "category": "cosmic combine recipe",
   "title": "Issue #69 'master key' 818af53d… tested under every interpretation and refuted",
   "who": "community",
-  "source": "GitHub — GSMG puzzlehunt repo, issue #69 (community)",
+  "source": "GitHub — puzzlehunt/gsmgio-5btc-puzzle, issue #69",
   "input": "The claimed 64-hex master key 818af53daa3028449f125a2e4f47259ddf9b9d86e59ce6c4993a67ffd76bb402, tested against cosmic, salph_inner, p32_trailing as: (A) EVP passphrase in 4 forms {literal 64-ascii, sha256(hex64), raw-sha256-of-32-bytes, double-sha} under md5 & sha256 KDFs; (B) the raw 32 bytes as a DIRECT AES-256 key with 6 IVs {0, salt+0pad, salt*2, sha(key)[:16], key[:16], key[16:32]}; (C) ascii[:32] as a direct key with IV∈{0,salt}. (adv_verify_69.py)",
   "method": "Issue #69 posted a single 'master key' allegedly decrypting cosmic. Because the issue's quoted 'decrypted payload' was just a copy-paste of the already-known phase-3.2 VIC text, it was independently re-derived (de-obfuscating tel:-markdown links) and adversarially tested under every plausible cryptographic interpretation — EVP passphrase, direct key, multiple IVs and KDFs — counting a WIN only as meaningful printable plaintext, not mere PKCS7-validity.",
   "output": "ZERO meaningful/printable hits across all interpretations and all 3 blobs (cosmic padding-fails under EVP-hex, raw-key/IV=0, raw-key/IV=salt and ECB). The quoted 'payload' is fabricated (it is the phase-3.2 VIC sentence). The key fails the small 80-byte oracle blobs too, where a correct key would be instantly obvious. FABRICATED.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community",
+  "author": "nightidn641",
   "provenance": "The four cosmic ingredients (yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang), the genesis grid (content/matrix.js) they derive from, and the prize blob ciphertexts/cosmic.txt.",
   "links": [
+   {
+    "label": "GitHub — issue #69",
+    "href": "https://github.com/puzzlehunt/gsmgio-5btc-puzzle/issues/69"
+   },
    {
     "label": "Walkthrough",
     "href": "#/walkthrough"
@@ -2098,7 +2115,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "date": "2025-12-27"
  },
  {
   "id": "cosmic-4ingredient-literal-sha256-all-orders",
