@@ -154,7 +154,7 @@ The walkthrough is fully solved through Phase 3.2, and along the way it produced
 
 | # | Lead | Note | Status |
 |---|---|---|---|
-| **O15** | **"Infrared"** (2021-03-05) | a one-word method/lead in the colour thread. | **UNTOUCHED** — never tested as a key/lens. The single cheapest un-run creator lead. |
+| **O15** | **"Infrared"** (2021-03-05) | a one-word lead in the colour thread; note infrared = **invisible** light (↔ "in front of your eyes"). | **Tested null** as a direct key (`infrared` + colour-thread variants → nothing). The "invisible/stego" reading folds into the (already-exhausted) genesis image forensics. |
 | **O16** | `{1},{4},{21}` → `A,D,U` | the "another door" a1z26. | Standalone refuted; open only as a combine element. |
 | **O17** | theory of everything / imaginary numbers | ToE is "a valid path"; "higher than sqrt(-1)." | The literal keys are null; the **concept** is un-cashed. |
 | **O18** | *"Are you really looking for JUST the btc…?"* | implies MORE than the BTC (obscure intel / a second layer). | **UNTOUCHED** (soft). |
@@ -164,7 +164,7 @@ The walkthrough is fully solved through Phase 3.2, and along the way it produced
 
 <details><summary>How to use the Openbook</summary>
 
-Shop the **UNTOUCHED** rows first (**O15 "Infrared"** is the cheapest un-run creator lead; **O10** the 4th blob is the least-explored oracle). But note: everything in §B/§C ultimately needs the **`yinyang`** value (a decode output) or the **combine** pinned — so the single highest-leverage act remains **making a self-verifying oracle's plaintext readable** (salvation-themed for `salph_inner`, per C22). The prize address is a *vanity* address, which proves its key is **random and only lives inside the cosmic blob** — so no shortcut from `dbbi`/`faed` can produce the key directly; the combine is unavoidable.
+Shop the **UNTOUCHED** rows first (**O10** the 4th orphaned blob is the least-explored oracle; O15 "Infrared" was tested → null). But note: everything in §B/§C ultimately needs the **`yinyang`** value (a decode output) or the **combine** pinned — so the single highest-leverage act remains **making a self-verifying oracle's plaintext readable** (salvation-themed for `salph_inner`, per C22). The prize address is a *vanity* address, which proves its key is **random and only lives inside the cosmic blob** — so no shortcut from `dbbi`/`faed` can produce the key directly; the combine is unavoidable.
 
 </details>
 
