@@ -45,6 +45,24 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "engine-pristine-qr-direct-decode",
+  "phase": "genesis",
+  "category": "image & QR forensics",
+  "title": "Direct decode of the pristine QR confirms it holds only the prize-address URL — nothing hidden",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "Prior QR forensics proved the puzzle.png QR RE-ENCODES byte-exact from the prize-address URL (a community module-for-module cross-check). But re-encoding is not the same as decoding: a direct decode of the pristine image had never actually been run. With a QR decoder available, this closes that gap.",
+  "input": "assets/walkthrough/puzzle.png (1048×1556). The QR sits at the bottom-left (rect 1,1289, 230×230).",
+  "method": "Decoded the pristine image directly with pyzbar (independent of any re-encoding). Then, as a bonus self-verifying check, tested the exact QR payload string, its variants (with/without scheme, the bare address), and its sha256 as passphrases (literal + sha256hex) on cosmic / salph_inner / p32_trailing.",
+  "output": "One QRCODE, payload = https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe (sha256 ac3ff50c…). No hidden payload, no second symbol, no alternate string. As a key: 36 tests → 0 valid padding, 0 readable.",
+  "evidence": "pyzbar direct decode (primary source); byte-exact AES-256-CBC / EVP-SHA256 for the key check. sha256(payload) ac3ff50c… is unrelated to the SalPhaseIon entry hash 89727c59….",
+  "outcome": "verified-insight",
+  "insight": "The pristine QR decodes — by direct decode, not re-encoding — to exactly the prize-address blockchain.com URL and nothing else, and that payload keys no blob. This independently confirms the QR carries no smuggled data, closing the long-open 'pristine decode never confirmed' point."
+ },
+ {
   "id": "engine-matrixsumlist-as-mask-dbbi-faed",
   "phase": "salphaseion",
   "category": "engine — dbbi/faed decode",

@@ -2846,3 +2846,8 @@ DEMOS['engine-matrixsumlist-as-mask-dbbi-faed'] = {
   summary: 'dbbi / faed decoder — try matrixsumlist as a mask/index, live',
   intro: 'The matrixsumlist token sits sandwiched between dbbi and faed in the soup — so does it <i>key</i> them? Choose the block, the symbol→digit map, the reading order and target, and re-decode. Using matrixsumlist (its 104-bit binary or its row/column sums) to zero / select characters yields no readable text — one more reading closed.',
 };
+DEMOS['engine-pristine-qr-direct-decode'] = aesSweep({
+  blobLabel: 'cosmic (prize blob)', blob: PUZZLE.cosmic,
+  keys: ['https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', 'www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', '1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', 'ac3ff50c0b294480714198a7827b64854c29508e53f8a278a5f334b9884647bd'],
+  note: 'The pristine QR decodes to exactly this blockchain.com prize-address URL (nothing hidden) — and the payload keys no blob. It is a link to the address, not a clue.',
+});
