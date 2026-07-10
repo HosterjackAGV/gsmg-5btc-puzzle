@@ -757,22 +757,28 @@ const cols = grid[0].map((_, c) => grid.reduce((a, r) => a + r[c], 0));`,
   },
 
   'genesis-matrix-prime-position-reads': {
+    summary: '🔬 Prime-position read — try origin 0/1 &amp; invert',
     code: `// read the 196 grid bits in spiral order, then keep only the PRIME positions
 const bits = spiral.map(([r, c]) => grid[r][c]).join("");
-const primeBitsStr = bits.split("").filter((_, i) => isPrime(i)).join("");`,
-    inputs: [],
-    run() {
-      const bits = MATRIX.spiral.map(p => MATRIX.grid[p[0]][p[1]]).join('');
+const primeBitsStr = bits.split("").filter((_, i) => isPrime(origin ? i + 1 : i)).join("");`,
+    inputs: [
+      { name: 'origin', label: 'count prime positions from 0 or 1', value: '0', rows: 1 },
+      { name: 'invert', label: 'invert the bits first? (yes / no)', value: 'no', rows: 1 },
+    ],
+    run(v) {
+      let bits = MATRIX.spiral.map(p => MATRIX.grid[p[0]][p[1]]).join('');
+      if ((v.invert || '').trim().toLowerCase().startsWith('y')) bits = [...bits].map(b => b === '1' ? '0' : '1').join('');
+      const base = (v.origin || '0').trim() === '1' ? 1 : 0;
       const isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
-      const primePos = []; for (let i = 0; i < bits.length; i++) if (isP(i)) primePos.push(i);
+      const primePos = []; for (let i = 0; i < bits.length; i++) if (isP(i + base)) primePos.push(i);
       const pb = primePos.map(i => bits[i]).join('');
       return {
         steps: [
-          { title: '1 · grid bits in spiral order (196 bits)', body: bits },
-          { title: '2 · keep only the ' + primePos.length + ' PRIME positions', body: pb },
-          { title: '3 · → bytes → ASCII', body: printable(bitsToAscii(pb)) },
+          { title: '1 · grid bits in spiral order (196 bits)', body: bits, graphic: byteStrip(bitsToAscii(bits)) },
+          { title: '2 · keep the ' + primePos.length + ' PRIME positions (origin ' + base + (base ? '' : '') + ')', body: pb },
+          { title: '3 · → bytes → ASCII', body: printable(bitsToAscii(pb)), graphic: byteStrip(bitsToAscii(pb)) },
         ],
-        output: 'Only ONE reading of the grid is text — the URL itself. Prime-position bit extraction (and every alternate spiral orientation/polarity) reads as noise; the grid is single-purpose.',
+        output: 'Toggle the prime-origin (0/1) or invert the bits and re-run. Only ONE reading of the grid is text — the URL itself. Prime-position extraction (and every alternate spiral orientation/polarity) reads as noise; the grid is single-purpose.',
       };
     },
   },
@@ -1369,19 +1375,21 @@ const xorPrintable = printableFrac(xor(salphInner, p32)); // ~0.48 (noise)`,
   },
 
   'blob-repeated-block-shared-block-scan': {
+    summary: '🔬 Shared-block scan — paste any blobs',
     code: `// CBC: identical plaintext under the same key/IV → identical ciphertext blocks. Scan all 16-byte blocks.
 const blocks = blob => chunk(bytes(blob).slice(16), 16);`,
-    inputs: [],
-    run() {
-      const blocks = b => { const ct = b64ToBytes(b).slice(16), o = []; for (let i = 0; i + 16 <= ct.length; i += 16) o.push(hex(ct.slice(i, i + 16))); return o; };
-      const C = blocks(PUZZLE.cosmic), S = blocks(PUZZLE.salphInner), P = blocks(PUZZLE.p32);
-      const all = [...C, ...S, ...P], set = new Set(); let dup = 0; for (const b of all) { if (set.has(b)) dup++; set.add(b); }
+    inputs: [{ name: 'blobs', label: 'blobs to scan for shared 16-byte ciphertext blocks — base64, one per line', value: [PUZZLE.cosmic, PUZZLE.salphInner, PUZZLE.p32].join('\n'), mono: true, rows: 5 }],
+    run(v) {
+      const blocks = b => { const ct = b64ToBytes(b.trim()).slice(16), o = []; for (let i = 0; i + 16 <= ct.length; i += 16) o.push(hex(ct.slice(i, i + 16))); return o; };
+      const list = v.blobs.split('\n').map(s => s.trim()).filter(Boolean);
+      const per = list.map(b => blocks(b));
+      const all = per.flat(), set = new Set(); let dup = 0; for (const b of all) { if (set.has(b)) dup++; set.add(b); }
       return {
         steps: [
-          { title: '1 · 16-byte ciphertext blocks per blob', body: 'cosmic: ' + C.length + ' · salph_inner: ' + S.length + ' · p32_trailing: ' + P.length },
-          { title: '2 · any block shared within or across blobs?', body: dup + ' repeated blocks found' },
+          { title: '1 · 16-byte ciphertext blocks per blob', body: per.map((p, i) => 'blob ' + (i + 1) + ': ' + p.length + ' blocks').join(' · ') + '  (total ' + all.length + ')' },
+          { title: '2 · any block shared within or across the blobs?', body: dup + ' repeated block(s) found' },
         ],
-        output: 'No 16-byte ciphertext block is shared across any pair of blobs (and no telling internal repeats) — the blobs do not encrypt the same plaintext. Strong evidence they are independent ciphers.',
+        output: 'Paste your own blobs and re-run. No 16-byte ciphertext block is shared across any pair (and no telling internal repeats) — the blobs do not encrypt the same plaintext. Strong evidence they are independent ciphers.',
       };
     },
   },
@@ -2079,19 +2087,21 @@ tryKey(cosmic, sha256hex(sha256hex(dbbi) + sha256hex(faed)));`,
   },
 
   'blob-multi-blob-detection-scattered-signature': {
+    summary: '🔬 Multi-blob key scan — add your own keys',
     code: `// a key opening 2+ blobs would be the signature of ONE scattered message. Count multi-blob events.
 for (const k of candidates) if (blobs.filter(b => decrypt(b, sha256(k)).ok).length >= 2) multi++;`,
-    inputs: [],
-    async run() {
-      const keys = ['matrixsumlist', 'yinyang', 'causality', 'enter', 'theseedisplanted', 'yellowblueprimes'], blobs = [PUZZLE.cosmic, PUZZLE.salphInner, PUZZLE.p32];
-      let multi = 0; for (const k of keys) { let hits = 0; for (const b of blobs) { if ((await aesDecrypt(b, await sha256hex(k))).ok) hits++; } if (hits >= 2) multi++; }
+    inputs: [{ name: 'keys', label: 'candidate keys — one per line (add your own; each is tested against all 3 blobs)', value: ['matrixsumlist', 'yinyang', 'causality', 'enter', 'theseedisplanted', 'yellowblueprimes'].join('\n'), mono: true, rows: 7 }],
+    async run(v) {
+      const keys = v.keys.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 40), blobs = [['cosmic', PUZZLE.cosmic], ['salph_inner', PUZZLE.salphInner], ['p32_trailing', PUZZLE.p32]];
+      let multi = 0; const rows = [];
+      for (const k of keys) { let hits = []; for (const [name, b] of blobs) { if ((await aesDecrypt(b, await sha256hex(k))).ok) hits.push(name); } if (hits.length >= 2) multi++; rows.push(k + ' → ' + (hits.length ? hits.join(', ') : 'none')); }
       return {
         steps: [
-          { title: '1 · a key opening 2+ blobs = signature of one scattered message', body: 'test each key against all blobs, count multi-blob PKCS7 events' },
-          { title: '2 · this sample', body: multi + ' multi-blob events among ' + keys.length + ' keys' },
-          { title: '3 · the full ~35,000-combination sweep', body: 'exactly 4 multi-blob events — all chance noise (printable 0.30–0.49); ~3 are expected by chance' },
+          { title: '1 · each key vs all 3 blobs (which get valid padding)', body: rows.join('\n') },
+          { title: '2 · multi-blob events (a key opening ≥2 blobs)', body: multi + ' / ' + keys.length + ' keys' },
+          { title: '3 · the full ~35,000-combination sweep', body: 'exactly 4 multi-blob events — all chance noise (printable 0.30–0.49); ~3 expected by chance' },
         ],
-        output: 'No key opens two-or-more blobs with readable text — the 4 multi-blob PKCS7 events in the full sweep are statistical noise. There is NO scattered-message signature; the blobs are independent.',
+        output: 'Add your own keys and re-run. No key opens two-or-more blobs with readable text — the multi-blob PKCS7 events are statistical noise (~1/256 per blob). There is NO scattered-message signature; the blobs are independent.',
       };
     },
   },
