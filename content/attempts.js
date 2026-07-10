@@ -45,6 +45,24 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "engine-matrixsumlist-as-mask-dbbi-faed",
+  "phase": "salphaseion",
+  "category": "engine — dbbi/faed decode",
+  "title": "matrixsumlist used as a mask/index over dbbi & faed decodes nothing",
+  "who": "this project",
+  "authors": [
+   "GSMG research engine"
+  ],
+  "date": "2026-07-10",
+  "history": "In the SalPhaseIon soup the matrixsumlist token (a 104-bit binary chunk = the 13-byte ASCII of 'matrixsumlist') sits sandwiched between the two undecoded blocks dbbi and faed. The repo's loose-ends ledger argues that position makes it a KEY/MASK over its neighbors — 104 bits that could index or zero exactly the characters the creator's hints say to 'zero out'. This operationalizes and tests that reading, which had never been run.",
+  "input": "dbbi (91 a-i symbols), faed (570), the 104-bit matrixsumlist mask (ASCII bits of 'matrixsumlist'), and the genesis row/column sum list (28 values).",
+  "method": "As a decode transform: apply the 104-bit mask (zero-out and select, both polarities, tiled/truncated to length) and zero-at-gaps by the sum list, then the confirmed a-i field-decode (byte-exact) to ASCII, scored by printable ratio + a theme regex (12 variants). As a key source: the masked/selected strings and their field-decoded outputs (14 keys) tested literal + sha256hex on salph_inner / p32_trailing / cosmic (84 tests).",
+  "output": "96 tests → 0 readable field-decode (best printable ratio 0.524, garbage), 0 valid-padding as a key.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 and a field-decode proven correct against the known sibling tokens. The mask length (104) does not divide dbbi (91) or faed (570) cleanly, which itself argues against a clean intended mask.",
+  "outcome": "verified-fail",
+  "insight": "Using matrixsumlist as a mask/index over dbbi and faed — the 'it is sandwiched between them, so it keys them' reading — produces no readable decode and no working key. This closes the last loose-ends-flagged concrete dbbi/faed lead; together with the spiral-reindex and prime zero-out / Vigenere results, the dbbi/faed transform space is comprehensively exhausted, and further progress there needs a genuinely new external clue."
+ },
+ {
   "id": "engine-cosmic-combine-ops-lastwords-closure",
   "phase": "salphaseion",
   "category": "engine — cosmic combine",

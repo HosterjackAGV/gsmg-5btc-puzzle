@@ -2841,3 +2841,8 @@ DEMOS['engine-cosmic-combine-ops-lastwords-closure'] = {
   summary: 'Cosmic recipe builder — change the combine operation &amp; test it live',
   intro: 'Set the held values (yellowblueprimes = <code>2347</code>, yinyang = <code>95101</code>), pick any matrixsumlist byte-form, and switch the <b>combine operation</b> (concat / per-ingredient-sha / XOR / separators) against the REAL prize blob. Across every principled combine the result is noise — which is why the suspicion now falls on the held <i>values</i>, not the assembly.',
 };
+DEMOS['engine-matrixsumlist-as-mask-dbbi-faed'] = {
+  lab: dbbiFaedLab,
+  summary: 'dbbi / faed decoder — try matrixsumlist as a mask/index, live',
+  intro: 'The matrixsumlist token sits sandwiched between dbbi and faed in the soup — so does it <i>key</i> them? Choose the block, the symbol→digit map, the reading order and target, and re-decode. Using matrixsumlist (its 104-bit binary or its row/column sums) to zero / select characters yields no readable text — one more reading closed.',
+};
