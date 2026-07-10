@@ -9,6 +9,21 @@
 import { DEMOS } from '../../../content/demos.js';
 import { esc } from '../util.js';
 
+// auto per-step graphic: a character-map of a step's result — letters green, digits teal, other printable
+// grey, non-printable dark-red. Gives every step a graphical read without each demo hand-drawing one.
+// Skips multi-line ASCII-art bodies (already visual) and very short/long ones.
+function autoStrip(text) {
+  const s = String(text == null ? '' : text);
+  if (!s || s.indexOf('\n') >= 0 || s.length < 4 || s.length > 320) return '';
+  const max = Math.min(s.length, 110), w = 5, h = 12; let cells = '';
+  for (let i = 0; i < max; i++) {
+    const c = s.charCodeAt(i);
+    const fill = /[a-zA-Z]/.test(s[i]) ? '#2ea043' : /[0-9]/.test(s[i]) ? '#3fb0c9' : (c >= 32 && c <= 126) ? '#8b949e' : '#b3202c';
+    cells += `<rect x="${i * w}" y="0" width="${w - 1}" height="${h}" fill="${fill}"/>`;
+  }
+  return `<svg viewBox="0 0 ${max * w} ${h}" width="100%" height="12" preserveAspectRatio="none" role="img" aria-label="character map: green=letter, teal=digit, grey=symbol, red=non-printable"><title>green=letter · teal=digit · grey=symbol · red=non-printable</title>${cells}</svg>`;
+}
+
 export function demoHtml(id) {
   const d = DEMOS[id];
   if (!d) return '';
@@ -75,9 +90,10 @@ export function mountDemos(root) {
         for (const s of (res.steps || [])) {
           const li = document.createElement('li');
           li.className = 'demo-step';
+          const g = s.graphic || autoStrip(s.body);                                 // demo-supplied graphic, else auto char-map
           li.innerHTML = `<div class="demo-step-t">${esc(s.title)}</div>`
             + (s.body != null ? `<pre class="demo-step-b">${esc(String(s.body))}</pre>` : '')
-            + (s.graphic ? `<div class="demo-step-viz">${s.graphic}</div>` : '');   // trusted inline SVG/HTML from run()
+            + (g ? `<div class="demo-step-viz">${g}</div>` : '');                    // trusted inline SVG/HTML
           stepsEl.appendChild(li);
           requestAnimationFrame(() => li.classList.add('in'));
           await sleep(360);
