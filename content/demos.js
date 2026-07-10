@@ -2335,31 +2335,34 @@ const [pre, post] = soup.split("z", 2);`,
   },
 
   'genesis-qr-standard-reproduced-from-url': {
-    code: `// re-encode the prize URL with a standard QR encoder and diff against the QR in the image`,
-    inputs: [],
-    run() {
+    summary: '🔬 QR size for any string',
+    code: `// a level-L byte-mode QR: find the smallest version whose data capacity holds the string.
+const capL = [17,32,53,78,106,134,154,192,230,271];   // bytes per version 1..10 (level L, byte mode)`,
+    inputs: [{ name: 'url', label: 'a string to encode (edit it) — the demo finds the QR version/size it needs', value: 'https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', mono: true, rows: 1 }],
+    run(v) {
+      const s = (v.url || ''), n = s.length;
+      const capL = [17, 32, 53, 78, 106, 134, 154, 192, 230, 271];
+      let vi = capL.findIndex(c => n <= c); const ver = vi < 0 ? 40 : vi + 1, size = 17 + 4 * ver;
       return {
         steps: [
-          { title: '1 · re-encode the URL with a standard QR encoder', body: 'https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
-          { title: '2 · parameters', body: 'version 4 (33×33) · Byte/UTF-8 mode · error level L · standard mask' },
-          { title: '3 · compare modules to the QR in puzzle.png', body: 'NOT A SINGLE BIT differs' },
+          { title: '1 · your string', body: n + ' bytes: "' + s.slice(0, 60) + (s.length > 60 ? '…' : '') + '"' },
+          { title: '2 · smallest level-L byte-mode QR that holds it', body: 'version ' + ver + ' → ' + size + '×' + size + ' modules' },
+          { title: '3 · the puzzle QR', body: 'the prize URL (73 bytes) needs version 4 = 33×33 — exactly the QR in puzzle.png, reproduced bit-for-bit' },
         ],
-        output: 'The puzzle QR is a bog-standard version-4 33×33 Byte-mode level-L code that reproduces exactly from the URL — no extra modules, no hidden layer in the QR.',
+        output: 'Edit the string and watch the required QR version/size change. The puzzle QR is a bog-standard version-4 33×33 byte-mode level-L code that reproduces exactly from the URL — no extra modules, no hidden layer.',
       };
     },
   },
 
   'genesis-qr-decoded-blockchain-link': {
-    code: `// decode the QR from the full-edge image (it is flush to the left margin, defeating earlier crops)`,
-    inputs: [],
-    run() {
-      return {
-        steps: [
-          { title: '1 · decode the QR (flush to the left edge — earlier crops missed it)', body: 'read from the full-edge image' },
-          { title: '2 · payload', body: 'https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
-        ],
-        output: 'The QR decodes to a public blockchain-explorer link for the prize address — it points at the on-chain account and carries no hidden key.',
-      };
+    summary: '🔬 The QR payload as a key — try it',
+    code: `// the QR decodes to the prize-address URL. Does that payload (or a variant) key any blob?
+const pt = aesDecrypt(cosmic, sha256hex(candidate));`,
+    inputs: [{ name: 'keys', label: 'candidate strings from the QR (one per line — edit / add your own)', value: ['https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe', '1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe'].join('\n'), mono: true, rows: 3 }],
+    async run(v) {
+      const list = v.keys.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 20); const steps = [];
+      for (const cand of list) { const r = await tryRecipe(PUZZLE.cosmic, cand); steps.push({ title: (r.ok ? '≈ ' : '✕ ') + (cand.length > 44 ? cand.slice(0, 44) + '…' : cand), body: r.ok ? r.preview : 'no valid padding', graphic: byteStrip(r.ok ? r.preview : '') }); }
+      return { steps, viz: BYTE_LEGEND, output: 'The QR decodes to a public blockchain-explorer link for the prize address — it points at the on-chain account, carries no hidden key, and the payload opens no blob. Edit or add candidates and re-run.' };
     },
   },
 
@@ -2503,17 +2506,13 @@ const distinctValues = new Set(postAesBytes).size;   // 26 = exactly an a-z alph
   },
 
   'opreturn-50-messages-discovered': {
-    code: `// harvest every OP_RETURN on the two funded GSMG addresses (blockstream.info) → a 50-message catalogue`,
-    inputs: [],
-    run() {
-      const msgs = ['redpill', 'iamtheone', 'leavethematrix', 'THEMATRIXHASYOU', 'followthewhiterabbit', 'wakeup', 'thereisnospoon', 'freeyourmind', 'knockknock', 'whatisthematrix'];
-      return {
-        steps: [
-          { title: '1 · harvest every OP_RETURN on the funded GSMG addresses', body: '1GSMG1JC9… and 17ucy1K9ZU… (via blockstream.info)' },
-          { title: '2 · a sample of the 50-message catalogue', body: msgs.join(' · ') },
-        ],
-        output: 'A 50-message OP_RETURN catalogue (opreturns.md) of Matrix-theme tokens and phrases written on-chain — atmospheric breadcrumbs from the creators; none has yet been shown to be a working key.',
-      };
+    summary: '🔬 Test any OP_RETURN message as a key',
+    code: `// try each on-chain OP_RETURN message as a passphrase against the prize blob`,
+    inputs: [{ name: 'keys', label: 'on-chain OP_RETURN messages — one per line (edit / add your own)', value: ['redpill', 'iamtheone', 'leavethematrix', 'THEMATRIXHASYOU', 'followthewhiterabbit', 'thereisnospoon', 'freeyourmind', 'whatisthematrix'].join('\n'), mono: true, rows: 8 }],
+    async run(v) {
+      const list = v.keys.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 30); const steps = [];
+      for (const k of list) { const r = await tryRecipe(PUZZLE.cosmic, k); steps.push({ title: (r.ok ? '≈ ' : '✕ ') + k.slice(0, 40), body: r.ok ? r.preview : 'no valid padding', graphic: byteStrip(r.ok ? r.preview : '') }); }
+      return { steps, viz: BYTE_LEGEND, output: 'A 50-message OP_RETURN catalogue (opreturns.md) of Matrix-theme tokens written on-chain by the community — atmospheric breadcrumbs; none opens the prize blob. Add your own and re-run.' };
     },
   },
 
