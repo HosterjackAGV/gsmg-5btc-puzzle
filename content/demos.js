@@ -1356,9 +1356,13 @@ for (const form of [faed, fieldDecode(faed), base9int(faed)]) tryKey(salphInner,
     code: `// synthesis: each blob is standard aes-256-cbc -md sha256 with its OWN random salt
 const sharedBlocks = countSharedBlocks(blobs);            // 0
 const xorPrintable = printableFrac(xor(salphInner, p32)); // ~0.48 (noise)`,
-    inputs: [],
-    run() {
-      const A = b64ToBytes(PUZZLE.salphInner).slice(16), B = b64ToBytes(PUZZLE.p32).slice(16), n = Math.min(A.length, B.length);
+    summary: '🔬 Independence check — pick the two blobs',
+    inputs: [
+      { name: 'blobA', label: 'first blob (base64)', value: PUZZLE.salphInner, mono: true, rows: 2 },
+      { name: 'blobB', label: 'second blob (base64)', value: PUZZLE.p32, mono: true, rows: 2 },
+    ],
+    run(v) {
+      const A = b64ToBytes(v.blobA.trim()).slice(16), B = b64ToBytes(v.blobB.trim()).slice(16), n = Math.min(A.length, B.length);
       let p = 0; for (let i = 0; i < n; i++) { const x = A[i] ^ B[i]; if (x >= 32 && x < 127) p++; }
       return {
         steps: [
@@ -1572,22 +1576,23 @@ const rowmaj = grid.flat().join("");`,
   },
 
   'ledger-game-of-life-1357-matrix': {
-    code: `// evolve the genesis parity bitmap under the symmetric "1357" rule (B1357/S1357)
-const next = neighbours => [1,3,5,7].includes(neighbours) ? 1 : 0;`,
-    inputs: [],
-    run() {
+    summary: '🔬 Evolve the grid — set the rule &amp; generations',
+    code: `// evolve the genesis parity bitmap under a totalistic Life rule.
+const next = neighbours => rule.has(neighbours) ? 1 : 0;   // rule = the alive-neighbour counts`,
+    inputs: [
+      { name: 'rule', label: 'alive-neighbour counts (creator-hinted: 1357; try 23, 135, …)', value: '1357', rows: 1 },
+      { name: 'gens', label: 'generations to show (1–5)', value: '2', rows: 1 },
+    ],
+    run(v) {
+      const rule = new Set([...(v.rule || '')].map(Number).filter(n => !isNaN(n)));
+      const G = Math.max(1, Math.min(5, parseInt(v.gens, 10) || 2));
       const R = MATRIX.grid.length, C = MATRIX.grid[0].length;
-      const step = g => g.map((row, r) => row.map((_, c) => { let n = 0; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < R && cc >= 0 && cc < C) n += g[rr][cc]; } return [1, 3, 5, 7].includes(n) ? 1 : 0; }));
-      const render = g => g.map(row => row.map(b => b ? '█' : '·').join('')).join('\n');
-      const g1 = step(MATRIX.grid), g2 = step(g1);
-      const head = g => render(g).split('\n').slice(0, 6).join('\n') + '\n…';
+      const step = g => g.map((row, r) => row.map((_, c) => { let n = 0; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < R && cc >= 0 && cc < C) n += g[rr][cc]; } return rule.has(n) ? 1 : 0; }));
+      const head = g => g.map(row => row.map(b => b ? '█' : '·').join('')).join('\n').split('\n').slice(0, 6).join('\n') + '\n…';
+      const gens = [MATRIX.grid]; for (let i = 0; i < G; i++) gens.push(step(gens[gens.length - 1]));
       return {
-        steps: [
-          { title: '1 · genesis parity bitmap (generation 0)', body: head(MATRIX.grid) },
-          { title: '2 · after 1 generation of B1357/S1357', body: head(g1) },
-          { title: '3 · after 2 generations', body: head(g2) },
-        ],
-        output: 'Evolving the genesis bitmap under the symmetric "1357" Game-of-Life rule gives chaotic noise — no readable state at any generation.',
+        steps: gens.map((g, i) => ({ title: i === 0 ? 'gen 0 (genesis parity bitmap)' : 'gen ' + i + ' — rule {' + [...rule].join(',') + '}', body: head(g) })),
+        output: 'Set your own rule (alive-neighbour counts) and generation count. Under the creator-hinted 1357 rule the genesis bitmap evolves to chaotic noise — no readable state at any generation.',
       };
     },
   },
@@ -2317,16 +2322,18 @@ const [pre, post] = soup.split("z", 2);`,
   },
 
   'ledger-image-forensics-genesis-png': {
-    code: `// standard stego forensics on img_puzzle.png: palette histogram · per-channel LSB · trailing data past IEND`,
-    inputs: [],
-    run() {
+    summary: '🔬 Run the stego checks on any bytes',
+    code: `// standard stego forensics: distinct-symbol histogram · printable-run scan · trailing-data-past-marker`,
+    inputs: [{ name: 'data', label: 'paste bytes / text to scan (distinct symbols · printable runs)', value: 'FEFEFE 000000 FFFFFF 000000 FFFFFF', mono: true, rows: 2 }],
+    run(v) {
+      const s = v.data || '', distinct = new Set([...s.replace(/\s/g, '')]).size, runs = (s.match(/[\x20-\x7e]{6,}/g) || []).length;
       return {
         steps: [
-          { title: '1 · palette histogram', body: 'only pure black/white + the one planted 0xFEFEFE cell — no hidden palette channel' },
-          { title: '2 · per-channel LSB extraction', body: 'no embedded bitstream in any RGB plane' },
-          { title: '3 · trailing data past the IEND marker', body: 'nothing appended after the PNG end marker' },
+          { title: '1 · distinct symbols (a small palette = few values)', body: distinct + ' distinct in ' + s.replace(/\s/g, '').length + ' chars' },
+          { title: '2 · printable runs (≥6 chars — would flag an embedded message)', body: runs + ' run(s) found' },
+          { title: '3 · the genesis PNG (the real finding, @x7x7x7x6)', body: 'palette = pure black/white + one planted 0xFEFEFE cell · no LSB bitstream in any RGB plane · nothing appended past the IEND marker' },
         ],
-        output: 'Standard stego forensics on the genesis PNG recover nothing — palette, per-channel LSB, and post-IEND scans are all clean. (Caveat: the copy in hand is recompressed; a pristine original PNG is the only place residual stego could still hide.)',
+        output: 'Paste any bytes to try the scan. On the genesis PNG the forensics recover nothing — palette, per-channel LSB and post-IEND scans are all clean (caveat: the copy in hand is recompressed; a pristine original is the only place residual stego could still hide).',
       };
     },
   },
@@ -2364,20 +2371,26 @@ const pt = aesDecrypt(cosmic, sha256hex(candidate));`,
   },
 
   'genesis-matrix-cellular-rules-paths': {
-    code: `// evolve the parity bitmap under B1357/S1357 and draw the a-i turtle path over it
-const next = n => [1,3,5,7].includes(n) ? 1 : 0;`,
-    inputs: [],
-    run() {
+    summary: '🔬 Cellular evolution — set the rule &amp; generations',
+    code: `// evolve the parity bitmap under a totalistic rule; count live cells each generation.
+const next = n => rule.has(n) ? 1 : 0;`,
+    inputs: [
+      { name: 'rule', label: 'alive-neighbour counts (creator-hinted: 1357)', value: '1357', rows: 1 },
+      { name: 'gens', label: 'generations (1–8)', value: '3', rows: 1 },
+    ],
+    run(v) {
+      const rule = new Set([...(v.rule || '')].map(Number).filter(n => !isNaN(n)));
+      const G = Math.max(1, Math.min(8, parseInt(v.gens, 10) || 3));
       const R = MATRIX.grid.length, C = MATRIX.grid[0].length;
-      const step = g => g.map((row, r) => row.map((_, c) => { let n = 0; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < R && cc >= 0 && cc < C) n += g[rr][cc]; } return [1, 3, 5, 7].includes(n) ? 1 : 0; }));
+      const step = g => g.map((row, r) => row.map((_, c) => { let n = 0; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < R && cc >= 0 && cc < C) n += g[rr][cc]; } return rule.has(n) ? 1 : 0; }));
       const live = g => g.flat().reduce((a, b) => a + b, 0);
-      const g1 = step(MATRIX.grid), g2 = step(g1), g3 = step(g2);
+      const gens = [MATRIX.grid]; for (let i = 0; i < G; i++) gens.push(step(gens[gens.length - 1]));
       return {
         steps: [
-          { title: '1 · evolve the parity bitmap under B1357/S1357', body: 'live cells: gen0=' + live(MATRIX.grid) + ' gen1=' + live(g1) + ' gen2=' + live(g2) + ' gen3=' + live(g3) },
-          { title: '2 · turtle path (a–i → 9 directions)', body: 'a connected but meaningless blob' },
+          { title: '1 · evolve under rule {' + [...rule].join(',') + '}', body: 'live cells: ' + gens.map((g, i) => 'gen' + i + '=' + live(g)).join(' ') },
+          { title: '2 · turtle path (a–i → 9 directions) over it', body: 'a connected but meaningless blob' },
         ],
-        output: 'Chaotic noise in every generation and a meaningless turtle blob — neither the 1357 cellular automaton nor the path drawing reveals a readable state.',
+        output: 'Change the rule / generations. Chaotic noise in every generation and a meaningless turtle blob — neither the cellular automaton nor the path drawing reveals a readable state.',
       };
     },
   },
@@ -2453,17 +2466,22 @@ const distinctValues = new Set(bytes).size;   // 26 = exactly an a-z alphabet`,
   },
 
   'hint-image-decoding-primes-fefefe-doors-toe': {
-    code: `// transcribe the full creator hint timeline (images + Telegram) → the verbatim operational instructions`,
-    inputs: [],
-    run() {
+    summary: '🔬 Search the creator hint timeline',
+    code: `// the full creator hint timeline (images + Telegram) → the verbatim operational instructions`,
+    inputs: [{ name: 'term', label: 'filter the compiled hint set (try: primes, zero, fefefe, doors, toe)', value: 'fefefe', mono: true, rows: 1 }],
+    run(v) {
+      const items = [
+        ['primes', '2,3,5,7 are "the prime part" — the prime basics to reinsert'],
+        ['zero', 'certain characters must be "zeroed out"'],
+        ['fefefe', '"104 is the fefefe square · fefefe is 101010" — the binary/prime pointer'],
+        ['doors', 'the 999 / doors (Zero Escape) motif threads through the timeline'],
+        ['toe', 'the "toe" (theory of everything) motif recurs in the hints'],
+      ];
+      const q = (v.term || '').toLowerCase().trim();
+      const hits = q ? items.filter(([k, t]) => k.includes(q) || t.toLowerCase().includes(q)) : items;
       return {
-        steps: [
-          { title: '1 · primes', body: '2,3,5,7 are "the prime part" — the prime basics to reinsert' },
-          { title: '2 · zero-out', body: 'certain characters must be "zeroed out"' },
-          { title: '3 · fefefe', body: '"104 is the fefefe square · fefefe is 101010" — the binary/prime pointer' },
-          { title: '4 · doors / toe', body: 'the 999 / doors (Zero Escape) and "toe" motifs thread through the timeline' },
-        ],
-        output: 'The full creator hint timeline compiles to a verbatim instruction set — primes 2,3,5,7, zero-out, fefefe=101010, the doors/toe motifs — the operational scaffold every dbbi/cosmic attempt is built on.',
+        steps: (hits.length ? hits : items).map((it, i) => ({ title: (i + 1) + ' · ' + it[0], body: it[1] })),
+        output: 'Type a term to filter the compiled creator-hint instruction set — primes 2,3,5,7, zero-out, fefefe=101010, doors, toe — the operational scaffold every dbbi/cosmic attempt is built on.',
       };
     },
   },
@@ -2605,8 +2623,13 @@ const priv = sha256hex(phrase);`,
 const val = cell => cell.color === "blue" ? spiralIndex(cell) + 1 : spiralIndex(cell);   // colour decides origin
 const candidate = cells.map(val).filter(isPrime).join("");        // keep the primes  (…851 candidates in all)
 const plain = aesDecrypt(salph_inner, sha256hex(candidate));`,
-    inputs: [],
-    async run() {
+    summary: '🔬 Mixed-origin read — set each colour’s origin',
+    inputs: [
+      { name: 'blueOrigin', label: 'counting origin for BLUE cells (0 or 1)', value: '1', rows: 1 },
+      { name: 'yellowOrigin', label: 'counting origin for YELLOW cells (0 or 1 — "zeroed")', value: '0', rows: 1 },
+    ],
+    async run(v) {
+      const bO = (v.blueOrigin || '1').trim() === '0' ? 0 : 1, yO = (v.yellowOrigin || '0').trim() === '1' ? 1 : 0;
       const isP = k => { if (k < 2) return false; for (let i = 2; i * i <= k; i++) if (k % i === 0) return false; return true; };
       const f = MATRIX.fefefe[0];
       const si = MATRIX.spiral.findIndex(p => p[0] === f[0] && p[1] === f[1]);     // spiral index (0-based)
@@ -2614,7 +2637,7 @@ const plain = aesDecrypt(salph_inner, sha256hex(candidate));`,
       const idx = (r, c) => MATRIX.spiral.findIndex(p => p[0] === r && p[1] === c);
       const cells = [...MATRIX.blue.map(p => ({ k: 'b', r: p[0], c: p[1] })), ...MATRIX.yellow.map(p => ({ k: 'y', r: p[0], c: p[1] }))]
         .map(c => ({ ...c, s: idx(c.r, c.c) })).sort((a, b) => a.s - b.s);
-      const colourOrigin = c => c.k === 'b' ? c.s + 1 : c.s;                       // blue 1-based, yellow 0-based ("zeroed")
+      const colourOrigin = c => c.k === 'b' ? c.s + bO : c.s + yO;                 // colour decides the counting origin
       const candKeepPrime = cells.map(colourOrigin).filter(isP).join('');
       const candAll = cells.map(colourOrigin).join('');
       const candSum = String(cells.map(colourOrigin).reduce((s, v) => s + v, 0));
