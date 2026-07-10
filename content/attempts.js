@@ -220,7 +220,7 @@ export const ATTEMPTS = [
   "category": "image & QR forensics",
   "title": "Image forensics on the genesis PNG",
   "who": "community",
-  "source": "dead-end ledger",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #4876",
   "input": "The genesis img_puzzle.png. Operations: palette histogram, per-channel LSB extraction, trailing-data scan past the IEND marker, location of the #FEFEFE cell.",
   "method": "Ran standard steganography forensics on the genesis image: palette analysis, per-channel least-significant-bit extraction, scanning for data appended after the PNG's IEND end marker, and locating the off-white #FEFEFE planted cell.",
   "output": "Fully accounted for; no recoverable stego. (Caveat: the copy in hand is recompressed -- a pristine original PNG remains the only open possibility.)",
@@ -228,7 +228,16 @@ export const ATTEMPTS = [
   "insight": "Standard stego forensics finds no hidden payload in the (recompressed) genesis PNG -- every element is accounted for, leaving only a pristine original PNG as an untested edge case.",
   "author": "@x7x7x7x6",
   "date": "2020-10-25",
-  "dateApprox": false
+  "dateApprox": false,
+  "time": "19:51 UTC",
+  "sourceQuote": "as for the \"Roses are white...\" hint, i think its not about steganography — i checked the IDAT chunk byte-by-byte and there is no payload. what we know is that one square has FEFEFE color, and that's all.",
+  "provenance": "The genesis image puzzle.png (assets/walkthrough/); the PNG IDAT byte-analysis is @x7x7x7x6's.",
+  "links": [
+   {
+    "label": "Walkthrough",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "genesis-qr-standard-reproduced-from-url",
@@ -281,7 +290,7 @@ export const ATTEMPTS = [
   "category": "matrix re-read",
   "title": "The blue/yellow square indices match OEIS A007522 (primes ≡ -1 mod 8) — 49 (=7×7) primes, and it includes 103",
   "who": "community",
-  "source": "community discussion (Telegram, 2025-09)",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #49487",
   "date": "2025-09-23",
   "dateApprox": false,
   "input": "The genesis grid's blue + yellow colored-cell indices vs OEIS A007522 = primes of the form 8n+7 (primes congruent to -1 mod 8): 7, 23, 31, 47, 71, 79, 103, 127, 151, 167, 191, 199, 223, 239, ... (14 of them below 256).",
@@ -289,7 +298,20 @@ export const ATTEMPTS = [
   "output": "A concrete, NAMED candidate for the 'yellowblueprimes' prime set: A007522 (primes = -1 mod 8), with 49 (=7x7) primes in range, 14 below 256 -- and notably it CONTAINS 103 (a prime that also surfaces in the -- separately debunked -- community '103x103 reshape' claim about the endgame blob; see cosmic-1327-byte-blob-103x103-matrix). A specific, checkable prime list to test against dbbi/faed and the genesis Y/B cells, where prior public work used only the small primes {2,3,5,7}.",
   "outcome": "unverified",
   "insight": "",
-  "author": "id:142464266"
+  "author": "id:142464266",
+  "time": "13:28 UTC",
+  "sourceQuote": "I found a prime list that hasn't been mentioned before, which aligns perfectly with the puzzle. The first 11 primes in this list match the primes found in the indices of the blue + yellow squares. https://oeis.org/A007522",
+  "provenance": "Blue + yellow cell indices from the genesis grid (content/matrix.js, pixel-verified against puzzle.png); the A007522 sequence (primes ≡ 7 mod 8) from oeis.org.",
+  "links": [
+   {
+    "label": "Walkthrough",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "OEIS A007522",
+    "href": "https://oeis.org/A007522"
+   }
+  ]
  },
  {
   "id": "genesis-grid-byte-boundary-pointer",
@@ -322,6 +344,15 @@ export const ATTEMPTS = [
   "insight": "",
   "authors": [
    "@x7x7x7x6"
+  ],
+  "time": "17:11 UTC",
+  "sourceQuote": "what info can yellow/blue carry? it's 24 bits but they were not chosen arbitrarily by the authors — they could not cipher a message into them since their coloring was dictated by \"gsmg.io/theseedisplanted\".",
+  "provenance": "The 24 colored cells of the genesis grid (content/matrix.js) vs the 24 characters of the decoded URL \"gsmg.io/theseedisplanted\".",
+  "links": [
+   {
+    "label": "Walkthrough",
+    "href": "#/walkthrough"
+   }
   ]
  },
  {
@@ -340,7 +371,16 @@ export const ATTEMPTS = [
    "@dgoschmidt"
   ],
   "date": "2025-06-13",
-  "dateApprox": false
+  "dateApprox": false,
+  "time": "02:02 UTC",
+  "sourceQuote": "Jrk Bgrt (creator), 2024-04-10 14:21: \"1357 blocks to go … survival if 1,3,5 or 7 neighbors alive and birth if 1,3,5 or 7 neighbors alive\" — i.e. a Game-of-Life B1357/S1357 rule (relayed by @dgoschmidt).",
+  "provenance": "The genesis 14×14 grid (content/matrix.js) evolved under the B1357/S1357 rule; the rule quote is the CREATOR (Jrk Bgrt = @SoWut), relayed by @dgoschmidt.",
+  "links": [
+   {
+    "label": "Walkthrough",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "genesis-matrix-prime-position-reads",
@@ -878,7 +918,7 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "Bifid on faed with a dbbi-derived alphabet ('dbifhceg') — surfaces a 'btcseed' fragment",
   "who": "community",
-  "source": "community discussion (Telegram, 2025-06 / 2025-07)",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #43247/#43248",
   "date": "2025-06-12",
   "dateApprox": false,
   "input": "faed as ciphertext; key/alphabet derived from dbbi -- its first 13 symbols with duplicates removed give the 8-letter Bifid keyword 'dbifhceg'. dbbi is also split into 7 parts (the size of matrixsumlist), used as successive keys.",
@@ -886,7 +926,16 @@ export const ATTEMPTS = [
   "output": "Surfaces suggestive fragments -- a first part reads as 'btcseed...', the next 'can...' -- but no coherent full plaintext or usable key emerges, and a Trifid + XOR follow-up on the tail found nothing substantial. Like the OTP 'YOUWON' run, a tantalising partial that has not been made to close. @CoruNethron later analysed the Bifid cipher's properties and judged the 'btcseed' hit to be coincidental, not load-bearing.  ·  [merged: “Bifid cipher with multiple 9-squares and periods”] Garbage.",
   "outcome": "unverified",
   "insight": "",
-  "author": "id:6424118990"
+  "author": "id:6424118990",
+  "time": "00:30 UTC",
+  "sourceQuote": "after using various ciphers I found that a small portion of \"faed...\" can be decoded via Bifid cipher using a period of 570, with the first characters of \"dbbib...\" (deduped to \"dbifhceg\") as the alphabet keyword. Result begins \"btcseed…\".",
+  "provenance": "dbbi (91) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup; the Bifid alphabet keyword and period are from @6424118990's derivation.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "dbbi-otp-incase-key-youwon",
@@ -894,7 +943,7 @@ export const ATTEMPTS = [
   "category": "polyalphabetic & fractionation",
   "title": "dbbi − the 91-char INCASE… phase-3.2 plaintext (mod 26) = 'YOUWON' + a 64-char tail — an engineered easter-egg, not a key",
   "who": "community",
-  "source": "community discussion (Telegram, 2024-04 / 2024-09)",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #23799",
   "date": "2024-04-06",
   "dateApprox": false,
   "input": "dbbi (the 91-char string dbbibfbhccbeg...beeeabe) as ciphertext; key = the 91-char Phase-3.2 line INCASEYOUMANAGETOCRACKTHISTHEPRIVATEKEYSBELONGTOHALFANDBETTERHALFANDTHEYALSONEEDFUNDSTOLIVE, used as a one-time pad (A-Z Vigenere-style subtraction, e.g. via boxentriq's OTP tool).",
@@ -902,7 +951,16 @@ export const ATTEMPTS = [
   "output": "Result = VOZIJBDTIQBRGVEOMZNBC + YOUWON + XCPKWGBNAXDGJGDUNNVMPABTAFPAAXMJYLZBUWERDNXYDESKUOBXCAMVDJLQTSGA. It contains the literal word 'YOUWON', and EXACTLY 64 characters follow it (21 + 6 + 64 = 91) -- 64 hex chars being the length of a Bitcoin private key. The 21- and 64-char chunks around it are not legible. Unconfirmed and possibly coincidental, but flagged by its author as the only run to surface a real word out of dbbi, and the 64-char tail is suggestive.  ·  [merged: “dbbi is engineered against the phase-3.2 plaintext: (dbbi − plaintext) mod 26 spells YOUWON”] Result = VOZIJBDTIQBRGVEOMZNBC · YOUWON · (64-char tail). 'YOUWON' at position 21 is not chance (~1 in 33,000).",
   "outcome": "unverified",
   "insight": "",
-  "author": "id:6424118990"
+  "author": "id:6424118990",
+  "time": "15:27 UTC",
+  "sourceQuote": "dbbib... and INCASEYOUMANAGETOCRACKTHIS... have the same character length and could correlate — dbbi minus that Phase-3.2 plaintext (mod 26) surfaces YOUWON.",
+  "provenance": "dbbi (91 chars) from the SalPhaseIon soup; the 91-char \"INCASE…\" string is the Phase-3.2 VIC plaintext.",
+  "links": [
+   {
+    "label": "Walkthrough — Phase 3.2 (Architect / VIC)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "ledger-seven-intertwined-passwords-dbbi",
@@ -1344,7 +1402,7 @@ export const ATTEMPTS = [
   "category": "cosmic duality structure",
   "title": "DEBUNK: the '1327-byte Cosmic Duality decrypt → 103×103 matrix' claim rests on a FABRICATED decrypt (issue #56's fake 4f7a1e page); only the arithmetic is real",
   "who": "community",
-  "source": "community reproducibility audit (Telegram, 2026-02); premise traced and refuted here",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #60205",
   "date": "2026-02-26",
   "dateApprox": false,
   "input": "A community claim that the AES-decrypted Cosmic Duality output is a 1327-byte blob with SHA256 4f7a1e4efe4bf6c5581e32505c019657cb7b030e90232d33f011aca6a5e9c081, reshaped into a 103x103 bit grid. CRITICAL PREMISE CHECK: the cosmic blob is UNSOLVED, so no such decrypt is known to exist; that 4f7a1e hash is the fabricated 'next page' from GitHub issue #56 -- its only Wayback capture is a 530 server error (never real content), and no cosmic key produces a plaintext hashing to it (see cosmic-xor-7-token-issue56 and ENDGAME-ANALYSIS.md 7/8c).",
@@ -1352,7 +1410,16 @@ export const ATTEMPTS = [
   "output": "The reshape is numerology applied to a NON-EXISTENT plaintext. The only real content is the arithmetic (any 1327-byte stream reshapes to 103^2+7 bits; 103 happens to be prime). There is no known cosmic decrypt, and the cited 4f7a1e 'decrypt' is fabricated -- so this is NOT a structural finding about the real endgame, and '103' is not a verified lead. Logged as a cautionary correction. (Same lineage: GitHub issue #84's 'reshape / 35 blocks' talk traces back through the same Bitcointalk thread.)",
   "outcome": "verified-fail",
   "insight": "A widely-repeated claim that dissolves under scrutiny: '103x103' is correct arithmetic applied to a FAKE decrypt (issue #56's 4f7a1e 'next page', a Wayback 530 error). Because the cosmic blob is unsolved there is no plaintext to reshape, so the 103-is-prime coincidence proves nothing about the endgame. Kept as a debunk so the number 103 is not mistaken for a verified structural lead.",
-  "author": "@VadikShaa"
+  "author": "@VadikShaa",
+  "time": "22:06 UTC",
+  "sourceQuote": "My matrix uses 10609 bits. 10609 bits require 1327 bytes minimum. If your decrypted output is 1328 bytes (AES block multiple), then one byte is likely padding/unused. So the relevant payload for the matrix is 1327 bytes → a 103×103 matrix.",
+  "provenance": "The cosmic blob's 1328-byte ciphertext (ciphertexts/cosmic.txt); 103×103 = 10609 is @VadikShaa's claim.",
+  "links": [
+   {
+    "label": "Reference — cosmic blob",
+    "href": "#/reference"
+   }
+  ]
  },
  {
   "id": "blob-independence-conclusion",
@@ -1435,7 +1502,7 @@ export const ATTEMPTS = [
   "category": "blob combination & format",
   "title": "The 'Salted__' prefix does NOT prove aes-256-cbc — an unsolved blob could be openssl AES-KEY-WRAP (id-aes256-wrap-pad)",
   "who": "community",
-  "source": "community discussion (Telegram, 2026-05)",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #62405",
   "date": "2026-05-04",
   "dateApprox": false,
   "input": "The unsolved 'Salted__' blobs (U2FsdGVkX18..., notably the small 80-byte salph_inner / p32_trailing), universally assumed to be aes-256-cbc.",
@@ -1443,7 +1510,16 @@ export const ATTEMPTS = [
   "output": "A format hypothesis the catalog had not recorded: a blob that yields only noise under aes-256-cbc might instead be an AES-KEY-WRAP container holding a RAW (private) key rather than narrative text -- a natural fit for the small 80-byte blobs where 'the key is inside the blob'. Untested against the actual blobs here; worth running `-id-aes256-wrap-pad -d` over the unsolved blobs with the candidate passphrases.",
   "outcome": "unverified",
   "insight": "",
-  "author": "@sha256ppy"
+  "author": "@sha256ppy",
+  "time": "05:33 UTC",
+  "sourceQuote": "you can generate a key with openssl … then you can wrap it (there are multiple wrap functions): openssl enc -id-aes256-wrap-pad -e -pass pass:… — so the Salted__ header does not prove aes-256-cbc.",
+  "provenance": "The unsolved Salted__ blobs (cosmic / salph_inner / p32_trailing) in ciphertexts/; the OpenSSL wrap-cipher demonstration is @sha256ppy's.",
+  "links": [
+   {
+    "label": "Reference — the AES blobs",
+    "href": "#/reference"
+   }
+  ]
  },
  {
   "id": "endgame-bip38-ec-multiply-hypothesis",
@@ -1451,7 +1527,7 @@ export const ATTEMPTS = [
   "category": "blob combination & format",
   "title": "The endgame may encode a BIP38 (EC-multiply) passphrase-protected key — 'shabef four first' = BIP38's addresshash step",
   "who": "community",
-  "source": "community discussion (Telegram, 2025-08)",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #24861",
   "date": "2024-04-20",
   "dateApprox": false,
   "input": "The Phase-3.2 / INCASE / salph instructions and their oddly specific phrasing: '23 ciphers, 16 encryptions and/or 7 intertwined passwords', '24 random bytes', 'shabefourfirsthintisyourlastcommand', 'shabefanstoo', and the 'half and better half' two-key framing.",
@@ -1459,7 +1535,16 @@ export const ATTEMPTS = [
   "output": "A concrete format hypothesis the catalog had not recorded: the final key may be a BIP38 EC-multiply container rather than plaintext -- which would explain the 'half and better half' two-key framing (the BIP38 owner/intermediate split) and the otherwise-strange 'addresshash' / 'four first' phrasing. This is arguably the most-supported endgame-format lead in the whole group history: it was asserted outright as early as 2024-04 ('it IS a bip38 challenge -- the challenge is finding the passphrase of a BIP38 wallet using the given private key and public key'), and solvers reconstructed the exact EC-multiply record -- Base58Check of 0x01 0x43 + flagbyte + addresshash + ownerentropy + encryptedpart1[0..7] + encryptedpart2 (39 bytes). It dovetails with the 'half and better half' two-key split, the '7 (intertwined) passwords' solvers say they recovered, and -- independently -- the textual hint 'scrypt IO lock' read off theseedisplanted's on-page elements ('S' in the black box, 'crypto', 'lock', 'lO'), since BIP38's KDF is exactly scrypt. Still untested to an actual key here, but it is the leading structural hypothesis for the final format.",
   "outcome": "unverified",
   "insight": "",
-  "author": "@theseedisplanted"
+  "author": "@theseedisplanted",
+  "time": "23:20 UTC",
+  "sourceQuote": "it is a bip38 challenge. challenge is finding passphrase of bip38 wallet using given private key and public key",
+  "provenance": "A structural hypothesis about the endgame format; the \"half and better half\" two-key framing comes from the Phase-3.2 VIC line.",
+  "links": [
+   {
+    "label": "Reference — cosmic ingredients",
+    "href": "#/reference"
+   }
+  ]
  },
  {
   "id": "blob-3salt-2salt-subset-keys",
@@ -1722,7 +1807,7 @@ export const ATTEMPTS = [
   "category": "on-chain forensics",
   "title": "ECDSA nonce-reuse (repeated-r) key recovery checked on the GSMG signatures + prize address — no reuse",
   "who": "community",
-  "source": "community discussion (Telegram, 2024-12)",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #34925",
   "date": "2024-12-31",
   "dateApprox": false,
   "input": "The on-chain ECDSA signatures of the GSMG creator's spends (pre/post-halving) and the prize address. The classic repeated-nonce leak: if two signatures share the same r (same nonce k), the signer's private key is directly recoverable from (r, s1, s2, z1, z2) modulo the secp256k1 order n.",
@@ -1730,7 +1815,16 @@ export const ATTEMPTS = [
   "output": "No repeated nonce: the r values differ across the GSMG signatures, so the key cannot be recovered this way, and the prize address yielded nothing ('already tested with the prize address ... nope'). The recovery math is correct; there is simply no exploitable repeated-r on the relevant addresses.",
   "outcome": "verified-insight",
   "insight": "The GSMG signatures use distinct ECDSA nonces (no repeated r), so the on-chain nonce-reuse key-recovery shortcut is closed -- consistent with the prize key being random (vanity address) and obtainable only from the cosmic blob.",
-  "author": "@sha256ppy"
+  "author": "@sha256ppy",
+  "time": "08:55 UTC",
+  "sourceQuote": "what i was testing was if they reused the r values on the signatures after halving — different r values, hence the key could not be retrieved through that vulnerability.",
+  "provenance": "On-chain ECDSA signatures of the GSMG prize / split addresses (blockstream); the r-value check is @sha256ppy's.",
+  "links": [
+   {
+    "label": "Prize address (blockchain.com)",
+    "href": "https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe"
+   }
+  ]
  },
  {
   "id": "opreturn-50-messages-discovered",
@@ -1907,7 +2001,7 @@ export const ATTEMPTS = [
   "category": "SalPhaseIon entrance (Decentraland audio)",
   "title": "Decentraland audio → phase-invert → spectrogram → HASHTHETEXT (the SalPhaseIon entrance)",
   "who": "community",
-  "source": "community walkthrough (Decentraland GSMG plot LAND -41,-17; audio_source.wav / puzzlepiece.mp3)",
+  "source": "Telegram — GSMG Puzzle Solvers, msg #5335 (relaying a creator hint)",
   "input": "The audio clip played by the interactive box on the GSMG plot in Decentraland (saved as puzzlepiece.mp3): a stereo file whose two channels share the music but differ in a planted high-frequency signal.",
   "method": "Split the stereo into Left/Right, phase-invert (flip) one channel and mix to mono so the shared music cancels and only the planted difference survives, then view the result as a SPECTROGRAM (a Short-Time Fourier Transform picture of the sound). The hidden text sits in the high-frequency band.",
   "output": "The word HASHTHETEXT appears in the spectrogram's high frequencies. Hashing the opening image's full text (GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe -- 59 chars, no trailing newline) with sha256 gives 89727c59...152f6a32, which is the SalPhaseIon page URL.",
@@ -1915,7 +2009,16 @@ export const ATTEMPTS = [
   "insight": "The entrance to SalPhaseIon is an AUDIO-steganography step: a phase-inverted stereo mix reveals HASHTHETEXT in the spectrogram, which instructs you to sha256 the genesis image's text to reach the next page. The interactive spectral lab reproduces this in-browser (a real FFT on the genuine audio).",
   "author": "id:1173894700",
   "date": "2021-01-06",
-  "dateApprox": false
+  "dateApprox": false,
+  "time": "14:52 UTC",
+  "sourceQuote": "here's a hint from the creator on Decentraland: find these coordinates → an audio file. Split the stereo track, invert one channel, mix back, mix down to mono, create a spectrogram. The answer is: HASHTHETEXT.",
+  "provenance": "The Decentraland puzzlepiece.mp3 (assets/walkthrough/decentraland-assets/); the method is a creator hint relayed by id:1173894700.",
+  "links": [
+   {
+    "label": "Walkthrough — Decentraland / spectrogram",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "cosmic-computed-genesis-values-full-recipe-sweep",
