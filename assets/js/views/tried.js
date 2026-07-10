@@ -18,6 +18,7 @@ function compactHtml(a, withDemo = true) {
       <dl class="tried-io">${a.history ? `<dt>History</dt><dd class="history-line">${esc(a.history)}</dd>` : ''}<dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd>${a.provenance ? `<dt>Where the pieces came from</dt><dd class="prov-line">${esc(a.provenance)}</dd>` : ''}<dt>Output</dt><dd>${esc(a.output)}</dd>${a.evidence ? `<dt>Evidence</dt><dd class="evidence-line">${esc(a.evidence)}</dd>` : ''}${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
       ${a.source || a.sourceQuote ? `<div class="tried-meta sm"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span>${a.source ? ` · <span class="src">${esc(a.source)}</span>` : ''}${a.time ? ` 🕐 ${esc(a.time)}` : ''}</div>` : ''}
       ${quoteHtml(a)}
+      ${imageHtml(a)}
       ${linksHtml(a)}
       ${withDemo ? demoHtml(a.id) + commentsHtml(a.id) : ''}
     </details>
@@ -44,10 +45,16 @@ function entryHtml(a) {
       ${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}
     </dl>
     ${quoteHtml(a)}
+    ${imageHtml(a)}
     ${linksHtml(a)}
     ${demoHtml(a.id)}
     ${commentsHtml(a.id)}
   </article>`;
+}
+// an image that is itself useful to the attempt (e.g. a creator hint image), embedded in the card.
+function imageHtml(a) {
+  if (!a.image) return '';
+  return `<figure class="tried-img"><img src="${esc(a.image)}" alt="${esc(a.imageAlt || a.title)}" loading="lazy" style="max-width:100%;height:auto;border-radius:6px" />${a.imageCaption ? `<figcaption>${esc(a.imageCaption)}</figcaption>` : ''}</figure>`;
 }
 // verbatim quote of the message/mention where the attempt was described (with its source attribution).
 function quoteHtml(a) {

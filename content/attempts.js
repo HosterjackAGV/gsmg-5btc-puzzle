@@ -2163,7 +2163,10 @@ export const ATTEMPTS = [
     "label": "Walkthrough — Decentraland / spectrogram",
     "href": "#/walkthrough"
    }
-  ]
+  ],
+  "image": "assets/walkthrough/community-images/decentraland-parcel-neg41-neg17.jpg",
+  "imageAlt": "Decentraland — the GSMG.io 5 BTC Puzzle Challenge parcel at coordinates -41,-17, with a giant white \"?\" sculpture",
+  "imageCaption": "The creator (@SoWut) posting the Decentraland puzzle-piece location on 2020-02-20 — parcel -41,-17 (see the location marker, top-left). Going there yields the audio file that decodes to HASHTHETEXT."
  },
  {
   "id": "cosmic-computed-genesis-values-full-recipe-sweep",
