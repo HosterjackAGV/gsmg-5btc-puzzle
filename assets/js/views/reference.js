@@ -13,7 +13,7 @@ export default async function referenceView() {
   const blocks = PHASES.map(p => `
     <div class="card" style="margin-bottom:16px">
       <div class="spread"><h3 style="margin:0">${esc(p.num)} · ${esc(p.codename)}</h3>
-        <a class="pill ${p.status === 'solved' ? 'teal' : 'gold'}" href="#/phase/${p.id}" style="text-decoration:none">open door →</a></div>
+        <a class="pill ${p.status === 'solved' ? 'teal' : 'gold'}" href="#/walkthrough?p=${encodeURIComponent(p.codename)}" style="text-decoration:none">open in walkthrough →</a></div>
       ${p.verified ? `<p class="mono faint" style="font-size:11.5px;margin:.4em 0 0">${esc(p.verified)}</p>` : ''}
       <div style="margin-top:10px;overflow-x:auto">${refTable(p.reference)}</div>
     </div>`).join('');
@@ -21,7 +21,7 @@ export default async function referenceView() {
   const html = `
   <section class="section"><div class="wrap">
     <div class="sec-head"><div class="sec-num">REFERENCE</div><h2>Every value, in one place</h2>
-      <p>All the canonical constants — addresses, passphrases, SHA-256 keys, AES salts, decoded strings — each copyable. Cross-checked; see the <a href="https://github.com/HosterjackAGV/gsmg-5btc-puzzle/blob/main/docs/VERIFIED-SOLUTIONS.md" target="_blank" rel="noopener">verification audit</a> for the status of every claim.</p></div>
+      <p>All the canonical constants — addresses, passphrases, SHA-256 keys, AES salts, decoded strings — each copyable. Cross-checked against the <a href="https://github.com/HosterjackAGV/gsmg-5btc-puzzle/blob/main/docs/VERIFIED-SOLUTIONS.md" target="_blank" rel="noopener">verification audit</a>; every "open in walkthrough →" jumps to that phase in the <a href="#/walkthrough">full walkthrough</a>. For the creator's own rules and hints, see <a href="#/intel">The Three Books</a>.</p></div>
 
     <div class="row" style="margin-bottom:18px">
       <input class="cin" id="ref-search" placeholder="filter values…" style="max-width:320px" spellcheck="false">

@@ -272,6 +272,27 @@ export default async function walkthroughView() {
       });
     }
 
+    // deep-link: #/walkthrough?p=<phase codename> (from the Reference "open in walkthrough →") — scroll to
+    // the matching phase heading and open its "Full walkthrough" panel. Re-scrolls as late-loading images
+    // settle the layout (a single early scroll lands wrong on this image-heavy page).
+    try {
+      const p = new URLSearchParams(location.hash.split('?')[1] || '').get('p');
+      if (p && doc) {
+        const key = p.toLowerCase();
+        const target = qsa('h2', doc).find(h => h.textContent.toLowerCase().includes(key));
+        if (target) {
+          for (let d = target.nextElementSibling; d && d.tagName !== 'H2'; d = d.nextElementSibling) {
+            if (d.tagName === 'DETAILS') { d.open = true; break; }
+          }
+          const toPhase = () => target.scrollIntoView({ block: 'start' });
+          requestAnimationFrame(toPhase);
+          [250, 700, 1500].forEach(ms => setTimeout(toPhase, ms));
+          if (document.readyState !== 'complete') window.addEventListener('load', toPhase, { once: true });
+          setTimeout(() => { target.classList.add('tried-focus'); setTimeout(() => target.classList.remove('tried-focus'), 2400); }, 750);
+        }
+      }
+    } catch {}
+
     const jump = qs('#wt-jump', root);
     if (jump) jump.addEventListener('click', () => { const a = qs('#artifacts', root); if (a) a.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 

@@ -180,6 +180,7 @@ export const PHASES = [
       { label: 'VIC digits', value: '1 and 4' },
       { label: 'Decoded message', value: 'IN CASE YOU MANAGE TO CRACK THIS THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF AND THEY ALSO NEED FUNDS TO LIVE' },
       { label: 'AES salt', value: 'eefc4c5befc1656a' },
+      { label: 'Trailing blob salt (p32_trailing · UNDECODED)', value: 'b45a5e3d827593ca' },
     ],
     trivia: [
       `“Half and better half” → two complementary halves → the yin/yang motif that defines the final answer.`,
@@ -215,7 +216,9 @@ export const PHASES = [
       { label: 'Entry text (59 chars, no newline)', value: 'GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
       { label: 'Entry hash (= URL)', value: '89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32' },
       { label: '✅ Decoded · matrixsumlist', value: 'matrixsumlist' },
+      { label: '✅ Decoded · enter', value: 'enter  (a/b binary → ASCII; not a cosmic ingredient)' },
       { label: '✅ Decoded · lastwords…', value: 'lastwordsbeforearchichoice' },
+      { label: '✅ Decoded · thispassword', value: 'thispassword  (a–i/o field-decode; not a cosmic ingredient)' },
       { label: '⚠️ Open block · dbbi', value: 'dbbi  (91 symbols)  → guessed: yellowblueprimes (unconfirmed)' },
       { label: '⚠️ Open block · faed', value: 'faed  (570 symbols)  → guessed: yinyang (unconfirmed)' },
       { label: 'Inner blob salt', value: '3ab585348552415d' },
