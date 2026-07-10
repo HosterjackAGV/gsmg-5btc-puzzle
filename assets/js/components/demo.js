@@ -24,14 +24,39 @@ function autoStrip(text) {
   return `<svg viewBox="0 0 ${max * w} ${h}" width="100%" height="12" preserveAspectRatio="none" role="img" aria-label="character map: green=letter, teal=digit, grey=symbol, red=non-printable"><title>green=letter · teal=digit · grey=symbol · red=non-printable</title>${cells}</svg>`;
 }
 
+// per-card code snippet shown above a graphical lab (the lab tool is shared; the CODE names THIS card's
+// attempt). "the exact code the attempt does", shown even for the graphical-lab cards.
+const LAB_CODE = {
+  'cosmic-4ingredient-literal-sha256-all-orders': `// sha256 of the four literal ingredient WORDS, every order & separator\nfor (const order of permutations([ybp, msl, lw, yy]))\n  for (const sep of ['', ' ', 'z', '·']) test(cosmic, sha256(order.join(sep)));`,
+  'salphaseion-soup-seven-part-structure-phase-order': `// the soup = 7 pieces (like Phase 2's 7-part password); assemble & hash\nkey = sha256(part1 + part2 + … + part7);   test(cosmic, key);`,
+  'dbbi-all-9factorial-substitutions': `// every 9! symbol→digit permutation of the a–i field, then field-decode\nfor (const map of permutations('123456789'))\n  decodeFieldToAscii(applyMap(dbbi, map));   // 362,880 maps`,
+  'cosmic-kdf-variants-md5-sha1-sha512-pbkdf2': `// decrypt a blob with any candidate under any KDF/digest/key-size\nkey = EVP_BytesToKey(digest, pass, salt);   // digest ∈ {md5,sha1,sha256,sha512}, or PBKDF2\naesDecrypt(blob, key);`,
+  'salph-inner-exhaustive-self-verifying-attack': `// salph_inner is 80 bytes = a self-verifying oracle. Try any candidate:\nconst pt = aesDecrypt(salph_inner, sha256hex(candidate));\nif (readable(pt)) SOLVE();   // ≤79 readable bytes = the crack`,
+  'ledger-exhaustive-reread-14x14-matrix': `// re-read the 14×14 grid every way: 8 spiral orientations × 2 polarities,\n// row/col/diagonal, prime-position extraction → the only text is the URL.`,
+  'genesis-yinyang-architecture-cover-logo-a007522': `// the grid IS a yin-yang: blue upper-left, yellow lower-right; colour cells\n// sit on A007522 (primes ≡ 7 mod 8) indices — toggle the split & primes.`,
+  'vic-straddling-checkerboard-reverse-engineering': `// Phase 3.2: chess board → VIC straddling checkerboard → Beaufort(THEMATRIXHASYOU)\nvicDecode(code144);   beaufort(text, 'THEMATRIXHASYOU');`,
+  'dbbi-faed-exhaustive-decode-ic-characterization': `// characterise dbbi/faed: frequency · Index-of-Coincidence · entropy ·\n// autocorrelation · bitmap render · editable cipher transforms.`,
+  'decentraland-audio-spectrogram-hashthetext': `// Decentraland audio → phase-invert (L−R cancels music) → mono → FFT spectrogram\nspectrogram(mixLminusR(audio));   // reveals HASHTHETEXT in the highs`,
+  'reverse-binary-hint-involution-prime-length-structure': `// the 2023-02-23 hint: reverse the bit-order AND the bytes (an involution)\ndecode = reverseBits(reverseBytes(post));   // its own inverse`,
+  'engine-cipher-combine-beaufort-thematrixhasyou': `// the author's confirmed cipher: Beaufort keyed THEMATRIXHASYOU\nbeaufort(base, 'THEMATRIXHASYOU');   // then sha256 → test on the blobs`,
+  'engine-architect-speech-endgame-process': `// the Architect speech = the creator's endgame process:\n// "reinsert the prime basics" · "23 ciphers / 16 encryptions / 7 passwords" · "brute forcing might be required"`,
+  'engine-corpus-no-engineered-solution': `// try any community candidate on any blob — the endgame blobs return noise\nfor (const cand of communityGuesses) aesDecrypt(blob, sha256hex(cand));`,
+  'engine-posted-key-material-not-gsmg': `// derive addresses from every posted WIF/mnemonic/phrase → none is a GSMG address\nsecp256k1(privkey) → address;   address === '1GSMG1JC9…' ? SOLVE : skip;`,
+  'engine-false-creator-hints-ruled-out': `// the "hints" that were trolls / mis-reads — nothing derived from them keys a blob\naesDecrypt(blob, sha256hex(candidateFromHint));`,
+  'community-interleave-dbbi-faed-by-matrixsumlist': `// interleave dbbi & faed (matrixsumlist-driven), then field-decode\ndecodeFieldToAscii(interleave(dbbi, faed));`,
+};
+
 export function demoHtml(id) {
   const d = DEMOS[id];
   if (!d) return '';
   if (d.lab) {
+    const code = d.code || LAB_CODE[id];
     return `<details class="demo demo-lab-wrap"${d.open ? ' open' : ''}>
     <summary>🔬 ${esc(d.summary || 'Interactive lab — try it yourself')}</summary>
     <div class="demo-body" data-demo="${esc(id)}">
       ${d.intro ? `<div class="demo-intro">${d.intro}</div>` : ''}
+      ${code ? `<pre class="demo-code">${esc(code)}</pre>` : ''}
+      <div class="demo-pass-note faint">▶ the lab opens on the <b>author's pass</b> — the original attempt's inputs. Change any control and it recomputes live.</div>
       <div class="demo-lab" data-lab="${esc(id)}"></div>
     </div>
   </details>`;
