@@ -874,20 +874,15 @@ const plain  = bifidDecode(faed, square);`,
   },
 
   'endgame-bip38-ec-multiply-hypothesis': {
-    code: `// read the INCASE / salph phrasing as a BIP38 EC-multiply container (39-byte payload):
+    summary: '🔬 Slice a 39-byte BIP38 record — paste your own',
+    code: `// BIP38 EC-multiply record (39 bytes):
 // 0x01 0x43 | flag(1) | addresshash(4) | ownerentropy(8) | encryptedpart1(8) | encryptedpart2(16)`,
-    inputs: [],
-    run() {
-      const layout = [['0x01 0x43', 2, 'BIP38 EC-multiply magic prefix'], ['flagbyte', 1, 'compression / lot-sequence flags'], ['addresshash', 4, 'first 4 bytes of sha256d(address)'], ['ownerentropy', 8, 'owner salt / entropy'], ['encryptedpart1', 8, 'first half of the encrypted key'], ['encryptedpart2', 16, 'second half — "16 encryptions"']];
-      const total = layout.reduce((a, r) => a + r[1], 0);
-      return {
-        steps: [
-          { title: '1 · BIP38 EC-multiply record layout', body: layout.map(r => r[0].padEnd(15) + String(r[1]).padStart(2) + ' B   ' + r[2]).join('\n') },
-          { title: '2 · total payload', body: total + ' bytes — "24 random bytes" ≈ ownerentropy(8) + encryptedpart1(8) + part of part2; the oddly specific phrasing lines up' },
-          { title: '3 · matching the instructions', body: '"16 encryptions" ↔ encryptedpart2(16)  ·  "7 intertwined passwords" ↔ the EC-multiply factor chain  ·  "shabef…lastcommand" ↔ a final transform' },
-        ],
-        output: 'A concrete, previously-unrecorded format hypothesis: the final secret may be a BIP38 EC-multiply CONTAINER (not plaintext), which would explain "23 ciphers / 16 encryptions / 7 passwords / 24 random bytes". Unverified, but it gives the endgame a testable target shape.',
-      };
+    inputs: [{ name: 'hex', label: 'a 39-byte (78-hex) BIP38 EC-multiply record to slice (edit / paste your own)', value: '014320' + '01020304' + '0102030405060708' + '1112131415161718' + '2122232425262728292a2b2c2d2e2f30', mono: true, rows: 2 }],
+    run(v) {
+      const h = (v.hex || '').replace(/[^0-9a-fA-F]/g, '');
+      const layout = [['magic 0x01 0x43', 0, 2], ['flagbyte', 2, 1], ['addresshash', 3, 4], ['ownerentropy', 7, 8], ['encryptedpart1', 15, 8], ['encryptedpart2 (16 "encryptions")', 23, 16]];
+      const steps = layout.map((L, i) => ({ title: (i + 1) + ' · ' + L[0] + ' (' + L[2] + ' B)', body: h.slice(L[1] * 2, (L[1] + L[2]) * 2) || '(missing — need a longer record)' }));
+      return { steps, output: 'Paste any 39-byte BIP38 record and watch it slice into fields (' + (h.length / 2) + ' bytes given; a valid record is 39). Hypothesis: the final secret may be a BIP38 EC-multiply CONTAINER — "16 encryptions"↔encryptedpart2(16), "24 random bytes"↔ownerentropy+encryptedpart1+…, "7 passwords"↔the factor chain. Unverified, but a concrete testable target shape.' };
     },
   },
 
@@ -936,17 +931,19 @@ const seq = primeIdx.map(i => primeBit(dbbi[i]));`,
   },
 
   'rulers-riddle-john-mcafee': {
+    summary: '🔬 Guess the riddle referent',
     code: `// a wordplay decode (NOT a key): resolve the endgame "competition / ruler of a piece of land" riddle`,
-    inputs: [],
-    run() {
+    inputs: [{ name: 'guess', label: 'your guess for the "competition / ruler of a piece of land" referent (type a name)', value: 'John McAfee', rows: 1 }],
+    run(v) {
+      const g = (v.guess || '').toLowerCase().replace(/[^a-z]/g, ''); const match = g.includes('mcafee');
       return {
         steps: [
           { title: '1 · "competition" → an actor', body: 'Thevenin/Norton "equivalent … competition" → Edward NORTON' },
           { title: '2 · Norton → its rival', body: 'Norton antivirus → its rival McAfee antivirus' },
-          { title: '3 · "ruler of a piece of land"', body: 'John McAfee lived in BELIZE (home of Belikin beer) and twice ran for US President' },
-          { title: '4 · the referent', body: '→ John McAfee' },
+          { title: '3 · "ruler of a piece of land"', body: 'John McAfee lived in BELIZE and twice ran for US President' },
+          { title: '4 · your guess vs the chain', body: '"' + v.guess + '" → ' + (match ? '✅ matches the intended referent (John McAfee)' : '✕ the clue chain points to John McAfee') },
         ],
-        output: 'The hidden referent of the riddle is John McAfee — a narrative / lore decode (not itself a key) that pins a previously-unexplained personal reference in the endgame. Corroborated by several independent clues, but it unlocks no ciphertext on its own.',
+        output: 'Type your own guess to compare against the clue chain. The hidden referent is John McAfee — a lore/wordplay decode (not a key); it unlocks no ciphertext on its own.',
       };
     },
   },
@@ -2438,18 +2435,19 @@ const blue = [1,2,3,4,6,7,8,11,12,13,14,16,17,20,23];`,
   },
 
   'architect-ebcdic-cp1141-codepage-debate': {
+    summary: '🔬 Distinct-value counter — paste any text',
     code: `// do the post-AES Phase-3.2 bytes really need an EBCDIC code-page step, or is that mechanical?
-const distinctValues = new Set(postAesBytes).size;   // 26 = exactly an a-z alphabet`,
-    inputs: [],
-    run() {
-      const sample = 'thearchitectspeaks', distinct = new Set(sample).size;
+const distinctValues = new Set(bytes).size;   // 26 = exactly an a-z alphabet`,
+    inputs: [{ name: 'sample', label: 'paste any text/bytes — the demo counts distinct values (26 = just an a–z alphabet)', value: 'thearchitectspeaks', mono: true, rows: 2 }],
+    run(v) {
+      const s = v.sample || '', distinct = new Set([...s]).size;
       return {
         steps: [
-          { title: '1 · the post-AES bytes use only 26 distinct values', body: 'that is just the property of a lowercase a–z alphabet (sample "' + sample + '" → ' + distinct + ' distinct)' },
-          { title: '2 · the code-page step IS present + reproducible', body: '… | tail -c+448 | head -c 1539 | iconv -f ISO-8859-1 -t CP1141   (CoruNethron one-liner)' },
-          { title: '3 · the debate', body: 'Sparky: 26 values are just a–z, so "EBCDIC" reads nothing extra · but the verified chain still runs iconv either way' },
+          { title: '1 · distinct byte/character values', body: distinct + ' distinct in ' + s.length + ' chars' },
+          { title: '2 · the argument', body: distinct <= 26 ? '≤26 distinct → consistent with a plain a–z alphabet; an "EBCDIC" reading would add nothing' : distinct + ' distinct → more than a bare a–z alphabet' },
+          { title: '3 · the verified chain still runs iconv either way', body: '… | tail -c+448 | head -c 1539 | iconv -f ISO-8859-1 -t CP1141' },
         ],
-        output: 'Unresolved, both sides partly right: the cp1141/EBCDIC step is unquestionably present and reproducible in the verified chain, but whether it carries meaning or is mechanical (the bytes being plain a–z) is genuinely open. Documented by @CoruNethron.',
+        output: 'Paste any text to test the "26 values = just a–z" argument. Unresolved, both sides partly right: the cp1141/EBCDIC step IS present + reproducible in the verified Phase-3.2 chain, but whether it carries meaning or is mechanical (the bytes being plain a–z) is genuinely open (see the card source).',
       };
     },
   },
@@ -2488,19 +2486,21 @@ const distinctValues = new Set(postAesBytes).size;   // 26 = exactly an a-z alph
   },
 
   'stray-z-enter-marker-finding': {
-    code: `// "enter" is encoded as a/b 8-bit ASCII (like matrixsumlist) and spliced INTO the inner blob`,
-    inputs: [],
-    run() {
-      const bits = [...'enter'].map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join('');
-      const ab = bits.split('').map(b => b === '1' ? 'b' : 'a').join('');
-      const back = (ab.match(/.{8}/g) || []).map(o => String.fromCharCode(parseInt(o.split('').map(c => c === 'b' ? '1' : '0').join(''), 2))).join('');
+    summary: '🔬 Encode any word in the soup a/b binary',
+    code: `// "enter" is encoded as a/b 8-bit ASCII (like matrixsumlist) and spliced INTO the inner blob
+const ab = [...word].map(c => c.charCodeAt(0).toString(2).padStart(8,'0')).join('').replace(/1/g,'b').replace(/0/g,'a');`,
+    inputs: [{ name: 'word', label: 'a word to encode as the soup a/b 8-bit ASCII (the "enter" / matrixsumlist mechanism)', value: 'enter', mono: true, rows: 1 }],
+    run(v) {
+      const w = (v.word || '').slice(0, 24);
+      const bits = [...w].map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join('');
+      const ab = [...bits].map(b => b === '1' ? 'b' : 'a').join('');
+      const back = (ab.match(/.{8}/g) || []).map(o => String.fromCharCode(parseInt([...o].map(c => c === 'b' ? '1' : '0').join(''), 2))).join('');
       return {
         steps: [
-          { title: '1 · "enter" self-labeled as a/b 8-bit ASCII (like matrixsumlist)', body: ab + '  (' + ab.length + ' chars)' },
+          { title: '1 · "' + w + '" → a/b 8-bit ASCII', body: ab + '  (' + ab.length + ' chars)' },
           { title: '2 · decode the a/b binary back', body: '"' + back + '"' },
-          { title: '3 · its splice position inside the inner blob is reproducible', body: 'a deliberate, self-labeling marker — not random' },
         ],
-        output: '"enter" decodes cleanly to its literal word (self-labeling, exactly like matrixsumlist) and sits at a reproducible splice point inside the salph_inner base64 — a structural marker that confirms the soup grammar.',
+        output: 'Type any word to see the soup self-labeling a/b encoding. In the real soup, "enter" decodes cleanly to its literal word (like matrixsumlist) and sits at a reproducible splice point inside the salph_inner base64 — a structural marker confirming the grammar.',
       };
     },
   },
