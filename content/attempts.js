@@ -45,6 +45,36 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "community-yellowblueprimes-color-inversion-or",
+  "phase": "genesis",
+  "category": "genesis derivations",
+  "title": "Yin-yang color-inversion + OR with inverse-#fefefe → the 'harmonic primes' 69119 / 16382137 as yellowblueprimes",
+  "who": "community",
+  "author": "@janusz_baran",
+  "date": "2023-11-26",
+  "time": "22:10 UTC",
+  "source": "Telegram — GSMG Puzzle Solvers group, msg #16869 (with follow-up #16889, 2023-11-27 06:07 UTC)",
+  "sourceQuote": "Night turns into day. Yellow into blue. Reverse the colors. Yellow will become blue with a value of 000dff. Perform OR operations using the inverse of Fefefe (010101). The result will be Harmonic Primes 69119. … inverse it. yin yang … invert, invert linear, invert values. later use OR and you get prime numbers … 16382137, 69119 or maybe for AND 257.",
+  "history": "One of many community attempts to DERIVE the unknown 'yellowblueprimes' cosmic ingredient from the genesis (bunny) image's colored cells. @janusz_baran proposed a yin-yang color-inversion: swap yellow↔blue, set the new colour to 0x000dff, then bitwise-OR each colored cell with the inverse of the #fefefe cell (0x010101), claiming the result is a prime (69119, or 16382137; 257 under AND).",
+  "input": "The 24 colored cells of the genesis grid (15 blue + 9 yellow, from content/matrix.js), the single #fefefe cell at [row 7, col 4], and the asserted candidate primes 69119, 16382137 and 257.",
+  "method": "Reproduce the colour-inversion (yin-yang) transform, OR/AND each colored cell with the inverse of #fefefe, and take the asserted 'harmonic primes'. Then test each value — 69119, 16382137, 257 — as the openssl `enc -aes-256-cbc -md sha256` passphrase (literal and sha256hex) against cosmic, salph_inner and p32_trailing (a readable/WIF decrypt would be the solve), via the byte-exact harness in research/lib/gsmg.mjs.",
+  "provenance": "Colored-cell positions and the #fefefe cell come from the genesis image (content/matrix.js, re-verified pixel-exact against puzzle.png). The transform, the colour value 0x000dff, the inverse-#fefefe 0x010101 and the three candidate primes are all from @janusz_baran's messages #16869/#16889. The blobs come from ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
+  "output": "69119, 16382137 and 257 (each literal + sha256hex) on all three open blobs → 18 tests → 0 valid padding, 0 readable. The colour-inversion 'harmonic primes' do not key any blob.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 (research/lib/gsmg.mjs). Provenance: Telegram msg #16869 (2023-11-26 22:10:44 UTC) + #16889 (2023-11-27 06:07:02 UTC), sender @janusz_baran.",
+  "outcome": "verified-fail",
+  "insight": "The yin-yang colour-inversion + OR/AND-with-inverse-#fefefe derivation yields 'primes' (69119/16382137/257) that open none of the blobs — one more community yellowblueprimes derivation ruled out. yellowblueprimes remains unverifiable in isolation (cosmic has no partial oracle).",
+  "links": [
+   {
+    "label": "Walkthrough — genesis grid & colored cells",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "Reference — cosmic ingredients",
+    "href": "#/reference"
+   }
+  ]
+ },
+ {
   "id": "engine-p32-board-as-data",
   "phase": "architect",
   "category": "engine — p32_trailing key",

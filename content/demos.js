@@ -2741,3 +2741,8 @@ DEMOS['engine-false-creator-hints-ruled-out'] = {
 };
 
 
+DEMOS['community-yellowblueprimes-color-inversion-or'] = aesSweep({
+  blobLabel: 'cosmic (prize blob)', blob: PUZZLE.cosmic,
+  keys: ['69119', '16382137', '257'],
+  note: "@janusz_baran's yin-yang colour-inversion 'harmonic primes' (69119 / 16382137 / 257, msg #16869) key none of the blobs. Edit the values or switch the blob and re-run — yellowblueprimes stays unverifiable without a cosmic oracle.",
+});

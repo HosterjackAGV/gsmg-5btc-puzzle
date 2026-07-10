@@ -15,7 +15,10 @@ function compactHtml(a, withDemo = true) {
     <div class="tc-row"><span class="tbadge ${o.cls} sm" title="${esc(o.desc)}">${o.label}</span><b class="tc-title">${esc(a.title)}</b>${a.author ? ` <span class="tbadge badge-author sm" title="The author">👤 ${esc(a.author)}</span>` : ''}${(a.authors && a.authors.length) ? a.authors.map(h => ` <span class="tbadge badge-author sm" title="Contributor">👤 ${esc(h)}</span>`).join('') : ''}${a.date ? ` <span class="sum-date">📅 ${esc(fmtDate(a))}</span>` : ''}</div>
     <div class="tc-line">${esc(line.length > 240 ? line.slice(0, 240) + '…' : line)}</div>
     <details class="tc-more"><summary>full history · input · method · output · evidence</summary>
-      <dl class="tried-io">${a.history ? `<dt>History</dt><dd class="history-line">${esc(a.history)}</dd>` : ''}<dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd><dt>Output</dt><dd>${esc(a.output)}</dd>${a.evidence ? `<dt>Evidence</dt><dd class="evidence-line">${esc(a.evidence)}</dd>` : ''}${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
+      <dl class="tried-io">${a.history ? `<dt>History</dt><dd class="history-line">${esc(a.history)}</dd>` : ''}<dt>Input</dt><dd>${esc(a.input)}</dd><dt>Method</dt><dd>${esc(a.method)}</dd>${a.provenance ? `<dt>Where the pieces came from</dt><dd class="prov-line">${esc(a.provenance)}</dd>` : ''}<dt>Output</dt><dd>${esc(a.output)}</dd>${a.evidence ? `<dt>Evidence</dt><dd class="evidence-line">${esc(a.evidence)}</dd>` : ''}${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}</dl>
+      ${a.source || a.sourceQuote ? `<div class="tried-meta sm"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span>${a.source ? ` · <span class="src">${esc(a.source)}</span>` : ''}${a.time ? ` 🕐 ${esc(a.time)}` : ''}</div>` : ''}
+      ${quoteHtml(a)}
+      ${linksHtml(a)}
       ${withDemo ? demoHtml(a.id) + commentsHtml(a.id) : ''}
     </details>
   </article>`;
@@ -30,18 +33,32 @@ function entryHtml(a) {
       ${a.author ? `<span class="tbadge badge-author" title="The author — the contributor who uncovered this (verified Telegram @handle)">👤 The author · ${esc(a.author)}</span>` : ''}
       ${(a.authors && a.authors.length) ? a.authors.map(h => `<span class="tbadge badge-author" title="Contributor / author of this attempt">👤 ${esc(h)}</span>`).join('') : ''}
     </div>
-    <div class="tried-meta"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span> · <span class="src">${esc(a.source)}</span>${a.date ? ` · <span class="tdate" title="when this attempt was made / recorded">📅 ${esc(fmtDate(a))}</span>` : ''}</div>
+    <div class="tried-meta"><span class="who ${a.who === 'community' ? 'who-comm' : 'who-us'}">${a.who === 'community' ? 'community' : 'this project'}</span> · <span class="src">${esc(a.source)}</span>${a.date ? ` · <span class="tdate" title="when this attempt was made / recorded">📅 ${esc(fmtDate(a))}</span>` : ''}${a.time ? ` <span class="ttime" title="time (UTC)">🕐 ${esc(a.time)}</span>` : ''}</div>
     <dl class="tried-io">
       ${a.history ? `<dt>History</dt><dd class="history-line">${esc(a.history)}</dd>` : ''}
       <dt>Input</dt><dd>${esc(a.input)}</dd>
       <dt>Method</dt><dd>${esc(a.method)}</dd>
+      ${a.provenance ? `<dt>Where the pieces came from</dt><dd class="prov-line">${esc(a.provenance)}</dd>` : ''}
       <dt>Output</dt><dd>${esc(a.output)}</dd>
       ${a.evidence ? `<dt>Evidence</dt><dd class="evidence-line">${esc(a.evidence)}</dd>` : ''}
       ${a.insight ? `<dt>Insight</dt><dd class="insight-line">${esc(a.insight)}</dd>` : ''}
     </dl>
+    ${quoteHtml(a)}
+    ${linksHtml(a)}
     ${demoHtml(a.id)}
     ${commentsHtml(a.id)}
   </article>`;
+}
+// verbatim quote of the message/mention where the attempt was described (with its source attribution).
+function quoteHtml(a) {
+  if (!a.sourceQuote) return '';
+  const cite = a.source ? `<cite>— ${esc(a.source)}${a.date ? ', ' + esc(a.date) : ''}${a.time ? ' ' + esc(a.time) : ''}</cite>` : '';
+  return `<blockquote class="src-quote" title="the original message / mention where this attempt was described">“${esc(a.sourceQuote)}” ${cite}</blockquote>`;
+}
+// links to the parts of the site (and external sources) this attempt references.
+function linksHtml(a) {
+  if (!a.links || !a.links.length) return '';
+  return `<div class="tried-links"><b>Links:</b> ${a.links.map(l => `<a href="${esc(l.href)}"${/^https?:/.test(l.href) ? ' target="_blank" rel="noopener"' : ''}>${esc(l.label)}</a>`).join(' · ')}</div>`;
 }
 
 export default async function triedView(ctx = {}) {
