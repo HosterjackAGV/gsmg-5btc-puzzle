@@ -76,6 +76,8 @@ table.ref{width:100%;border-collapse:collapse;font-size:13.5px}
 table.ref td,table.ref th{padding:9px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 table.ref th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
 table.ref td.lab{color:var(--muted);white-space:nowrap;width:1%}
+/* on phones let long descriptive labels wrap so the value + copy button stay on-screen (no sideways scroll) */
+@media(max-width:560px){table.ref td.lab{white-space:normal}}
 table.ref td.val{font-family:var(--mono);word-break:break-all}
 table.ref tr:hover td{background:rgba(255,255,255,.015)}
 
