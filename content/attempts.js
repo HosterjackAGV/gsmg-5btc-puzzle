@@ -3331,6 +3331,35 @@ export const ATTEMPTS = [
     "href": "#/walkthrough"
    }
   ]
+ },
+ {
+  "id": "endgame-seven-phase2-parts-braided",
+  "phase": "salphaseion",
+  "category": "cosmic combine recipe",
+  "title": "'7 intertwined passwords' = the 7 confirmed Phase-2 parts CHARACTER-BRAIDED — keys neither oracle",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-11",
+  "source": "Architect speech (creator): 'SELECT FROM OVER 23 CIPHERS, 16 ENCRYPTIONS AND/OR 7 INTERTWINED PASSWORDS' — docs/WALKTHROUGH.md Phase 3.2",
+  "sourceQuote": "…7 intertwined passwords… note that also brute forcing might be required.",
+  "history": "LOOSE-ENDS flagged that reuse of the 7 CONFIRMED Phase-2 password parts, INTERTWINED (interleave/braid, not concat/XOR-flat), was never exhausted. A multi-agent lens sweep (iter 54) ran the 7! braid on p32_trailing only; @DaneelOlivaw independently reproduced it and EXTENDED coverage to the sibling oracle salph_inner, first byte-verifying the parts against the known phase-3 key.",
+  "input": "The 7 confirmed Phase-2 parts [causality · Safenet · Luna · HSM · 11110 · the 0x genesis-coinbase hex · the full chess FEN 'B5KR/1r5B/2R5/…  b - - 0 1']. Verified exact: sha256(their concatenation) == the real phase-3 key 1a57c572…30d5.",
+  "method": "Round-robin single-character interleave (take char 0 of every part, then char 1 of every part, skipping exhausted parts) for ALL 7! = 5040 orderings; each braid × {literal, sha256hex} on both SELF-VERIFYING 80-byte oracles (salph_inner, p32_trailing). A readable decrypt would be the solve (research/lib/gsmg.mjs).",
+  "provenance": "The 7 parts are the docs/WALKTHROUGH.md Phase-2 solution (byte-verified here to reproduce the phase-3 key); the oracles are ciphertexts/{salph_inner,p32_trailing}.txt; the 'intertwined' reading is the Architect speech.",
+  "output": "5040 orderings × 2 oracles × 2 modes = 20,160 tests → 72 valid padding (0.357% = the 1/256 chance floor), 0 readable.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256; the 7 parts self-verified against the known phase-3 key (selfcheck passed this run).",
+  "outcome": "verified-fail",
+  "insight": "The literal character-braid of the 7 confirmed Phase-2 password parts keys NEITHER self-verifying oracle under any of the 5040 orderings — so 'seven intertwined passwords' is not this reading. The result is decisive (readable would be a solve) and the parts are byte-verified (not a data error), independently reproducing the p32_trailing null and extending it to salph_inner. Remaining braid variants (2-way half/better-half riffle, multi-char block interleave) are less pinned; the flat concat/XOR/per-part-sha combines were already closed.",
+  "links": [
+   {
+    "label": "Walkthrough — Phase 2 (the 7-part password)",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "Walkthrough — Phase 3.2 (Architect speech)",
+    "href": "#/walkthrough"
+   }
+  ]
  }
 ];
 
