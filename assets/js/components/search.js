@@ -163,24 +163,43 @@ export function initSearch(root, mode, items, order) {
     : qsa('.sum-insights > li, .sum-alist li', root).map(el => ({ el, id: el.getAttribute('data-id') || '', hi: [el.querySelector('.sum-title'), el.querySelector('.sum-ins'), el.querySelector('a')].filter(Boolean) }));
   entries.forEach((e, i) => { e.el._ord = i; });
   const idOf = (el) => el.id ? el.id.replace(/^t-/, '') : (el.getAttribute('data-id') || '');
+
+  // A global date-sorted view: Newest/Oldest flatten EVERY entry into one list, across all phase
+  // sections. On 'default' we move them back to their home slot (marked by a placeholder comment).
+  let flatWrap = null;
+  if (mode === 'tried') {
+    flatWrap = document.createElement('section');
+    flatWrap.className = 'tried-flat';
+    flatWrap.hidden = true;
+    flatWrap.innerHTML = '<div class="tried-flat-head">All attempts · by date <span class="faint">— across every phase</span></div>';
+    const wrap = host.closest('.wrap') || host.parentElement;
+    if (wrap) wrap.appendChild(flatWrap);
+    entries.forEach(e => { e.ph = document.createComment('slot'); e.el.parentNode.insertBefore(e.ph, e.el); });
+  }
+  const flatMode = () => mode === 'tried' && state.sort !== 'default';
   function resort() {
+    const date = state.sort !== 'default';
     const cmp = (a, b) => {
-      if (state.sort === 'default') return a._ord - b._ord;
+      if (!date) return a._ord - b._ord;
       const ia = byId.get(idOf(a)), ib = byId.get(idOf(b));
       const ta = ia && ia.ts != null ? ia.ts : null, tb = ib && ib.ts != null ? ib.ts : null;
       if (ta == null && tb == null) return a._ord - b._ord;
       if (ta == null) return 1; if (tb == null) return -1;            // undated entries always sort last
       return state.sort === 'newest' ? tb - ta : ta - tb;
     };
-    if (mode === 'tried') {
-      qsa('.tried-cat', root).forEach(cat => {
-        const grp = []; for (let n = cat.nextElementSibling; n && !n.classList.contains('tried-cat'); n = n.nextElementSibling) if (n.classList.contains('tried-entry')) grp.push(n);
-        grp.sort(cmp); let anchor = cat; for (const en of grp) { anchor.after(en); anchor = en; }
-      });
-      qsa('.fam-list', root).forEach(fl => { qsa(':scope > .tried-entry', fl).sort(cmp).forEach(en => fl.appendChild(en)); });
-    } else {
+    if (mode !== 'tried') {
       qsa('.sum-insights, .sum-alist', root).forEach(ul => { qsa(':scope > li', ul).sort(cmp).forEach(li => ul.appendChild(li)); });
+      return;
     }
+    if (date && flatWrap) {
+      // flatten EVERY entry (top-level + folded-family) into one global, date-ordered list
+      const arr = entries.map(e => e.el).sort(cmp);
+      for (const el of arr) { el.dataset.flatPhase = PHASE_SHORT[(byId.get(idOf(el)) || {}).phase] || ''; flatWrap.appendChild(el); }
+    } else if (flatWrap) {
+      // 'default' → restore each entry to its home slot (the placeholder comment marks the spot)
+      [...entries].sort((a, b) => a.el._ord - b.el._ord).forEach(e => { if (e.ph && e.ph.parentNode) e.ph.after(e.el); });
+    }
+    apply();  // re-apply filter visibility + the correct roll-up for this mode
   }
 
   const facetTest = (item) => {
@@ -204,7 +223,12 @@ export function initSearch(root, mode, items, order) {
     }
     // roll up container visibility
     const activeNow = !!state.q.trim() || Object.values(state.sel).some(s => s.size);
-    if (mode === 'tried') {
+    if (mode === 'tried' && flatMode()) {
+      // global date view: entries live in the flat list; hide the per-phase sections entirely
+      qsa('.tried-phase', root).forEach(ph => { ph.hidden = true; });
+      if (flatWrap) flatWrap.hidden = shown === 0;
+    } else if (mode === 'tried') {
+      if (flatWrap) flatWrap.hidden = true;
       qsa('.tried-cat', root).forEach(cat => {
         let any = false;
         for (let n = cat.nextElementSibling; n && !n.classList.contains('tried-cat'); n = n.nextElementSibling) {

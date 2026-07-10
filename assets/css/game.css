@@ -527,6 +527,12 @@ table.board td.bh{background:var(--panel2);color:var(--gold);font-weight:700}
 .tried-phase > h2 { border-bottom:1px solid #1c2330; padding-bottom:8px; }
 .tried-cat { margin:22px 0 10px; font-size:15px; color:#9fb0c4; text-transform:uppercase; letter-spacing:.06em; }
 .tried-entry { border:1px solid #1c2330; border-radius:12px; background:#0c0f16; padding:14px 16px; margin:10px 0; scroll-margin-top:80px; }
+/* global date view (Newest/Oldest) — one flat list across every phase section */
+.tried-flat { margin:22px 0; }
+.tried-flat-head { font-family:'Space Grotesk',system-ui,sans-serif; font-size:15px; color:#9fb0c4; text-transform:uppercase; letter-spacing:.06em; margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid #1c2330; }
+.tried-flat .tried-entry[data-flat-phase]::before,
+.tried-flat .tried-compact[data-flat-phase]::before { content:attr(data-flat-phase); display:inline-block; margin:0 0 8px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#7c8798; background:#11151e; border:1px solid #1c2330; border-radius:999px; padding:1px 9px; }
+.tried-flat .tried-entry[data-flat-phase=""]::before, .tried-flat .tried-compact[data-flat-phase=""]::before { content:none; }
 .tried-head { display:flex; align-items:flex-start; gap:12px; }
 .tried-head h4 { margin:0; flex:1; font-size:16px; color:#e6ecf5; }
 .tried-meta { margin:4px 0 10px; font-size:12px; color:#7c8798; }

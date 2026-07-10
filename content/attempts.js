@@ -165,9 +165,6 @@ export const ATTEMPTS = [
   "category": "engine — p32_trailing key",
   "title": "The Phase-2 chess board used as DATA does not key the p32_trailing blob",
   "who": "this project",
-  "authors": [
-   "GSMG research engine"
-  ],
   "date": "2026-07-10",
   "history": "Phase-3.2's chess clue ('a fubcd-king & oracle-queen, thingky mvps, on a sad board but as wide as the first one seen') back-references the Phase-2 chess board. Its phrase-hash, VIC-alphabet, and VIC-checkerboard readings were already closed. The one flagged-untried reading was the board POSITION used as raw DATA — only the FEN *string* had ever been hashed (for Phase-2).",
   "input": "The CONFIRMED Phase-2 FEN board field B5KR/1r5B/2R5/2b1p1p1/2P1k1P1/1p2P2p/1P2P2P/3N1N2 (20 occupied squares).",
@@ -187,7 +184,8 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-10"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-10",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "engine-nihilist-matrix-sumlist-combine",
@@ -195,9 +193,6 @@ export const ATTEMPTS = [
   "category": "engine — cosmic combine",
   "title": "'matrixsumlist' as a Nihilist cipher (Polybius MATRIX + key SUMLIST) does not key cosmic",
   "who": "this project",
-  "authors": [
-   "GSMG research engine"
-  ],
   "date": "2026-07-10",
   "history": "A community image reads 'matrixsumlist' as a Nihilist cipher instruction — a Polybius square keyed MATRIX with Nihilist key SUMLIST — rather than a literal value. This tests that reading as the endgame combine.",
   "input": "Polybius square (keyword MATRIX, I/J merged) + Nihilist key SUMLIST; 7 thematic base strings (yinyang, yellowblueprimes, the VIC sentence, the 4-label master-hint string, half-and-better-half, cosmic-duality).",
@@ -217,7 +212,8 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-10"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-10",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "engine-cipher-combine-beaufort-thematrixhasyou",
@@ -225,9 +221,6 @@ export const ATTEMPTS = [
   "category": "engine — cosmic combine",
   "title": "Cipher combine (Beaufort/Vigenère + THEMATRIXHASYOU) does not key cosmic/the blobs",
   "who": "this project",
-  "authors": [
-   "GSMG research engine"
-  ],
   "date": "2026-07-10",
   "history": "The Architect speech names '16 encryptions', suggesting the endgame combine may be cipher-based, not a single hash. The puzzle's one confirmed cipher motif is Beaufort keyed THEMATRIXHASYOU (phase 3.2). This tests that construction on the endgame bases.",
   "input": "6 thematic base strings (the 4-label master-hint string; the VIC sentence 'privatekeysbelongtohalfandbetterhalf'; 'returntothesourcecodesreinsertingtheprimebasics'; lastwordsbeforearchichoice; yinyang; halfandbetterhalf).",
@@ -247,7 +240,8 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-10"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-10",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "engine-architect-speech-endgame-process",
@@ -255,9 +249,6 @@ export const ATTEMPTS = [
   "category": "engine — creator intel",
   "title": "The Architect speech is the creator's endgame process description (brute-force sanctioned; 7 passwords)",
   "who": "this project",
-  "authors": [
-   "GSMG research engine"
-  ],
   "date": "2026-07-10",
   "history": "Re-reading the confirmed phase-3.2 Beaufort plaintext (the Architect monologue) as OPERATIONAL instructions rather than flavour, and re-checking the unresolved cosmic ingredient #3.",
   "input": "The full phase-3.2 Architect speech (creator-authored, ✅ confirmed) and the cosmic ingredient labels.",
@@ -277,7 +268,8 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-10"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-10",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "engine-nested-detection-no-partial-oracle",
@@ -293,7 +285,7 @@ export const ATTEMPTS = [
   "evidence": "Byte-exact AES-256-CBC / EVP-SHA256; the nested-blob signature and any ratio≥0.7 intermediate are absent for every determinable key on every blob.",
   "outcome": "verified-fail",
   "insight": "There is no hidden multi-layer outer-crack or sequential-decrypt partial oracle reachable from the known determinable keys — closing the possibility that the community 'missed' a nested foothold by only checking for readable text. The blobs' resistance is genuine, not a detection gap; the endgame's lack of a partial oracle is confirmed.",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "The four OpenSSL Salted__ blobs (cosmic 2d3f6fe0 · salph_inner 3ab58534 · p32_trailing b45a5e3d · urlblob 74c974e3) in ciphertexts/.",
   "links": [
    {
@@ -301,7 +293,7 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-10"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-10"
  },
  {
   "id": "engine-false-creator-hints-ruled-out",
@@ -309,9 +301,6 @@ export const ATTEMPTS = [
   "category": "engine — provenance / false-lead rulings",
   "title": "Three widely-cited 'creator hints' ruled out by decode/context",
   "who": "this project",
-  "authors": [
-   "GSMG research engine"
-  ],
   "date": "2026-07-09",
   "history": "A full read of the creator's messages surfaced three items repeatedly treated as endgame hints that do not survive scrutiny.",
   "input": "The creator's 2026-01-01 binary message; the 2020 'Only -41,-17 matters' line; the 'last number of pi' and the {30},{2},{77} 'private key' lines.",
@@ -331,7 +320,8 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-09"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-09",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "engine-posted-key-material-not-gsmg",
@@ -347,7 +337,7 @@ export const ATTEMPTS = [
   "evidence": "Derivation KAT: privkey=1 → 1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm. On-chain: prize holds 1.2563451 BTC (unclaimed); decoy 1GSMG1JWgqeum… = 0 balance / 0 tx.",
   "outcome": "verified-fail",
   "insight": "No posted key material is the prize key (as expected — the prize address is a vanity address, so its key is random and lives only inside the cosmic blob). The 1GSMG1J 'decoy' WIF is an empty vanity address that merely mimics the prize prefix.",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the open blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
   "links": [
    {
@@ -359,7 +349,7 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-09"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-09"
  },
  {
   "id": "engine-corpus-no-engineered-solution",
@@ -367,9 +357,6 @@ export const ATTEMPTS = [
   "category": "engine — corpus audit",
   "title": "Full 57k-message audit: the community corpus contains no author-derived solution",
   "who": "this project",
-  "authors": [
-   "GSMG research engine"
-  ],
   "date": "2026-07-09",
   "history": "Every message in the GSMG solvers' Telegram (≈57,000) was read and consolidated by theme, with each finding adversarially re-checked against its cited message ids.",
   "input": "The complete Telegram corpus; themes yellowblueprimes, yinyang, matrixsumlist, dbbi, faed, cosmic-combine, the 80-byte blobs, primes/zero-out.",
@@ -389,7 +376,8 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ],
-  "source": "GSMG research engine (this project), 2026-07-09"
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), 2026-07-09",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "ledger-image-forensics-genesis-png",
@@ -461,7 +449,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "genesis-qr-decoded-blockchain-link",
@@ -477,7 +466,7 @@ export const ATTEMPTS = [
   "output": "The QR decodes to https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe — a public blockchain-explorer link to the prize address, with no extra payload. Palette shows only white/black/blue/yellow plus the red border (no hidden third color). The genesis image is fully accounted for.  ·  [merged: “Direct decode of the pristine QR confirms it holds only the prize-address URL — nothing hidden”] One QRCODE, payload = https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe (sha256 ac3ff50c…). No hidden payload, no second symbol, no alternate string. As a key: 36 tests → 0 valid padding, 0 readable.",
   "outcome": "verified-insight",
   "insight": "The genesis QR code resolves to a plain blockchain.com link to the prize address (no hidden door), closing the long-open question of whether the QR carried a secret payload.",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "On-chain data for the GSMG prize (1GSMG1JC9…) and split-off (17ucy1K9…) addresses via blockstream / the Wayback CDX; posted key material from the Telegram group.",
   "links": [
    {
@@ -539,7 +528,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "genesis-colors-equal-url-bit-parity",
@@ -619,7 +609,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "genesis-yellowblueprimes-lens-4156-sweep",
@@ -645,7 +636,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "genesis-firstpiece-text-keys",
@@ -667,7 +659,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "genesis-matrixsumlist-row-col-sums",
@@ -683,7 +676,7 @@ export const ATTEMPTS = [
   "output": "Row/col sums confirmed; the concatenation was hashed thousands of times within the cosmic recipe with 0 hits. The exact byte-format (one-digit vs two-digit, rows-first vs cols-first vs interleaved vs 28-value list) is ambiguous and could alone break an otherwise-correct recipe.  ·  [merged: “matrixsumlist as literal word vs. as the numeric row/col sums”] 0 hits under either the literal-word or the numeric-sums form, across all orders/separators and all 3 blobs.  ·  [merged: “matrixsumlist: the full principled byte-form space enumerated (24 forms) — none is a standalone key”] 24 forms, 144 tests → 0 valid padding, 0 readable hits.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "The four cosmic ingredients (yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang), the genesis grid (content/matrix.js) they derive from, and the prize blob ciphertexts/cosmic.txt.",
   "links": [
    {
@@ -720,7 +713,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "chain-reproduce-phase2-3-32-byteexact",
@@ -746,7 +740,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "architect-ebcdic-cp1141-codepage-debate",
@@ -801,7 +796,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "vic-straddling-checkerboard-reverse-engineering",
@@ -830,7 +826,8 @@ export const ATTEMPTS = [
   ],
   "image": "assets/walkthrough/community-images/vic-straddling-checkerboard-decoder.jpg",
   "imageAlt": "VIC Cipher Decoder loaded with the phase-3.2 144-digit numeric string and a straddling-checkerboard alphabet",
-  "imageCaption": "@Heellrzz, 2024-03-28 (Telegram msg #23359): the phase-3.2 144-digit numeric string loaded into a VIC / straddling-checkerboard decoder with the keyed alphabet FUBCDORA.LETHINGKYMVPS.JQZXW and markers 1,4 — the exact configuration this card reverse-engineers."
+  "imageCaption": "@Heellrzz, 2024-03-28 (Telegram msg #23359): the phase-3.2 144-digit numeric string loaded into a VIC / straddling-checkerboard decoder with the keyed alphabet FUBCDORA.LETHINGKYMVPS.JQZXW and markers 1,4 — the exact configuration this card reverse-engineers.",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "keysweep-p32-288-phase32-answers",
@@ -846,7 +843,7 @@ export const ATTEMPTS = [
   "output": "0 readable decrypts. No phase-3.2-derived string -- including the literal pre-Beaufort EBCDIC letter string and the VIC digit string forward and reversed -- opens p32_trailing. The chess lead is closed: no specific board position is given to construct a non-phrase key.  ·  [merged: “p32_trailing (trailing 80-byte phase-3.2 blob) vs chess-clue / VIC-alphabet keys”] 264 decrypt tests → 0 valid padding (2 chance false-positives on p32_trailing shown to be garbage). No readable plaintext.  ·  [merged: “p32_trailing chess-clue CONSTRUCTIVE attack — build the VIC straddling-checkerboard and run the chess clue through it”] Across all consolidated chess/VIC scripts (hundreds of candidate keys × 4-5 hash forms × the 80-byte blobs) ZERO produced a PKCS7-valid readable plaintext. The VIC checkerboard build verified correct (it round-trips the known Architect VIC plaintext), proving the clue's only real function is to define the VIC alphabet that was already consumed in phase 3.2 — there is no specific board POSITION/coordinate set encoded to build a key from. The chess/p32_trailing lead is closed.  ·  [merged: “p32_trailing vs VIC-checkerboard-encoded thematic phrases (board construction)”] 180 tests → 0 valid padding, 0 readable hits.  ·  Also refuted a specific community claim (#5624, 2021, @PversisZomBeeez) that p32_trailing is “not AES” and decodes to words (‘beat’/‘amigo’/‘neo’) via base64→ascii / base58 / reordering the two halves: 11 non-AES interpretations of the blob → 0 of the claimed words, all high-entropy garbage. p32_trailing is genuine AES ciphertext, not a re-encoded message.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "The Phase-3.2 material — the EBCDIC→Beaufort(THEMATRIXHASYOU) Architect speech, the VIC line, the chess clue, and the trailing p32_trailing blob (ciphertexts/p32_trailing.txt).",
   "links": [
    {
@@ -882,7 +879,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "rulers-riddle-john-mcafee",
@@ -932,7 +930,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "reconstruct-salph-inner-blob-stray-z-enter-binary",
@@ -954,7 +953,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "recover-dbbi-faed-salphaseion-soup-exact",
@@ -980,7 +980,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "stray-z-enter-marker-finding",
@@ -1006,7 +1007,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "faed-deinterleave-factors-and-lag253",
@@ -1032,7 +1034,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-all-9factorial-substitutions",
@@ -1058,7 +1061,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-transposition-times-substitution",
@@ -1084,7 +1088,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "ledger-be-binary-channel-dbbi",
@@ -1152,7 +1157,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-as-number-passphrase",
@@ -1178,7 +1184,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "faed-dbbi-repeating-key",
@@ -1232,7 +1239,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-primality-factoring",
@@ -1258,7 +1266,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-search-literal-yellowblueprimes",
@@ -1284,7 +1293,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "faed-yinyang-self-complement-halves",
@@ -1310,7 +1320,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-binary-prime-value-map",
@@ -1336,7 +1347,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-bitmap-render",
@@ -1362,7 +1374,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-grid-reindex-binary",
@@ -1378,7 +1391,7 @@ export const ATTEMPTS = [
   "output": "Every reading was noise (no printable-text candidate scored above chance); zero of the candidate strings opened any blob to readable plaintext (BLOB HITS: 0). [Also documented separately as \"All grid reads of dbbi (7x13 and 13x7)\" (dead-end ledger): Exhaustively re-read dbbi as a rectangle in every standard scan order, since the creator emphasized 'how the array is indexed', to find a reading order that exposes text. Result: Garbage.]  ·  [merged: “Genesis-spiral array-reindex of dbbi/faed + field-decode yields no readable text (80 variants)”] 80 variants → 0 readable (best printable ratio 0.605), 0 thematic hits.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the open blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
   "links": [
    {
@@ -1405,7 +1418,7 @@ export const ATTEMPTS = [
   "output": "All noise; no readable text and zero blob hits. The mask-over-dbbi interpretation does not fire.  ·  [merged: “matrixsumlist used as a mask/index over dbbi & faed decodes nothing”] 96 tests → 0 readable field-decode (best printable ratio 0.524, garbage), 0 valid-padding as a key.  ·  [merged: “matrixsumlist as a Vigenere key / mask over the blocks”] Score 0.43 versus a 0.95 control -- noise.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the open blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
   "links": [
    {
@@ -1442,7 +1455,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-single-zero-insertion-sweep",
@@ -1468,7 +1482,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-zero-out-prime-schemes",
@@ -1484,7 +1499,7 @@ export const ATTEMPTS = [
   "output": "All garbage; top printable ~0.46. The creator's literal 'zero out'/'reinsert primes' instruction, cleanly tested across value/position/insert/replace variants, fails. [Also documented separately as \"Prime-position select & zero, both 0-index and 1-index\" (dead-end ledger): The creator repeatedly stressed primes and 'zeroing out characters', so they treated the prime-numbered positions as special: at each prime index they either kept the symbol, deleted it, or forced it to zero, then field-decoded the result. They tried both index origins because the off-by-one is ambiguous. Result: 0.000 English under every single combination of operation x index-base x decoder.]  ·  [merged: “dbbi & faed field-decode with prime zero-out and dual combination — no ASCII”] 14 variants → all garbage (printable ratios 0.34–0.47; no words). Verified prime coincidences with no decode: faed value-sum = 3079 (prime); 570−91 = 479 (prime); 570+91 = 661 (prime).  ·  [merged: “'Reinsert the prime basics' (Architect's literal instruction)”] Printability <=0.46 -- the author's literal instruction, cleanly tested, fails.  ·  Also tested the A007522 index set specifically (primes ≡ 7 mod 8 — the genesis colored-cell / #fefefe indices, incl. 103): select / zero-out / complement at those positions over dbbi & faed (0- and 1-based) → field-decode = garbage (best ratio 0.455), and the selected substrings key no blob (72 tests) → 0.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the open blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
   "links": [
    {
@@ -1535,7 +1550,7 @@ export const ATTEMPTS = [
   "method": "dbbi and the 'INCASE...' sentence are BOTH exactly 91 characters, so treat the sentence as a same-length one-time-pad key over dbbi and read the result.",
   "output": "Result = VOZIJBDTIQBRGVEOMZNBC + YOUWON + XCPKWGBNAXDGJGDUNNVMPABTAFPAAXMJYLZBUWERDNXYDESKUOBXCAMVDJLQTSGA. It contains the literal word 'YOUWON', and EXACTLY 64 characters follow it (21 + 6 + 64 = 91) -- 64 hex chars being the length of a Bitcoin private key. The 21- and 64-char chunks around it are not legible. Unconfirmed and possibly coincidental, but flagged by its author as the only run to surface a real word out of dbbi, and the 64-char tail is suggestive.  ·  [merged: “dbbi is engineered against the phase-3.2 plaintext: (dbbi − plaintext) mod 26 spells YOUWON”] Result = VOZIJBDTIQBRGVEOMZNBC · YOUWON · (64-char tail). 'YOUWON' at position 21 is not chance (~1 in 33,000).",
   "outcome": "verified-insight",
-  "insight": "VERIFIED in-harness (this project): dbbi (a=0..i=8) minus the 91-char INCASE phase-3.2 plaintext, mod 26, reproduces EXACTLY 'VOZIJBDTIQBRGVEOMZNBC' + 'YOUWON' + a 64-char tail — character-for-character. YOUWON, the 64-char tail, and the full 91-char string were then tested as keys (literal + sha256) on cosmic / salph_inner / p32_trailing = 30 tests, 0 valid padding, 0 readable. Conclusion: a confirmed DESIGNED easter-egg (a creator taunt embedded in dbbi), not key material.",
+  "insight": "VERIFIED in-harness (@DaneelOlivaw): dbbi (a=0..i=8) − the 91-char INCASE phase-3.2 plaintext, mod 26, reproduces EXACTLY 'VOZIJBDTIQBRGVEOMZNBC' + 'YOUWON' + a 64-char tail. YOUWON, the tail, and the full 91-char string were tested as keys (literal + sha256) on cosmic / salph_inner / p32_trailing = 30 tests, 0 valid padding → a designed easter-egg (a creator taunt), not key material. COMPANION-REVEAL test: 48 principled variations of the SAME relationship (value-base a=0/1, modulus 26/9, direction, orientation, op ∈ {d−p, p−d, d+p}) surface ONLY 'YOUWON' across every letter-output (chance baseline 1.4%, so exactly the one designed hit) — no 'yingyang' or any other thematic companion — and all 48 derived outputs as keys → 288 tests, 0 valid padding. Corollary: because dbbi uses only a–i (values 0–8), the non-YOUWON positions are mathematically FORCED (out[i] = dbbi[i] − INCASE[i]), so the tail is not a hidden channel — YOUWON is the SOLE engineered reveal here. The workbench below lets you try the variations yourself.",
   "author": "id:6424118990",
   "time": "15:27 UTC",
   "sourceQuote": "dbbib... and INCASEYOUMANAGETOCRACKTHIS... have the same character length and could correlate — dbbi minus that Phase-3.2 plaintext (mod 26) surfaces YOUWON.",
@@ -1545,7 +1560,11 @@ export const ATTEMPTS = [
     "label": "Walkthrough — Phase 3.2 (Architect / VIC)",
     "href": "#/walkthrough"
    }
-  ]
+  ],
+  "authors": [
+   "@DaneelOlivaw"
+  ],
+  "history": "The community (id:6424118990) surfaced the dbbi↔INCASE one-time-pad. @DaneelOlivaw reproduced it byte-exact (the YOUWON window) and then tested it for a COMPANION reveal: 48 principled variations of the same designed relationship."
  },
  {
   "id": "ledger-seven-intertwined-passwords-dbbi",
@@ -1659,7 +1678,7 @@ export const ATTEMPTS = [
   "output": "Zero English across ~600k keys; control with a known-good text scored 0.95 while dbbi readings stayed <=0.43. [Also documented separately as \"Vigenere / Beaufort brute force, periods 1-6, on dbbi\" (dead-end ledger): Exhaustively brute-forced every short polyalphabetic key up to period 6 in both cipher directions, field-decoded each output, and scored for English, to rule out short-key polyalphabetic encipherment of dbbi. Result: Zero English.]  ·  [merged: “'Reinsert the prime basics' as a prime Vigenère over dbbi/faed does not decode them”] 72 variants → 0 readable (best printable ratio 0.632), 0 thematic hits.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the open blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
   "links": [
    {
@@ -1759,7 +1778,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "faed-format-alignment-compression",
@@ -1785,7 +1805,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "faed-ic-near-random-118",
@@ -1811,7 +1832,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-symbol-frequency-analysis",
@@ -1837,7 +1859,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "dbbi-yellowblue-prime-index-rabbit-cells",
@@ -1891,7 +1914,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "ledger-iching-loshu-flying-star",
@@ -1987,7 +2011,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-3ingredient-omit-yinyang",
@@ -2013,7 +2038,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-kdf-variants-md5-sha1-sha512-pbkdf2",
@@ -2039,7 +2065,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-double-sha-shabef",
@@ -2065,7 +2092,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-xor-7-token-issue56",
@@ -2151,7 +2179,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-per-ingredient-sha-then-concat-and-xor",
@@ -2177,7 +2206,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-include-enter-thispassword-tokens",
@@ -2203,7 +2233,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-phase-chain-key-reuse",
@@ -2229,7 +2260,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-full-master-hint-string-as-key",
@@ -2255,7 +2287,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-ybp-yinyang-as-rawbytes-from-dbbi-faed",
@@ -2281,7 +2314,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-1327-byte-blob-103x103-matrix",
@@ -2328,7 +2362,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-multi-blob-detection-scattered-signature",
@@ -2350,7 +2385,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-repeated-block-shared-block-scan",
@@ -2372,7 +2408,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "urlblob-4th-orphaned-blob-salt-74c974e3",
@@ -2387,7 +2424,7 @@ export const ATTEMPTS = [
   "output": "Recovered urlblob.bin: salt 74c974e3f92e64b5, 96-byte ciphertext. It is a genuine standalone OpenSSL blob but is orphaned — provenance is only a community-posted URL path (the page itself returns the empty SPA shell), and no tested key decrypts it. Structural analysis (BLOB-COMBINATION) confirms it shares no ciphertext blocks with the other three blobs, so it is an independent container, not a fragment of cosmic.  ·  [merged: “The 4th blob (urlblob) recovered in full, committed reproducibly, and re-swept null with the byte-exact harness”] 76 tests → 0 valid padding, 0 readable hits. The prior null is re-confirmed under the authoritative byte-exact harness; the artifact is now reproducible.",
   "outcome": "verified-insight",
   "insight": "A fourth, previously-uncatalogued OpenSSL blob exists (salt 74c974e3f92e64b5, 96-byte ct) recovered by hex-decoding a 'Salted__' gsmg.io URL path; it is a real but orphaned, independent container that no tested key opens.",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "The four OpenSSL Salted__ blobs (cosmic 2d3f6fe0 · salph_inner 3ab58534 · p32_trailing b45a5e3d · urlblob 74c974e3) in ciphertexts/.",
   "links": [
    {
@@ -2420,7 +2457,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-aes-key-wrap-format-hypothesis",
@@ -2492,7 +2530,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-ciphertext-concatenation-decrypt",
@@ -2514,7 +2553,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-cross-keying-ct-as-key",
@@ -2536,7 +2576,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-value-combos-cross-type",
@@ -2558,7 +2599,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-4salts-as-aes256-key-all-orderings",
@@ -2580,7 +2622,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-salt-math-xor-sum-sha",
@@ -2602,7 +2645,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-four-ingredients-plus-enter-thispassword",
@@ -2628,7 +2672,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-value-combos-within-type",
@@ -2650,7 +2695,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "blob-xor-of-n-sha256-hashes",
@@ -2672,7 +2718,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "keysweep-pkcs7-chance-calibration",
@@ -2688,7 +2735,7 @@ export const ATTEMPTS = [
   "output": "Every PKCS7-valid survivor in every sweep decrypted to garbage (printable ~0.30-0.59), exactly the ~1/256 chance rate expected. The 4 multi-blob PKCS7 coincidences in the combination work scored 0.30-0.49 (random) versus ~3 expected by chance -- confirming no key ever produced readable content. The bound holds: no open blob has been opened.  ·  [merged: “Valid AES padding ≠ a solve: the 80-byte blobs pad-validate ~1 in 200 keys by chance”] Measured 10/2000 = 0.50% random keys give valid padding (≈ theory). Every such plaintext is high-entropy garbage (printable ratio 0.32–0.46).",
   "outcome": "verified-insight",
   "insight": "PKCS7-valid-but-garbage decrypts occur at the chance rate (~1/256 per try, ~3 multi-blob coincidences expected over ~35k combinations), so padding-validity alone is meaningless and only readable-content scoring constitutes a hit -- which never occurred.",
-  "author": "GSMG research engine",
+  "author": "@DaneelOlivaw",
   "provenance": "The four OpenSSL Salted__ blobs (cosmic 2d3f6fe0 · salph_inner 3ab58534 · p32_trailing b45a5e3d · urlblob 74c974e3) in ciphertexts/.",
   "links": [
    {
@@ -2717,7 +2764,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "keysweep-harvested-plaintext-phrases",
@@ -2743,7 +2791,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "keysweep-matrix-reloaded-quotes",
@@ -2769,7 +2818,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "keysweep-token-battery-named-tokens",
@@ -2795,7 +2845,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "keysweep-chain-keys-reused",
@@ -2817,7 +2868,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "keysweep-page-hash-89727c59",
@@ -2839,7 +2891,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "cosmic-txt-authenticity-archived-2023",
@@ -2864,7 +2917,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "onchain-ecdsa-nonce-reuse-ruled-out",
@@ -2911,7 +2965,8 @@ export const ATTEMPTS = [
     "label": "Prize address",
     "href": "https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "opreturn-soup-token-concat",
@@ -2937,7 +2992,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "vanity-address-kills-brainwallet",
@@ -2959,7 +3015,8 @@ export const ATTEMPTS = [
     "label": "Prize address",
     "href": "https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "wayback-cdx-gsmg-urls-spa-shell",
@@ -2980,7 +3037,8 @@ export const ATTEMPTS = [
     "label": "Prize address",
     "href": "https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "opreturn-fromn0e-half-betterhalf-pi",
@@ -3006,7 +3064,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "opreturn-little-prince-quote",
@@ -3028,7 +3087,8 @@ export const ATTEMPTS = [
     "label": "Prize address",
     "href": "https://www.blockchain.com/btc/address/1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "grid-dbbi-mixed-origin-zero-vs-one-indexing",
@@ -3108,7 +3168,8 @@ export const ATTEMPTS = [
   ],
   "image": "assets/walkthrough/community-images/dbbi-faed-symbol-frequencies.jpg",
   "imageAlt": "Symbol-frequency tables for dbbi (91 symbols) and faed (570 symbols)",
-  "imageCaption": "@tobi0000, 2024-11-15 (Telegram msg #30267): symbol-frequency tables for dbbi (top, 91 symbols) and faed (bottom, 570). Verified byte-exact against the real blocks — dbbi b=25/e=18/f=10/g=10/c=8/h=8/i=5/d=4/a=3; faed g=107/i=75/e=69/h=58/f=57/a=54/c=52/b=49/d=49 — the uneven spectra this card characterises (dbbi structured, faed near-flat/random)."
+  "imageCaption": "@tobi0000, 2024-11-15 (Telegram msg #30267): symbol-frequency tables for dbbi (top, 91 symbols) and faed (bottom, 570). Verified byte-exact against the real blocks — dbbi b=25/e=18/f=10/g=10/c=8/h=8/i=5/d=4/a=3; faed g=107/i=75/e=69/h=58/f=57/a=54/c=52/b=49/d=49 — the uneven spectra this card characterises (dbbi structured, faed near-flat/random).",
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "salph-inner-exhaustive-self-verifying-attack",
@@ -3123,10 +3184,6 @@ export const ATTEMPTS = [
   "output": "~33.5 million decrypts, 0 readable opens, 0 confirmed hits. Best printable across everything was 0.62 -- the expected ~4.6-sigma fluke from 33M random 80-byte AES outputs (noise floor ~0.37), containing no words. salph_inner did not open under any known/derivable value or crypto convention.  ·  [merged: “salph_inner (80-byte SalPhaseIon inner blob) vs its exact soup-grammar keys”] 144 tests → 0 readable hits.  ·  [merged: “'our first hint' read as the 2020 Roses poem does not key salph_inner”] 66 tests → 0 valid padding, 0 readable hits.  ·  [merged: “salph_inner reconstruction verified byte-correct; soup-token combination keys are null”] Reconstruction (part1+z+part2) is byte-identical to the stored blob and decodes to Salted__ + salt 3ab585348552415d + 80-byte ct (valid); the no-z form gives an invalid 79-byte ct. Combination sweep: 24 keys, 48 tests → 0 valid padding, 0 readable.",
   "outcome": "verified-fail",
   "insight": "The one endgame blob that is SELF-VERIFYING -- where a correct guess announces itself instantly -- resisted the largest, most diverse legitimate attack run here (~33.5M decrypts, 14 families, cross-convention). Strong evidence that salph_inner's key is NOT reconstructible from the known puzzle material: it depends on an unknown we cannot compute (the true yellowblueprimes value, or content from the unfound 'other door'). Combined with dbbi (structured but scheme-less) and faed (encrypted), the three undecoded parts form a sealed knot with no oracle entry point.",
-  "authors": [
-   "@DaneelOlivaw",
-   "GSMG research engine"
-  ],
   "provenance": "The SalPhaseIon soup and its tokens (matrixsumlist / enter / lastwordsbeforearchichoice / thispassword), plus the salph_inner blob — all from the SalPhaseIon page (ciphertexts/ + research/lib/data.mjs).",
   "links": [
    {
@@ -3137,7 +3194,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "salphaseion-soup-seven-part-structure-phase-order",
@@ -3152,10 +3210,6 @@ export const ATTEMPTS = [
   "output": "The soup holds SEVEN data pieces (dbbi, matrixsumlist, faed, lastwords, thispassword, salph_inner, enter) -- matching Phase 2's SEVEN-part password and the Architect's 'seven intertwined passwords'. The master-hint recipe order (ybp . matrixsumlist . lastwords . yinyang) is exactly the PHASE chronology (ybp + matrixsumlist from Genesis P0, lastwords from the Architect P3.2, yinyang from the endgame), while the soup STORES them scrambled (yinyang/lastwords swapped). 'our first hint is your last command' plus the reverse-binary master hint are reversal markers pointing the final step back to the genesis. The two 'shabef' (=sha256) bracket salph_inner -> a two-stage sha (only single-sha had been tried). All ordering tests -> null (order was never the unknown).  ·  [merged: “The '7 intertwined passwords' = 7 soup tokens combine, and prime-position readings — null”] 168 tests → 1 chance valid-padding (garbage), 0 readable hits.",
   "outcome": "verified-insight",
   "insight": "SalPhaseIon is Phase 2's 'N parts -> concatenate in order -> sha256 -> decrypt' pattern repeated at the endgame, with N=7 ('seven intertwined passwords') but the pieces ENCODED and INTERTWINED (scrambled). The correct assembly order is the phase chronology (already given by the master hint), so the order is solved -- the wall is the piece VALUES (ybp, yinyang) plus the salph_inner intermediate, not their arrangement. The genuinely new structural fact is the two-shabef = two-stage sha256, with salph_inner as the crackable intermediate.",
-  "authors": [
-   "@DaneelOlivaw",
-   "GSMG research engine"
-  ],
   "provenance": "The Phase-3.2 material — the EBCDIC→Beaufort(THEMATRIXHASYOU) Architect speech, the VIC line, the chess clue, and the trailing p32_trailing blob (ciphertexts/p32_trailing.txt).",
   "links": [
    {
@@ -3166,7 +3220,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "decentraland-audio-spectrogram-hashthetext",
@@ -3209,10 +3264,6 @@ export const ATTEMPTS = [
   "output": "0 printable and 0 WIF-shaped hits on any of the three blobs; every PKCS7-valid decrypt was high-entropy noise. The computed-value recipe space -- the natural successor to the exhausted literal-word space -- is empty for every genesis-derived yellowblueprimes/yinyang candidate reachable from the coloured-cell + primes {2,3,5,7} rule.  ·  [merged: “The standard cosmic recipe with the best-held values (2347, 95101) is null across all 24 matrixsumlist forms”] 1152 tests → 3 chance valid-paddings (all ratio 0.39, garbage), 0 readable hits.  ·  [merged: “No principled combine of the held values fires cosmic — the block now points at the values, not the combine op”] 1,584 tests → 3 chance valid-paddings (all ratio ~0.39, garbage), 0 readable hits. Cumulatively the held-value recipe is null across 5 combine families × 24 matrixsumlist forms × 2 yinyang forms × {literal + 6 speech-span} lastwords.",
   "outcome": "verified-fail",
   "insight": "",
-  "authors": [
-   "@DaneelOlivaw",
-   "GSMG research engine"
-  ],
   "provenance": "The four cosmic ingredients (yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang), the genesis grid (content/matrix.js) they derive from, and the prize blob ciphertexts/cosmic.txt.",
   "links": [
    {
@@ -3223,7 +3274,8 @@ export const ATTEMPTS = [
     "label": "Reference — canonical values",
     "href": "#/reference"
    }
-  ]
+  ],
+  "author": "@DaneelOlivaw"
  },
  {
   "id": "reverse-binary-hint-involution-prime-length-structure",
