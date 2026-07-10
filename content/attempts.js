@@ -763,7 +763,14 @@ export const ATTEMPTS = [
   "output": "Garbage.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The b/e-as-binary channel reading is community.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "ledger-cosmic-duality-vic-on-blocks",
@@ -777,7 +784,14 @@ export const ATTEMPTS = [
   "output": "Garbage -- both the VIC and book-cipher readings eliminated.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The \"Cosmic Duality\" book + VIC checkerboard framing is community.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "dbbi-base81-pairs",
@@ -1056,7 +1070,14 @@ export const ATTEMPTS = [
   "output": "Garbage.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The \"seven intertwined passwords\" phrase is from the Architect speech (msg #6100/#10039); the de-interleave attempt is community.",
+  "links": [
+   {
+    "label": "Walkthrough — Phase 3.2 (Architect speech)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "ledger-columnar-transposition-grid-factorisations",
@@ -1104,7 +1125,14 @@ export const ATTEMPTS = [
   "output": "Garbage.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The INCASE… checkerboard alphabet is the Phase-3.2 VIC line.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "dbbi-vigenere-beaufort-brute",
@@ -1134,7 +1162,14 @@ export const ATTEMPTS = [
   "output": "Noise.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The colored-prime bits / 24-bit duality stream come from the genesis grid colored cells (content/matrix.js).",
+  "links": [
+   {
+    "label": "Walkthrough — genesis colored cells",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "ledger-vigenere-matrixsumlist-url-cellstream",
@@ -1148,7 +1183,14 @@ export const ATTEMPTS = [
   "output": "Noise (score <=0.43 versus a 0.95 known-good control).",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The matrixsumlist / genesis-URL / spiral cell-stream keys come from content/matrix.js.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "ledger-yinyang-complement-standalone",
@@ -1162,7 +1204,14 @@ export const ATTEMPTS = [
   "output": "Fail. [Also documented separately as \"Yin-yang complement chained with prime zeroing\" (dead-end ledger): Combined the duality complement with the prime 'zero out' instruction, sequencing them (complement -> then zero/insert at primes) in fresh permutations to cover orderings the earlier standalone tests missed. Result: Fail.]",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The yin-yang complement substitution (a↔i, b↔h, …) is a community reading of the \"duality\" theme.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "dbbi-compression-fileformat-probe",
@@ -1267,7 +1316,14 @@ export const ATTEMPTS = [
   "output": "Noise -- the strongest 'untested' lead, now closed.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The I-Ching / Lo-Shu nine-palace flying-star transform is a community proposal.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "ledger-nonary-digital-root-999",
@@ -1281,7 +1337,14 @@ export const ATTEMPTS = [
   "output": "Noise.",
   "outcome": "verified-fail",
   "insight": "",
-  "author": "The Community"
+  "author": "The Community",
+  "provenance": "dbbi (91 symbols) and faed (570) are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt. The nonary / digital-root \"999\" (Zero Escape) scheme is a community proposal.",
+  "links": [
+   {
+    "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)",
+    "href": "#/walkthrough"
+   }
+  ]
  },
  {
   "id": "ledger-turtle-numpad-path-drawing",
