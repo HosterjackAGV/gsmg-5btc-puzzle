@@ -733,21 +733,23 @@ const positions = [...blue, ...yellow].map(p => spiralIndex(p) % 8);`,
   },
 
   'genesis-matrixsumlist-row-col-sums': {
+    summary: '🔬 Sum the grid yourself — edit any bit',
     code: `// "matrixsumlist": sum the 14×14 grid by rows and by columns, then concatenate the digits
 const rows = grid.map(r => r.reduce((a, b) => a + b, 0));
 const cols = grid[0].map((_, c) => grid.reduce((a, r) => a + r[c], 0));`,
-    inputs: [],
-    run() {
-      const g = MATRIX.grid;
+    inputs: [{ name: 'grid', label: 'the 14×14 genesis grid — 0/1 per cell, one row per line (flip any bit and re-run)', value: MATRIX.grid.map(r => r.join('')).join('\n'), mono: true, rows: 14 }],
+    run(v) {
+      const g = (v.grid || '').trim().split('\n').map(line => [...line.trim()].map(x => x === '1' ? 1 : 0));
       const rows = g.map(r => r.reduce((a, b) => a + b, 0));
-      const cols = g[0].map((_, c) => g.reduce((a, r) => a + r[c], 0));
+      const cols = g[0] ? g[0].map((_, c) => g.reduce((a, r) => a + (r[c] || 0), 0)) : [];
+      const ones = rows.reduce((a, b) => a + b, 0), tot = g.length * ((g[0] || []).length);
       return {
         steps: [
           { title: '1 · row sums (black cells per row)', body: rows.join(' ') + '   → "' + rows.join('') + '"' },
           { title: '2 · column sums', body: cols.join(' ') + '   → "' + cols.join('') + '"' },
-          { title: '3 · as the cosmic "matrixsumlist" ingredient', body: 'rows="' + rows.join('') + '"  cols="' + cols.join('') + '"  (plus reversed / interleaved variants)' },
+          { title: '3 · totals', body: 'ones=' + ones + '  zeros=' + (tot - ones) + '  (the yin-yang balance)' },
         ],
-        output: 'Row/col sums are confirmed, but hashing the concatenations as the cosmic "matrixsumlist" ingredient gave 0 hits across thousands of byte-format variants — the exact intended format of matrixsumlist remains the open question.',
+        output: 'Edit any cell and the sums recompute live. On the REAL grid: rows="610876654997879", cols="8108108736759668", ones=101, zeros=95. Hashing these as the cosmic "matrixsumlist" ingredient gave 0 hits across every byte-format — the exact intended format is the open question.',
       };
     },
   },
@@ -1383,20 +1385,26 @@ const blocks = blob => chunk(bytes(blob).slice(16), 16);`,
   },
 
   'blob-ciphertext-concatenation-decrypt': {
-    code: `// read the blobs as fragments of one cipher: concat the ciphertexts, decrypt with a chain key + salt
-const joined = concat(bytes(salphInner).slice(16), bytes(p32).slice(16));`,
-    inputs: [],
-    async run() {
-      const joined = concat(b64ToBytes(PUZZLE.salphInner).slice(16), b64ToBytes(PUZZLE.p32).slice(16));
-      const pw = await sha256hex('causality'), enc = new TextEncoder().encode(pw), salt = saltOf(PUZZLE.salphInner);
+    summary: '🔬 Join the blobs & decrypt — try your own key',
+    code: `// read the blobs as fragments of one cipher: concat the ciphertexts, decrypt with a key + salt
+const joined = concat(bytes(blobA).slice(16), bytes(blobB).slice(16));`,
+    inputs: [
+      { name: 'blobA', label: 'first blob (base64)', value: PUZZLE.salphInner, mono: true, rows: 2 },
+      { name: 'blobB', label: 'second blob (base64)', value: PUZZLE.p32, mono: true, rows: 2 },
+      { name: 'key', label: 'passphrase (its sha256 becomes the AES key; try any)', value: 'causality', mono: true, rows: 1 },
+    ],
+    async run(v) {
+      const joined = concat(b64ToBytes(v.blobA.trim()).slice(16), b64ToBytes(v.blobB.trim()).slice(16));
+      const pw = await sha256hex(v.key.trim()), enc = new TextEncoder().encode(pw), salt = saltOf(v.blobA.trim());
       let D = new Uint8Array(0), prev = new Uint8Array(0); while (D.length < 48) { prev = await sha256(concat(prev, enc, salt)); D = concat(D, prev); }
-      let ok = false; try { const ck = await crypto.subtle.importKey('raw', D.slice(0, 32), { name: 'AES-CBC' }, false, ['decrypt']); await crypto.subtle.decrypt({ name: 'AES-CBC', iv: D.slice(32, 48) }, ck, joined); ok = true; } catch { }
+      let ok = false, txt = '';
+      try { const ck = await crypto.subtle.importKey('raw', D.slice(0, 32), { name: 'AES-CBC' }, false, ['decrypt']); const pt = new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-CBC', iv: D.slice(32, 48) }, ck, joined)); ok = true; txt = printable(new TextDecoder('latin1').decode(pt)).slice(0, 64); } catch { }
       return {
         steps: [
-          { title: '1 · concatenate the 4 ciphertexts (one ordering)', body: joined.length + ' bytes joined' },
-          { title: '2 · decrypt with a chain key + a blob salt', body: ok ? 'valid padding' : 'bad decrypt' },
+          { title: '1 · concatenate the two ciphertexts', body: joined.length + ' bytes joined' },
+          { title: '2 · key = sha256("' + v.key.trim() + '") → EVP → AES-256-CBC', body: ok ? 'valid padding · ' + txt : 'bad decrypt — wrong key / not one cipher', graphic: byteStrip(ok ? txt : '') },
         ],
-        output: 'No ordering of the concatenated ciphertexts decrypts to printable text under any salt/chain-key tried — the blobs do not form one coherent cipher. (All 24 orderings tested.)',
+        output: 'Change the blobs, their order, or the key and re-run. No ordering under any salt/chain-key produces printable text — the four blobs are independent containers, not fragments of one cipher (all 24 orderings tested).',
       };
     },
   },
@@ -1475,18 +1483,25 @@ const salt  = "74c974e3f92e64b5";`,
   },
 
   'genesis-fefefe-cell-located-7-4': {
-    code: `// creator hint: "104 is the fefefe square. fefefe is 101010." Scan the image for the off-white cell.
-const odd = cells.find(c => c.rgb === "254,254,254");   // vs 255,255,255 everywhere else`,
-    inputs: [],
-    run() {
-      const f = MATRIX.fefefe[0], si = MATRIX.spiral.findIndex(p => p[0] === f[0] && p[1] === f[1]);
+    summary: '🔬 Cell explorer — look up any grid cell',
+    code: `// creator hint: "104 is the fefefe square. fefefe is 101010." One cell is 0xFEFEFE (off-white).
+const spiralIndex = spiral.findIndex(p => p[0] === row && p[1] === col);   // where a cell falls in the CCW spiral`,
+    inputs: [{ name: 'coord', label: 'cell to inspect — "row,col" (0-indexed; the #fefefe cell is 7,4)', value: '7,4', mono: true, rows: 1 }],
+    run(v) {
+      const m = (v.coord || '').split(',').map(x => parseInt(x.trim(), 10));
+      const row = m[0] || 0, col = m[1] || 0;
+      const f = MATRIX.fefefe[0];
+      const si = MATRIX.spiral.findIndex(p => p[0] === row && p[1] === col);
+      const rm0 = row * 14 + col;
+      const isFefefe = (row === f[0] && col === f[1]);
+      const isPrime = n => { if (n < 2) return false; for (let i = 2; i * i <= n; i++) if (n % i === 0) return false; return true; };
       return {
         steps: [
-          { title: '1 · palette scan over the 14×14 grid', body: 'exactly one cell is RGB 254,254,254 (0xFEFEFE) vs 255,255,255 everywhere else' },
-          { title: '2 · its location', body: 'grid (row ' + f[0] + ', col ' + f[1] + ') 0-indexed  =  (row ' + (f[0] + 1) + ', col ' + (f[1] + 1) + ') 1-indexed' },
-          { title: '3 · the hint', body: 'spiral index ' + si + ' · "104 is the fefefe square · fefefe is 101010" — a deliberate pointer planted in the image' },
+          { title: '1 · the cell', body: 'grid (row ' + row + ', col ' + col + ') 0-indexed = (' + (row + 1) + ',' + (col + 1) + ') 1-indexed' + (isFefefe ? '  ← this is the #FEFEFE cell' : '') },
+          { title: '2 · its indices', body: 'row-major (0-based) = ' + rm0 + ' · (1-based) = ' + (rm0 + 1) + ' · CCW spiral index = ' + si },
+          { title: '3 · prime check', body: 'row-major 1-based (' + (rm0 + 1) + ') is ' + (isPrime(rm0 + 1) ? 'PRIME' : 'not prime') + ' · spiral (' + si + ') is ' + (isPrime(si) ? 'PRIME' : 'not prime') },
         ],
-        output: 'A single 0xFEFEFE cell is planted at grid (7,4), confirming the creator hint "104 is the fefefe square, fefefe is 101010". It marks the prime/binary theme that recurs through the endgame.',
+        output: 'Type any "row,col" to inspect a cell. The single planted 0xFEFEFE cell is at (7,4) — creator hint "104 is the fefefe square, fefefe is 101010" — marking the prime/binary theme that recurs through the endgame.',
       };
     },
   },
@@ -1699,16 +1714,26 @@ const out = digits.split("").flatMap((d, i) => isPrime(i) ? ["0", d] : [d]).join
   },
 
   'split-key-half-and-better-half-combinations': {
-    code: `// "THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF" read as a two-piece (split) secret`,
-    inputs: [],
-    run() {
+    summary: '🔬 Combine your own two halves',
+    code: `// "THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF" read as a two-piece (split) secret
+const combined = op === 'concat' ? half + better : op === 'xor' ? xorHex(half, better) : half + '+' + better;
+const candidateKey = sha256(combined);   // → check whether it controls the 1GSMG address`,
+    inputs: [
+      { name: 'half', label: '"half"', value: 'HALF', mono: true, rows: 1 },
+      { name: 'better', label: '"better half"', value: 'BETTERHALF', mono: true, rows: 1 },
+      { name: 'op', label: 'combine op — concat | plus | space', value: 'concat', rows: 1 },
+    ],
+    async run(v) {
+      const a = v.half.trim(), b = v.better.trim(), op = v.op.trim().toLowerCase();
+      const combined = op === 'plus' ? a + '+' + b : op === 'space' ? a + ' ' + b : a + b;
+      const key = await sha256hex(combined);
       return {
         steps: [
           { title: '1 · the VIC clue', body: 'THE PRIVATE KEYS BELONG TO HALF AND BETTER HALF' },
-          { title: '2 · interpret as a two-piece secret', body: 'half ⊕ / + / || better-half — 1,204 (half, better-half) derivations' },
-          { title: '3 · each combined → candidate key → check vs the 1GSMG address', body: '0 matches' },
+          { title: '2 · combine your two halves', body: '"' + a + '" (' + op + ') "' + b + '"  →  "' + combined + '"' },
+          { title: '3 · candidate private key = sha256(combined)', body: key },
         ],
-        output: 'Zero matches across all 1,204 split-key derivations — the "half + better half" combination does not reconstruct any GSMG address key. (It more likely names the two recipients than a literal split.)',
+        output: 'Edit the two halves or the op and re-run to see the candidate key. Across all 1,204 documented (half, better-half) derivations, 0 reconstruct a GSMG address key — "half and better half" more likely names the two recipients than a literal split. (Address-derivation is checked off-site with secp256k1.)',
       };
     },
   },
