@@ -3302,6 +3302,35 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ]
+ },
+ {
+  "id": "creator-neo-passport-date-give-away",
+  "phase": "salphaseion",
+  "category": "creator-hint & narrative decode",
+  "title": "Creator's explicit 'only date I give away' = Neo's Matrix passport expiry (09/11/2001) — keys no blob",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-11",
+  "source": "Telegram — @SoWut (creator), msg #8048, reiterated #8516, framed 'scary specific' #8315",
+  "sourceQuote": "The only date I give away is the expiry date of neo's passport.",
+  "history": "Surfaced by an independent multi-agent lens sweep of the full @SoWut creator ledger (research/telegram/sowut.txt, 411 messages): the passport-expiry date is the single most explicitly-labelled 'give-away' value in the ledger, yet it had never been converted to a harness test. @DaneelOlivaw ran it in-harness on the self-verifying oracles.",
+  "input": "Neo (Thomas Anderson)'s passport in The Matrix (1999) expires 09/11/2001. 26 candidate orderings disambiguating US / EU / ISO forms: 09112001, 11092001, 20010911, 9112001, 0911, 911, 090111, 110901, 010911, 09/11/2001, 11/09/2001, 2001-09-11, 09-11-2001, september112001, 11september2001, sept112001, neospassport, thomasanderson, … (+ the GSMG='Globally Supporting My Generation' expansion and corrected 'four first hint' bracket forms).",
+  "method": "For each candidate, EVP passphrase (literal + sha256hex) via openssl enc -aes-256-cbc -md sha256 on the two SELF-VERIFYING 80-byte oracles (salph_inner, p32_trailing) and cosmic; flag any decrypt with valid PKCS7 padding AND printable ratio >= 0.85 (research/lib/gsmg.mjs).",
+  "provenance": "The creator statement is @SoWut msg #8048/#8516 (verified sender_handle in research/telegram/corpus.json, flagged creator-not-community); the passport date is canonical Matrix trivia (the on-screen prop expires 09/11/2001); the blobs are ciphertexts/{salph_inner,p32_trailing,cosmic}.txt.",
+  "output": "198 tests (26 date orderings + GSMG expansion + corrected bracket forms) x 3 blobs x 2 modes -> 0 valid padding, 0 readable.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 harness (selfcheck KATs passed this run).",
+  "outcome": "verified-fail",
+  "insight": "The creator's most explicit date give-away (Neo's passport expiry, 09/11/2001) is NOT a standalone passphrase for any open blob — it keys neither self-verifying oracle nor cosmic. So the give-away is either a combine INGREDIENT (used alongside the other cosmic ingredients, where there is no standalone oracle to confirm it) or a date-based transform anchor (e.g. a zero-out / offset value, fitting msg #8000's 'some characters need to be zeroed out') — not a direct key. A genuinely-novel creator datum, now decisively closed as a direct passphrase and added to the ledger.",
+  "links": [
+   {
+    "label": "Reference — cosmic ingredients",
+    "href": "#/reference"
+   },
+   {
+    "label": "Walkthrough — SalPhaseIon & Cosmic Duality",
+    "href": "#/walkthrough"
+   }
+  ]
  }
 ];
 

@@ -1440,6 +1440,40 @@ const joined = concat(bytes(blobA).slice(16), bytes(blobB).slice(16));`,
     },
   },
 
+  'creator-neo-passport-date-give-away': {
+    summary: '🔬 Try the passport date (or any give-away) on the oracles',
+    code: `// @SoWut (creator): "The only date I give away is the expiry date of neo's passport."
+// Neo's passport in The Matrix (1999) expires 09/11/2001 → try every ordering as an
+// AES passphrase on the self-verifying 80-byte oracles (a right key → readable text).
+const pw   = sha256hex(candidate);        // EVP key = sha256(candidate)
+const key  = EVP_BytesToKey(pw, salt);    // openssl enc -aes-256-cbc -md sha256
+decryptAESCBC(blob, key);                 // valid PKCS7 padding + printable? = a hit`,
+    inputs: [
+      { name: 'date', label: 'give-away candidate — try any date ordering', value: '09112001', mono: true, rows: 1 },
+      { name: 'blob', label: 'blob:  salph_inner · p32_trailing · cosmic', value: 'salph_inner', mono: true, rows: 1 },
+    ],
+    async run(v) {
+      const map = { salph_inner: PUZZLE.salphInner, p32_trailing: PUZZLE.p32, cosmic: PUZZLE.cosmic };
+      const bkey = (v.blob || 'salph_inner').trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
+      const blob = map[bkey] || PUZZLE.salphInner;
+      const key = (v.date || '').trim();
+      const pw = await sha256hex(key), enc = new TextEncoder().encode(pw), salt = saltOf(blob);
+      const ct = b64ToBytes(blob).slice(16);
+      let D = new Uint8Array(0), prev = new Uint8Array(0); while (D.length < 48) { prev = await sha256(concat(prev, enc, salt)); D = concat(D, prev); }
+      let ok = false, txt = '';
+      try { const ck = await crypto.subtle.importKey('raw', D.slice(0, 32), { name: 'AES-CBC' }, false, ['decrypt']); const pt = new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-CBC', iv: D.slice(32, 48) }, ck, ct)); ok = true; txt = printable(new TextDecoder('latin1').decode(pt)).slice(0, 80); } catch { }
+      return {
+        steps: [
+          { title: '1 · candidate → sha256 → EVP key+IV', body: 'sha256("' + key + '") = ' + pw.slice(0, 16) + '…' },
+          { title: '2 · AES-256-CBC decrypt ' + (map[bkey] ? bkey : 'salph_inner'), body: ok ? 'VALID padding · ' + txt : 'bad padding — wrong key', graphic: byteStrip(ok ? txt : '') },
+        ],
+        output: ok
+          ? (/[a-z]{4}/i.test(txt) ? 'Readable text — verify carefully before trusting.' : 'Valid padding but garbage (~1/256 chance), not a solve.')
+          : 'No valid padding. Neo\'s passport date and every ordering tested (09112001 / 11092001 / 20010911 / …) key none of the two self-verifying oracles nor cosmic — 198 tests, 0 valid padding. The creator\'s give-away is NOT a standalone passphrase; it is likely a combine ingredient or a date-based transform anchor (fitting his "some characters need to be zeroed out").',
+      };
+    },
+  },
+
   'blob-salt-math-xor-sum-sha': {
     code: `// combine the 4 salts: xor4, sum4 (mod 256), sha256(concat) → use each as a blob key/passphrase`,
     inputs: [{ name: 'cosmic', label: 'cosmic blob', value: PUZZLE.cosmic, mono: true, rows: 4 }],
