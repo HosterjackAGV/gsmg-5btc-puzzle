@@ -3628,6 +3628,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — Phase 0 Genesis", "href": "#/walkthrough" },
    { "label": "Reference — cosmic ingredients", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-salph-inner-ciphertext-byte-exact",
+  "phase": "salphaseion",
+  "category": "salphaseion :: blob format & constraint",
+  "title": "The salph_inner ciphertext is byte-exact: H1 + z + H2 (96 bytes) — the reassembly is forced, so the wall is the passphrase not the artifact",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): byte-for-byte verification of the salph_inner reassembly from the soup halves",
+  "sourceQuote": "the reconstructed salph_inner.txt is byte-identical — verified",
+  "history": "After ~140 null decrypt attempts on salph_inner, a forced structural reframe asked the foundational question: is the ciphertext even byte-exact? salph_inner is reassembled from two base64 halves embedded in the soup (H1=63 chars, H2=64), with the 'enter' binary nested between — H1+H2 is 127 chars but the blob is 96 bytes (128 chars), so the reassembly adds one character. If it were wrong, EVERY key would fail silently.",
+  "input": "The soup fragments H1='U2FsdGVkX186tYU0…efvdrd9' (63 chars) and H2='QvX0t8v3…GuN/jJ' (64 chars); the nested 'enter' binary (40 bits → 'enter'); the committed ciphertexts/salph_inner.txt (128 base64 chars).",
+  "method": "Reassemble candidate ciphertexts {H1+H2, H1+'z'+H2, H1+enter-base64+H2, H1+H2+padding} and compare byte-for-byte to salph_inner.txt; check Salted__ prefix, salt, and AES block alignment (ct length % 16). Re-verify all three open blobs' byte integrity.",
+  "provenance": "Soup fragments from docs/WALKTHROUGH.md §9; the blob is ciphertexts/salph_inner.txt (salt 3ab585348552415d, verified by selfcheck).",
+  "output": "salph_inner.txt = H1 + 'z' + H2 exactly (128 chars = 96 bytes). FORCED by block alignment: H1+H2 → 95 bytes (79-byte ct, 79%16=15, invalid); H1+enter-base64+H2 → 100 bytes (invalid); only H1+'z'+H2 → 96 bytes → 80-byte ct → 5 AES blocks → valid. All three open blobs re-confirmed Salted__ + block-aligned (cosmic 1328=83×16; salph_inner & p32_trailing 80=5×16).",
+  "evidence": "Byte-for-byte comparison + block-alignment check in-harness (selfcheck KATs passed this run).",
+  "outcome": "verified-insight",
+  "insight": "The salph_inner ciphertext is byte-exact and its reassembly is unique/forced: the soup's separator 'z' is a genuine base64 character of the ciphertext here (removing it yields an invalid 95-byte, non-block-aligned blob), while the nested 'enter' binary (which decodes to the literal word 'enter') is correctly EXCLUDED metadata. This closes the 'maybe the artifact is wrong / mis-reassembled' failure hypothesis: the ~140 null attempts were all tested against the CORRECT ciphertext, so the persistent wall is genuinely the missing PASSPHRASE, not a corrupted blob. Future solvers can trust ciphertexts/salph_inner.txt = H1 'z' H2 exactly.",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon soup", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
