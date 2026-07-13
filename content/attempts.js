@@ -3582,6 +3582,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)", "href": "#/walkthrough" },
    { "label": "Reference — cosmic ingredients", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-length-analysis-actuable-blocks",
+  "phase": "salphaseion",
+  "category": "salphaseion :: structure & combine",
+  "title": "Length analysis: the 80-byte oracles are the actuable key-targets (64B = two keys), dbbi is key-sized, faed is 7× too big",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): byte-exact length audit of every unsolved part + in-harness private-key test",
+  "sourceQuote": "the private keys belong to HALF and BETTER HALF",
+  "history": "A systematic audit of the byte-lengths of every unsolved part, to reason about which pieces are sized to be directly-usable crypto ('actuable data blocks') and which length relations hint at an intended combination — then the sharpest prediction (dbbi is sized for one 256-bit key) tested in-harness.",
+  "input": "cosmic 1328B ct (83 blocks) → ~1312B plaintext; salph_inner & p32_trailing 80B ct (5 blocks) → 64B plaintext; dbbi 91 a–i (base-9 → 287 bits); faed 570 a–i (→ 1807 bits); matrixsumlist binary 104 bits = 13B; master hint 161 = 7×23 chars; genesis 14×14 = 196.",
+  "method": "Compute exact byte-lengths and base-9 bit-capacities; map them onto crypto target sizes (32B key = 256 bits = 64 hex; WIF 51–52 base58; half+better-half = 64B = 2×32; AES block 16B). Test the sharpest prediction: dbbi/faed/661/121 as a direct 256-bit private key (base-9/base-10, reversed, sha256, hi/lo-32 bytes, and zero-out variants of the ~10 excess symbols) → P2PKH → match the prize address, KAT-gated (research/lib; scratchpad r20).",
+  "provenance": "Blob lengths from ciphertexts/*.txt; dbbi/faed from research/lib/data.mjs; the VIC 'half and better half' line is creator-confirmed (Phase 3.2); the prize is the P2PKH vanity address 1GSMG1JC9….",
+  "output": "cosmic plaintext (~1312B) = a MESSAGE, not a key; each 80-byte oracle → 64B = exactly two 32-byte keys (half+better-half). dbbi = 287 bits ≈ one 256-bit key + ~10 excess symbols; faed = 1807 bits ≈ 7 keys (oversized). dbbi/faed/661/121 as a DIRECT private key → 38 derivations, 0 wallet match (expected: the prize is a vanity address, so its key is random and lives encrypted in the blob).",
+  "evidence": "Byte-exact length computation + KAT-gated secp256k1 derivation (privkey=1 → 1EHNa6Q…). selfcheck KATs passed this run.",
+  "outcome": "verified-insight",
+  "insight": "The actuable key-target is an 80-byte oracle: its 64-byte plaintext is exactly two 32-byte private keys — the literal shape of 'the private keys belong to HALF and BETTER HALF'. cosmic (~1312B) is the message, not the key. dbbi is length-sized for ONE 256-bit key (287 bits, ~10 excess symbols = candidates to 'zero out'), but because the prize is a vanity address its key is random and encrypted, so dbbi is key-derivation material or a taunt — not the key directly (verified null as a direct key). faed at 1807 bits is far too big for a value, matching the creator's 'faed is another puzzle'. Length relations that hint at untested combinations: dbbi(91=7×13) ‖ matrixsumlist-binary(104=8×13) both multiples of 13 → a 15×13 stack; the master hint (161 = 7×23, the two smallest A007522 primes) laid as a 7×23 grid; and dbbi+faed=661→11² (already known). The combine's OUTPUT must be a 32/64-byte block that opens an oracle.",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
