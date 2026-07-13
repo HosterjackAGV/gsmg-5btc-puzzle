@@ -45,6 +45,135 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "web-x2sh-equation-ec-point-misread",
+  "phase": "mrrobot",
+  "category": "Phase-2 keypad equation",
+  "title": "The Phase-2 \"X 2 S H 4 Y 0 Q B 15\" equation read as secp256k1 point coordinates",
+  "who": "community",
+  "date": "2019-10",
+  "dateApprox": true,
+  "source": "Reddit — r/bitcoinpuzzles (u/Sandalphon69)",
+  "sourceQuote": "treating the leftover X and Y as the coordinates of a point on an elliptic curve",
+  "history": "An early (2019) reading of the Phase-2 keypad equation: resolve the lettered residues via their Mr-Robot clues (S=Klingon 2+5*6=32, B=Intel i5 -> 5^2=25, Q=qwerty 82, H unresolved), then treat the leftover X and Y as the (x,y) coordinates of a point on the secp256k1 curve.",
+  "input": "The phase-2 plaintext line \"# X 2 S H 4 Y 0 Q B 15 #\".",
+  "method": "Map the four solvable letters to numbers, then interpret X and Y as an elliptic-curve point / candidate key material.",
+  "provenance": "The equation is verbatim in the phase-2 plaintext (reproduced by our OpenSSL/EVP harness). The EC-point reading is from a 2019 Reddit thread.",
+  "output": "No point is ever produced — the author never resolves H and concedes \"no clue how to connect it all together\".",
+  "evidence": "Refuted by the confirmed solve: substituting S=32,H=42,Q=82,B=25 and reversing (\"worst gear\") yields the GEOGRAPHIC coordinate 51 52'28.0\"N, 4 24'23.2\"E (SafeNet/Gemalto HQ) — a consistency check, not an EC point or key. (Walkthrough §2.4.)",
+  "outcome": "verified-fail",
+  "insight": "X and Y are geographic coordinates, not secp256k1 coordinates; the equation is a SafeNet/Luna/HSM consistency check, never a key.",
+  "links": [
+   {
+    "label": "Reddit — r/bitcoinpuzzles",
+    "href": "https://www.reddit.com/r/bitcoinpuzzles/comments/dfwcqk/gsmgio_5_btc_puzzle/f4lkyp6/"
+   }
+  ]
+ },
+ {
+  "id": "web-n82biv-lsb-passphrase",
+  "phase": "salphaseion",
+  "category": "SalPhaseIon image / stego",
+  "title": "LSB-stego token \"N82BIV\" from the SalPhaseIon image as an endgame passphrase",
+  "who": "community",
+  "date": "2025",
+  "dateApprox": true,
+  "source": "Reddit — r/bitcoinpuzzles (2025)",
+  "sourceQuote": "LSB reveals BMP + EXE + GZIP signatures plus the token N82BIV",
+  "history": "A 2025 proposal: LSB-extract a 6-char token \"N82BIV\" from the SalPhaseIon image and use it (and its concatenations with known Phase-1 constants) as the cosmic/salph_inner passphrase.",
+  "input": "The claimed LSB token N82BIV; the Phase-1 constant GSMGIO5BTCPUZZLECHALLENGE1; the HASHTHETEXT instruction.",
+  "method": "aes-256-cbc (-md sha256) with pass = sha256(\"N82BIV\"), and sha256(\"GSMGIO5BTCPUZZLECHALLENGE1\"+\"N82BIV\"), sha256(\"HASHTHETEXT\"+\"N82BIV\"), plus literal/lowercase and reversed-order variants, against cosmic / salph_inner / p32_trailing.",
+  "provenance": "Blobs from ciphertexts/ (research/lib/data.mjs, matching docs/WALKTHROUGH.md); tested via research/lib/gsmg.mjs, deepInspect-armed.",
+  "output": "13 candidates × {literal, sha256hex} × 3 blobs = 87 KAT-gated tests → 0 readable, 0 nested-Salted__, 0 WIF.",
+  "evidence": "Reproduced in-harness (deepInspect: no Salted__ prefix, no embedded WIF, no readable plaintext). The \"three stego signatures at once\" is a textbook LSB false-positive and N82BIV appears nowhere else in the puzzle.",
+  "outcome": "verified-fail",
+  "insight": "The N82BIV token keys none of the blobs, alone or concatenated with the known Phase-1/HASHTHETEXT constants.",
+  "links": [
+   {
+    "label": "Reddit — r/bitcoinpuzzles",
+    "href": "https://www.reddit.com/r/bitcoinpuzzles/comments/dfwcqk/gsmgio_5_btc_puzzle/mkabpp7/"
+   }
+  ]
+ },
+ {
+  "id": "web-causality-brainwallet-trivia",
+  "phase": "mrrobot",
+  "category": "On-chain trivia",
+  "title": "sha256(\"causality\") is a valid — but puzzle-irrelevant — brainwallet key (→ 1JZBwaA29Cgy…)",
+  "who": "community",
+  "date": "2020",
+  "dateApprox": true,
+  "source": "Reddit — r/bitcoinpuzzles",
+  "sourceQuote": "sha256(\"causality\") is a valid private key",
+  "history": "A recurring observation that the Phase-2 password sha256(\"causality\") — which our harness confirms decrypts phase2 — is ALSO, trivially, a valid secp256k1 private key.",
+  "input": "sha256(\"causality\") = eb3efb5151e6255994711fe8f2264427ceeebf88109e1d7fad5b0a8b6d07e5bf.",
+  "method": "Treat the 32-byte hash as a raw private key; derive the P2PKH address (compressed + uncompressed).",
+  "provenance": "Derived in-harness with node:crypto secp256k1 (validated: privkey=1 → 1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm).",
+  "output": "Uncompressed → 1JZBwaA29CgyrtPz7SbsvXZkSKswaAkfmP ; compressed → 1Jqq37KkZEt4F3Dt6qXdtyiMEFBBdawbkJ. NEITHER is a GSMG address.",
+  "evidence": "Any 32-byte value < the curve order is a valid secp256k1 key, so producing \"a valid address\" is meaningless. The prize key is a RANDOM vanity key (1GSMG1 prefix), unreachable by any brainwallet/phrase.",
+  "outcome": "verified-insight",
+  "insight": "Documented so it is not re-chased as progress: sha256(any-word) is always a valid key; it says nothing about the puzzle.",
+  "links": [
+   {
+    "label": "Reddit — r/bitcoinpuzzles",
+    "href": "https://www.reddit.com/r/bitcoinpuzzles/comments/dfwcqk/gsmgio_5_btc_puzzle/fb1apom/"
+   }
+  ]
+ },
+ {
+  "id": "web-gsmgio-kit-bip39-extraction",
+  "phase": "salphaseion",
+  "category": "Endgame — mnemonic extraction",
+  "title": "gsmgio_puzzle_kit: 18-word BIP39 extraction from the soup + word-order brute force to the prize",
+  "who": "community",
+  "date": "2025",
+  "dateApprox": true,
+  "source": "GitHub — bidcoinauction/gsmgio_puzzle_kit",
+  "sourceQuote": "grid-carve → ROT13 + column concat → 18 two-char pairs → Base36 → mod 2048 → BIP39",
+  "history": "A community GitHub kit that grid-carves the decrypted SalPhaseIon binary, ROT13s and column-concatenates it into 18 two-char pairs, Base36-decodes mod 2048 into BIP39 indices, then brute-forces the WORD ORDER, checking each derived address against the prize address.",
+  "input": "salphaseion_decrypted.bin; the extracted 18 words [argue, because, bright, capital, charge, chest, either, foam, forward, frost, grant, guilt, initial, juice, lumber, memory, miracle, mountain].",
+  "method": "Assemble the 18 words into a BIP39 mnemonic across orderings/derivation paths; derive addresses; compare to 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe.",
+  "provenance": "The 1GSMG1 prefix is a documented VANITY prefix (see the vanity-address card) — verified on-chain.",
+  "output": "Ordering left \"unsolved\" by the author; structurally cannot succeed.",
+  "evidence": "A vanity-prefix key is RANDOM by construction, so it is not derivable from any BIP39 mnemonic; no word ordering can reach the prize address. (Any \"18 valid BIP39 words\" fall out of enough carving — a false signal.)",
+  "outcome": "verified-fail",
+  "insight": "BIP39 extraction is structurally doomed for a vanity-prefix prize key; the kit never claims a solve.",
+  "links": [
+   {
+    "label": "GitHub — gsmgio_puzzle_kit",
+    "href": "https://github.com/bidcoinauction/gsmgio_puzzle_kit"
+   }
+  ]
+ },
+ {
+  "id": "web-4f7a1e-fabrication-cluster",
+  "phase": "salphaseion",
+  "category": "Fabrications / debunk",
+  "title": "The \"4f7a1e → 103×103 → Half & Better Half\" solution family is a fabrication cluster — every derived key refuted on-chain",
+  "who": "community",
+  "date": "2026",
+  "dateApprox": true,
+  "source": "GitHub issues #28/#32/#38/#68/#69/#72/#80/#81/#84/#88/#91/#92/#94/#97 + bitcointalk 5532424 + Wayback",
+  "sourceQuote": "1327 bytes → 103×103 matrix → Base-38 → Half (32) + Better Half (32) private keys",
+  "history": "A 2025–2026 web-wide cluster of \"solutions\" (GitHub, bitcointalk, Wayback) all descend from ONE fictitious artifact: a 1327-byte \"cosmic decrypt\" with SHA256 4f7a1e4e…c081 (the fake \"4f7a1e page\"). From it, various posts derive a 103×103 bit matrix, Base-38 decode, and two \"Half / Better Half\" private keys — and several escalate to prize-diversion scams and fake CTF flags.",
+  "input": "The two posted keys 0423d9115a1dc756d5d08d2de880ab508bd4745fc97709f4fcb513f2cb8fcc35 and 48cc46e66bdd36b09ae344552f606a761f9d90681f20dfefe2b43db18b623971; posted WIFs (disbee00 5KFoZe…, kaibuzz0 5Kb8k…, bare 5HpHag…=privkey 1).",
+  "method": "Derive P2PKH (compressed + uncompressed) from every posted key/WIF and compare to the prize address; check the prize on-chain.",
+  "provenance": "Derived in-harness with node:crypto secp256k1 (validated against the canonical privkey=1 → 1EHNa6Q… result).",
+  "output": "HALF → 15E3pcDDXSKhvi3CLVhRTHEgd8dbVKvSZg / 1JG648yaB7Wp2dpUfcZoRSD4q35oq47vCu ; BETTER-HALF → 1FhbJnrdq1FmeiXrpTqnpQ8jvYV7naze96 / 145ZQ9siLrsXBKf465wjdyQYAP5dRwhRhQ ; disbee00 → 1Gc3DN94M7rMYj5MpLtWW3sucriaCWFd7y ; SovereignKey → 1CC3X2gu58d6wXUWMffpuzN9JAfTUWu4Kj ; bare 5HpHag → 1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm. NONE is the prize 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe.",
+  "evidence": "The real cosmic blob is 1328 bytes (83 AES blocks) with first ciphertext byte 0xd3 — there is NO 1327-byte \"4f7a1e\" decrypt. The prize address is unspent/unclaimed on-chain, so every \"funded/spent Half & Better Half\" claim is false by construction. Extends the existing 103×103 debunk to the full web cluster.",
+  "outcome": "verified-fail",
+  "insight": "A large, self-consistent body of \"GSMG solved\" content is fabricated from one fake decrypt; all derived keys map to non-prize (and one to the privkey=1 decoy). Treat any 4f7a1e / 103×103 / Half-Better-Half key as a hoax.",
+  "links": [
+   {
+    "label": "bitcointalk 5532424",
+    "href": "https://bitcointalk.org/index.php?topic=5532424.0"
+   },
+   {
+    "label": "Existing 103×103 debunk (this catalog)",
+    "href": "#/tried?id=cosmic-1327-byte-blob-103x103-matrix"
+   }
+  ]
+ },
+ {
   "id": "community-interleave-dbbi-faed-by-matrixsumlist",
   "phase": "salphaseion",
   "category": "dbbi / faed — field & number",
@@ -3330,6 +3459,98 @@ export const ATTEMPTS = [
     "label": "Walkthrough — SalPhaseIon & Cosmic Duality",
     "href": "#/walkthrough"
    }
+  ]
+ },
+ {
+  "id": "engine-dbbi-faed-661-prime-11x11",
+  "phase": "salphaseion",
+  "category": "dbbi / faed — structure",
+  "title": "dbbi + faed are ONE object: 91+570 = 661 (prime), π(661) = 121 = 11² — verified prime grid, decode open",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Telegram — SalPhaseIon group, msg #66562 (longtime community member); creator @SoWut noncommittal, #66564",
+  "sourceQuote": "661 is the length of dbbi/faed combined. If you extract every prime position in 661 characters you're left with 121 characters. 121 is a perfect 11x11 square. Also there are 30 prime numbers up until 121.",
+  "history": "Surfaced in the creator's live 2026-07-12 session (a longtime member asked @SoWut about it; he replied only 'I don't know right now', neither confirming nor denying). Every prior attempt had treated dbbi and faed as INDEPENDENT ingredients (dbbi→yellowblueprimes, faed→yinyang), so a JOINT structural property of the two blocks together had never been checked. @DaneelOlivaw verified the arithmetic and ran the full decode battery on the resulting grid.",
+  "input": "dbbi (91 a–i symbols) and faed (570 a–i symbols) from the SalPhaseIon soup; their concatenation dbbi+faed = 661 characters; the character positions 1..661.",
+  "method": "Verify the arithmetic (is 661 prime? how many primes ≤ 661?); extract the characters of dbbi+faed at prime positions (2,3,5,7,…,659) → arrange as an 11×11 grid of a=1..i=9 values; then attempt to DECODE the grid — 48 linearizations (row/col-major, reverse, diagonals, boustrophedon, spiral, digit/sum strings) as AES passphrase on all three open blobs; 14 grid→256-bit-private-key derivations (base-9/base-10/sha256/parity, both orders) → P2PKH vs the prize address; 11×11 row/col sums as candidate ingredient values into the concat+sha256 cosmic combine. All gated with deepInspect + a KAT-gated secp256k1 address/self-auth detector (research/lib/gsmg.mjs + scratchpad r5/r6/r7).",
+  "provenance": "dbbi and faed are the two undecoded a–i blocks of the SalPhaseIon soup (research/lib/data.mjs, matching docs/WALKTHROUGH.md); the arithmetic (661 prime; π(661)=121=11²; π(121)=30) is byte-verified; the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
+  "output": "VERIFIED: 661 is prime; π(661) = 121 = 11²; the prime-position extraction lands on exactly 121 a–i symbols. DECODE: 288 passphrase decrypts (48 grid readings) + 14 grid→privkey derivations + 45 sums-combine decrypts + a full interpretation battery (parity/threshold/prime-bit → ASCII, VIC, base-9, pairs, selection-index) → 0 readable text, 0 WIF, 0 wallet match, 0 blob opened.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 harness with a secp256k1 KAT (privkey=1 → 1EHNa6Q…/1BgGZ9t…) passing; the prime sieve and π counts reproduced in-harness (selfcheck KATs passed this run).",
+  "outcome": "verified-insight",
+  "insight": "dbbi (91) and faed (570) are engineered to be ONE object, not two independent ingredients: their combined length 661 is prime and has exactly π(661)=121=11² prime positions — a double-coincidence too precise at exactly (91,570) to be accidental. This reframes the endgame around the confirmed VIC line 'the private keys belong to HALF and BETTER HALF' — dbbi = the small half, faed = the better half — and says to attack the dbbi/faed decode JOINTLY. The 11×11 grid is a real intermediate object (like the 14×14 genesis grid, which encoded a URL via LSB-parity rather than being a raw key); its interpretation rule is still open, but the obvious readings (passphrase, private-key, sums-combine, genesis-analog, VIC, base-9, selection-index) are now all closed.",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)", "href": "#/walkthrough" },
+   { "label": "Reference — cosmic ingredients", "href": "#/reference" }
+  ]
+ },
+ {
+  "id": "engine-oracle-address-derivation-detector",
+  "phase": "salphaseion",
+  "category": "salphaseion :: detector & methodology",
+  "title": "Every prior oracle sweep was blind to a two-private-key plaintext — a KAT-gated address + self-auth detector closes it",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Engine — mechanism-inference multi-agent workflow (adversarially-verified), reconciled against the full attempt ledger",
+  "sourceQuote": "the private keys belong to HALF and BETTER HALF",
+  "history": "Every historical decrypt sweep against the two self-verifying 80-byte oracles judged a candidate a 'hit' only if the plaintext was printable (ratio ≳0.85), later augmented by deepInspect (Salted__ prefix / base58 run / long printable run). None of those detectors fire on a plaintext that is two raw 32-byte private keys — which has printable ratio ~0.5, no Salted__ header and no base58 run. A correct key that decrypted an oracle to 'half ‖ better-half' (64 bytes = 2×32) would therefore have been produced and then DISCARDED as garbage by every prior sweep. This blind spot was identified by an independent multi-agent lens and then closed in-harness.",
+  "input": "The two self-verifying 80-byte oracles salph_inner (salt 3ab585348552415d) and p32_trailing (salt b45a5e3d827593ca); a 2089-key set (puzzle vocabulary + derived values + GSMG/personal proper-nouns + the full bip39 English wordlist).",
+  "method": "On EVERY valid-padding decrypt, derive P2PKH addresses (compressed + uncompressed) from all 32-byte windows and the documented half/better-half combinations {h1, h2, XOR, sha(h1‖h2), sha(h2‖h1), reverse(h1), reverse(h2)}, and match against the GSMG wallets (prize 1GSMG1JC9…, peeled 17ucy1K9…); plus a curve-free self-auth test sha256(h1)==h2. secp256k1 via node:crypto ECDH, KAT-gated (privkey=1 must derive 1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm before any result is trusted).",
+  "provenance": "The oracles are ciphertexts/{salph_inner,p32_trailing}.txt; the VIC line 'the private keys belong to HALF and BETTER HALF' is the creator-confirmed Phase-3.2 output; the address derivation is proven by the privkey=1 known-answer test.",
+  "output": "12,546 decrypts (2089 keys × 3 blobs × {literal, sha256}), 50 valid-padding → the new detector applied to all 50 → 0 wallet matches, 0 self-auth. Detector added as a permanent capability.",
+  "evidence": "KAT-gated secp256k1 (privkey=1 → 1EHNa6Q…/1BgGZ9t… verified); byte-exact EVP-SHA256 AES harness (research/lib/gsmg.mjs + scratchpad r3).",
+  "outcome": "verified-insight",
+  "insight": "Printability-only success gates are UNSAFE for this target: the one hard, creator-confirmed fact about the endgame output is that it is TWO private keys ('half and better half'), and 64 bytes is the unique OpenSSL plaintext length that splits into two clean 32-byte halves from an 80-byte ciphertext — a plaintext that every prior sweep would have thrown away as high-entropy garbage. The correct key is not in the tested 2089-key set, but the detector class is now correct: every future oracle key candidate must be judged by KAT-gated address-derivation and self-auth, not by printability.",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon & Cosmic Duality", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
+ },
+ {
+  "id": "engine-oracles-are-pass-mode-only-unknown-is-passphrase",
+  "phase": "salphaseion",
+  "category": "salphaseion :: blob format & constraint",
+  "title": "All open blobs are OpenSSL -pass (Salted__) mode — raw-key / custom-IV theories eliminated; the ONLY unknown is the passphrase",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Engine — structural verification of the ciphertext headers (reconciled against selfcheck's byte-exact KATs)",
+  "sourceQuote": "the private keys belong to HALF and BETTER HALF",
+  "history": "A recurring 'maybe it's encrypted differently' family of theories (an oracle encrypted with a raw key via `openssl enc -K <hex>`, or a non-standard IV, or an alternate KDF) had never been decisively ruled out — leaving open the worry that decryption was failing on the MODE rather than the passphrase. @DaneelOlivaw settled it from the ciphertext structure itself and, in the same pass, tested the literal two-oracle reading of 'half and better half'.",
+  "input": "The raw bytes of the three open blobs cosmic (salt 2d3f6fe06dc950e6), salph_inner (3ab585348552415d), p32_trailing (b45a5e3d827593ca); and, for the companion test, a 2089-key set (vocabulary + proper-nouns + bip39).",
+  "method": "Read the 8-byte magic header of each blob (Salted__ ⇒ openssl -pass / salted EVP_BytesToKey; raw-key -K mode writes NO header). Companion 'half & better half = two oracles, one passphrase' test: require valid PKCS7 padding on BOTH 80-byte oracles simultaneously (chance ~1/40 000 per key — a far stronger discriminator than either alone), then apply the full readable/WIF/address/salvation detector to any dual-valid key.",
+  "provenance": "The blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt; the Salted__ semantics are OpenSSL's documented salted-passphrase format; selfcheck reproduces the solved blobs via standard EVP_BytesToKey(sha256).",
+  "output": "All three blobs begin with the ASCII magic 'Salted__' ⇒ every one is -pass (salted EVP) mode; raw-key / custom-IV / alternate-KDF is impossible. Dual-oracle filter: 4,178 decrypt-pairs → exactly 1 chance dual-valid ('heart', high-entropy garbage on both), 0 signal.",
+  "evidence": "Byte-exact header read + the byte-exact EVP-SHA256 harness (selfcheck KATs passed this run); scratchpad r12.",
+  "outcome": "verified-insight",
+  "insight": "The wall is provably a SINGLE MISSING STRING. Because the Salted__ header is written only by openssl's -pass mode, the KDF is fixed and known (EVP_BytesToKey(sha256) → key‖IV), the IV is not a free parameter, and there is no raw-key / non-standard-IV / non-AES escape hatch. Therefore every failed decrypt is a wrong PASSPHRASE, never a wrong mode — which also confirms that deepInspect + the address/self-auth detector are the correct and sufficient success gates. The literal 'two oracles share one passphrase' reading of 'half and better half' is unsupported over vocabulary+bip39 (though not eliminated, since a derived shared key could exist).",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon & Cosmic Duality", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
+ },
+ {
+  "id": "engine-reframe-personal-knowable-token-null",
+  "phase": "salphaseion",
+  "category": "creator-hint & combine",
+  "title": "The creator's 'personal / knowable' hint, cryptographically read 4 ways (combine-part, cipher-key, sha-chain, prime split) — all null",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Telegram — @SoWut (creator), 2026-07-12 session, msg #66573–#66574 (the one item he explicitly tagged 'a hint'); reframes generated by an adversarial multi-agent workflow",
+  "sourceQuote": "My close friends have the best chance of solving it (a few tried). But they don't have the skills some of you do. NOTE: that is a hint.",
+  "history": "The single 2026 statement the creator explicitly labelled 'a hint' says the key is personal/knowable — recoverable by friends & family, 'in front of your eyes' (reaffirming the earlier #9595 'friends/family together' line). Its natural cryptographic readings had never been tested: prior work only tried the GSMG brand as a STANDALONE passphrase (attempt 0002, which noted the ingredients 'must be COMBINED'), and jrk/sowut appear in the corpus only as provenance, never as key material. An out-of-the-box reframe workflow turned the hint into four falsifiable mechanisms; @DaneelOlivaw ran all four in-harness.",
+  "input": "Personal/brand tokens {GSMGIO5BTCPUZZLECHALLENGE, prize address 1GSMG1JC9…, brand+address, the SalPhaseIon page-hash 89727c59…, jrk, sowut, jrkbgrt, gsmg, gsmgio, gsmg.io}; the H8 ingredients {2347, matrixsumlist byte-forms, lastwordsbeforearchichoice, 95101/10195, the 4 ingredient names, the canonical 4-part concat}; the H8 continuous string 'yellowblueprimes…yinyang'; A007522 primes split blue=[7,23,31,47,103,127] / yellow=[71,79,151,167,191].",
+  "method": "Four mechanisms, all EVP passphrase (literal + sha256hex) on cosmic/salph_inner/p32_trailing: (1) personal token concatenated as a COMBINE-PART with each ingredient, token-first AND token-last; (2) personal proper-noun as a Vigenère/Beaufort key over the H8 string (the only construction yielding yinyang as a DECODE OUTPUT per C7); (3) forward sha-chain — decrypt salph_inner, sha256 its plaintext → cosmic key (soup order 'shabef [salph_inner] shabef anstoo'); (4) A007522 blue/yellow split as a per-oracle 'half + better half' key assignment. Gated with a KAT-gated secp256k1 address/self-auth detector + deepInspect + a salvation regex (C22, salph_inner) + a ying-yang regex (C7, cosmic).",
+  "provenance": "The hint is @SoWut msg #66573–#66574 (verified creator, 2026-07-12 session, research/insights/0024); the ingredients/values are from docs/WALKTHROUGH.md and content/matrix.js; the A007522 set is creator-confirmed (primes ≡7 mod 8); the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt.",
+  "output": "1,749 KAT-gated decrypts (R1 combine-part 1584 + R2 cipher-key 90 + R3 sha-chain, only 3 of ~558 candidates even padded salph_inner + R4 prime-split ~75) → 0 readable, 0 Salted__, 0 WIF, 0 wallet-controlling key, 0 self-auth, 0 salvation, 0 ying-yang.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 harness with a passing secp256k1 KAT (privkey=1 → 1EHNa6Q…); selfcheck KATs passed this run (scratchpad r13).",
+  "outcome": "verified-fail",
+  "insight": "The strongest untested cryptographic readings of the creator's only explicitly-tagged 2026 hint are closed: a personal/brand/handle token is NOT a passphrase combine-part, cipher-key, or per-oracle key, the forward sha-chain does not link salph_inner→cosmic, and the A007522 blue/yellow 'half & better half' split opens neither 64-byte oracle. Two possibilities survive: the personal element is a non-passphrase SELECTOR/index/zero-out parameter one step removed (C6/C15), or the datum is a genuinely private personal fact only friends hold ('friends have the best chance'). Either way, personal tokens should no longer be tried as direct passphrase material.",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon & Cosmic Duality", "href": "#/walkthrough" },
+   { "label": "Reference — cosmic ingredients", "href": "#/reference" }
   ]
  }
 ];
