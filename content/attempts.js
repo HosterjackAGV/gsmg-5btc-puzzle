@@ -3633,7 +3633,7 @@ export const ATTEMPTS = [
   "id": "engine-salph-inner-ciphertext-byte-exact",
   "phase": "salphaseion",
   "category": "salphaseion :: blob format & constraint",
-  "title": "The salph_inner ciphertext is byte-exact: H1 + z + H2 (96 bytes) — the reassembly is forced, so the wall is the passphrase not the artifact",
+  "title": "Both 80-byte oracles are byte-exact: salph_inner = H1 + z + H2 (forced), p32_trailing = the phase-3.2 tail base64 — so the wall is the passphrase, not the artifact",
   "who": "this project",
   "author": "@DaneelOlivaw",
   "date": "2026-07-13",
@@ -3643,10 +3643,10 @@ export const ATTEMPTS = [
   "input": "The soup fragments H1='U2FsdGVkX186tYU0…efvdrd9' (63 chars) and H2='QvX0t8v3…GuN/jJ' (64 chars); the nested 'enter' binary (40 bits → 'enter'); the committed ciphertexts/salph_inner.txt (128 base64 chars).",
   "method": "Reassemble candidate ciphertexts {H1+H2, H1+'z'+H2, H1+enter-base64+H2, H1+H2+padding} and compare byte-for-byte to salph_inner.txt; check Salted__ prefix, salt, and AES block alignment (ct length % 16). Re-verify all three open blobs' byte integrity.",
   "provenance": "Soup fragments from docs/WALKTHROUGH.md §9; the blob is ciphertexts/salph_inner.txt (salt 3ab585348552415d, verified by selfcheck).",
-  "output": "salph_inner.txt = H1 + 'z' + H2 exactly (128 chars = 96 bytes). FORCED by block alignment: H1+H2 → 95 bytes (79-byte ct, 79%16=15, invalid); H1+enter-base64+H2 → 100 bytes (invalid); only H1+'z'+H2 → 96 bytes → 80-byte ct → 5 AES blocks → valid. All three open blobs re-confirmed Salted__ + block-aligned (cosmic 1328=83×16; salph_inner & p32_trailing 80=5×16).",
-  "evidence": "Byte-for-byte comparison + block-alignment check in-harness (selfcheck KATs passed this run).",
+  "output": "salph_inner.txt = H1 + 'z' + H2 exactly (128 chars = 96 bytes). FORCED by block alignment: H1+H2 → 95 bytes (79-byte ct, 79%16=15, invalid); H1+enter-base64+H2 → 100 bytes (invalid); only H1+'z'+H2 → 96 bytes → 80-byte ct → 5 AES blocks → valid. The OTHER 80-byte oracle was verified the same way (attempt 0144): p32_trailing.txt is byte-identical to the base64 blob at the very end of the phase-3.2 plaintext (2422 B, ending right after the chess-board clue '…as wide as the first one seen.'), wrapped across two 64-char lines by CRLF; the two lines concatenate to the committed 128-char blob exactly (salt b45a5e3d827593ca), and the plaintext terminates precisely at the blob (no truncation). All three open blobs re-confirmed Salted__ + block-aligned (cosmic 1328=83×16; salph_inner & p32_trailing 80=5×16).",
+  "evidence": "Byte-for-byte comparison + block-alignment check in-harness for both 80-byte oracles (selfcheck KATs passed this run); scratchpad r33 (salph_inner) + r34 (p32_trailing).",
   "outcome": "verified-insight",
-  "insight": "The salph_inner ciphertext is byte-exact and its reassembly is unique/forced: the soup's separator 'z' is a genuine base64 character of the ciphertext here (removing it yields an invalid 95-byte, non-block-aligned blob), while the nested 'enter' binary (which decodes to the literal word 'enter') is correctly EXCLUDED metadata. This closes the 'maybe the artifact is wrong / mis-reassembled' failure hypothesis: the ~140 null attempts were all tested against the CORRECT ciphertext, so the persistent wall is genuinely the missing PASSPHRASE, not a corrupted blob. Future solvers can trust ciphertexts/salph_inner.txt = H1 'z' H2 exactly.",
+  "insight": "BOTH 80-byte oracles are byte-exact and correctly extracted. salph_inner's reassembly is unique/forced: the soup's separator 'z' is a genuine base64 character of the ciphertext here (removing it yields an invalid 95-byte, non-block-aligned blob), while the nested 'enter' binary (which decodes to the literal word 'enter') is correctly EXCLUDED metadata. p32_trailing is the CRLF-joined tail base64 of the phase-3.2 plaintext, matching the committed blob byte-for-byte. This closes the 'maybe the artifact is wrong / mis-reassembled' failure hypothesis for both oracles: the ~140 null attempts were all tested against the CORRECT ciphertext, so the persistent wall is genuinely the missing PASSPHRASE, not a corrupted blob. Future solvers can trust ciphertexts/salph_inner.txt = H1 'z' H2 and ciphertexts/p32_trailing.txt = the phase-3.2 tail base64 exactly.",
   "links": [
    { "label": "Walkthrough — SalPhaseIon soup", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
