@@ -204,6 +204,10 @@ export default async function walkthroughView() {
     <h3>📑 Every piece, by phase — input · method · output</h3>
     <div id="wt-pieces"><p class="faint">loading…</p></div>
 
+    <h3 style="margin-top:26px">🧪 SalPhaseIon soup — interactive lab</h3>
+    <p class="faint" style="margin-top:-4px">Every part of the soup is a color-coded, draggable chip. Flip each between its <b>raw</b> soup form and its <b>decoded</b> value — independently, or all at once — drop parts in and out of the assembly, and re-order by dragging (or ↑/↓, or the control panel). The <b>assembled string</b> updates live, so you can try any ordering / decode-state combination and copy the result.</p>
+    <div id="wt-soup-host"><p class="faint">loading…</p></div>
+
     <h3 style="margin-top:26px">🧩 Genesis grid — Phase 0</h3>
     <div id="wt-grid-host"><p class="faint">loading…</p></div>
 
@@ -347,6 +351,12 @@ export default async function walkthroughView() {
         b.textContent = plain ? 'Show colors' : 'Remove colors (plain)';
       });
     }
+
+    // ---- interactive SalPhaseIon soup lab ----
+    const soupHost = qs('#wt-soup-host', root);
+    if (soupHost) import('../components/soup.js')
+      .then(m => { const w = m.soupWidget(); soupHost.innerHTML = w.html; w.mount(soupHost); })
+      .catch(() => { soupHost.innerHTML = '<p class="faint">Soup lab failed to load.</p>'; });
 
     // ---- interactive genesis grid ----
     const gridHost = qs('#wt-grid-host', root);

@@ -113,3 +113,54 @@ details.eli5 .body p{margin:0 0 10px}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:13.5px;align-items:baseline}
 .kv .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
 .kv .v{font-family:var(--mono);word-break:break-all}
+
+/* ── SalPhaseIon interactive soup lab (components/soup.js) ── */
+.soup{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.soup-cp{display:flex;flex-direction:column;gap:8px;padding:12px 14px;background:var(--panel);border:1px solid var(--line2);border-radius:var(--r)}
+.soup-cp-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.soup-cp-lab{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);min-width:66px}
+.soup-join{font-family:var(--mono);font-size:13px;background:var(--panel3);color:var(--paper);border:1px solid var(--line2);border-radius:var(--r-sm);padding:4px 8px}
+.soup-hint{font-size:12px;color:var(--faint);flex:1;min-width:200px}
+.soup-hint b{color:var(--muted)}
+
+.soup-chips{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.soup-chip{position:relative;flex:1 1 190px;max-width:340px;min-width:150px;
+  display:flex;flex-direction:column;gap:6px;padding:9px 11px 10px;
+  background:linear-gradient(180deg,hsl(var(--hue) 55% 55% / .13),hsl(var(--hue) 55% 45% / .05));
+  border:1px solid var(--line2);border-left:4px solid hsl(var(--hue) 70% 62%);
+  border-radius:var(--r-sm);cursor:grab;transition:transform var(--t),opacity var(--t),box-shadow var(--t)}
+.soup-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.soup-chip.dragging{opacity:.45;cursor:grabbing}
+.soup-chip.off{opacity:.4;filter:grayscale(.5);border-left-style:dashed}
+.soup-chip.unsolved{border-top:1px solid hsl(var(--hue) 70% 62% / .5)}
+.soup-chip.type-sep{flex:0 0 auto;min-width:0;max-width:120px}
+.soup-chip.drop-l{box-shadow:-3px 0 0 0 var(--teal)}
+.soup-chip.drop-r{box-shadow:3px 0 0 0 var(--teal)}
+.soup-chip.sc-buzz{animation:scBuzz .45s}
+@keyframes scBuzz{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.sc-head{display:flex;align-items:center;gap:6px;font-size:12.5px}
+.sc-grip{color:var(--faint);cursor:grab;font-size:13px;line-height:1}
+.sc-name{font-weight:600;color:hsl(var(--hue) 78% 74%);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.sc-type{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+.sc-order{display:flex;gap:2px}
+.sc-mini{background:transparent;border:1px solid var(--line2);color:var(--muted);border-radius:5px;width:20px;height:19px;font-size:11px;line-height:1;cursor:pointer;padding:0}
+.sc-mini:hover{border-color:var(--line3);color:var(--paper)}
+
+.sc-val{position:relative;font-size:11px;line-height:1.45;color:var(--muted);background:var(--void2);border:1px solid var(--line);border-radius:6px;padding:5px 34px 5px 7px;max-height:52px;overflow:hidden;word-break:break-all}
+.sc-len{position:absolute;top:3px;right:4px;font-size:9px;color:var(--faint);background:var(--panel2);border-radius:4px;padding:1px 4px}
+.soup-chip.unsolved .sc-val{color:var(--warn)}
+.type-blob .sc-val{color:var(--rust)}
+
+.sc-ctl{display:flex;gap:6px}
+.sc-btn{flex:1;background:var(--panel3);border:1px solid var(--line2);color:var(--muted);border-radius:6px;padding:4px 6px;font-size:11px;cursor:pointer;transition:all var(--t);white-space:nowrap}
+.sc-btn:hover{border-color:var(--line3);color:var(--paper)}
+.sc-btn.active{background:hsl(var(--hue) 60% 50% / .22);border-color:hsl(var(--hue) 70% 60%);color:hsl(var(--hue) 85% 82%)}
+.sc-on.active{background:var(--teal-deep);border-color:var(--teal);color:#dffcf3}
+
+.soup-out{background:var(--panel);border:1px solid var(--line2);border-radius:var(--r);overflow:hidden}
+.soup-out-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 13px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.soup-count{font-family:var(--mono);font-size:11px;color:var(--faint);margin-left:6px}
+.soup-out-str{margin:0;padding:12px 14px;font-size:12px;line-height:1.55;color:var(--paper);white-space:pre-wrap;word-break:break-all;max-height:230px;overflow:auto}
+.soup-out-str:empty::before{content:'(nothing assembled — every part is dropped)';color:var(--faint)}
+@media (max-width:600px){.soup-chip{flex-basis:100%;max-width:none}}
