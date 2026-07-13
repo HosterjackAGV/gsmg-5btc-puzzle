@@ -3651,6 +3651,28 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — SalPhaseIon soup", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "oracle-salts-random-no-steganography",
+  "phase": "salphaseion",
+  "category": "endgame :: blob format & constraint",
+  "title": "The 3 open-blob SALTS are random openssl salts — they encode no hidden clue (salt steganography ruled out)",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): structural analysis of the Salted__ salts",
+  "sourceQuote": "checked whether a hand-picked salt encodes a value; it does not — the salts are random",
+  "history": "A hand-built puzzle could hide a clue in a deliberately-chosen openssl salt (the 8 bytes are stored in the file and are otherwise assumed random). This had never been checked — so the three open-blob salts were examined for any encoded meaning.",
+  "input": "The salts of the three open blobs: cosmic 2d3f6fe06dc950e6, salph_inner 3ab585348552415d, p32_trailing b45a5e3d827593ca (bytes 8–15 of each Salted__ file).",
+  "method": "Tested each salt for (a) printable ASCII, (b) pairwise XOR / complement relationships, and (c) equality to the first 8 bytes of sha256(K), md5(K), or sha256(K)[8:16] for 34 known strings — every solved answer, the 4 ingredients, all soup tokens, the grounded 11 A007522 primes, the Architect speech-spans, the prize address, and theme words.",
+  "provenance": "The salts are read from ciphertexts/{cosmic,salph_inner,p32_trailing}.txt (bytes 8–15); the byte-exact harness is research/lib/gsmg.mjs.",
+  "output": "ASCII: 5/8, 5/8, 4/8 printable — gibberish, not text. Pairwise XORs (178aead4e89b11bb / 996531ddefbcc32c / 8eefdb090727d297) are random-looking with no complement/pattern. NO salt equals sha256/md5/sha256[8:16] of any of the 34 known strings. The salts encode no known value.",
+  "evidence": "Byte-exact salt read + 34×3 hash-prefix comparison in-harness (scratchpad r42); selfcheck KATs passed this run.",
+  "outcome": "verified-insight",
+  "insight": "The three open-blob salts are standard random openssl salts — they carry NO hidden data or clue. This rules out salt-steganography (a natural 'is the salt a hint?' question) and hardens the conclusion that the sole remaining unknown is the PASSPHRASE, not any embedded parameter. Also: no grounded ingredient value opens cosmic's outer layer, so the 'nested 7-layer decrypt' reading cannot even start.",
+  "links": [
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
@@ -3666,6 +3688,7 @@ const COMPACT_IDS = new Set([
   'dbbi-symbol-frequency-analysis', 'keysweep-pkcs7-chance-calibration',
   'onchain-ecdsa-nonce-reuse-ruled-out', 'architect-ebcdic-cp1141-codepage-debate',
   'wayback-cdx-gsmg-urls-spa-shell', 'onchain-ecdsa-nonce-reuse-ruled-out',
+  'oracle-salts-random-no-steganography',
 ]);
 for (const a of ATTEMPTS) if (COMPACT_IDS.has(a.id)) a.compact = true;
 
