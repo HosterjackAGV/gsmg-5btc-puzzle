@@ -3559,6 +3559,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — SalPhaseIon & Cosmic Duality", "href": "#/walkthrough" },
    { "label": "Reference — cosmic ingredients", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-salphaseion-matrixsumlist-operator",
+  "phase": "salphaseion",
+  "category": "salphaseion :: structure & combine",
+  "title": "The soup is a VALUE|OPERATOR|VALUE recipe: matrixsumlist as the operator that mints the missing zeros — structure verified, decode open",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): an 8-lens adversarial deep-analysis workflow + in-harness verification, reconciled against docs/WALKTHROUGH.md §9",
+  "sourceQuote": "some characters need to be 'zeroed out'",
+  "history": "A deep structural analysis of SalPhaseIon's parts and their order (every assumption/relation, with the whole puzzle and among themselves) run as a multi-agent workflow with adversarial verification, then every concrete falsifiable prediction tested in-harness. It set out to answer why dbbi/faed refuse to decode and how the soup's ordering encodes the combine.",
+  "input": "The space-stripped SalPhaseIon soup (1075 chars): [dbbi 91 a–i] + [matrixsumlist binary 104 bits] + [faed 570 a–i] = Section 1 (765, zero filler), then z-sections for lastwordsbeforearchichoice, thispassword, and the salph_inner blob framed by two shabef (=sha256) + 'our first hint is your last command' + 'enter' + 'anstoo'. Confirmed field-decode a=1..i=9, o=0.",
+  "method": "(1) Structural: split on z (3 genuine separators → 4 sections); measure section lengths; check the a–i-only alphabet; compare soup order vs the 2023 master-hint order. (2) Operator hypothesis: read 'matrixsumlist' as 'take the sum-list of a matrix' — lay dbbi/faed as digit matrices over every factorization (dbbi 7×13/13×7; faed 19×30…2×285), take row/col SUM-LISTS to mint ybp (dbbi) & yinyang (faed); encode raw / 2- and 3-digit-padded / base-9 / base-16; build flat (master & soup order) and NESTED sha256(ybp‖msl‖yin)‖lastwords keys, single + double sha; also 11×11 joint-grid sums, prime-selective sums, msl digit-stream mod-10 mask, and the salph_inner→sha256→cosmic chain. Decrypt salph_inner then cosmic; gate with deepInspect + KAT-gated address/self-auth + salvation (C22) + ying-yang (C7) detectors (research/lib/gsmg.mjs; scratchpad r14/r15/r16).",
+  "provenance": "The soup structure and field-decode are from docs/WALKTHROUGH.md §9 (byte-verified); dbbi/faed are research/lib/data.mjs; the blobs are ciphertexts/{cosmic,salph_inner,p32_trailing}.txt; the 'zeroed out' hint is creator @SoWut (2021-12-25).",
+  "output": "STRUCTURE VERIFIED: 3 z-separators → 4 sections; Section 1 = 91+104+570 = 765 exactly (a fused VALUE|OPERATOR|VALUE triad); dbbi/faed are strictly a–i (zero-free); soup order swaps yinyang/lastwords vs the master hint; Section 4 is a sha-chain. DECODE: ~20,000 KAT-gated decrypts across all factorizations/encodings/key-groupings → 0 readable, 0 Salted, 0 WIF, 0 wallet, 0 salvation, 0 ying-yang.",
+  "evidence": "Byte-exact AES-256-CBC / EVP-SHA256 harness with a passing secp256k1 KAT; the sum-list zero-minting reproduced in-harness (dbbi 13×7 row-sums → 27303243304429…). selfcheck KATs passed this run.",
+  "outcome": "verified-insight",
+  "insight": "SalPhaseIon's ordering reads as a recipe: Section 1 fuses dbbi | matrixsumlist | faed (91+104+570, zero filler) into a VALUE|OPERATOR|VALUE sandwich, and matrixsumlist — a self-describing token like shabef=sha256 — names the operation 'take the sum-list of a matrix.' Because dbbi/faed contain only a–i (never the letter o=0), a direct field-decode is mathematically incapable of producing the zero digits yellowblueprimes/yinyang need, whereas SUMMING rows/columns crosses multiples of ten and MINTS exactly those missing zeros — matching the creator's 'insert the missing zeros' hint, the master-hint adjacency, and the half+better-half / Cosmic-Duality theme. This is the most fact-unifying model of the ordering to date. It is not yet the solve: ~20k decrypts of the minted values (all factorizations, encodings, and the nested/chain key groupings) opened no blob, so either the operator/encoding differs or the summing is a red herring. A distinct, untested reading remains open — visualizing the matrices graphically ('in front of your eyes').",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)", "href": "#/walkthrough" },
+   { "label": "Reference — cosmic ingredients", "href": "#/reference" }
+  ]
  }
 ];
 
