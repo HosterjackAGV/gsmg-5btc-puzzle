@@ -2138,6 +2138,7 @@ From the puzzle's **April 2019 launch** onward, the creator — posting in the o
 | 2026-01-01 | Telegram | New Year's hint | Binary → "Happy new year! … here's a 'tiny hint' <3" |
 | 2026-03-03 | Telegram | Hint **[ENDGAME]** | "No hints, only **free will**"; cites **Jacque** (Fresco); reaching the next phase = **instant claim** |
 | 2026-05-28 | Telegram | Meta | Confirms the puzzle is **still valid** / unsolved |
+| 2026-07-12 | Telegram | Hint **[ENDGAME]** | @SoWut live session: the key is **personal/knowable** ("my close friends have the best chance … NOTE: that is a hint"); **SalPhaseIon "100% solvable"**, offline, prize still available |
 
 ---
 
@@ -2763,6 +2764,14 @@ The most recent confirmation that the puzzle remains **unsolved and active**.
 
 > **Jrk Bgrt** (admin): Ah, ofcourse. The puzzle is still valid!
 
+### 2026-07-12 — Live @SoWut session: "close friends have the best chance" **[ENDGAME]**
+
+The creator (now posting as **@SoWut**) dropped into the SalPhaseIon group for a long, candid session. The one line he **explicitly tagged as a hint** says the winning element is **personal and knowable**: his close friends and family "have the best chance" of solving it because they *know* something — even though they lack the technical skills others have. It dovetails with the 2023-02-23 taunt that the password is "in front of your eyes." He also re-confirmed the endgame is intact: **SalPhaseIon is "100% solvable,"** still **offline-solvable**, the residual search is **small** ("still solvable with a few stable qubits" — hyperbole for *brute-forceable*, not that a quantum computer is required), and the **prize is still available** (unclaimed). A separate, mood-coloured aside — *"the 5 BTC was never the actual prize, only a tiny fraction"* / *"a secret I wanted to share with the planet"* — is **philosophical, not a cryptographic instruction** (he was openly drinking) and should not be read as an actionable value.
+
+> **Jrk (@SoWut)**: My close friends have the best chance of solving it (a few tried). But they don't have the skills some of you do. **NOTE: that is a hint.** … "salphaseion is 100% solvable?" → **Yes.** … it's all still solvable with a few stable qubits. … (And yes, the btc is still available.)
+
+*Community, not creator (same session):* a longtime member, **@Mikejones90212**, shared a structural observation — `len(dbbi) + len(faed) = 91 + 570 = 661` is **prime**, and extracting its prime-position characters leaves exactly **`121 = 11²`** — which this project independently **verified** in-harness (the arithmetic is exact; the grid's *meaning* is still open). The creator's only reply was a noncommittal *"I don't know right now."*
+
 ---
 
 ### Endgame hint synthesis (what's still OPEN)
@@ -2777,7 +2786,8 @@ Pulling together the **[ENDGAME]** hints, the community's working model of the u
 6. The final output is a **regular Bitcoin private key** (2024-01-26), reached by **solving and then "decrypting"** (2021-08-11). The **internet is needed only to claim it, not to solve** (2023-08-06, 2023-11-24) — everything required to solve is already in hand.
 7. The **"theory of everything"** thread is reinforced by **"42"** (2023-01-25) and an explicit **imaginary-number** nudge — "higher than `sqrt(-1)`," "an imaginary puzzle would" (2023-01-12).
 8. Late, concrete nudges: you are **"one microstep"** away (2024-11-29); try **ASCII 127** (`DEL`, dovetailing with "zeroed out") and **the last digit of pi** (2024-11-29); the **"another door"** sits at **{1},{4},{21}** (2021-03-31). A recurring **colour** thread runs through it all (yellow/blue → infrared → purple pill → purple carrots).
-9. As of 2025, **nobody has reached "yingyang"** — the gating breakthrough — and reaching it means **~2 hours to a full solve** (2025-04-28). The puzzle is confirmed **still unsolved and valid** as recently as **2026-05-28**.
+9. As of 2025, **nobody has reached "yingyang"** — the gating breakthrough — and reaching it means **~2 hours to a full solve** (2025-04-28). The puzzle is confirmed **still unsolved and valid**, most recently on **2026-07-12**, when the creator re-affirmed SalPhaseIon is **"100% solvable"** and offline-solvable.
+10. The creator's one explicitly-tagged **2026-07-12** hint reframes the missing element as **personal and knowable**: his close friends/family "have the best chance" of solving it because they *know* something, even without the technical skills — i.e. the final element is a knowable datum **hidden in plain sight** (dovetailing with the 2023-02-23 "in front of your eyes" taunt), not fresh entropy.
 
 **Status: OPEN.** No public, verified solution to the endgame exists. The puzzle is reproducibly solved through Phase 3.2 only; everything past SalPhaseIon / Cosmic Duality remains unsolved, and the prize address is **unclaimed** (the spent outputs are the creators' scheduled halving moves, not a solve).
 
