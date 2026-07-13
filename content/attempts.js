@@ -3605,6 +3605,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — SalPhaseIon soup (dbbi/faed)", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-yellowblueprimes-grounded-grid-primes",
+  "phase": "genesis",
+  "category": "genesis :: genesis derivations",
+  "title": "yellowblueprimes grounded: the prime spiral-positions of the blue & yellow cells (all A007522) — not 2347",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-13",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): byte-exact spiral-index derivation from content/matrix.js + in-harness combine test",
+  "sourceQuote": "Yellow has a number and so does Blue",
+  "history": "A reframe of the community guess that yellowblueprimes/yinyang derive from the SalPhaseIon dbbi/faed blocks. The 2020 Roses poem points instead at the genesis grid: each colored cell has a CCW-spiral reading position, and yellowblueprimes = the PRIME ones. Derived byte-exact from the grid and tested in the cosmic combine.",
+  "input": "The 14×14 genesis grid: 15 blue + 9 yellow cells (content/matrix.js), their CCW-spiral reading indices, and the cosmic ingredients (matrixsumlist, lastwordsbeforearchichoice) + the open blobs.",
+  "method": "Compute each colored cell's spiral index; filter primes; test the resulting prime set as the yellowblueprimes ingredient (concatenated / A007522-filtered / summed / color-split) in the flat/soup/nested cosmic combine and as direct oracle keys, with the address/self-auth + salvation detector, KAT-gated (scratchpad r23).",
+  "provenance": "Grid + spiral from content/matrix.js (pixel-verified vs puzzle.png); A007522 (primes ≡7 mod 8) is creator-confirmed; blobs ciphertexts/*.txt.",
+  "output": "VERIFIED: all 24 colored cells sit at spiral indices ≡7 mod 8 (byte boundaries); the PRIME ones are blue{7,23,31,47,103,127} + yellow{71,79,151,167,191} (all A007522). Combine of these grid-native values: 3870 KAT-gated decrypts → 0 blob opened.",
+  "evidence": "Byte-exact spiral-index computation + KAT-gated AES/secp256k1 harness (selfcheck passed this run).",
+  "outcome": "verified-insight",
+  "insight": "yellowblueprimes has a clean grid-native meaning that replaces the 2347 guess: the set of PRIME spiral-positions of the blue and yellow cells — blue{7,23,31,47,103,127} and yellow{71,79,151,167,191}, all A007522 primes (≡7 mod 8). All 24 colored cells lie on byte boundaries (≡7 mod 8); keeping the 11 prime positions and dropping the 13 composite ones literally realizes the creator's 'reinsert the prime basics' and 'zero out'. The 6-blue/5-yellow split even offers a 'half and better half' reading (fefefe=103 is one of the blue-primes). The ingredient is now grounded; its exact byte-encoding and the final combine remain open — these primes as bytes/product/ordinals, or the two color-sets as the two 32-byte oracle halves, are the next tests.",
+  "links": [
+   { "label": "Walkthrough — Phase 0 Genesis", "href": "#/walkthrough" },
+   { "label": "Reference — cosmic ingredients", "href": "#/reference" }
+  ]
  }
 ];
 
