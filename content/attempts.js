@@ -3673,6 +3673,29 @@ export const ATTEMPTS = [
   "links": [
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-ebcdic-beaufort-detector-cosmic",
+  "phase": "salphaseion",
+  "category": "salphaseion :: methodology & detector",
+  "title": "The endgame readability check was EBCDIC-blind: a correct cosmic decrypt could hide as a phase-3.2-style CP1141→Beaufort layer — now scored (null for the grounded keyset)",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-14",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a 6-lens adversarial assumption-audit workflow surfaced this as the sole survivor; verified in-harness. Extends the community EBCDIC false-negative warning (id:370469246, GSMG Puzzle Solvers msg #3856, 2020-05-11).",
+  "sourceQuote": "in the standard config it's a false negative because of the ebcdic bytes",
+  "history": "After the four cosmic ingredients were all grounded and every combine/value/index sweep returned null, an assumption-audit workflow attacked the load-bearing assumptions themselves rather than generating more keys. Five of six lenses found nothing, but the 'wrong-frame' lens noticed a real gap: the success detector scores printability on the RAW AES output, yet the puzzle's ONE confirmed multi-layer decode (phase-3.2) is only English AFTER a CP1141→Beaufort stack. So a correct cosmic decrypt that is likewise EBCDIC-layered would have been silently discarded.",
+  "input": "The confirmed phase-3.2 decode stack (AES → iconv ISO-8859-1→IBM1141 → Beaufort key 'thematrixhasyou' over a–z, which turns phase-3.2's ~0.589-printable AES bytes into 'yourlifeisthesum…'); the grounded 4-ingredient cosmic keyset; the three open blobs.",
+  "method": "Reproduced the phase-3.2 stack byte-exact and froze it as a KAT (phase32 AES output → the Architect speech), then embedded the 256-byte CP1141 table as a pure-node transform (research/lib/ebcdic.mjs). Re-ran the grounded cosmic keyset (1921 keys × {raw, sha256hex} × 3 blobs), and for EVERY valid-pad plaintext scored readability three ways — raw ASCII, CP1141-reinterpret, and the full CP1141→Beaufort stack — alongside the existing P2PKH-address / self-auth / WIF detectors, KAT-gated with the STOP-guard armed.",
+  "provenance": "The stack is @CoruNethron's reproducible one-liner (…iconv -f ISO-8859-1 -t CP1141 | beaufort --decrypt --key=thematrixhasyou); the CP1141 table is iconv IBM1141 byte-for-byte; blobs are ciphertexts/*.txt; harness research/lib/gsmg.mjs + ebcdic.mjs.",
+  "output": "KAT passes (phase32 → 'yourlifeisthesumofaremainderofan…'). Grounded sweep: 11,526 decrypts, 43 valid-pad (the ~1/256 chance floor), 0 readable-after-stack, 0 near-English. No false-negative hit was hiding among the grounded keys.",
+  "evidence": "KAT-gated (phase32→speech + secp256k1 vector) in-harness; scratchpad r69 (iconv reproduction) + r70 (grounded sweep); the reusable detector is research/lib/ebcdic.mjs (in-node, no runtime iconv).",
+  "outcome": "verified-insight",
+  "insight": "The endgame detector had a real blind-spot: it scored readability on the RAW AES output, but cosmic's plaintext could be encoded like phase-3.2 (CP1141/EBCDIC bytes then a Beaufort keyed 'thematrixhasyou') — in which case the CORRECT decrypt reads ~0.59 printable and would be discarded as a chance valid-pad. This is the same false-negative that misled solvers on phase-3.2 (id:370469246, 2020), never previously applied to cosmic's ~1312-byte message path. The fix — score readability AFTER the confirmed CP1141→Beaufort stack — is now a standard, KAT-validated detector. Re-running the grounded 4-ingredient keyset through it found nothing: the grounded values still do not open cosmic even when the EBCDIC layer is accounted for. So the wall stands, but a genuine way the answer could have been hiding is now closed, and every future sweep can catch an EBCDIC-layered plaintext.",
+  "links": [
+   { "label": "Walkthrough — Phase 3.2 (EBCDIC → Architect)", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
