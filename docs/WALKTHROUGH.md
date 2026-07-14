@@ -1843,8 +1843,8 @@ digits = [int(p, 2) for p in parts]
 
 → **`matrixsumlist`** ✅ CONFIRMED. (CyberChef: `Remove whitespace` → `Substitute('ab','01')` → `From Binary('Space',8)`.) This token is a **label** for the genesis-image row/column sums from Phase 0 — rows `[6,10,8,7,6,6,5,4,9,9,7,8,7,9]` → `610876654997879`, cols `[8,10,8,10,8,7,3,6,7,5,9,6,6,8]` → `8108108736759668`. It is **cosmic ingredient #2** (see §9.7). ⚠️ Note: the exact byte-form that feeds the final SHA-256 is ambiguous (the value `10` makes `610876…` parse two ways: naïve concat vs. zero-padded two-digit vs. base-14/15 vs. interleaved). This ambiguity alone could break an otherwise-correct cosmic recipe.
 
-> **⚠️ An alternate reading of "matrix sum list" (community — @Tarmo_K) — verified deterministic, but a documented dead-end.**
-> The name *matrix sum list* need not sum the **binary** grid. @Tarmo_K proposed summing the grid as **four colours** instead:
+> **⚠️ An alternate reading of "matrix sum list" (community) — verified deterministic, but a documented dead-end.**
+> The name *matrix sum list* need not sum the **binary** grid. A community solver proposed summing the grid as **four colours** instead:
 > read the 14×14 as Blue/White/Black/Yellow, weight them by the **first four primes** (`B=2, W=3, K=5, Y=7`), **delete the FEFEFE
 > anchor's row and column** (cell `[7,4]`, 0-indexed → a 13×13 grid), then sum each remaining row and column and read the sums **as ASCII**:
 >
@@ -1859,7 +1859,7 @@ digits = [int(p, 2) for p in parts]
 > range, so no readable string appears. (2) With such small primes the sums *all* land in the ASCII `44–57` band (`,`–`9`), so a
 > digit-and-punctuation string is nearly guaranteed and reading it as lat/long is interpretive. And it leads nowhere testable: the string,
 > every coordinate form, and the value used as an alternate `matrixsumlist` in the cosmic combine all fail to open any blob (1548 KAT-gated
-> decrypts, 0 hits), and the coordinate's brainwallet addresses are all empty on-chain — consistent with @Tarmo_K's own note that these
+> decrypts, 0 hits), and the coordinate's brainwallet addresses are all empty on-chain — consistent with the solver's own note that these
 > leads "haven't yielded anything useful." Recorded so the alternate path and its verified dead-end are on the map.
 
 **Binary chunk 2** (40 bits → 5 chars → `enter`), embedded **inside** the `salph_inner` blob's base64:
