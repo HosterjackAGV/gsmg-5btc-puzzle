@@ -3742,6 +3742,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — Phase 3.2 (EBCDIC → Architect)", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-genesis-grid-verified-vs-source-image",
+  "phase": "genesis",
+  "category": "genesis :: matrix structure",
+  "title": "The genesis grid is independently verified against the puzzle.png pixels — all 196 cells match (rabbit-obscured cells resolved); the 3 grid ingredients rest on a source-verified foundation",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-14",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): first non-circular pixel re-derivation of the grid from the source image (prior 'pixel-exact' checks recomputed FROM matrix.js itself)",
+  "sourceQuote": "re-verified pixel-exact against puzzle.png",
+  "history": "The 14×14 grid (content/matrix.js) is the source of 3 of the 4 cosmic ingredients (matrixsumlist, yellowblueprimes, yinyang). Its 'pixel-exact' provenance was circular — earlier integrity checks recomputed sums FROM MATRIX.grid, never reading the actual image back. If even one cell were wrong, all three ingredients would be subtly off — a clean explanation for the endgame's persistent NULL. So the grid was read directly from puzzle.png for the first time.",
+  "input": "puzzle.png (1048×1556, the Phase-0 genesis image); content/matrix.js (grid/blue/yellow/fefefe/spiral).",
+  "method": "PIL pixel-read: locate the 14×14 grid (red separator at y≈1061, cells ≈75px); classify each cell by the majority of its interior samples against {black,white,blue,yellow,fefefe}; reconstruct the 0/1 grid + colored-cell sets; diff cell-by-cell vs matrix.js (parsed as JSON). Drill the 'mixed' cells (obscured by the overlaid white-rabbit drawing) with corner samples. Then flip the obscured cells and test the corrected matrixsumlist/yinyang in the 4-ingredient combine under the universal inspector (all codepages × ciphers × KDFs), KAT-gated.",
+  "provenance": "puzzle.png in assets/walkthrough/; matrix.js parsed as JSON; the combine harness is KAT-gated (research/lib/universal.mjs).",
+  "output": "blue (15), yellow (9), and fefefe [7,4] MATCH exactly; all 196 cells' majority classification matches matrix.js (ones=101, zeros=95). The only 'mixed' cells are the two obscured by the white-rabbit drawing — (6,7) and (7,8) — both reading WHITE (0) by pixel-majority (only 36–39% black = the rabbit's outline), matching matrix.js. Flip test: flipping (6,7) and/or (7,8) and recomputing matrixsumlist/yinyang → 576 combine trials under the full decoder set → 0 hits.",
+  "evidence": "PIL pixel audit (v_grid_from_image / v_grid_rabbit_audit) + KAT-gated universal combine harness (r89), all reproducible in research/harnesses/.",
+  "outcome": "verified-insight",
+  "insight": "The genesis grid is now INDEPENDENTLY verified against the source image — the first non-circular check (the earlier 'pixel-exact' claim recomputed from matrix.js itself). Every uncolored cell, all 15 blue, all 9 yellow, and the fefefe anchor at [7,4] match puzzle.png exactly; the only cells the 'follow the white rabbit' drawing obscures — (6,7) and (7,8) — read white by pixel-majority and, even if flipped to black, produce a matrixsumlist/yinyang that still opens nothing. So the three grid-derived ingredients (matrixsumlist = 610876654997879/8108108736759668, yellowblueprimes, yinyang = 95101/10195) rest on a source-verified foundation with exactly 101 ones (prime). This definitively closes the 'a wrong grid cell is why the combine never works' hypothesis: the input data is correct; the endgame wall is genuinely the unknown combine/passphrase, not a transcription error.",
+  "links": [
+   { "label": "Walkthrough — Phase 0 Genesis", "href": "#/walkthrough" },
+   { "label": "Reference — cosmic ingredients", "href": "#/reference" }
+  ]
  }
 ];
 
