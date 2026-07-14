@@ -3719,6 +3719,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — SalPhaseIon matrixsumlist", "href": "#/walkthrough" },
    { "label": "Reference — cosmic ingredients", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-universal-decoder-inspector",
+  "phase": "salphaseion",
+  "category": "salphaseion :: methodology & detector",
+  "title": "The \"we cannot miss\" universal inspector: every decrypt is checked under ALL codepages × ALL classical ciphers × ALL KDFs, so no hit hides behind an un-applied decoder",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-14",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): generalising the EBCDIC-detector blind-spot (insight 0034) into a complete post-decrypt inspector",
+  "sourceQuote": "create a harness so that all tests take into account all versions of all decoders for each trial we make — we cannot miss",
+  "history": "Phase-3.2 taught that a correct AES decrypt can be readable ONLY after a further decode (CP1141/EBCDIC → Beaufort), scoring just ~0.59 raw-printable — invisible to a raw-ASCII detector (insight 0034). If cosmic or an oracle is layered the same way, a raw detector would silently discard the winning key. So a trial must not rely on the plaintext being directly readable: it must be run through every decoder the creator could plausibly have used.",
+  "input": "Any AES-CBC decrypt (padding OFF, so raw bytes are always inspected — nothing is gated away by a PKCS7 check); the three open blobs; the confirmed decode signature (CP1141 + Beaufort 'thematrixhasyou' + VIC).",
+  "method": "research/lib/universal.mjs — for every trial: derive the AES key under ALL KDFs (EVP_BytesToKey md5/sha1/sha256/sha512 + PBKDF2×{1,1k,10k}); decrypt with padding disabled; then run the raw plaintext through (a) structural crypto detectors — P2PKH address from every 32-byte window vs the prize/peeled address, XOR/SHA combine of the two halves, sha256 self-auth, nested 'Salted__'; and (b) a text layer that reinterprets the bytes under 5 codepages (latin1 + EBCDIC CP1141/037/500/273) × ~30 classical ciphers (Beaufort/Vigenère±/Atbash/Caesar×25) and flags a valid base58check WIF, a thematic word, or ≥4 common-English words; plus nested base64/hex and a VIC digit-decode. KAT-gated (the phase-3.2 speech region flags English + 'privatekey' via CP1141→Beaufort) with a proven 0 false-positive rate on random data.",
+  "provenance": "Codepage tables are `iconv -f ISO-8859-1 -t <cp>` byte-exact; secp256k1 via node crypto; WIF via full base58check validation. All blobs ciphertexts/*.txt.",
+  "output": "KAT-validated: catches the confirmed CP1141→Beaufort stack (80 common words + 'privatekey'), validates real WIFs while rejecting random base58 strings, 0 false positives across random buffers. Re-certified the grounded 4-ingredient combine keyset AND the blind-spot reframe candidates (Dutch salvation words, on-chain hash160/sats, mp3-sha256, foreign-salt KDF, cross-blob ciphertext-as-key, PBKDF2 iter=1141) under the FULL decoder set → 0 hits. No winning key was hiding behind an un-applied decoder.",
+  "evidence": "KAT-gated (phase32 speech + secp256k1 vector + base58check WIF) in-harness; scratchpad v_universal_kat + r83/r84; module research/lib/universal.mjs.",
+  "outcome": "verified-insight",
+  "insight": "The endgame's persistent NULL is now certified NOT to be a detector artifact. Every trial is judged under all versions of all decoders — 5 codepages × ~30 classical ciphers × 7 KDFs × the address/WIF/self-auth/nested-Salted/theme/English detectors, on the raw (padding-off) plaintext — so a correct key whose plaintext reads only after some layering (EBCDIC, Beaufort, VIC, a WIF embedded in binary, an address in a 32-byte window) can no longer be missed. Applied to the principled combine space and to a fresh blind-spot reframe's candidates, it still finds nothing: the wall is genuinely the unknown passphrase/personal datum, not an un-applied decoder. This is now the standard success detector for every future trial.",
+  "links": [
+   { "label": "Walkthrough — Phase 3.2 (EBCDIC → Architect)", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
