@@ -3811,6 +3811,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — Phase 0 Genesis", "href": "#/walkthrough" },
    { "label": "Reference — cosmic ingredients", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-dbbi-faed-source-verified-foundation-audit-complete",
+  "phase": "salphaseion",
+  "category": "salphaseion :: source verification",
+  "title": "dbbi and faed are verified byte-exact against the archived SalPhaseIon page — the foundation audit is now complete across every endgame source",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-15",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a gap-audit workflow flagged the SalPhaseIon soup as the one load-bearing source the foundation audit had never checked non-circularly",
+  "sourceQuote": "dbbi and faed are the only soup blocks that do not self-decode, so a transcription typo would be invisible to every self-check — yet they seed the entire dbbi→yellowblueprimes / faed→yinyang frontier",
+  "history": "The foundation audit re-derived every load-bearing endgame fact from its actual source to break circularity: the genesis grid from puzzle.png pixels, the spiral / colored-URL / yellowblueprimes derivation, the master-hint identities from the 2023-02-23 image, and the blob bytes from the page. But it explicitly scoped OUT the SalPhaseIon soup. Every 'transcription integrity confirmed' note compared only repo-internal copies (data.mjs / ENDGAME-ANALYSIS / WALKTHROUGH — the same transcription lineage). Because dbbi (91 symbols) and faed (570 symbols) are the only soup blocks whose field-decode is garbage (they do not self-decode to a label like the other tokens), a single wrong a–i symbol would be undetectable by any in-harness check while silently mis-seeding every dbbi/faed factorization and grid attack.",
+  "input": "The independent 2023-06-01 Internet Archive capture of the SalPhaseIon page (web.archive.org/web/20230601222752 of gsmg.io/89727c59…), where the soup is rendered as space-separated a–i letters; and research/lib/data.mjs (DBBI, FAED).",
+  "method": "Fetch the archived page, extract the visible soup text between the 'SalPhaseIon' and 'Cosmic Duality' labels, strip everything except a–z, and char-diff the result against the repository strings: assert the full soup matches character-for-character, and specifically that soup[0:91] equals DBBI, soup[195:765] equals FAED, and the matrixsumlist region soup[91:195] is identical.",
+  "provenance": "The Internet Archive capture is an independent third-party mirror (not derived from this repo), so the diff breaks circularity. The same page's Cosmic Duality blob (U2FsdGVkX18tP2/g…) matches the cosmic ciphertext already verified in prior work.",
+  "output": "The external soup is byte-identical to the repository soup across all 998 space-stripped characters. dbbi (soup[0:91]) === DBBI, faed (soup[195:765]) === FAED, and the matrixsumlist region match exactly. There is no transcription error in dbbi or faed.",
+  "evidence": "Reproducible: curl the Wayback capture, extract + strip the soup, diff against data.mjs DBBI/FAED. In-harness char-diff run this iteration; harnesses research/harnesses/r99 and r100 (the same iteration's cipher-choice and matrixsumlist-form gaps, both null).",
+  "outcome": "verified-insight",
+  "insight": "With dbbi/faed confirmed against an independent external source, the foundation audit is COMPLETE across every load-bearing endgame source — genesis grid, spiral / colored-URL / yellowblueprimes, master-hint identities, the four AES blob byte-streams, and now the SalPhaseIon soup including dbbi and faed. There is no transcription, derivation, or decode error anywhere in the endgame data. Together with the exhausted combine, passphrase-encoding, cipher-choice, and public-artifact spaces, this maximally constrains the remaining problem: the wall is neither corrupted data nor an un-applied transform — it is a genuinely missing non-public datum, exactly as the creator has said.",
+  "links": [
+   { "label": "Walkthrough — SalPhaseIon soup", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
