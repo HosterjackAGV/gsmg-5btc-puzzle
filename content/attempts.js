@@ -3744,6 +3744,29 @@ export const ATTEMPTS = [
   ]
  },
  {
+  "id": "engine-passphrase-side-byte-encoding-axis",
+  "phase": "salphaseion",
+  "category": "salphaseion :: methodology & detector",
+  "title": "A structurally-overlooked axis: the passphrase's PRE-KDF byte encoding (EBCDIC / UTF-16) — every prior attempt fed openssl -pass as ASCII; the whole axis is now closed",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-15",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): an out-of-box reframe workflow (6 lenses generate + adversarial skeptics), whose sole survivor was the pre-KDF passphrase-encoding axis, then a 5-auditor verification workflow",
+  "sourceQuote": "the visible passphrase characters are correct, but the BYTES fed to EVP_BytesToKey are not their ASCII encoding — they are the EBCDIC encoding of those same characters",
+  "history": "The endgame's confirmed final layer is EBCDIC: the Phase-3.2 plaintext is byte-exact CP1141 + Beaufort (~0.59 raw-printable). The 'we cannot miss' inspector applies 5 codepages, but only DECODER-side — to the plaintext AFTER decryption. Nobody had ever applied a codepage to the PASSPHRASE before the key-derivation: every trial across ~370 iterations hardcoded UTF-8/ASCII -pass bytes (gsmg.mjs opensslDecrypt, universal.mjs deriveKeys). Since all ingredient forms are pure ASCII, the KDF had only ever seen ASCII passphrase bytes — a genuine blind spot.",
+  "input": "The 1250 principled 4-ingredient combine passphrases (both literal and sha256hex forms from the combine cross-product); the three self-verifying open blobs (cosmic + two 80-byte-ciphertext oracles); the confirmed EBCDIC codepages CP1141/037/500/273 and UTF-16 LE/BE.",
+  "method": "Encode each combine passphrase STRING to its pre-KDF bytes under a non-ASCII scheme, then run the standard pipeline: char→EBCDIC byte (KAT-checked: 'abc0'→81 82 83 f0; tables match Python's authoritative EBCDIC codecs) for CP1141/037/500/273, and UTF-16 LE/BE with and without a byte-order mark. Feed those bytes to EVP_BytesToKey(sha256) — and, for EBCDIC, all 7 KDFs (evp md5/sha1/sha256/sha512 + pbkdf2×{1,1k,10k}) — decrypt AES-256-CBC with padding OFF, check PKCS7 validity (self-verifying: a correct key MUST pad-validate), and run universalInspect (address/WIF/self-auth/nested-Salted/theme/English) on the result.",
+  "provenance": "EBCDIC tables copied byte-exact from research/lib/universal.mjs (iconv -f ISO-8859-1 -t <cp>) and independently re-verified against Python's built-in EBCDIC codecs; evpBytesToKey byte-exact vs OpenSSL 3.5.7 across all digests; blob salts match ground truth (cosmic 2d3f6fe06dc950e6). Harnesses r92/r93/r95/r96 under research/harnesses/.",
+  "output": "NULL across the entire axis: EBCDIC × 4 codepages × evp-sha256 = 15,000 decrypts (full inspection) → 0; EBCDIC × all 7 KDFs = 105,000 decrypts → 0; UTF-16 LE/BE = 52,500 → 0; BOM-prefixed UTF-16 = 52,500 → 0. Valid-pad counts track random chance throughout (e.g. 420 vs ~410). A 5-auditor verification workflow found 0 false-null bugs (encoder KAT correct, blob slices correct, valid-pad gate cannot hide a correct key, KDF byte-exact, 0 silent skips).",
+  "evidence": "KAT-gated (EBCDIC self-check 'abc0'→81 82 83 f0; universal.mjs selfKAT; positive controls fire ENGLISH/THEME/WIF/NESTED) in-harness; research/harnesses/r92_passphrase_ebcdic_encoding.mjs, r93_passphrase_ebcdic_allkdf.mjs, r95_container_hash_and_utf16.mjs, r96_utf16_bom.mjs; verified by research/harnesses/wf_iter371_verify.mjs (5 auditors, 0 false-null bugs).",
+  "outcome": "verified-insight",
+  "insight": "The pre-KDF passphrase byte-encoding is a distinct attack axis from the combine, the decoder-side codepages, and the KDF/mode/salt sweeps — and it had never been tested: ~370 iterations all fed UTF-8/ASCII -pass bytes. Applying the puzzle's own native charset (EBCDIC CP1141/037/500/273) and UTF-16 (LE/BE ±BOM) to the passphrase before EVP_BytesToKey, across the full principled combine set and all 7 KDFs, still decrypts nothing on any of the three self-verifying blobs. Together with the combine × full-decoder-universe capstone, this narrows the wall further: it is neither an un-applied decoder nor an un-applied passphrase encoding on a correct in-hand combine — it is a genuinely missing external/personal input.",
+  "links": [
+   { "label": "Walkthrough — Phase 3.2 (EBCDIC → Architect)", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
+ },
+ {
   "id": "engine-genesis-grid-verified-vs-source-image",
   "phase": "genesis",
   "category": "genesis :: matrix structure",
