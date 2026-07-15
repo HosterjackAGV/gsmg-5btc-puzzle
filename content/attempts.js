@@ -3767,6 +3767,29 @@ export const ATTEMPTS = [
   ]
  },
  {
+  "id": "engine-lastwords-ordered-delta-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame combine",
+  "title": "The 'lastwords = the ordered DELTA of the modified Architect speech' reading (not the whole span) is closed — the creator's inserted/swapped tokens, in order, key nothing",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-15",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a reframe workflow's highest-confidence lens (assumption-inversion), re-examined in-harness after its adversarial kill proved overbroad",
+  "sourceQuote": "the ingredient is NOT the 1539-char modified Architect speech as a span, but the residue after the canonical Matrix monologue is subtracted — the creator's inserted/swapped tokens in order",
+  "history": "The endgame ingredient 'lastwordsbeforearchichoice' has an UNRESOLVED byte-form: the whole 1539-char modified Architect speech, a single span, or the literal token. Prior work (attempt 0150) tested only six OBVIOUS individual insertions (ciaobellao / returntothesourcecodes / reinsertingtheprimebasics / ireallyhopeyouretheone / ...). The untested reading: the ingredient is the ORDERED DELTA — every token the creator inserted, swapped, or misspelled relative to the canonical Matrix Reloaded Architect monologue, concatenated in order — a reading grounded in the ingredient's own name and the master-hint taunt 'it's in front of your eyes but you're not seeing it'.",
+  "input": "The creator-distinctive tokens (unambiguously not in any Matrix film speech) in the order they appear in the puzzle speech: thispuzzle, sedulously, worthhundredfourty, usguysatgsmg, helpusbuildit, returntothesourcecodes, reinsertingtheprimebasics, overtwentythreeciphers, sixteenencryptions, sevenintertwinedpasswords, findtheactualprivatekey, bruteforcingmightberequired, killingyourwillpower, extinctionoftheentirenessofyourselfself, ireallyhopeyouretheone, ciaobellao, and the misspellings (waisting/throphies/prices). Grounded ybp (11 A007522 primes), matrixsumlist (row/col sums), yinyang (95101/10195).",
+  "method": "Build 11 delta-derived lastwords VALUES {full ordered concatenation, spaced, the 'worth 140' mission cluster, the endgame-instruction cluster, the swapped words, the misspellings, the number-words, the endings, a first-letter acrostic, ...}. Cross each with grounded ybp{asc-11-primes, blue-then-yellow} × matrixsumlist{rows, cols, rows+cols} × yinyang{95101, 10195, name} × separator{'', z} × order{3 arrangements} × {raw, sha256hex}, and test each on cosmic + both oracles under all 7 KDFs, judged by the universal inspector (address / WIF / self-auth / nested-Salted / theme / English, across 5 codepages × ~30 ciphers).",
+  "provenance": "Distinctive tokens are the unambiguous creator additions (present in the confirmed phase-3.2 speech, absent from the Matrix film monologue), so the delta does not depend on an exact external transcript. Harness research/harnesses/r98_lastwords_ordered_delta.mjs; universal.mjs pipeline 5-auditor-certified (iter 371); positive control (phase2/causality) fires, negative control clean.",
+  "output": "7,128 tryTrial batches (~50,000 decrypts) → 0 flags, 0 valid-pad readable. The ordered-delta reading of lastwords opens no blob in the grounded 4-ingredient combine. NULL.",
+  "evidence": "KAT-gated in-harness (positive control tryTrial(phase2, sha256hex('causality')) fires ENGLISH; wrong-pass control = 0). research/harnesses/r98_lastwords_ordered_delta.mjs; reframe workflow research/harnesses/wf_iter372_reframe.mjs.",
+  "outcome": "verified-fail",
+  "insight": "The 'lastwords is the DELTA, not the span' hypothesis — a genuinely distinct and previously-untested reading of the most ambiguous ingredient byte-form — is closed. Even the full ordered concatenation of every creator-inserted/swapped/misspelled token (including the ones attempt 0150 missed: hundredfourty, gsmg, privatekey, bruteforcing, the number-swaps, the misspellings) keys nothing in the grounded combine. This removes another 'wrong ingredient form' explanation for the combine nulls and, with the public-artifact exhaustion (Decentraland scene bundle + deployer wallet, also null), reinforces that the missing piece is a non-public personal datum rather than an alternate reading of in-hand material.",
+  "links": [
+   { "label": "Walkthrough — Phase 3.2 (Architect speech)", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
+ },
+ {
   "id": "engine-genesis-grid-verified-vs-source-image",
   "phase": "genesis",
   "category": "genesis :: matrix structure",
