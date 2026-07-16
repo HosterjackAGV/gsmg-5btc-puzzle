@@ -3834,6 +3834,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — SalPhaseIon soup", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-creator-statement-history-no-unlogged-hint",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame strategy",
+  "title": "The creator's seven-year public statement history holds no un-logged operational hint — and he has said the answer lives on an offline laptop, so the wall is a non-public personal datum",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-16",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a systematic chronological mining of the creator's entire public message history, prompted by his own statement that close friends have the best chance because they know something",
+  "sourceQuote": "My close friends have the best chance of solving it (a few tried). But they don't have the skills some of you do. — followed by: NOTE: that is a hint.",
+  "history": "Years of in-harness cryptanalysis are exhausted and every endgame data source is now verified. The creator has repeatedly framed the missing piece as personal and knowable. If a decisive clue existed in his own words, it would be the highest-value untapped source — but only a handful of his statements had ever been distilled into intel. This work mined the whole history chronologically to either surface an overlooked operational hint or establish, rigorously, that none exists in public.",
+  "input": "The complete set of the creator's public messages spanning 2019 through 2026 (several hundred), read chronologically by year-window; the existing creator-intel notes and the exhaustion ledger for de-duplication.",
+  "method": "Fan out readers across year-windows, each extracting every message that could be an operational instruction, a concrete value, a self-referential pointer, or a personal datum a close friend would know — excluding banter. Adversarially verify each candidate against its own in-thread context and the ledger: is it genuinely new, genuinely operational (versus flavour the creator himself waves off), and can it be turned into a concrete decryption test? Then run every concrete token the mining surfaced through the universal decryptor (all key-derivations, code pages, and ciphers) against the three open blobs, both standalone and appended to the four-ingredient combine.",
+  "provenance": "Every quote verified verbatim against the message archive; candidate tokens tested in-harness with the KAT-gated universal inspector. No biographical specifics are reproduced here by design — only the puzzle-relevant conclusion.",
+  "output": "Of dozens of flagged candidates, none survived adversarial verification: each resolved to an unrelated April-Fools prank, the single already-known typo fix, a quote the creator explicitly tagged 'not a hint', a self-referential backronym, or biographical colour with no extractable key. The token sweep of every concrete name/place/idiom he mentioned was null across all three blobs. Two of his own statements, however, sharpen the picture: the definitive answer resides on an offline laptop he 'hasn't touched in years', and his close friends 'have the best chance … because they know something' — a line he explicitly labelled a hint.",
+  "evidence": "In-harness token sweep (25 creator-mentioned tokens × 5 forms × 3 blobs × all key-derivations) → 0 valid decrypts; research/harnesses/r102_creator_corpus_personal_tokens.mjs; the mining workflow research/harnesses/wf_iter375_creator_mining.mjs.",
+  "outcome": "verified-insight",
+  "insight": "The creator's entire public statement history contains no un-logged operational hint, and no public token he has ever mentioned is the passphrase. Combined with his own words — that the answer sits on an offline laptop and that close friends who 'know something' have the best chance — this establishes that the remaining barrier is a genuinely non-public personal datum, not a derivation or a hint hidden in public material. It reframes the realistic path to a solution: not more cryptanalysis of the in-hand data (which is exhausted and verified) but a specific piece of knowledge held by the creator or someone close to him.",
+  "links": [
+   { "label": "Walkthrough — the endgame", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
