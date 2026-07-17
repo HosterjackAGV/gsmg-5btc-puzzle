@@ -3857,6 +3857,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the endgame", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-merkle-taproot-combine-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame combine",
+  "title": "Hash-tree combines of the four ingredients — a plain Merkle root and a BIP341 taproot tagged-hash root — are tested and open nothing",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-17",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): prompted by a live creator/community session (2026-07-16) whose most-quoted lines were 'merkle root is the balancing function' (@piandonehalf) and 'there is no key path' (a BIP341 taproot term)",
+  "sourceQuote": "merkle root is the balancing function, same way the block header contains the merkle root of the transaction list",
+  "history": "The cosmic passphrase is a combine of the four verified ingredients, but every string/arithmetic/cipher combine is exhausted. A live discussion about quantum-resistant Bitcoin (BIP360), Pay-to-Merkle-Root, and taproot raised a construction the combine sweeps had never covered: a hash-TREE over the four ingredients (rather than a flat concatenation-then-hash). The Bitcoin genesis-block merkle root had been tested as a value, but a merkle tree built FROM the four ingredients had not.",
+  "input": "The four grounded ingredients {yellowblueprimes (11 A007522 primes), matrixsumlist (grid row/col sums), lastwordsbeforearchichoice, yinyang (95101/10195)}, in principled byte-forms; the three open blobs.",
+  "method": "Build a two-level binary hash tree over the four ingredients under all three ways of pairing them into two halves (naturally matching the puzzle's 'half and better half' motif). (1) Plain Merkle: leaf = H(ingredient); internal = H(leaf_left ‖ leaf_right); root = H(internal_left ‖ internal_right); with H in {single SHA-256, Bitcoin double-SHA-256} and both raw-byte and hex concatenation. (2) BIP341 taproot: the tagged hash SHA256(SHA256(tag)‖SHA256(tag)‖data) with TapLeaf-tagged leaves and TapBranch nodes that lexicographically sort their two children (as the standard requires), plus a TapTweak-of-root variant. Each 32-byte root is tested as the openssl passphrase (hex, through every key-derivation) and as a raw AES key with a derived IV (padding off), on cosmic and both oracles, judged by the universal inspector.",
+  "provenance": "Tagged-hash and TapBranch-sorting implemented to the BIP341 spec; self-verifying via PKCS7 on the blobs; STOP-guard armed. Harnesses r106 (merkle) and r107 (taproot) under research/harnesses/.",
+  "output": "NULL. Plain Merkle: 288 roots → 864 passphrase-batches + 864 raw-key decrypts → 0. Taproot tagged-hash: 144 roots → 864 + 432 → 0. No hash-tree combine of the four ingredients — Merkle or taproot — produces a valid decrypt on any open blob.",
+  "evidence": "Self-verifying in-harness; research/harnesses/r106_merkle_tree_combine.mjs and r107_taproot_tagged_hash_combine.mjs; the prompting session logged as insight 0041.",
+  "outcome": "verified-fail",
+  "insight": "The combine space now also excludes hash-tree constructions: neither a plain Merkle root nor a BIP341 taproot tagged-hash root over the four ingredients keys any blob. This closes the most concrete idea to come out of the community's BIP360/merkle/taproot discussion, so future solvers arriving from that same conversation can skip it. It is one more confirmation that the barrier is not an untried combine shape over the public ingredients — it is a non-public personal datum, exactly as the creator has repeatedly said.",
+  "links": [
+   { "label": "Walkthrough — the endgame combine", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
