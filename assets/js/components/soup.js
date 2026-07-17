@@ -22,7 +22,11 @@ const PARTS = [
     dec:'yinyang', guess:true },
   { id:'z1',     n:'',  label:'z',           type:'sep',    solved:true, hue:20,  raw:'z', dec:'z' },
   { id:'lastwords', n:'④', label:'lastwordsbeforearchichoice', type:'field', solved:true, hue:150,
-    raw:'agdafaoaheiecggchgicbbhcgbehcfcoabicfdhhcdbbcagbdaiobbgbeadedde', dec:'lastwordsbeforearchichoice' },
+    raw:'agdafaoaheiecggchgicbbhcgbehcfcoabicfdhhcdbbcagbdaiobbgbeadedde', dec:'lastwordsbeforearchichoice',
+    // the soup block is only the field-decoded LABEL; the ingredient's other candidate VALUE is the actual Beaufort
+    // plaintext — the 1539-char Architect speech decoded from phase-3.2 (AES → CP1141/EBCDIC → Beaufort 'thematrixhasyou').
+    alt:'yourlifeisthesumofaremainderofanunbalancedequationinherenttotheprogrammingofthispuzzleyouaretheeventualityofananomalywhichdespitemysinceresteffortsihavebeenunabletoeliminatefromwhatisotherwiseaharmonyofmathematicalprecisionwhileitremainsaburdentosedulouslyavoidititisnotunexpectedandthusnotbeyondameasureofcontrolwhichhasledyouinexorablyhereyouyouhaventansweredmyquestionmequiterightinterestingthatwasquickerthantheotherspleaseifyoufindawaytocompletethelastpartofthepuzzletaketheprivatekeyyouveearneditbutpleasetakethistoheartthatwhatawisemanabovehintedatisworthhundredfourtyoftheinvestmentthatswhatusguysatgsmgaretryingtoaccomplishintheendpleasejusthelpusbuilditinsteadofjustwaistingyourlifetimebyhuntingforworthlesspricesandthrophieslikethisimsorrytotellyouthatyouvecomethisfarbutyoullneverfinishthelasttaskiexpectyoutosaybullshitwelldenialisthemostpredictableofallhumanresponsesbutrestassuredthiswillnotbethelasttimeihavedestroyedarestlesssoulandihavebecomeexceedinglyefficientatitthefunctionoftheyouisnowtoreturntothesourcecodesallowingatemporarydisseminationofthecodeyouhopefullycarryreinsertingtheprimebasicsafterwhichyouwillberequiredtoselectfromovertwentythreecipherssixteenencryptionsandorsevenintertwinedpasswordstofindtheactualprivatekeynotethatalsobruteforcingmightberequiredfailuretocomplywiththisprocesswillresultinacataclysmicsystemcrashkillingyourwillpowerwhichcoupledwiththeexterminationofyourwilltoliveandwillultimatelyresultintheextinctionoftheentirenessofyourselfselfgoodluckneverthelessireallyhopeyouretheoneciaobellao',
+    altLabel:'Beaufort speech' },
   { id:'z2',     n:'',  label:'z',           type:'sep',    solved:true, hue:20,  raw:'z', dec:'z' },
   { id:'thispassword', n:'⑤', label:'thispassword', type:'field', solved:true, hue:170,
     raw:'cfobfdhgdobdgooiigdocdaoofidh', dec:'thispassword' },
@@ -65,7 +69,7 @@ export function soupWidget() {
           <option value="|">|</option>
           <option value="\\n">newline</option>
         </select>
-        <span class="soup-hint">Edit any value in place · flip <b>raw ⇄ decoded</b> · <b>add</b> a part to your recipe (as many times as you like) · <b>dbbi→yellowblueprimes</b> and <b>faed→yinyang</b> are unconfirmed guesses</span>
+        <span class="soup-hint">Edit any value in place · flip <b>raw ⇄ decoded</b> · <b>add</b> a part to your recipe (as many times as you like) · <b>lastwordsbeforearchichoice</b> cycles raw → label → the full <b>Beaufort speech</b> (the 1539-char Architect plaintext) · <b>dbbi→yellowblueprimes</b> and <b>faed→yinyang</b> are unconfirmed guesses</span>
       </div>
     </div>
 
@@ -114,7 +118,7 @@ export function soupWidget() {
     let state = load() || fresh();
     function fresh() {
       return {
-        vals: Object.fromEntries(PARTS.map(p => [p.id, { raw: p.raw, dec: p.dec }])), // editable copies
+        vals: Object.fromEntries(PARTS.map(p => [p.id, p.alt != null ? { raw: p.raw, dec: p.dec, alt: p.alt } : { raw: p.raw, dec: p.dec }])), // editable copies (alt = 3rd form where it exists)
         form: Object.fromEntries(PARTS.map(p => [p.id, p.solved ? 'dec' : 'raw'])),   // which form the palette shows/adds
         hideSep: false,
         recipe: [],        // [{uid,partId,label,hue,value}]  ordered, allows duplicates
@@ -129,15 +133,17 @@ export function soupWidget() {
         if (!s || !s.vals || !Array.isArray(s.recipe)) return null;
         for (const e of s.recipe) uid = Math.max(uid, (e.uid || 0) + 1);
         // heal against schema drift (new/removed parts)
-        for (const p of PARTS) { if (!s.vals[p.id]) s.vals[p.id] = { raw:p.raw, dec:p.dec }; if (!s.form[p.id]) s.form[p.id] = p.solved ? 'dec' : 'raw'; }
+        for (const p of PARTS) { if (!s.vals[p.id]) s.vals[p.id] = { raw:p.raw, dec:p.dec }; if (p.alt != null && s.vals[p.id].alt == null) s.vals[p.id].alt = p.alt; if (!s.form[p.id] || (s.form[p.id] === 'alt' && p.alt == null)) s.form[p.id] = p.solved ? 'dec' : 'raw'; }
         return s;
       } catch { return null; }
     }
-    const paletteValue = id => state.vals[id][state.form[id]];
+    const formsOf = p => p.alt != null ? ['raw', 'dec', 'alt'] : ['raw', 'dec'];
+    const paletteValue = id => state.vals[id][state.form[id]] ?? state.vals[id].dec ?? state.vals[id].raw;
 
     // ── PALETTE render ──
     function paletteChip(p) {
-      const id = p.id, isDec = state.form[id] === 'dec', v = paletteValue(id);
+      const id = p.id, form = state.form[id], v = paletteValue(id), has3 = formsOf(p).length > 2;
+      const fName = form === 'raw' ? 'raw' : form === 'alt' ? (p.altLabel || 'alt') : (p.guess ? 'guess' : 'decoded');
       return `<div class="sp-chip type-${p.type}${p.solved ? '' : ' unsolved'}" data-id="${id}" style="--hue:${p.hue}">
         <div class="sp-head">
           <span class="sp-name" title="${esc(p.label)}">${p.n ? p.n + ' ' : ''}${esc(p.label)}</span>
@@ -145,7 +151,7 @@ export function soupWidget() {
         </div>
         <textarea class="sp-val mono" data-editpal spellcheck="false" rows="2" aria-label="${esc(p.label)} value">${esc(v)}</textarea>
         <div class="sp-ctl">
-          <button class="sp-flip${isDec ? ' active' : ''}" data-flip title="flip raw ⇄ decoded${p.solved ? '' : ' — unconfirmed community guess'}">${isDec ? (p.guess ? 'guess' : 'decoded') : 'raw'} ⇄</button>
+          <button class="sp-flip${form !== 'raw' ? ' active' : ''}" data-flip title="${has3 ? 'cycle raw → label → speech' : 'flip raw ⇄ decoded'}${p.solved ? '' : ' — unconfirmed community guess'}">${esc(fName)} ${has3 ? '↻' : '⇄'}</button>
           <button class="sp-add" data-add title="append to your recipe">add ＋</button>
         </div>
       </div>`;
@@ -191,7 +197,7 @@ export function soupWidget() {
     // ── palette events ──
     on(paletteEl, 'click', '[data-flip]', (e, b) => {
       const id = b.closest('.sp-chip').dataset.id;
-      state.form[id] = state.form[id] === 'dec' ? 'raw' : 'dec';
+      const forms = formsOf(P(id)); state.form[id] = forms[(forms.indexOf(state.form[id]) + 1) % forms.length];   // cycle raw → decoded → (Beaufort speech, where it exists)
       refreshChip(id); save();
     });
     on(paletteEl, 'input', '[data-editpal]', (e, t) => {
