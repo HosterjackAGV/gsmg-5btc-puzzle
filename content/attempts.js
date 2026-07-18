@@ -3880,6 +3880,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the endgame combine", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-deep-reframe-five-load-bearing-assumptions-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame combine",
+  "title": "A higher-perspective reframe attacks five of the endgame's deepest structural assumptions — threshold reconstruction, cross-oracle keys, PBKDF2 iteration counts, hash-input trailing bytes — and every one opens nothing",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-18",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a deliberate out-of-the-box reframe that stopped testing combine VARIANTS and instead questioned the load-bearing assumptions themselves, prompted by the creator's repeated 'my friends and family can get to all my data if they'd work together' framing",
+  "sourceQuote": "Technically my friends and family can get to all my DATA if they'd work TOGETHER. In that scenario, don't expect a halving of the price.",
+  "history": "Every FLAT combine of the four ingredients — string, arithmetic, cipher, hash-tree — is exhausted, and so are the encoding, cipher-choice, and length axes. Rather than test another variant, this iteration questioned five assumptions the whole search rests on: that the passphrase is ASSEMBLED (not jointly computed), that the three blobs are independent, that the key-derivation is EVP-only, that the passphrase is a clean string, and that the big cosmic blob is the sole target. Each was turned into a concrete, self-verifying, grep-proven-untested test.",
+  "input": "The four grounded ingredients {yellowblueprimes, matrixsumlist, lastwordsbeforearchichoice, yinyang} in principled byte-forms; the three open blobs (cosmic 1328B message + two 80-byte self-verifying oracles salph_inner / p32_trailing).",
+  "method": "Five independent harnesses, each padding-off with valid-PKCS7 + a universal post-decrypt inspector (address / WIF / self-auth over 5 codepages × ~30 ciphers × 7 key-derivations). (1) THRESHOLD/SHAMIR: treat the four ingredients as points of a degree-3 polynomial over GF(p) and reconstruct the secret f(0) by modular Lagrange interpolation — the literal reading of 'work together'; 5 field primes (incl. Mersenne 2^127−1) × 4 x-coordinate sets × ingredient encodings × 4 renders × 2 conventions. (2) CROSS-ORACLE CIPHERTEXT: XOR / concatenation / SHA-256 of the two oracle ciphertexts and concatenated-salt raw keys as passphrase material. (3) PBKDF2 AT PUZZLE-NUMBER ITERATIONS: openssl -pbkdf2 -iter N writes a byte-identical Salted__ header, so custom iteration counts were never excluded — 29 puzzle-relevant iteration counts × 164 grounded passphrases. (4) HASH-INPUT TRAILING BYTE: a newline/null/space appended inside the passphrase hash (echo vs printf). (5) CROSS-ORACLE SPLIT-KEY: combine the DECRYPTS of the two oracles (A⊕B, A‖B, halves, SHA of the concatenation) into a candidate private key — something every prior per-oracle detector never did.",
+  "provenance": "All five harnesses under research/harnesses/ (lagrange_reconstruct, rXX_crossblob_ct_xor_concat_saltrawkey, r_pbkdf2_puzzle_iter, r_trailing_byte_pass, r112_cross_oracle_splitkey); each result independently re-run before recording; self-verifying via PKCS7 on the oracles; STOP-guard armed throughout.",
+  "output": "NULL, all five. Threshold: 17,280 tests → 0 structural flags. Cross-oracle ciphertext: 87 → 0 valid-pad, 0 flags. PBKDF2-iter: 28,536 decrypts → 119 valid-PKCS7 (pure chance ~114), 0 structural hits. Trailing byte: 5,796 → chance only, 0 hits. Cross-oracle split-key: 770 decrypt-pairs → 0 dual-valid-pad, 0 flags — and the zero dual-valid-pad is itself a result: no candidate makes BOTH oracles pad-valid, so the two oracles do not share a passphrase.",
+  "evidence": "Self-verifying in-harness; research attempt 0211 and insight 0042; the PBKDF2 sweep also corrects an earlier over-claim that the iteration axis was already closed (only four iteration counts had ever been tried).",
+  "outcome": "verified-fail",
+  "insight": "The endgame's deepest structural assumptions — not just its surface combine shapes — are now closed: the passphrase is not a Shamir/threshold reconstruction, the blobs are not cross-keyed at the byte level, the key-derivation is not a hidden PBKDF2 iteration count, and the two oracles do not share a key (each has its own phase-local recipe). Two independent lines of reasoning converged on the same conclusion the creator has stated outright: the missing piece is a non-public personal datum on his offline machine, collectively recoverable by close friends and family — the endgame is a waiting-and-vigilance problem, not a compute problem. The self-verifying oracles remain a free, always-on falsifier: the instant that datum surfaces, any correct key is confirmable in seconds.",
+  "links": [
+   { "label": "Walkthrough — the endgame combine", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
