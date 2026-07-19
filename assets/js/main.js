@@ -43,6 +43,8 @@ router
   .add('/tried/:id', () => import('./views/tried.js'))
   .add('/insights', () => import('./views/insights.js'))
   .add('/reference', () => import('./views/reference.js'))
+  .add('/lab', () => import('./views/lab.js'))
+  .add('/workbench', () => import('./views/lab.js'))
   .add('/intel', () => import('./views/intel.js'))
   .add('/books', () => import('./views/intel.js'))
   .add('/donations', () => import('./views/donations.js'))
