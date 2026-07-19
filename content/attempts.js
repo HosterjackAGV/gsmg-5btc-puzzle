@@ -3949,6 +3949,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the SalPhaseIon endgame", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "community-die-extraction-dbbi-1-4-21-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: dbbi / faed — field & number decode",
+  "title": "The creator's {1},{4},{21} hint, read as indices into dbbi, spells DIE — a real, on-theme extraction, but it is not the key",
+  "who": "community",
+  "author": "@eie0224",
+  "date": "2026-07-20",
+  "source": "Telegram (@eie0224, 2026-07-20, msg #67113) — 'How It Was Derived… DBBI[1]+DBBI[4]+DBBI[21] = d+i+e = DIE… Is this BS or anything useful?'",
+  "sourceQuote": "We applied those positions to the unresolved DBBI stream, using normal human indexing… DBBI[1] + DBBI[4] + DBBI[21] = d + i + e = DIE",
+  "history": "The creator posted a confirmed hint — 'another door might be found on {1},{4},{21}'. The community has read that triple many ways (a1z26 letters A/D/U, selection indices onto various substrates, an April-1-2021 'April Fools' date). A fresh reading applies the three numbers as 1-based positions into the undecoded dbbi block itself: dbbi[1]=d, dbbi[4]=i, dbbi[21]=e. It is unusually persuasive because it yields a real English word, and the two obvious controls do not: zero-based indexing gives 'bbi', and the same positions in faed give 'fda'. It also rhymes with the Architect speech's death/extinction imagery. The open question the author raised: is DIE the key to anything?",
+  "input": "dbbi (91 a–i chars); faed (570); the three open blobs; the confirmed hint {1},{4},{21}.",
+  "method": "First verify the extraction (dbbi[1,4,21] 1-based = 'die'; 0-based = 'bbi'; faed = 'fda'). Then test DIE as key material three ways, each run through the real crypto (all seven key-derivations) and judged by the universal inspector (5 codepages × classical ciphers × address/WIF/self-auth): (a) standalone passphrase — die and its case/reverse variants, the faed/0-based controls, the a1z26 'adu' reading, and death-themed expansions (death, todie, instructiontodie, …); (b) as a fifth element prepended/appended to the grounded four-ingredient combine; (c) as an OPERATION — dbbi and faed with the {1,4,21} positions deleted or zeroed, both raw and field-decoded. 76 passphrases × three hash forms × three blobs × seven KDFs.",
+  "provenance": "Extraction reproduced independently; self-verifying via PKCS7 on the two oracles and the address/WIF detector on cosmic; STOP-guard armed. Harness research/harnesses/r118_die_extraction.mjs.",
+  "output": "NULL. 4788 decrypt-batches → 0 flags. No form of DIE — standalone, as a fifth combine element, or as a delete/zero operation — keys cosmic or either self-verifying oracle. This matches the author's own report that DIE 'produced no key or exact AES result'.",
+  "evidence": "Self-verifying in-harness; research attempt 0218; extraction verified byte-for-byte against the dbbi/faed streams.",
+  "outcome": "verified-fail",
+  "insight": "A clean answer to a good community question: the {1},{4},{21} → DIE extraction is genuine and reproducible (a real word from a creator-confirmed hint, where the natural controls give nonsense), and it is on-theme — but it is not key material, on any blob, in any of the tested roles. The three-number hint has now been closed under every principled reading (a1z26 letters, selection index, and now the dbbi-index word), which keeps pointing at the same conclusion: the missing piece is a non-public datum, not another way to read the public clues. Recorded here so the next person who derives DIE can see it was tested, not dismissed.",
+  "links": [
+   { "label": "Walkthrough — dbbi / faed", "href": "#/walkthrough" },
+   { "label": "Lab — test parts yourself", "href": "#/lab" }
+  ]
  }
 ];
 
