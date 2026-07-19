@@ -3903,6 +3903,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the endgame combine", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-14wide-genesis-board-and-matrix-invariants-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame combine",
+  "title": "The chess clue's board is 14 wide (the genesis grid), not the 8-wide phase-2 board every attempt used — the corrected reading, and the never-computed matrix invariants, both open nothing",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-19",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a fresh-cell hunt that caught a width-assumption error every prior board attempt shared, prompted by the phase-3.2 clue's own words 'as wide as the first one seen'",
+  "sourceQuote": "a fubcd-king & oracle-queen, thingky mvps, on a sad board but as wide as the first one seen",
+  "history": "The 80-byte oracle p32_trailing is preceded by a chess clue whose board is 'as wide as the first one seen.' Five separate prior attempts built that board 8 squares wide — the phase-2 chessboard or minimal king/queen boards — and all failed. But 'the first one seen' is the puzzle's very first image: the 14x14 genesis grid (puzzle.png). The walkthrough's own top-ranked untried thread was to build the board 14 wide; an earlier attempt named that hypothesis but dismissed it as an 'unbounded blind construction' because a free king/queen placement on a 14-wide board is underdetermined. The missing move: the 14-wide board is not free — it IS the genesis grid itself (the lone fefefe cell as the king, the blue cells as queens, the yellow as pawns), which is fully determinate.",
+  "input": "The pixel-verified 14x14 genesis grid (content/matrix.js): fefefe singleton at (7,4), 15 blue cells, 9 yellow cells; the three open blobs.",
+  "method": "(A) Serialize the genesis grid as chess FEN and key the blobs with it. 24 FEN candidates — generic occupancy (grid 1 -> P / Q / N, run-length compressed, ranks joined by '/'), both orientations (as-is and vertical-flip), each with three standard FEN suffixes; plus a colored-piece FEN (king at fefefe, queens at the blue cells, pawns at the yellow cells) and its flip — each in raw, single-SHA, double-SHA, and two thematic-suffixed-SHA forms, on all three blobs across every key-derivation, judged by the universal inspector. (B) Compute the genesis grid's matrix invariants — which the entire prior grid-work only ever read as sums/bits/renders, never as an algebraic operator: determinant (Bareiss, fraction-free), permanent (Ryser), and GF(2) rank. Test each as a passphrase (literal and hex-of-SHA) on all three blobs. (C) two bonus closures: the source-verified 998-character SalPhaseIon soup as a direct key (every prior soup-as-key test used a base64-contaminated 1075-char capture), and the soup's literal z-separator grammar filled with the decoded ingredient values.",
+  "provenance": "Invariants recomputed and cross-checked independently (det = -86, permanent = 4925154, GF(2)-rank = 13). All harnesses re-run by the engine before recording; self-verifying via PKCS7 on the oracles and the address/WIF detector on cosmic; STOP-guard armed. Harnesses r116_genesis_fen_and_invariants, acc_soup998_directkey, r_soup_singlez_grammar under research/harnesses/.",
+  "output": "NULL, all four. Genesis-FEN + invariants: 4704 decrypt-batches, 0 flags. Accurate-998 soup: 12 batches, 0. Soup z-grammar: 144 batches, 0. No 14-wide genesis-grid board, no matrix invariant, and no accurate-soup form keys any blob.",
+  "evidence": "Self-verifying in-harness; research attempt 0215; the walkthrough had ranked the 14-wide board its #1 untried thread ('No community history to repeat').",
+  "outcome": "verified-fail",
+  "insight": "The chess-clue thread is now genuinely closed: not only is the 8-wide board wrong, the correct 14-wide reading — the genesis grid itself as a chess board, which the walkthrough ranked the single most-promising untried experiment — also opens nothing. Future solvers can stop building boards of either width. Separately, the puzzle's 'Matrix' framing does not hide a linear-algebra invariant: the grid's determinant, permanent, and rank key nothing (the design really does use the sum-LIST, not a scalar invariant). One more well-motivated public-data reading falls, consistent with the accumulating evidence that the final barrier is a non-public personal datum rather than an untried construction over the public material.",
+  "links": [
+   { "label": "Walkthrough — the p32_trailing oracle & chess clue", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
