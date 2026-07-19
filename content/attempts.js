@@ -3926,6 +3926,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the p32_trailing oracle & chess clue", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "engine-vic-encode-grounded-combine-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame combine",
+  "title": "The creator's own signature cipher (the VIC straddling checkerboard) applied forward to encode the 4-ingredient combine into a digit passphrase — opens nothing",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-19",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a fresh-cell hunt on the phase-3.2→cosmic transition, noticing that every combine test used the ingredients raw, never the creator's own confirmed text→digit transform",
+  "sourceQuote": "a fubcd-king & oracle-queen, thingky mvps, on a sad board but as wide as the first one seen",
+  "history": "Phase 3.2 proved the creator's signature move: he encodes readable text into a digit string with a VIC straddling checkerboard (that is exactly how the long 'INCASE…' sentence became a 149-digit string, and the chess clue itself spells out that board's alphabet: fubcd-king, thingky-mvps). Yet every attempt to build the cosmic passphrase concatenated the four ingredients as raw text (or re-encoded their bytes), and never applied the creator's own forward transform — VIC-encoding the readable combine into a digit passphrase. Prior VIC work only ever encoded unrelated thematic or clue phrases, never the grounded four-ingredient combine.",
+  "input": "The four grounded ingredients as VIC-encodable letter-forms {yellowblueprimes, matrixsumlist, lastwordsbeforearchichoice, yin(g)yang}; the three open blobs.",
+  "method": "Reconstruct the phase-3.2 VIC straddling checkerboard (board FUBCDORA / LETHINGKY / MVPSJQZXW, markers 1 & 4), KAT-guarded so that VIC-encode('PRIVATEKEYS') = '42815419131218121943' before any run. Build 24 grounded combine name-forms (four orderings × three VIC-encodable separators). Transform each three ways — VIC-encode to a digit string; Beaufort-encipher under the confirmed key 'thematrixhasyou'; and Beaufort-then-VIC — and take each transformed string in literal, single-SHA, and double-SHA forms, giving 192 candidate passphrases. Decrypt cosmic and both 80-byte self-verifying oracles with each, across all seven key-derivations, and judge every result with the universal inspector (address / WIF / self-auth / all codepages × classical ciphers).",
+  "provenance": "KAT-guarded VIC board; self-verifying via PKCS7 on the oracles; harness re-run by the engine; STOP-guard armed. The hunt also surfaced and fixed a real defect — the inspector's own VIC-decode detector had been using a placeholder board that failed the PRIVATEKEYS KAT (now corrected; selfcheck still passes). Harness research/harnesses/r_vic_encode_grounded_combine.mjs.",
+  "output": "NULL. 192 passphrases × 3 blobs × 7 key-derivations ≈ 4032 decrypts → 0 flags, 0 valid-pad nears. No VIC-encoded (or Beaufort-encoded) form of the grounded combine keys any blob.",
+  "evidence": "Self-verifying in-harness; research attempt 0217 + insight 0043 (the detector fix); adversarially verified as genuinely un-run before the run.",
+  "outcome": "verified-fail",
+  "insight": "The natural 'did anyone apply the creator's own cipher to the combine?' hypothesis is now closed: VIC-encoding (and Beaufort-enciphering) the four grounded ingredients into a digit/letter passphrase opens nothing on any blob. The forward direction of the creator's signature transform is not the missing step. Combined with the raw-concatenation, byte-recoding, hash-tree and threshold combines already ruled out, the passphrase-assembly space is closed under every principled transform of the public ingredients — consistent with the accumulating evidence that the final barrier is a non-public personal datum.",
+  "links": [
+   { "label": "Walkthrough — the SalPhaseIon endgame", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
