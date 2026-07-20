@@ -3972,6 +3972,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — dbbi / faed", "href": "#/walkthrough" },
    { "label": "Lab — test parts yourself", "href": "#/lab" }
   ]
+ },
+ {
+  "id": "engine-masterhint-taunts-as-key-universal-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame combine",
+  "title": "The master hint's four taunts — and the full eight-token master string — tested as the key under the full decoder stack, plus HASHTHETEXT and the spoken 140/104 duality, all open nothing",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-20",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): a fresh-cell hunt on the master-hint structure, the access layer, and cross-artifact numbers, closing the coverage holes the combine-only capstone had left",
+  "sourceQuote": "we won't give away the password · it's in front of your eyes but you're not seeing it · the very last step is a true giveaway · promised",
+  "history": "The 2023-02-23 reverse-binary 'master hint' decodes to eight tokens: the four believed ingredients, then four taunts. The four ingredients have been swept exhaustively (including under the full universal decoder + every key-derivation). The four taunts, and the full eight-token string, had only ever been tried the narrow way — one key-derivation, no alternate codepages or ciphers — before the project adopted its 'we cannot miss' rule (judge every decrypt under all codepages × classical ciphers × KDFs, because the confirmed phase-3.2 plaintext itself only reads under EBCDIC→Beaufort). So the taunts were a genuine, grep-proven coverage hole. Two neighbouring holes were closed in the same pass: HASHTHETEXT (the one recovered chain answer that was used as an instruction, never fed forward as a key) and the creator's one explicitly-linked number pair — 140 ('worth hundred fourty', spoken in the Architect monologue) and 104 (the fefefe grid square / matrixsumlist bit-length) — read as the yinyang value rather than a truncation length.",
+  "input": "The four taunt strings, the taunt tail, the full 161-char eight-token string (and reversals); HASHTHETEXT (all cases); yinyang ∈ {104,140,104140,140104} crossed with the grounded eleven-prime yellowblueprimes; the three open blobs.",
+  "method": "Run every candidate through the real crypto under all seven key-derivations (EVP with md5/sha1/sha256/sha512 + PBKDF2 at 1/1000/10000) and judge each decrypt with the universal inspector (five codepages × ~30 classical ciphers × address/WIF/self-auth/nested-Salted detectors) — the exact completeness stack the four ingredients already passed. Taunts + master string: ten candidates × two hash forms × three blobs. HASHTHETEXT: three cases × three forms × three blobs. 140/104: 144 grounded-combine bases × two forms × three blobs. Each harness is gated by a positive control (decrypting the solved Phase-2 blob with sha256('causality') must flag readable English) so a null is trustworthy.",
+  "provenance": "Three harnesses, each re-run by the engine with its KAT firing; self-verifying via PKCS7 on the two oracles and the address/WIF detector on cosmic; STOP-guard armed. research/harnesses/r_taunt_masterstring_universal.mjs, htt_standalone_uppercase.mjs, r_yy140_crossartifact.mjs.",
+  "output": "NULL, all three. Taunts + master string: 60 batches (~420 decrypts) → 0 flags. HASHTHETEXT: 189 decrypts → 0. 140/104 × grounded ybp: 864 batches (~6000 decrypts) → 0. No taunt, no full master string (forwards or reversed), no HASHTHETEXT, and no 140/104-as-yinyang keys any blob.",
+  "evidence": "Self-verifying in-harness with positive controls; research attempt 0219; complements attempt 0198 (the four ingredients under the same detector) and attempt 0085 (the taunts under the older EVP-only detector).",
+  "outcome": "verified-fail",
+  "insight": "The master hint is now closed as key material in full — not just its four ingredients but its four taunts and the whole eight-token string, forwards and reversed, under the complete decoder stack. That answers the natural 'but did anyone try the taunts themselves as the password?' the same way it answers the ingredients: no. Two adjacent completeness holes fall with it — the one chain answer that was never reused as a key (HASHTHETEXT) and the creator's own spoken 140/104 number-duality in the yinyang slot. Every principled reading of the public master-hint material now points the same way: the missing piece is a non-public datum, not an untried string.",
+  "links": [
+   { "label": "Walkthrough — the master hint & the endgame", "href": "#/walkthrough" },
+   { "label": "Lab — test parts yourself", "href": "#/lab" }
+  ]
  }
 ];
 
