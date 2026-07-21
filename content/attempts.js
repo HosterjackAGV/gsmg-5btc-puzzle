@@ -4018,6 +4018,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — Cosmic Duality", "href": "#/walkthrough" },
    { "label": "Lab — test parts yourself", "href": "#/lab" }
   ]
+ },
+ {
+  "id": "community-1samuel-421-bible-verse-null",
+  "phase": "salphaseion",
+  "category": "salphaseion :: endgame combine",
+  "title": "Reading the {1},{4},{21} hint as the Bible verse 1 Samuel 4:21 — 'the glory has departed' — is a clever, on-theme idea, but it opens nothing",
+  "who": "community",
+  "author": "id:5332961382",
+  "date": "2026-07-22",
+  "source": "Telegram (community, 2026-07-21, msg #67145): '1 Samuel 4:21 — She named the child Ichabod, meaning \"The glory has departed from Israel\"…'",
+  "sourceQuote": "1 Samuel 4:21 «She named the child Ichabod, meaning, \"The glory has departed from Israel\"…»",
+  "history": "The creator confirmed a hint — 'another door might be found on {1},{4},{21}'. The community has read that triple many ways: the letters A-D-U (a1z26), selection indices into various strings, the word DIE (positions 1,4,21 of the dbbi block), and a date (1 April 2021, an April Fools joke). A new reading treats the three numbers as a scripture citation — book 1, chapter 4, verse 21 — landing on 1 Samuel 4:21, whose meaning ('the glory has departed') is strikingly on-theme with the endgame's dark Architect monologue about loss and extinction. It is a genuinely fresh interpretation of a confirmed hint, so it was worth testing properly.",
+  "input": "The verse's key words and reference forms; the grounded four-ingredient combine; the three open blobs.",
+  "method": "Test the scripture reading as a passphrase and as a fifth combine element, through the real crypto (all seven key-derivations) and the universal inspector, KAT-gated. Candidates: 1 Samuel 4:21 — ichabod, 'the glory has departed (from Israel)', the reference forms (1samuel421, 1sam421, …); the alternative 'book 1 = Genesis' reading Genesis 4:21 — jubal, harp-and-organ; a few other '1 [book] 4:21' citations; and ichabod / 'the glory has departed' prepended and appended to the grounded combine.",
+  "provenance": "Self-verifying via PKCS7 on the two oracles + the address/WIF detector on cosmic; positive-control KAT (Phase-2 + causality flags English); STOP-guard armed. Harness research/harnesses/r125_bible_verse_1421.mjs.",
+  "output": "NULL. 41 candidate strings × three hash forms × three blobs × seven KDFs = 2,583 decrypt-batches → 0 flags. No Bible-verse reading of {1},{4},{21} — 1 Samuel 4:21, Genesis 4:21, or the reference forms — keys any blob, standalone or combined.",
+  "evidence": "Self-verifying in-harness; research attempt 0226; the reading was grep-proven un-run before this test.",
+  "outcome": "verified-fail",
+  "insight": "A good, on-theme community idea, cleanly settled: reading {1},{4},{21} as the verse 1 Samuel 4:21 ('the glory has departed') opens nothing, on any blob. The three-number hint has now been closed under every distinct reading anyone has proposed — the letters A-D-U, selection indices, the word DIE, the April-1-2021 date, and now scripture — all null. That convergence keeps pointing the same way: the missing piece is a non-public personal datum, not one more way to decode a public clue. Recorded so the next person who thinks of the verse can see it was tested.",
+  "links": [
+   { "label": "Walkthrough — the 'another door' hint", "href": "#/walkthrough" },
+   { "label": "Lab — test parts yourself", "href": "#/lab" }
+  ]
  }
 ];
 
