@@ -3995,6 +3995,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the master hint & the endgame", "href": "#/walkthrough" },
    { "label": "Lab — test parts yourself", "href": "#/lab" }
   ]
+ },
+ {
+  "id": "cosmic-duality-book-text-mined-thematic-null",
+  "phase": "cosmic",
+  "category": "salphaseion :: endgame combine",
+  "title": "The actual Cosmic Duality book (the one the endgame is named after) was obtained and read cover to cover — it is a thematic reference, not a source of any passphrase",
+  "who": "this project + community",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-21",
+  "source": "Telegram — a community member (@AMG_63GTz) shared the full digitized book on 2026-07-20 (msg #67130), and the group asked 'is it worth looking into?'; obtained + mined by Hosterjack (@DaneelOlivaw)",
+  "sourceQuote": "Do we really think it is worth looking into?",
+  "history": "The final AES blob is named 'Cosmic Duality', and the creator's hint image was the cover of a real book — Time-Life's 'Cosmic Duality' (from the Mysteries of the Unknown series, 1991), a yin-yang of two suns. An earlier attempt identified the book and tested its metadata (ISBN, year, page count, title) as passphrases and got nothing, but had to leave the book's actual TEXT untested because no copy was in hand. A community member then posted the full 152-page scan, and the group asked whether it was worth digging into — so it finally could be.",
+  "input": "The complete 152-page digitized book (284,836 characters of text); the three open blobs.",
+  "method": "Fetch the shared PDF via the authenticated Telegram session, extract all page text, and (1) search the entire text for every known puzzle number and ingredient byte-form; (2) inspect the yin-yang passages, the chapter/essay structure, and every multi-digit token; (3) test the book's own title and all of its chapter/essay titles and opening line as passphrases through the real crypto (all key-derivations) on all three blobs, judged by the universal inspector, with a positive-control KAT.",
+  "provenance": "Book confirmed by its title page ('Cosmic Duality, by the Editors of Time-Life Books'). Text extracted with pypdf; blob test self-verifying via PKCS7 on the oracles + address/WIF detector on cosmic; STOP-guard armed. Harness research/harnesses/r122_cosmic_book_titles.mjs.",
+  "output": "NULL. The book contains none of the puzzle's numbers — 95101, 10195, 2347, 151263, the matrixsumlist forms, the eleven-prime concatenation are all absent, and every 4+ digit token in the book is simply a bibliography year (1974–1990). The two 'yin-yang' mentions are generic prose about polarity. The book's title + chapter/essay phrases as passphrases: 945 decrypt-batches, 0 flags.",
+  "evidence": "Self-verifying in-harness; research attempt 0223; complements attempt 0074 (the book's metadata, also null).",
+  "outcome": "verified-fail",
+  "insight": "The 'Cosmic Duality' book is a purely thematic reference: the creator borrowed its name and its central idea (duality — yin/yang, blue/yellow, half and better half) to frame the endgame, but lifted no value or phrase from inside it. Reading the actual book cover to cover — the exact copy the community keeps circling back to — settles the recurring 'is the answer hidden in the book?' question: it is not. This is the kind of dead-end worth publishing so the next person who finds the book can skip the search. It reinforces, once more, that the missing piece is a non-public personal datum rather than a public source anyone can look up.",
+  "links": [
+   { "label": "Walkthrough — Cosmic Duality", "href": "#/walkthrough" },
+   { "label": "Lab — test parts yourself", "href": "#/lab" }
+  ]
  }
 ];
 
