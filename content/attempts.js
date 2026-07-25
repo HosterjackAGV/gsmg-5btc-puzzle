@@ -4041,6 +4041,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the 'another door' hint", "href": "#/walkthrough" },
    { "label": "Lab — test parts yourself", "href": "#/lab" }
   ]
+ },
+ {
+  "id": "onchain-prize-pubkey-neighbors-half-and-double",
+  "phase": "cosmic",
+  "category": "salphaseion :: on-chain forensics",
+  "title": "The creator published the prize public key's elliptic-curve neighbors, half, and double on-chain — 'half and double', echoing 'half and better half' — and all four check out exactly",
+  "who": "this project + community",
+  "author": "@AndyStunt",
+  "date": "2026-07-25",
+  "source": "Telegram (@AndyStunt, 2026-07-21, msg #67217): posted the prize public key + the 3GSMG OP_RETURN 'GSMG.io neighbors, half and double' and its four EC-derived addresses; verified + operationalized by Hosterjack (@DaneelOlivaw)",
+  "sourceQuote": "GSMG.io neighbors, half and double",
+  "history": "Because the prize address has been spent from, its public key is exposed on-chain. A community member noticed that the puzzle's on-chain 'messenger' address (3GSMG…, which broadcasts phase checkpoints) also published an OP_RETURN reading 'GSMG.io neighbors, half and double' alongside four Bitcoin addresses. Those four addresses turn out to be the elliptic-curve neighbors (public key ± the generator), half (P/2), and double (2P) of the prize public key — and 'half and double' rhymes exactly with the confirmed Architect-era line 'the private keys belong to half and better half'. That made it worth verifying to the byte and wiring into the tooling.",
+  "input": "The prize public key P (uncompressed, from the on-chain spend); the four OP_RETURN addresses; the three open blobs.",
+  "method": "Confirm P is genuine — hash160(P) must equal the prize address 1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe. Then, with a secp256k1 library, compute P−G, P+G, P/2 (the point Q with 2Q=P), and 2P, hash each to a Bitcoin address, and compare to the four published addresses. Finally, operationalize: add those four addresses to the endgame detector's target set (so a decrypt that yields the private key k/2, 2k, or k±1 is now caught, not just the prize key itself), and re-run the grounded four-ingredient combine plus 'half and double' themed passphrases against all three blobs under the expanded detector.",
+  "provenance": "hash160 via Node crypto; the four EC operations via Python ecdsa (research/harnesses/r128_ec_neighbors_verify.py); the detector self-audit still passes 10/10 after the target-set expansion; the re-sweep is KAT-gated and self-verifying; STOP-guard armed.",
+  "output": "VERIFIED. hash160(P) = the prize address exactly; and P−G / P+G / P/2 / 2P produce the four OP_RETURN addresses exactly — a deliberate creator hint, not coincidence. The grounded re-sweep against the expanded six-target detector (15,687 decrypt-batches) found nothing: no known candidate decrypts to the prize, peeled, half (k/2), double (2k), or neighbor (k±1) key on any blob.",
+  "evidence": "Byte-exact EC + hash160 checks; research attempt 0228 + insight 0045; the 3GSMG messenger address itself was already catalogued.",
+  "outcome": "verified",
+  "insight": "A rare confirmed, creator-authored on-chain signpost: the prize public key's half, double, and neighbors are published on-chain under the words 'half and double', which map straight onto the endgame's 'half and better half'. It is a genuine hint about the shape of the answer — that the solution is bound up with a half/double relationship of the prize key — but it is not a shortcut: knowing those public points does not reveal the private key (that is the discrete-log problem), and signature-nonce reuse was already ruled out. So it sharpens the target rather than opening the lock, and the sharpened target is now permanently wired into the solver's detector. Still consistent with the standing picture: the final step needs a non-public datum.",
+  "links": [
+   { "label": "Walkthrough — Cosmic Duality & the prize wallet", "href": "#/walkthrough" },
+   { "label": "Reference — the prize address", "href": "#/reference" }
+  ]
  }
 ];
 
