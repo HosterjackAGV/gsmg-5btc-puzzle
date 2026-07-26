@@ -2207,7 +2207,7 @@ The single most important early correction. Jrk admitted a mistake **inside Phas
 > **Jrk Bgrt** (admin): Here's the hint in order to bypass the mistake: **giveit = givetit**
 > **Jrk Bgrt** (admin): Once you have to work with give(t)it you'll know.
 
-*(This is the origin of the `givetit` correction applied in Phase 3 above.)*
+*(Historical note only — ⚠️ **no `givetit` correction is applied in Phase 3 above, and none can be**: the working Phase-3.2 answer is `jacquefresco` + `giveitjustonesecond` + `heisenberguncertaintyprinciple`, and only that `giveit` spelling hashes to `250f3772…ce4c`, the key that actually decrypts `phase32.txt`. Verified by recomputation. The 2019 hint fixed a typo in the on-page text of the era, not the final answer string.)*
 
 ### 2019-05-18 — The 2020 "final tiny hint" promise; no hints after stage 2
 
