@@ -1632,7 +1632,9 @@ This is a classic [audio steganography](https://en.wikipedia.org/wiki/Steganogra
 3. **Invert (phase-flip)** one of the channels.
 4. **Mix the two channels back down to mono.** Everything identical between the channels cancels out; only the hidden difference survives.
 5. View the resulting mono signal as a **spectrogram** (a picture of frequency vs. time).
-6. In the high frequencies you will see the hidden word: **`HASHTHETEXT`**.
+6. In the **low/mid band (roughly 2–8 kHz)** you will see the hidden word: **`HASHTHETEXT`**.
+   ⚠️ Measured on the actual file: the signal-bearing range of the phase-inverted (L−R) channel is **0–7.97 kHz**, and above
+   10 kHz it is ~12 dB *quieter* — effectively empty. Earlier text here said "high frequencies", which sends you to the wrong band.
 
 **Reproduction in Python** (Naddiseo's notebook). First, load the file and confirm it has two channels:
 
@@ -1854,8 +1856,12 @@ digits = [int(p, 2) for p in parts]
 >   **Caresana, Italy** (in the Sesia river, on the Lombardy/Piedmont border, between Milan and Turin).
 >
 > This reproduces **byte-exact** from the pixel-perfect grid — it is a real, deterministic construction. But it is almost certainly an
-> **alternate path, not the intended one**, for two reasons: (1) it needs the prime set `{2,3,5,7}`, which the creator explicitly said is
-> **NOT** the required set (the required primes are A007522: `7,23,31,47,…`); with those, the 13-cell sums are ~260, far outside the ASCII
+> **alternate path, not the intended one**, for two reasons: (1) it needs the prime set `{2,3,5,7}`, whereas the *grid-native* prime set —
+> the spiral positions of the coloured cells, which are all A007522 members (`7,23,31,47,…`) — is the better-grounded reading.
+> ⚠️ **Provenance note:** A007522 is a **derivation of ours from the grid**, *not* a creator statement — the creator never mentions
+> "A007522" or "≡7 mod 8" anywhere in the 57k-message corpus. What he did repeatedly stress is "the prime part" and `fefefe = 101 010`
+> (which maps the small primes to 0). Treat both prime sets as candidate readings, neither creator-confirmed.
+> With A007522, the 13-cell sums are ~260, far outside the ASCII
 > range, so no readable string appears. (2) With such small primes the sums *all* land in the ASCII `44–57` band (`,`–`9`), so a
 > digit-and-punctuation string is nearly guaranteed and reading it as lat/long is interpretive. And it leads nowhere testable: the string,
 > every coordinate form, and the value used as an alternate `matrixsumlist` in the cosmic combine all fail to open any blob (1548 KAT-gated
@@ -2424,7 +2430,16 @@ Posted on April 1st; treat with suspicion.
 
 ### 2021-04-16 — SalPhaseIon contents leak to Telegram
 
-A user ("Hii") who claimed to have reached SalPhaseIon posted the full blob "for anyone who wants to verify in the future." This is the canonical SalPhaseIon ciphertext text. Reproduced verbatim:
+A user ("Hii") who claimed to have reached SalPhaseIon posted the full blob "for anyone who wants to verify in the future." Transcribed below **as a historical record of that Telegram post** — *not* as a source to work from:
+
+> ⚠️ **Do not solve from this transcription.** It is a reading of a low-resolution screenshot and it contains
+> character errors versus the archived SalPhaseIon page. Verified against the artifacts: its `a`/`b` binary runs are
+> **87 and 41 symbols** instead of **104 and 40**, so they are not even byte-aligned and do **not** decode to
+> `matrixsumlist` and `enter`; and its base64 reads `E1BM**I**5HI8` (capital i) where the real blob has
+> `E1BM**l**5HI8` (lowercase L), so the reassembled ciphertext is **not** equal to `ciphertexts/salph_inner.txt`.
+> (The two glyphs are genuinely indistinguishable in that font — which is exactly why the archive, not a screenshot,
+> is the source of truth.) **The authoritative soup is in [§9.1](#91-the-salphaseion-soup); the authoritative blob is
+> `ciphertexts/salph_inner.txt`.** Only the `dbbi` block survives the transcription unscathed.
 
 ![SalPhaseIon blob leak, Telegram 2021-04-16](assets/walkthrough/hints/2021-04-16-salph.png)
 

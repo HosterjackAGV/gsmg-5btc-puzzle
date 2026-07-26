@@ -41,7 +41,7 @@ export default async function homeView() {
 
   <section class="section"><div class="wrap">
     <div class="sec-head"><div class="sec-num">THE PHASES</div><h2>From a hidden image to an unsolved Bitcoin key</h2>
-      <p>Eight stages. The first six are fully solved and reproducible — every value recomputed against the real artifacts. The last two are the open frontier where the community is still searching. Click any phase to jump into the full walkthrough.</p></div>
+      <p>Seven stages. The first five are fully solved and reproducible — every value recomputed against the real artifacts. SalPhaseIon is partly cracked, and Cosmic Duality is still open: that is the live frontier. Click any phase to jump into the full walkthrough.</p></div>
     <div class="doormap">${doors}</div>
   </div></section>
 

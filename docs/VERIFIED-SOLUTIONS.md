@@ -61,7 +61,7 @@ The GSMG.io 5 BTC puzzle is a multi-stage cryptographic treasure hunt published 
 | Row-sums concatenated: **`610876654997879`** (per-row 1-counts 6,10,8,7,6,6,5,4,9,9,7,8,7,9) | ✅ CONFIRMED (reproduced) |
 | Column-sums concatenated: **`8108108736759668`** (8,10,8,10,8,7,3,6,7,5,9,6,6,8) | ✅ CONFIRMED (reproduced) |
 | Total `1` cells = 101 (both sums total 101 — consistency check) | ✅ CONFIRMED |
-| These sums feed the later token **`matrixsumlist`** | ✅ CONFIRMED |
+| These sums feed the later token **`matrixsumlist`** | ⚠️ INFERRED — the sums recompute ✅ and the soup's binary block spells the literal word `matrixsumlist` ✅, but nothing has validated that the sums are that token's VALUE |
 
 > ⚠️ **Important caveat:** The row/column sums are **real and reproduce exactly, but they are NOT part of getting the URL.** They are a *separate, later-use* artifact ("matrixsumlist"). Presenting them as a Phase 0 decoding step is misleading. The official 2020-01-14 "Roses are White but often Red / Yellow has a number and so does Blue" hint points to this numeric reading — the hint **text** is corroborated, but the exact **date** is ⚠️ not independently verified.
 
@@ -185,7 +185,7 @@ The GSMG.io 5 BTC puzzle is a multi-stage cryptographic treasure hunt published 
 **Step-by-step:**
 1. Visit the GSMG plot in Decentraland at **LAND coordinates -41,-17**; click the box → it plays `audio_source.wav`. ✅ CONFIRMED (Decentraland "GSMG.io Puzzle piece" parcel exists).
 2. In an audio editor (e.g. Audacity): split the **stereo** into Left/Right, **invert (phase-flip)** one channel, and **mix to mono**. Everything identical cancels; only the hidden difference survives.
-3. View the result as a **spectrogram** (a picture of sound). In the high frequencies you'll see the word **`HASHTHETEXT`**. ✅ CONFIRMED.
+3. View the result as a **spectrogram** (a picture of sound). In the **low/mid band (~2–8 kHz)** you'll see the word **`HASHTHETEXT`**. ✅ *(Measured: the L−R channel carries signal only up to ~7.97 kHz; above 10 kHz is empty. "High frequencies" was wrong.)* CONFIRMED.
 4. Take **all the text on the opening image including the prize address**, no spaces: `GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe` (59 chars, **no trailing newline**).
 5. SHA-256 it → the secret page name.
 
@@ -193,7 +193,8 @@ The GSMG.io 5 BTC puzzle is a multi-stage cryptographic treasure hunt published 
 | Value | Status |
 |---|---|
 | Spectrogram word `HASHTHETEXT` | ✅ CONFIRMED |
-| Decentraland coords `-41,-17`, file `audio_source.wav` | ✅ CONFIRMED |
+| Decentraland coords `-41,-17` | ✅ CONFIRMED |
+| Audio asset filename: the artifact in this repo is **`puzzlepiece.mp3`** (content id `QmeRy5MjmEZ2W6J3DwhQfht5HKBKXBFpoGzSkzmjeGKiDK`) | ✅ CONFIRMED — ⚠️ *`audio_source` is the Decentraland SDK component name (`AudioSource`), not a filename; earlier text here listed a non-existent `audio_source.wav`* |
 | Entry string `GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe` (59 chars) | ✅ CONFIRMED |
 | `sha256(entry string)` = **`89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32`** | ✅ CONFIRMED (I recomputed it) |
 | SalPhaseIon URL `gsmg.io/89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32` | ✅ CONFIRMED |

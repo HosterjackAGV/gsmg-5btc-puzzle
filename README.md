@@ -82,7 +82,7 @@ ciphertexts/              the raw OpenSSL-encrypted blobs (single source of trut
 Every decryption is reproducible. Note the required `-md sha256`:
 
 ```bash
-openssl enc -aes-256-cbc -d -a -md sha256 -in ciphertexts/phase2.txt \
+openssl enc -aes-256-cbc -d -a -A -md sha256 -in ciphertexts/phase2.txt \
   -pass pass:$(printf %s causality | sha256sum | cut -d' ' -f1)
 ```
 

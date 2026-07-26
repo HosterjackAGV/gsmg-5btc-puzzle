@@ -35,7 +35,9 @@ const PARTS = [
   { id:'ofh',    n:'⑦', label:'our first hint is your last command', type:'text', solved:true, hue:55,
     raw:'ourfirsthintisyourlastcommand', dec:'ourfirsthintisyourlastcommand' },
   { id:'blob1',  n:'⑧', label:'salph_inner AES — 1st half', type:'blob', solved:false, hue:0,
-    raw:'U2FsdGVkX186tYU0hVJBXXUnBUO7C0+X4KUWnWkCvoZSxbRD3wNsGWVHefvdrd9', dec:'⟨salph_inner AES · UNDECODED⟩' },
+    // NOTE: the 64th char of this half is a literal 'z' that belongs to the BASE64 PAYLOAD — it is not a soup
+    // separator. Splitting it off (as an earlier version did) yields 63+64=127 chars and a corrupt blob.
+    raw:'U2FsdGVkX186tYU0hVJBXXUnBUO7C0+X4KUWnWkCvoZSxbRD3wNsGWVHefvdrd9z', dec:'⟨salph_inner AES · UNDECODED⟩' },
   { id:'z4',     n:'',  label:'z',           type:'sep',    solved:true, hue:20,  raw:'z', dec:'z' },
   { id:'enter',  n:'⑨', label:'enter',       type:'binary', solved:true, hue:90,
     raw:'abbaabababbabbbaabbbabaaabbaabababbbaaba', dec:'enter' },

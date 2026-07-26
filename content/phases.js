@@ -24,7 +24,7 @@ export const PHASES = [
       { h: 'Treat each tile as a bit', body: `It is <b>not</b> a scannable QR code — it’s a hand-decoded grid. Each of the 196 tiles is one <b>bit</b>: black/blue = <span class="mono">1</span>, yellow/white = <span class="mono">0</span>. Black/white is the most basic code there is — on/off, ink/no-ink.` },
       { h: 'Read it in a counter-clockwise spiral', body: `Not left-to-right like a book. Start at the upper-left and spiral <b>anti-clockwise</b>: down the left column, right along the bottom, up the right column, left along the top, then inward ring by ring (like peeling an onion).` },
       { h: 'Turn the bits into letters', body: `Chop the 196-bit string into <b>8-bit bytes</b> and convert each to its <b>ASCII</b> character. Out comes <span class="mono">gsmg.io/theseedisplanted</span> (24 characters + a little zero-padding). Visiting it opens Phase 1.` },
-      { h: 'A separate clue hides in the colours', body: `Counting the <b>1-cells per row and per column</b> gives two number strings (<span class="mono">610876654997879</span> and <span class="mono">8108108736759668</span>). These are <b>not</b> needed for the URL — they’re a separate artifact called <span class="mono">matrixsumlist</span> that you only need at the very endgame. Don’t let them distract you here.` },
+      { h: 'A separate clue hides in the colours', body: `Counting the <b>1-cells per row and per column</b> gives two number strings (<span class="mono">610876654997879</span> and <span class="mono">8108108736759668</span>). These are <b>not</b> needed for the URL — they’re a separate artifact, believed (not proven) to be the value behind the endgame token <span class="mono">matrixsumlist</span>. Don’t let them distract you here.` },
     ],
     lab: 'matrix',
     play: { type: 'spiral' },
@@ -36,7 +36,7 @@ export const PHASES = [
       { label: 'Row-sums → matrixsumlist (later use)', value: '610876654997879' },
       { label: 'Col-sums → matrixsumlist (later use)', value: '8108108736759668' },
     ],
-    trivia: [`The colours foreshadow “yellowblueprimes”, a word you won’t need until the very end — and the sums become the token “matrixsumlist”.`],
+    trivia: [`The colours foreshadow “yellowblueprimes”, a word you won’t need until the very end. The sums are widely believed to BE the value behind the endgame token “matrixsumlist” — but note that is an inference: what is proven is (a) the sums recompute exactly, and (b) a binary block in the SalPhaseIon soup spells the literal word “matrixsumlist”. Nothing has yet validated the link between the two.`],
     verified: '✅ Independently re-implemented: the counter-clockwise spiral of bits reproduces the URL exactly.',
   },
 
@@ -212,7 +212,7 @@ export const PHASES = [
             prompt: 'Test a candidate recipe for the inner SalPhaseIon block.' },
     reference: [
       { label: 'Spectrogram answer', value: 'HASHTHETEXT' },
-      { label: 'Decentraland coords', value: '-41,-17  ·  audio_source.wav' },
+      { label: 'Decentraland coords', value: '-41,-17  ·  audio asset: puzzlepiece.mp3' },
       { label: 'Entry text (59 chars, no newline)', value: 'GSMGIO5BTCPUZZLECHALLENGE1GSMG1JC9wtdSwfwApgj2xcmJPAwx7prBe' },
       { label: 'Entry hash (= URL)', value: '89727c598b9cd1cf8873f27cb7057f050645ddb6a7a157a110239ac0152f6a32' },
       { label: '✅ Decoded · matrixsumlist', value: 'matrixsumlist' },
@@ -229,7 +229,7 @@ export const PHASES = [
 
   {
     id: 'cosmic', num: '05', codename: 'Cosmic Duality', title: 'The Final Lock',
-    tagline: 'Unsolved. Decrypt this and 5 BTC is yours.',
+    tagline: 'Unsolved. Decrypt this and ~1.256 BTC is yours.',
     status: 'open', difficulty: 5, xp: 0,
     concepts: ['aes', 'wif', 'bitcoin', 'open-problem'],
     summary: `The last box. Cosmic Duality is a real AES blob that, when decrypted with the correct recipe, is expected to reveal a Bitcoin private key (a WIF string starting with 5, K, or L) that controls the prize wallet — originally 5 BTC, now ~1.25 BTC after two Bitcoin-style halvings, and never swept by any solver. The believed recipe is sha256(yellowblueprimes · matrixsumlist · lastwordsbeforearchichoice · yinyang) — but that combine-step is a hypothesis, and two ingredients (yellowblueprimes, yinyang) aren’t even confirmed. No one has produced a valid decryption. This is the prize.`,
