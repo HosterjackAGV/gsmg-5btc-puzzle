@@ -34,7 +34,16 @@
 
 ### Where it lives
 
-The puzzle was published at **`gsmg.io/puzzle`** (offline — mirrored at **[gsmg-archive.org → the genesis image](https://gsmg-archive.org/#section-base-image)**). The single opening picture (the "genesis image") is a hand-decoded **14×14 grid of coloured squares** — 196 tiles in four colours. It is *not* a scannable QR code; it is a bespoke spiral-decoded grid (do not call it a QR code — that wording is wrong, the actual QR appears elsewhere and decodes separately, see below).
+The puzzle was published at **`gsmg.io/puzzle`** (offline — mirrored at **[gsmg-archive.org → the genesis image](https://gsmg-archive.org/#section-base-image)**). The single opening picture (the "genesis image") is a hand-decoded **14×14 grid of coloured squares** — 196 tiles in **five** distinct colours: four bit-colours (black/blue = `1`, white/yellow = `0`) **plus one off-white `#FEFEFE` tile** at row 8, column 5 (1-based) — the **164th** tile of the spiral read (index 163, 0-based) — which reads as `0` here and so does not affect Phase 0, but is the tile the endgame hints call *"the fefefe square"* (see [§ 2023-02-23 — Official Hint: binary string](#2023-02-23-official-hint-binary-string)). It is *not* a scannable QR code; it is a bespoke spiral-decoded grid (do not call it a QR code — that wording is wrong, the actual QR appears elsewhere and decodes separately, see below).
+
+> 🔎 **Recovered from the site's own source (2026-07-26).** The original page's title — never previously documented — was
+> **`GSMG MEGANIGMA || 5 BTC`**, and its entire body was a single `<img src="/img/follow_the_white_rabbit.png">`.
+> This comes from the **webpack sourcemap** `gsmg.io/js/app.js.map` (Wayback, 2020-07-22; 1,462,288 B), which preserves the
+> creator's complete *uncompiled* Vue/Laravel frontend — 229 sources, 207 of them his own (452 KB). Two consequences:
+> `/puzzle` is the **only** puzzle route in the whole route table, which **proves** (rather than infers) that the
+> `sha256`-shaped URLs were **server-rendered**; and a full sweep of his 452 KB of source finds **zero** 64-hex constants and
+> no occurrence of `salphaseion`, `cosmic`, `yinyang`, `prime` or `U2FsdGVkX1` — i.e. **the client side never held a puzzle
+> secret**. (Tested as key material anyway: null.)
 
 ![The genesis puzzle image](assets/walkthrough/puzzle.png)
 
