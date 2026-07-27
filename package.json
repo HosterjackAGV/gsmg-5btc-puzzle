@@ -7,6 +7,7 @@
   "license": "CC0-1.0",
   "scripts": {
     "serve": "python3 -m http.server 8000",
-    "verify:puzzle": "node .github/scripts/verify.mjs"
+    "verify:puzzle": "node .github/scripts/verify.mjs",
+    "verify:views": "node scripts/check-views.mjs"
   }
 }
