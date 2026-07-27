@@ -240,7 +240,7 @@ export const PHASES = [
       { h: 'Your move', body: `Test recipes below. Every attempt is run through the real crypto, logged with an exact fingerprint, and (when you submit) re-verified by CI so no two people waste effort on the same idea. The first verified Cosmic unlock wins outright.` },
     ],
     play: { type: 'assemble', mode: 'recipe',
-            intro: 'The believed final recipe hashes four ingredients together to unlock Cosmic Duality. Drag them into order and hit Run — it tests the REAL blob and logs your attempt to the shared frontier. (Two ingredients are still unconfirmed, so expect “fail” — for now. The first valid decryption wins 5 BTC.)',
+            intro: 'The believed final recipe hashes four ingredients together to unlock Cosmic Duality. Drag them into order and hit Run — it tests the REAL blob and logs your attempt to the shared frontier. (Two ingredients are still unconfirmed, so expect “fail” — for now. The first valid decryption wins the prize (~1.25 BTC).)',
             tokens: [{ label: 'yellowblueprimes' }, { label: 'matrixsumlist' }, { label: 'lastwordsbeforearchichoice' }, { label: 'yinyang' }],
             decoys: [{ label: 'enter' }, { label: 'thispassword' }, { label: 'promised' }] },
     door: { type: 'open', blob: 'cosmic', salt: '2d3f6fe06dc950e6',

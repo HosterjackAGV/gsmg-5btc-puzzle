@@ -304,7 +304,7 @@ On **2020-01-14** (⚠️ the hint text is corroborated; the exact date is not i
 > Hush hush.
 > ```
 
-This is the official confirmation that (a) the genesis grid has more than one door's worth of information in it, and (b) "Yellow / Blue have a number" = the `matrixsumlist` row/column sums above. No one publicly managed to fully exploit it at the time it was posted.
+This is official confirmation that (a) the genesis grid holds more than one door's worth of information, and (b) the yellow and blue tiles carry a **numeric** payload. What that number *is* remains open: two competing readings exist — the row/column 1-counts (`matrixsumlist`, ⚠️ inferred, see the note above) and the endgame token `yellowblueprimes` (⚠️/❌ still undecoded — the same sentence is read as its recipe in the endgame section). Note the row/column sums count black+blue tiles only, so on their face they are not "a number for Yellow". No one publicly managed to fully exploit the hint at the time it was posted.
 
 ---
 
@@ -393,7 +393,7 @@ The full set of phrases extractable from the images is:
 "+ -"
 ```
 
-If you Google those phrases as-is you don't get much. But if you **drop `crypto`** and search the rest (or if you simply already knew the song), the results point to the track **"The Warning" by the rapper _Logic_**. The `+`/`-` and the split `WAR+NING` / `LO+GIC` images are the hint that you should be *combining* the fragments into **WARNING** and **LOGIC**.
+If you Google those phrases as-is you don't get much. But if you **drop `crypto`** and search the rest (or if you simply already knew the song), the results point to the track **"The Warning" by _Logic_** — the early-90s New York deep-house project of **Wayne Gardiner and Edwin "Eddie" Maduro**, released on **Strictly Rhythm** (SR 1207) in **1990** as the "The Warning / The Final Frontier" 12"; the puzzle's lyric is from the **Inner Mix**. It is *not* the American rapper Logic (Sir Robert Bryson Hall II), who was born in January 1990 and cannot be the artist on a 1990 Strictly Rhythm house record. The `+`/`-` and the split `WAR+NING` / `LO+GIC` images are the hint that you should be *combining* the fragments into **WARNING** and **LOGIC**.
 
 > Tip: the word **`crypto`** is a deliberate red herring in the search — it muddies the results. Remove it to find the song.
 
@@ -593,7 +593,7 @@ Two conventions established here carry through the **entire** rest of the puzzle
 | Page entered from Phase 0 | `gsmg.io/theseedisplanted` | ✅ CONFIRMED |
 | Hidden form POST target | `https://gsmg.io/phase1verification` | ✅ CONFIRMED |
 | Form field name | `password` | ✅ CONFIRMED |
-| Song identified | "The Warning" by **Logic** (Inner Mix) | ✅ CONFIRMED |
+| Song identified | "The Warning" (Inner Mix) by **Logic** — the NY house project of Wayne Gardiner & Eddie Maduro, Strictly Rhythm 1990 (**not** the rapper of the same name) | ✅ CONFIRMED |
 | Image fragments | `warning`, `crypto` (red herring), `logic`, `can you`, `dig it`, `+ -` | ✅ CONFIRMED |
 | Passphrase | `theflowerblossomsthroughwhatseemstobeaconcretesurface` | ✅ CONFIRMED |
 | Creator artifact confirming the answer | Jrk released `sha256(answer)` = `5ac407837447fba24ba2802e4d1e9aecb4580aa29fef1088cc387c180b746f75` (2019-04-22) — recomputing `sha256("theflowerblossoms…concretesurface")` reproduces it exactly | ✅ CONFIRMED (independently recomputed) |
@@ -989,6 +989,12 @@ Using a tool like [nextchessmove.com](https://nextchessmove.com/): White is to m
 **Part 7 = `B5KR/1r5B/2R5/2b1p1p1/2P1k1P1/1p2P2p/1P2P2P/3N1N2 b - - 0 1`**
 
 ✅ CONFIRMED. (This is a well-known chess problem — it also appears solved on `chess.stackexchange.com/questions/27130/uniquely-satisfying-puzzle` — but you still need to read the FEN. Note the trailing piece-placement change `6R1` → `2R5` and the side-to-move flip `w` → `b`.)
+
+> ⚠️ **Third trap — do not let an engine write the FEN for you.** Rc6 is neither a capture nor a pawn move, so the
+> halfmove clock **increments**: any engine or FEN tool will emit `… b - - **1 1**`. The puzzle's password requires the
+> author's hand-written `… b - - **0 1**`. We checked both: `0 1` → `1a57c572caf3…`, which decrypts Phase 3 (*"What if
+> the merovingian is wrong…"*); the engine-correct `1 1` → `53b27a4e9763…`, which fails with **bad decrypt**. Type the
+> FEN exactly as written above.
 
 ---
 
@@ -1825,7 +1831,8 @@ z
 [cfob …]        → "thispassword"                ← ✅ a–i/o field-decode
 z
 "shabef"  "our first hint is your last command"
-[salph_inner AES blob, base64, split by z]   ← UNDECODED 80-byte blob
+[salph_inner AES blob — 128 base64 chars, interrupted by the nested `enter` binary; the `z`
+ immediately before `enter` is the blob's own 64th base64 character, NOT a separator]  ← UNDECODED 80-byte blob
    …with [binary2: a/b] → "enter"  embedded inside it   ← ✅ 40 bits
 "shabef"  "anstoo"
 ```

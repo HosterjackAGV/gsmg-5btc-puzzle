@@ -24,7 +24,7 @@ export function cosmicRecipeLab(container) {
         <label class="lab-f"><span>Separator</span><select data-n="sep">${opt({ '': 'none', '·': '·', ' ': 'space', '\n': 'newline' }, '')}</select></label>
       </div>
       <div class="lab-ctrl"><button type="button" class="glab-btn primary" data-act="run">▶ Build key &amp; test on Cosmic</button>
-        <span class="faint" style="font-size:12px">Two ingredients (ybp, yinyang) are unconfirmed — expect noise. A WIF = 5 BTC.</span></div>
+        <span class="faint" style="font-size:12px">Two ingredients (ybp, yinyang) are unconfirmed — expect noise. A WIF = the prize.</span></div>
       <div class="lab-res"></div>
     </div>`;
 
@@ -44,7 +44,7 @@ export function cosmicRecipeLab(container) {
       const r = await aesDecrypt(BLOBS.cosmic.b64, key);
       const score = r.ok ? printScore(r.text) : 0, pct = Math.round(score * 100), wif = r.ok && isWIF(r.text), opened = r.ok && score >= 0.85;
       res.innerHTML = `
-        <div class="lab-verdict ${opened ? (wif ? 'win' : 'good') : 'bad'}">${!r.ok ? '✕ invalid padding — wrong key' : wif ? '★ WIF PRIVATE KEY — 5 BTC solve!' : opened ? '✓ readable text' : '✕ noise (wrong ingredients/combine)'}</div>
+        <div class="lab-verdict ${opened ? (wif ? 'win' : 'good') : 'bad'}">${!r.ok ? '✕ invalid padding — wrong key' : wif ? '★ WIF PRIVATE KEY — the prize solve!' : opened ? '✓ readable text' : '✕ noise (wrong ingredients/combine)'}</div>
         <div class="lab-meter"><div class="lab-meter-f" style="width:${pct}%;background:${pct >= 85 ? '#3ad29f' : pct >= 60 ? '#e0b64a' : '#e05a6a'}"></div><span>${pct}% printable</span></div>
         <div class="lab-out-h">assembled input</div><div class="lab-out-v mono">${esc(assembled.slice(0, 120))}${assembled.length > 120 ? '…' : ''}</div>
         <div class="lab-out-h">→ sha256 → OpenSSL key</div><div class="lab-out-v mono">${esc(key)}</div>

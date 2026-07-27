@@ -69,7 +69,10 @@ async function aesDecryptRawKey(blobB64, keyBytes, ivBytes) {            // AES-
   catch { return { ok: false, text: '' }; }
 }
 const SALTS4 = ['2d3f6fe06dc950e6', '3ab585348552415d', 'b45a5e3d827593ca', '74c974e3f92e64b5']; // cosmic · salph_inner · p32_trailing · urlblob
-const VIC_ALPHABET = 'FUBCDORALETHINGKYMVPSJQZXW';                 // FUBCDORA | LETHINGKYM | VPSJQZXW  (markers 1,4)
+// 28 cells, NOT 26: a straddling checkerboard with markers 1 and 4 needs 8 + 10 + 10. The two dots are the
+// board's blank cells (10 and 44). With the 26-letter form row 4 is two cells short and the decode is garbage
+// ("NGCAJTMOUV…"); with this one the real 144-digit code reads INCASEYOUMANAGETOCRACKTHIS…HALFANDBETTERHALF…
+const VIC_ALPHABET = 'FUBCDORA.LETHINGKYMVPS.JQZXW';               // FUBCDORA | .LETHINGKY | MVPS.JQZXW  (markers 1,4)
 function vicDecode(digits) {                                       // straddling-checkerboard decode
   const row0cols = [0, 2, 3, 5, 6, 7, 8, 9], row0 = {}; row0cols.forEach((col, i) => row0[col] = VIC_ALPHABET[i]);
   const row1 = VIC_ALPHABET.slice(8, 18), row4 = VIC_ALPHABET.slice(18); let out = '';
@@ -2734,7 +2737,7 @@ DEMOS['dbbi-all-9factorial-substitutions'] = {
 DEMOS['cosmic-4ingredient-literal-sha256-all-orders'] = {
   lab: cosmicRecipeLab,
   summary: 'Cosmic recipe builder — assemble the key &amp; test it live',
-  intro: 'Edit each of the four ingredients, choose the order and the combine operation, and test the resulting <code>sha256</code> key against the REAL prize blob. A readable decrypt (a WIF starting 5/K/L) would be the 5 BTC solve.',
+  intro: 'Edit each of the four ingredients, choose the order and the combine operation, and test the resulting <code>sha256</code> key against the REAL prize blob. A readable decrypt (a WIF starting 5/K/L) would be the prize solve (~1.25 BTC).',
 };
 DEMOS['dbbi-faed-exhaustive-decode-ic-characterization'] = {
   lab: analysisLab,
@@ -2774,7 +2777,7 @@ DEMOS['reverse-binary-hint-involution-prime-length-structure'] = {
 
 // ── engine research-loop cards — interactive, editable "try it yourself" attempts ─────────────
 // Each reproduces that card's REAL sweep on the genuine blobs; edit any input and re-run. A readable
-// (or WIF) decrypt would be the 5 BTC solve — everything below returns the noise floor, live.
+// (or WIF) decrypt would be the prize solve — everything below returns the noise floor, live.
 const readablePreview = (p) => { if (!p || p.length < 8) return false; const good = [...p].filter(c => c !== '·').length; return good / p.length >= 0.85; };
 // tiny graphical byte-map: printable bytes green, non-printable grey — you SEE readable vs noise at a glance.
 function byteStrip(text, max = 72) {

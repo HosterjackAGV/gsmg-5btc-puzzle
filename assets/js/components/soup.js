@@ -275,7 +275,7 @@ export function soupWidget() {
       if (o.empty) { verdictEl.className = 'soup-verdict bad'; verdictEl.innerHTML = 'Add at least one part to the recipe first.'; return; }
       const { r, score, wif, opened } = o, pct = Math.round(score * 100);
       const cls = !r.ok ? 'bad' : wif ? 'win' : opened ? 'good' : 'bad';
-      const head = !r.ok ? '✕ invalid padding — this is not the key' : wif ? '★ WIF PRIVATE KEY — this would be the 5 BTC solve!' : opened ? '✓ readable text out' : '✕ noise (valid padding but not readable — wrong recipe)';
+      const head = !r.ok ? '✕ invalid padding — this is not the key' : wif ? '★ WIF PRIVATE KEY — this would be the prize solve!' : opened ? '✓ readable text out' : '✕ noise (valid padding but not readable — wrong recipe)';
       verdictEl.className = 'soup-verdict ' + cls;
       verdictEl.innerHTML = `
         <div class="sv-head">${head}</div>

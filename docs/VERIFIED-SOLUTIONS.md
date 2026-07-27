@@ -71,7 +71,7 @@ The GSMG.io 5 BTC puzzle is a multi-stage cryptographic treasure hunt published 
 
 ### Phase 1 — "The Warning"
 
-**Plain English:** The `theseedisplanted` page hides a password form (visible in browser dev tools) plus scrambled images that spell out the song **"The Warning" by Logic**. The password is a lyric from that song.
+**Plain English:** The `theseedisplanted` page hides a password form (visible in browser dev tools) plus scrambled images that spell out the song **"The Warning" by Logic** — the New York deep-house project of Wayne Gardiner and Eddie Maduro (Strictly Rhythm, 1990), **not** the American rapper of the same name. The password is a lyric from that song.
 
 **Step-by-step:**
 1. Open `gsmg.io/theseedisplanted`. Press **F12** (dev tools) to find the hidden HTML **POST** form (it posts to `gsmg.io/phase1verification`).
@@ -116,7 +116,7 @@ The GSMG.io 5 BTC puzzle is a multi-stage cryptographic treasure hunt published 
 | Part 5 *meaning* = JFK **Executive Order 11110** | ⚠️ UNVERIFIED — both walkthroughs admit the on-page logic for reaching `11110` was partly brute-forced; the value is confirmed, the *why* is not |
 | Phase-3 key = SHA-256 of the full concatenation = **`1a57c572caf3cf722e41f5f9cf99ffacff06728a43032dd44c481c77d2ec30d5`** | ✅ CONFIRMED (recomputed + chain-decrypts Phase 3) |
 
-> ⚠️ **Two subtle "gotchas":** (a) the literal **`0x`** prefix on the genesis hex **must** be kept, and (b) the **full FEN** (not just `B5KR`) must be included — only `0x-prefix + full FEN` reproduces the published hash. Naddiseo's README renders the password truncated at `…B5KR`; that truncated form does **not** hash correctly. Use the puzzlehunt README's full string.
+> ⚠️ **Three subtle "gotchas":** (a) the literal **`0x`** prefix on the genesis hex **must** be kept; (b) the **full FEN** (not just `B5KR`) must be included — only `0x-prefix + full FEN` reproduces the published hash (Naddiseo's README renders the password truncated at `…B5KR`; that truncated form does **not** hash correctly — use the puzzlehunt README's full string); and (c) the FEN's **halfmove clock must be the author's hand-written `0 1`**, not the engine-correct `1 1`. Rc6 is neither a capture nor a pawn move, so every FEN tool increments the clock — but `… b - - 1 1` hashes to `53b27a4e9763…` and fails with *bad decrypt*, while `… b - - 0 1` hashes to `1a57c572caf3…` and decrypts Phase 3. (Both recomputed here.)
 
 **From-zero concepts:** hash (SHA-256) · AES-256-CBC · base64 (the `U2FsdGVkX18…` envelope) · the `Salted__` header + salt · hex & `0x` · genesis-block coinbase message · chess FEN · HSM / SafeNet Luna.
 
@@ -207,10 +207,10 @@ The GSMG.io 5 BTC puzzle is a multi-stage cryptographic treasure hunt published 
 
 ### SalPhaseIon — tokens, and the two unsolved blocks
 
-**Plain English:** The SalPhaseIon page is a long "soup" of letters from a tiny alphabet, split into chunks by the letter **`z`**. **Four** chunks are cracked; **two** remain unsolved. The two unsolved ones are the doorway to the endgame.
+**Plain English:** The SalPhaseIon page is a long "soup" of letters from a tiny alphabet, split into chunks by the letter **`z`** (three of the four `z`s are separators — see step 1). **Four** chunks are cracked; **two** remain unsolved. The two unsolved ones are the doorway to the endgame.
 
 **Step-by-step:**
-1. Split the soup wherever a `z` appears.
+1. Split the soup on the **three** `z` separators — a fourth `z` occurs *inside* the embedded base64 blob (it is that blob's 64th character); splitting there corrupts the ciphertext.
 2. **a/b chunks** → set a=0, b=1, read as **8-bit binary ASCII**: → `matrixsumlist` (104 bits) and `enter` (40 bits). ✅ CONFIRMED.
 3. **a–i/o chunks** → map a=1…i=9, **o=0**, read as a big number → convert to **hex** → hex pairs as ASCII: → `lastwordsbeforearchichoice` and `thispassword`. ✅ CONFIRMED.
 4. **Two chunks won't decode** — nicknamed by their first four letters: **`dbbi`** (91 symbols, 91 = 7×13) and **`faed`** (570 symbols, 570 = 2·3·5·19). These are the open problem.

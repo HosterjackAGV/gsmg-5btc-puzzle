@@ -6,7 +6,9 @@ import { esc } from '../util.js';
 
 const FEN = 'B5KR/1r5B/2R5/2b1p1p1/2P1k1P1/1p2P2p/1P2P2P/3N1N2';
 const GLYPH = { K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙', k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' };
-const VIC = 'FUBCDORALETHINGKYMVPSJQZXW';
+// 28 cells (8 + 10 + 10) — markers 1 and 4 need two full 10-cell rows; the dots are the blank cells 10 and 44.
+// The 26-letter form leaves row 4 two cells short and decodes to garbage.
+const VIC = 'FUBCDORA.LETHINGKYMVPS.JQZXW';
 const VIC_DIGITS = '15165943121972409169171213758951813141543131412428154191312181219433121171617137149110916631213131281491109166131412199114371612126021664313711154112';
 
 function vicDecode(d) {
@@ -40,7 +42,7 @@ export function chessVicLab(container) {
           <table class="vic-table mono"><tr><td></td>${[0,1,2,3,4,5,6,7,8,9].map(d=>`<td class="vh">${d}</td>`).join('')}</tr>
             <tr><td class="vh">·</td>${[0,1,2,3,4,5,6,7,8,9].map(d=>{const cols=[0,2,3,5,6,7,8,9];const i=cols.indexOf(d);return `<td>${i>=0?VIC[i]:''}</td>`}).join('')}</tr>
             <tr><td class="vh">1</td>${[...VIC.slice(8,18)].map(c=>`<td>${c}</td>`).join('')}</tr>
-            <tr><td class="vh">4</td>${[...VIC.slice(18)].map(c=>`<td>${c}</td>`).join('')}${Array(2).fill('<td></td>').join('')}</tr></table>
+            <tr><td class="vh">4</td>${[...VIC.slice(18)].map(c=>`<td>${c}</td>`).join('')}</tr></table>
         </div>
       </div>
       <label class="lab-f wide"><span>VIC digit string → decode (pre-filled with the real Phase-3.2 code)</span><textarea class="lab-in mono" data-n="vic" rows="2" spellcheck="false">${VIC_DIGITS}</textarea></label>
