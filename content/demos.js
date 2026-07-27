@@ -2901,3 +2901,12 @@ DEMOS['community-yellow-plane-reversed-not-prime'] = aesSweep({
   keys: ['100433436204244105573859228564110291168344943733122168512511', 'ffffdfffffff7ffefffffbfff7ffeeffdffffffffffffdfff'],
   note: "@barrystyle's reversed+NOT yellow-plane prime (msg #17348) keys no blob. Edit the value/form or switch the blob and re-run.",
 });
+DEMOS['gsmg-trello-board-mined-domain-parked'] = aesSweep({
+  blobLabel: 'salph_inner (self-verifying)', blob: PUZZLE.salphInner,
+  keys: ['chBxq1TC', 'GSMG Feature Wishlist', 'wishes.gsmg.io', 'd0d', 'Bloctite', 'Bakka',
+    'Weird stuff', 'Statistics', 'Technical', 'Front End / GUI', 'Wishlist', 'Todo', 'WIP', 'Done',
+    'Aggro v2', 'GOGETMTIGER', 'SLOWnSTEADY', 'FML_RUNFORTHEHILLS', 'GSMG Save my Ass Button',
+    'Wimp mode', 'Surplus Selling', 'prepare for launchpad', '#BDEFR0002333', '#FR000101',
+    '5aec1bcaf55b4c307de41b3c', '5a2f9d48dd917dc559ff403e'],
+  note: 'Every string the GSMG team authored on their own public Trello board — the board name and short code, its label taxonomy, its list names, the coined bot-strategy names, the internal ticket ids, the object ids the account owns — keys no blob. The full run was 38 candidates x {literal, sha256, double-sha} x 3 blobs x 7 KDFs = 2,394 decrypts, 0 flags. The board went dormant in June 2019, a year before the phase these blobs belong to.',
+});

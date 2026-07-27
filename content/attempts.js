@@ -45,6 +45,36 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "gsmg-trello-board-mined-domain-parked",
+  "phase": "genesis",
+  "category": "genesis :: matrix structure",
+  "title": "The team's own Trello board — the last piece of GSMG infrastructure still alive — is fully readable, fully mined, and holds nothing; meanwhile gsmg.io itself has lapsed and is now a parked for-sale page",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-27",
+  "time": "",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): recovered the board's address from the archived redirect that wishes.gsmg.io used to serve, then pulled the board through Trello's public JSON route and mined every field of it",
+  "sourceQuote": "This domain may be for sale.",
+  "history": "One subdomain in the creator's infrastructure never resolved to a page of its own: wishes.gsmg.io only ever answered with a redirect. The previous card enumerated seventeen hosts by mimetype and closed the whole web layer, but that redirect was the one thing it could not follow, because the live site had already gone dark and the archive stores only the 301 itself, never its destination. That left exactly one door in the creator's own infrastructure still shut.",
+  "input": "The archived 301 from wishes.gsmg.io, captured 22 April 2019, read as raw headers rather than as a rendered page — its Location header names a public Trello board. Then the board itself, 152 KB of JSON: eighteen cards, four lists, one hundred and sixteen recorded actions, every description, label, comment and membership event.",
+  "method": "Read the redirect target out of the archived response headers, fetch the board through Trello's anonymous JSON route, and dump its entire structure. Scan the raw JSON for 64-hex strings, OpenSSL base64 headers, Bitcoin addresses, WIF keys and puzzle vocabulary, then verify each hit in context instead of trusting the regex. Follow the two leads the action log exposes — the member accounts that no longer appear on the board, and the second board that fifteen cards were moved into. Finally, take every string the team itself authored — the board's name and short code, the label taxonomy, the list names, the coined bot-strategy names, the internal ticket ids — and test them against the open blobs.",
+  "provenance": "Board fetched anonymously over the public route and kept on disk. Crypto test double-gated: a positive control on the solved phase-2 blob fires, and the self-KAT that recovers the Architect speech through the EBCDIC-to-Beaufort stack passes, before any candidate is judged.",
+  "output": "The board is real, public and complete: a feature wishlist for the commercial trading bot, running 4 May 2018 to 26 June 2019 — which means it fell dormant a full year before the 2020 phase that produced these blobs. Eighteen cards, one comment, zero attachments, zero checklists, zero plugins. Trailing stops, Bittrex links, dashboard columns. The signature scan returns three hits and all three are false positives, verified by reading their surroundings: two are Trello's own stock-background photo hashes, which happen to be thirty-two hex characters with no ambiguous letters and so look like addresses, and the third is the string faed sitting inside an internal object id. Two structural findings, both negative and both final: the fifteen cards moved out in July 2018 went to the team's main board, created in December 2017 — and that board is private, proven by asking Trello anonymously for every board the account owns and getting exactly one back, the public wishlist. The other member accounts on the board are all deleted. And the domain itself is gone: gsmg.io, www, /puzzle, beta, stats and alpha now all return the same 970-byte parking page offering the domain for sale. Testing all thirty-eight strings the team authored — three forms each, three blobs, seven key-derivation variants, 2,394 decrypts — produced nothing.",
+  "evidence": "38 candidates x 3 forms x 3 blobs x 7 KDFs = 2,394 decrypts, 0 flags. Board: 18 cards, 4 lists, 116 actions, 1 comment, 0 attachments, fetched as 152,041 bytes of JSON. Six live probes of gsmg.io hosts, six identical 970-byte parking pages.",
+  "outcome": "null",
+  "insight": "A negative that is worth more than the test that produced it. The board was the last live thing the creator's team controlled, and it turns out to have been a product backlog that went quiet a year before the endgame blobs existed — so its silence is not suspicious, it is chronological. What the run really establishes is that the enumeration is now permanent rather than provisional: the client bundles, the infrastructure artifacts, the team's own project board and the team's own accounts are each either mined or provably sealed, and the domain that hosted all of it has lapsed into a for-sale page. Three channels survive — the archive, the community record, and the chain — and a lead that does not draw on one of those three is not a lead.",
+  "links": [
+   {
+    "label": "Walkthrough — Phase 0",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "Reference — the open blobs",
+    "href": "#/reference"
+   }
+  ]
+ },
+ {
   "id": "web-x2sh-equation-ec-point-misread",
   "phase": "mrrobot",
   "category": "Phase-2 keypad equation",
