@@ -4160,6 +4160,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — Phase 0", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "gsmg-format-marker-hunt-three-markers-closed",
+  "phase": "salphaseion",
+  "category": "salphaseion :: key sweep (passphrase battery)",
+  "title": "The puzzle's author states his formats out loud — so the endgame's missing instruction was hunted rather than guessed, and three separate candidates for it were killed in one pass",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-28",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), building on a design-grammar reading of the six solved stages; the second test was prompted by a lead a community solver posted to the Telegram group",
+  "sourceQuote": "it's in front of your eyes but you're not seeing it",
+  "history": "Across all six solved stages this author works one way: he hides what a value refers to, and he says outright how to format it. \"Just add giveit in front.\" The chess position written with its spaces intact. A number given as the answer to an equation he states. The 2023-02-23 hint inverts that habit completely — it names four ingredients and gives no formatting instruction anywhere. Under his own grammar that should be impossible, which means the instruction exists and is being read as something other than an instruction. The obvious suspects are the four taunting phrases that follow the four names. They have been tested to death as key material. They had never been read as commands.",
+  "input": "The 161-character hint of 23 February 2023 — four ingredient names followed by four taunts, continuous, no separators — plus the vocabulary of the SalPhaseIon text that wraps the inner blob.",
+  "method": "Take each taunt as an instruction and ask what operation it names. \"It's in front of your eyes but you're not seeing it\" names a reading that is present but invisible, so lay the string out in two dimensions and read it the way this author demonstrably reads a grid: along a spiral, then selecting prime positions — the exact two-step move that turns the genesis grid into one of the four ingredients. Six grid shapes, all eight reflections and rotations of each, spirals from every corner in both directions and both inward and outward, plus boustrophedon and column readings: 104 distinct readings, each then filtered five ways by prime position, each in three encodings. Separately, generalise the one instruction in this puzzle that is already decoded: shabef, which spells sha256 by writing 2, 5, 6 as the letters b, e, f. Run that same machine across twelve tokens at every possible split point in both directions.",
+  "provenance": "The spiral operator and the prime-position selection are both verified from source in earlier work; the 161-character hint was re-derived from the original screenshot. The shabef equals sha256 decode is long-settled and public. The lead for the second test came from a community solver's message in the Telegram group, which reported a wink from the puzzle's author in reply to a private message proposing that the SalPhaseIon text is instructions rather than ciphertext.",
+  "output": "Nothing opened. 1,509 passphrases from the grid readings and 1,017 from the instruction machine, each against all three unopened blobs under all seven key-derivation functions with padding checks disabled: 53,046 decryptions, zero hits. A third candidate never reached the harness at all — the wrapper's \"first hint is your last command\" reads cleanly as an ordering instruction, meaning rotate the four ingredients by one, but the ledger already records all twenty-four orderings as swept. Checking that first cost one search and saved a run.",
+  "evidence": "Research attempts 0237 and 0238. Both harnesses are gated on a positive control that must fire and a known-answer test that must reproduce the confirmed EBCDIC-to-Beaufort decode of an earlier stage; the second carries a third gate requiring the instruction machine to reproduce sha256 from shabef before it is allowed to run at all. 31,689 plus 21,357 decryptions, zero flags in both.",
+  "outcome": "refuted",
+  "insight": "Two things worth keeping. First, a rule the failure earns: only propose a hidden second layer on an artifact that has room for one. Every carrier this author actually built — the symbol blocks, the coloured grid — is a non-linguistic field with spare capacity. The 161-character hint is fully consumed as English, every character doing visible work, so there was never space for a spiral to hide in, and that objection was written down before the run rather than after it. Second, on the wink: it is nonverbal, it arrived three days after a four-message conversation, it reached us as a screenshot, and this author jokes on the record. It is logged as something that happened, never as a confirmation. It was allowed to license one bounded test and nothing more.",
+  "links": [
+   { "label": "Walkthrough — the master hint", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
