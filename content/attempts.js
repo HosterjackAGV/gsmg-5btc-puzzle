@@ -45,6 +45,26 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "gsmg-creator-lexicon-referent-supply-closed",
+  "phase": "salphaseion",
+  "category": "salphaseion :: cosmic duality",
+  "title": "Every named thing the creator has ever typed in public — all 225 of them — tested as the missing endgame word, and none of them opens a blob",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-28",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw): extracted the creator's complete public vocabulary from his own messages in the GSMG Puzzle Solvers group, using the community's messages as the dictionary that defines an ordinary word",
+  "sourceQuote": "Did anyone found yingyang? I don't think so, you guys are so smart, when yingyang is reached, 2 hours max.",
+  "history": "The endgame's last two unknown words, yellowblueprimes and yinyang, have absorbed tens of millions of numeric guesses because everyone reads them as labels for numbers you compute off the genesis grid. A previous card argued the opposite from the author's own design grammar: in all six locks he actually built, he hides a referent and states the format outright. That reframe pointed at named things rather than integers — and an earlier pass duly enumerated the shared culture a solver could draw on, from Bohr's coat-of-arms motto to Mondrian, and came back empty. It left the obvious follow-up unasked: if the answer is a name, where would the name come from? There is exactly one other dictionary, and it belongs to the author.",
+  "input": "All 500 messages the creator has posted to the group, set against the 57,458 messages everybody else posted. The four open ciphertext blobs.",
+  "method": "Use the community's 57,458 messages to build a 2,103-word dictionary of ordinary chat English, then subtract it from his own writing to leave only what is distinctively his. Two classes come out: named entities, meaning Title-Case phrases, where a lone capitalised word only counts mid-sentence or when the word is not ordinary English; and rare words, meaning any lowercase token of six characters or more that fewer than thirty community messages ever use — coinages, product names, jargon, foreign words, and run-together compounds, which is the exact shape of every confirmed GSMG password. Take all 225 distinct results, drop the ones already tested, and put each into both unsolved slots, in the author's own formatting conventions, standalone and substituted into the master hint, as plain text, as its hash, and as its double hash, against four blobs under all seven key-derivation functions.",
+  "provenance": "Extraction research/harnesses/r138_creator_lexicon.py, crypto research/harnesses/r133_referents.mjs, run against the real ciphertext bytes with padding checks off and every plaintext passed through the universal decoder inspector. The run is gated: the detector must still open the solved phase-2 blob inside the same process, and it did.",
+  "output": "84 named entities and 162 rare words, 225 distinct named things after deduplication, none of which overlapped the 139 already swept. 450 candidate rows became 999 distinct passphrases and 83,916 decrypts. Zero flags. Two things did surface, and both turned out to be already closed rather than new: the creator spells it yingyang, not yinyang, and that spelling was ruled out years ago; and the master hint's 161 characters factor as 7 by 23, which is his own count of seven passwords and twenty-three ciphers — a real coincidence, re-derived independently here, and already tested to gibberish as a grid.",
+  "evidence": "83,916 decrypts, 0 flags, detector self-test alive in-process. Extraction reproducible from the public message record: 500 creator messages against 57,458 community messages. The quoted line is msg 39224, 2025-04-28.",
+  "outcome": "NULL — no named thing in the creator's public vocabulary opens any blob.",
+  "insight": "The value here is not the null, it is what the null covers. This was an enumeration, not a hand-picked list: every Title-Case entity and every rare word in everything he has written publicly. Together with the earlier shared-culture pass, both dictionaries a solver can actually build are now exhausted, which retires the most popular theory about this archive — that he let the word slip in the chat somewhere. Three independent lines now meet at the same wall: the data has been re-derived from source and is sound, the detector provably catches a correct answer, and the supply of candidate names is spent. What is left is a personal thing he never typed in public, which matches what he has said himself — that the answer sits on an offline laptop, and that his friends and family could reach all his data if they worked together. The honest scope: 500 messages under one handle, plain-ASCII. Private messages and other handles were never in reach. And it leaves the sharpest open question untouched — the master hint names four referents and states no format at all, which is the one thing this author has never done in six solved locks.",
+  "links": []
+ },
+ {
   "id": "gsmg-trello-board-mined-domain-parked",
   "phase": "genesis",
   "category": "genesis :: matrix structure",
