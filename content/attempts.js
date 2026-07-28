@@ -4183,6 +4183,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the master hint", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "gsmg-enter-token-is-the-openssl-line-break",
+  "phase": "salphaseion",
+  "category": "salphaseion :: blob combination & format",
+  "title": "One of the puzzle’s last two unexplained words turns out to be a newline — the author wrote the line-break of his own encryption command into the puzzle, spelled out",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-28",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), following the walkthrough’s own two unresolved markers rather than a new lead",
+  "sourceQuote": "our first hint is your last command",
+  "history": "The final stage of this puzzle is a page of letters — a \"soup\" — that hides several words inside it. Most of them decoded years ago. Two never found a job: the word \"enter\", spelled in binary and buried inside the encrypted block itself, and the word \"thispassword\", sitting a few characters earlier. The project’s own walkthrough has carried both of them marked \"unused\" for its entire history. Every attempt on them treated them as labels: type the word in as a password, glue it to its neighbours, hash it. All of that failed. Nobody had asked the other question, which is what the words are telling you to *do*. There is precedent for that reading: another word in the same soup, \"shabef\", was long ago shown to be an instruction rather than a name — it spells out \"sha256\", the encryption step, using a letters-to-numbers trick.",
+  "input": "The SalPhaseIon soup, and the 96-byte encrypted block sitting between its two \"shabef\" markers — the block’s base64 text taken directly from the artifact rather than from any write-up.",
+  "method": "Ask where the word \"enter\" physically sits, and measure it. The block is 128 characters of base64: the word is spelled in the gap between character 64 and character 65. That is not an arbitrary spot. The standard command-line encryption tool, run the ordinary way, wraps its output at exactly 64 characters per line and puts a newline there. So the test was: does the block split 64 and 64? It does — 64 characters, then the word, then 64 more, totalling the 16-byte header plus 80 bytes of ciphertext that this block is known to hold. Then the consequence was pushed as far as it goes. A newline can only matter to the password, never to the encrypted data, because base64 throws whitespace away — that limit was written down before the run, not after. So every way a newline can change a password was swept: a trailing newline of the kind a shell adds when you pipe text into a hashing command, which differs from the way the puzzle’s own earlier password was made; newlines as the glue between the four named ingredients; and the reading of \"thispassword\" as a pointing word — \"the password is *this*, the thing I am standing next to\" — so the block’s own text, newline included, becomes the password to the other blocks, hashed once and twice.",
+  "provenance": "The 64-plus-64 split is measured from the stored ciphertext in this repository, not quoted from prose; the harness prints both line lengths before it does anything else. The behaviour of the encryption tool’s line wrapping is standard and checkable. The one near-miss the sweep produced was decrypted by hand and printed, rather than reported from a counter.",
+  "output": "The measurement fires: 64 and 64, exactly. The author spelled the word \"enter\" at precisely the column where his own encryption command broke the line. That makes it the second instruction-word ever confirmed in this puzzle, and the first new one this project has found. The password sweep behind it found nothing: 353 candidate passwords against all three unopened blocks under all seven key-derivation methods, about 14,800 decryptions, producing one flag that dissolved on inspection — a block of 1,327 bytes that is 38 percent readable characters and ends in the single padding byte that turns up by chance roughly once in every 256 tries.",
+  "evidence": "Research attempt 0239, harness r112. The structural check runs first and prints the two line lengths; the single flag was re-decrypted independently and its length, padding and readable-character ratio printed, which is what identifies it as chance rather than signal.",
+  "outcome": "verified-insight",
+  "insight": "The find is real but it is not treasure, and the difference is the point. Both instruction-words this puzzle contains describe how the file was made rather than how the password is built: one says it was encrypted with sha256, the other says it was written out by a particular command that broke the line here. Together they are a signature of the author’s toolchain — an ordinary command-line encryption on a Mac — which is worth knowing because it rules out anything exotic, and worth nothing as key material. Three separate passes have now mined these markers dry. The standing argument that this author always states his format out loud still holds, but the place to look for the missing instruction is no longer the individual words. It is the sentence wrapped around the block, whose reference — a short poem from 2020 — has never been turned into an actual value. And there is a caution to carry: two markers labelled \"unused\" for years were not leads at all. An unconsumed piece is not automatically an unspent one.",
+  "links": [
+   { "label": "Walkthrough — the SalPhaseIon soup", "href": "#/walkthrough" },
+   { "label": "Reference — the open blobs", "href": "#/reference" }
+  ]
  }
 ];
 
