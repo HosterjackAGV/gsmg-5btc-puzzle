@@ -4206,6 +4206,29 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the SalPhaseIon soup", "href": "#/walkthrough" },
    { "label": "Reference — the open blobs", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "gsmg-rabbits-nest-is-the-spiral-pad-and-it-is-empty",
+  "phase": "genesis",
+  "category": "genesis :: matrix structure",
+  "title": "The white rabbit is sitting on the four leftover squares of the opening picture — and the poem that told everyone to look there was pointing at four zeroes",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-28",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), taking the 2020-01-14 creator poem at its word and measuring what it points at",
+  "sourceQuote": "It might have shown you only one door, beware that the rabbits nest may contain a whole lot more.",
+  "history": "In January 2020 the puzzle’s author posted a short poem telling solvers to go back to the very first picture, because it \"might have shown you only one door\" while \"the rabbits nest may contain a whole lot more.\" That single line has been the standing licence for six years of hunting a second hidden payload inside the opening image — a 14-by-14 board of coloured squares with a white cartoon rabbit drawn over the middle. The board’s known job is to spell out a web address: you read the squares in an anticlockwise inward spiral, treat each one as a bit, and chop the stream into 8-bit letters. Nobody had written down the arithmetic that reading implies, and nobody had asked where in the picture the \"nest\" actually is.",
+  "input": "The 14-by-14 board of coloured squares from the opening picture, and the original picture file itself.",
+  "method": "Count. The board holds 196 squares, so 196 bits. The web address it spells is 24 characters long, and 24 letters need 24 times 8 = 192 bits. That leaves exactly four squares unaccounted for. The spiral was regenerated from scratch and the letters re-decoded to confirm the first 192 squares really do produce the address exactly, checked twice — once using the colour rule and once using the raw black-and-white values, which agree. Then the four leftovers were located. Because the spiral winds inwards, whatever is left over must be the innermost ring: the four squares at the dead centre of the board. Finally the original picture was measured pixel by pixel to find how much black ink each of those four squares carries.",
+  "provenance": "Every number here is recomputed from the files in this repository rather than quoted from a write-up: the spiral is rebuilt, the 24 letters are re-derived and compared character by character against the known address, and the ink measurement reads the actual pixels of the original image. The existence of a four-bit remainder is already noted in this project’s own walkthrough; what is new is where those four squares are and what follows from it.",
+  "output": "The four leftover squares are the exact centre of the board, and all four are underneath the rabbit: measured ink coverage of 14, 24, 11 and 40 percent, where a clean square would read zero. One of them is the very last square of the entire spiral. So the \"rabbit’s nest\" is a real, precisely locatable thing — the author drew his rabbit on top of the only part of the board his message did not use. And then the payoff: all four squares are white. The nest holds four bits and every one of them is a zero. A companion sweep built passwords out of the newly exposed structure — which letters of the address the yellow squares mark and which the blue ones do, and the prime-numbered positions among them — and ran 82 candidates as 184 passwords against all four encrypted blocks under all seven key-derivation methods, 15,456 decryptions in total. Nothing.",
+  "evidence": "Research attempt 0240, harnesses r140 through r142 feeding the existing candidate rig. The letter-by-letter match against the address is printed before anything else runs, and the known-good control decryption is confirmed alive in the same process, so the empty result is a real negative and not a broken detector.",
+  "outcome": "verified-insight",
+  "insight": "This closes the opening picture by accounting rather than by exhaustion, which is a much stronger kind of closed. Previous work ruled out a second hidden layer by trying things and failing; this rules it out by counting the bits. The board can hold 196; the address spends 192; the remaining four are zeroes. No future search can find room that the arithmetic says is not there — and the colour layer, the QR code and the file’s internal structure were each separately checked years ago. So the poem’s most quoted line cannot mean \"more bits are hidden in the board\". Two honest cautions go with that. The four zeroes are also exactly what a careful designer would put in spare squares he needed to fill and then cover with a drawing, so the emptiness is unsurprising and should not be dressed up as a discovery. And this does not decode the poem; it only removes one reading of it. What it leaves behind is a cleaner map: of everything in the puzzle whose capacity has now been measured, only the two undecoded letter-blocks at the very end still have room to be hiding anything.",
+  "links": [
+   { "label": "Walkthrough — the genesis grid and the spiral", "href": "#/walkthrough" },
+   { "label": "Reference — canonical values", "href": "#/reference" }
+  ]
  }
 ];
 
