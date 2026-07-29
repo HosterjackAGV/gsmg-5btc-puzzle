@@ -4316,6 +4316,35 @@ export const ATTEMPTS = [
     "href": "#/reference"
    }
   ]
+ },
+ {
+  "id": "salphaseion-final-blocks-never-use-the-authors-own-zero",
+  "phase": "salphaseion",
+  "category": "salphaseion :: dbbi / faed — field & number decode",
+  "title": "The two final letter-blocks never once use the author's own symbol for zero — and the thing they appear to be a list of does not exist anywhere in the puzzle",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-29",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), reading the author's two already-solved letter-blocks as the instruction manual for his two unsolved ones",
+  "sourceQuote": "a g d a f a o a h e i e c g g c h g i c b b h c g b e h c f c o a b i c f d h h c d b b c a g b d a i o b b g b e a d e d d e",
+  "history": "The puzzle's last page hides four blocks of letters. Two of them were solved years ago, and they were solved by turning each letter into a digit: the first letter of the alphabet means one, the ninth means nine, and a stray letter o — which is not part of that run at all — means zero. Both solved blocks use that o. The two blocks nobody has cracked are written in the same letters, and every study of them for six years, including our own, has quietly used a different rule in which the first letter means zero. Nobody had put the two rules side by side and asked what the author's own choice implies about the blocks he did not explain.",
+  "input": "The two undecoded blocks from the final page, 91 and 570 letters long, and the two solved blocks beside them whose decoding is confirmed.",
+  "method": "First, read the author's rule off his own solved work rather than assuming one. Then count how often the two unsolved blocks use his symbol for zero, and work out how surprising the answer is. Then take the question that follows — if these are lists of small numbers, lists of what? — and answer it by counting rather than by guessing: enumerate everything the puzzle contains that comes in a group of exactly 91 or exactly 570, across 1,264 text artifacts (whole files, every quoted block, every code block, every long embedded string, counted five different ways) plus 51 separate readings of the opening picture. Every group of the right size then gets tested against the block itself, both as an ordered sequence and as a bare tally of values. Finally, attack our own kills: any construction rejected merely for producing a value the author could not write is retested with every shift that would bring it into range.",
+  "provenance": "The author's rule is taken from the two solved blocks as documented in the walkthrough, not from a write-up's summary. Both unsolved blocks are read from the repository's own copy of the decrypted page. Every statistical claim carries a live control in the same program: the sequence matcher is shown recognising a planted answer, the information test is shown detecting both a planted exact relationship and a planted three-quarters-noisy one at the same small sample size, and the number-system test is shown round-tripping a genuine value exactly.",
+  "output": "Neither unsolved block contains the author's zero symbol even once. If they had been produced by the same ten-symbol writer as his solved blocks, the odds of that are about one in fourteen thousand for the shorter block and one in a hundred million billion billion for the longer one. So the blocks are lists of values that run from one to nine and can never be zero — and that inability is a property of whatever produced them. Then the count came back empty: in the entire puzzle there is exactly one thing that comes in a group of 570, and it is the block itself. The opening picture has no group of 570 anything. Only three groups of 91 exist, and all three are now closed — the block itself, the 91-letter sentence about the private keys (which shares no information with the block at all: measured against twenty thousand shuffles, the overlap sits at the middle of pure chance), and the 91 pairings of the picture's rows or columns (all 216 shifted, remapped and reversed forms tested, none matching). The zero-free number system that would have been the natural objection to last iteration's result is refuted on the same evidence, as is every standard family that produces values one to nine — word lengths, leading digits, letter reductions, neighbour counts, run lengths, and the digital roots of the primes.",
+  "evidence": "Research attempt 0244, harnesses r150, r151, r152 and r153. 1,264 artifacts scanned, 51 picture readings, 216 exhaustive sequence tests, 20,000 permutations per information test and 20,000 draws per random-number null, with controls alive in every program.",
+  "outcome": "verified-insight",
+  "insight": "The useful part is not another dead end, it is a constraint nobody had written down. Whatever generated these two blocks cannot produce a zero, and we know that because the author demonstrated in the same breath that he had a zero available and used it elsewhere. Any future proposal has to explain that, and most cannot: counts of neighbours, gaps, distances and run lengths all hit zero eventually, and every one of them is now excluded on that ground alone rather than by trial. The second part is a genuine absence. If these blocks are lists of measurements taken over some group of things, that group is nowhere in the published puzzle — not in the picture, not in any text, not on any count. That leaves two honest roads. Either the list describes something private to the author, which fits his 2023 remark that his friends and family could reach all his data if they worked together; or the values are not measurements of anything but the result of an arithmetic step, and exactly one such step naturally yields one to nine and never zero: adding or subtracting two streams and writing a zero result as nine. That single idea would explain, all at once, every statistical property these blocks have stubbornly shown — independent values, no repeating pattern, no hidden record width, yet a stable lean that points one way in one block and the other way in the other. Honesty about scope: the count covered text only, so a group of 570 hiding inside a picture would not have been found, and that is the next thing to look at.",
+  "links": [
+   {
+    "label": "Walkthrough — the SalPhaseIon soup and the a–i blocks",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "Reference — canonical values",
+    "href": "#/reference"
+   }
+  ]
  }
 ];
 
