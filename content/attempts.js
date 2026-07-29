@@ -4229,6 +4229,35 @@ export const ATTEMPTS = [
    { "label": "Walkthrough — the genesis grid and the spiral", "href": "#/walkthrough" },
    { "label": "Reference — canonical values", "href": "#/reference" }
   ]
+ },
+ {
+  "id": "gsmg-dbbi-is-too-small-to-hold-a-bitcoin-key-format",
+  "phase": "salphaseion",
+  "category": "salphaseion :: dbbi / faed — field & number decode",
+  "title": "The shorter of the two final letter-blocks is arithmetically too small to contain a Bitcoin private key in its standard written form — the gap is provable, not guessed",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-29",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), applying to the two final letter-blocks the same bit-counting that closed the opening picture the day before",
+  "sourceQuote": "dbbibfbhccbegbihabebeihbeggegebebbgehhebhhfbabfdhbeffcdbbfcccgbfbeeggecbedcibfbffgigbeeeabe",
+  "history": "The puzzle ends in two undecoded blocks written only in the letters a to i. The shorter one is 91 letters long, the longer 570. Six years of work has asked the same question of them — what do they decode to — and answered it by picking a rule for turning letters into digits, running the conversion, and reading the result to see whether it looks like anything. Every one of those attempts had to guess that letters-to-digits rule first. Nobody had asked the prior question: how much information can 91 letters drawn from a nine-letter alphabet physically carry, and is that enough room for the thing everyone assumes is hidden in there?",
+  "input": "The two final undecoded blocks, 91 and 570 letters long, both written in the nine letters a to i.",
+  "method": "First, count the room. Nine possible letters means each letter carries log-base-two of nine, about 3.17 bits, so 91 letters can hold at most 288.46 bits and 570 letters at most 1806.86 bits. Then compare that against the standard formats a Bitcoin key is written in. Then a second step that the first one makes possible: if the shorter block does hold a raw 32-byte key, the count says there are almost exactly four bytes left over, and four spare bytes is precisely the size of the checksum Bitcoin appends to catch typos. A checksum is self-checking — it either matches or it does not, with a one-in-four-billion chance of a fluke — which means the letters-to-digits rule no longer has to be guessed at all. It can be run through every possibility. All 362,880 ways of assigning nine digits to nine letters were tried, in both digit ranges, in both reading directions, and in both byte orders.",
+  "provenance": "Both blocks are read from the repository copy of the decrypted puzzle text, not retyped from a write-up. The size argument is arithmetic and can be checked by hand. The exhaustive sweep carries a live control: the checker is shown firing correctly on a genuine hand-built key-plus-checksum and on a genuine written-form key, and correctly refusing a deliberately corrupted one, in the same run that reports the empty result.",
+  "output": "The shorter block holds at most 288.46 bits. A private key in its standard written form is at least 296 bits, because that form always begins with a fixed marker byte that forces the number above a floor the block cannot reach. The block’s entire range of possible values sits about six and a half bits below the smallest such key that exists — so it cannot contain one under any letters-to-digits rule whatsoever. The sweep confirms this from the other side: across the 477,360 assignments whose value is large enough to run to 37 bytes, the leading byte comes out as 1 every single time and never as the required marker. Two other standard formats, the passphrase-encrypted key form and a plain 64-character hexadecimal key written as text, are excluded by the same count. The checksum search over all 2,425,728 possible fields returned nothing.",
+  "evidence": "Research attempt 0241, harnesses r143 and r143b. 1,948,320 thirty-six-byte fields plus 477,360 thirty-seven-byte fields plus 48 fields from the longer block and the two joined orders, with the control check alive in both programs, so the empty result is a measurement rather than a broken detector.",
+  "outcome": "verified-insight",
+  "insight": "Two things worth keeping. The first is a genuine impossibility: no future attempt needs to test whether the shorter block spells out a private key in the standard written form, because there is not enough room in it, and that holds no matter what clever letter-to-digit scheme anyone invents. The second is a method. An earlier attempt already ran all 362,880 letter assignments on this same block, but it judged each result by whether the output looked like readable text — a soft test that can miss a correct answer and can be fooled by a wrong one. Here the count itself supplied a hard self-checking test, so the same 362,880 possibilities were judged by something that cannot be fooled. That is worth generalising: when a hypothesis hands you a self-checking test, spend the effort exhausting the unknown setting rather than grading the output. Honesty about what this is not: the observation that 91 letters is exactly the minimum needed for 36 bytes is not a sign of design, because that happens for roughly two in every five possible lengths; and the 36-byte figure itself was already known. What is new is the impossibility and the method. Where it points: of everything in this puzzle, the longer 570-letter block is now the only piece with unmeasured room left and no impossibility standing against it.",
+  "links": [
+   {
+    "label": "Walkthrough — the SalPhaseion soup and the a–i blocks",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "Reference — canonical values",
+    "href": "#/reference"
+   }
+  ]
  }
 ];
 
