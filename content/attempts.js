@@ -45,6 +45,35 @@ export const byPhase = (p) => ATTEMPTS.filter(a => a.phase === p);
 // ── the catalog (the counters in the views are computed from ATTEMPTS.length) ──
 export const ATTEMPTS = [
  {
+  "id": "gsmg-seven-intertwined-passwords-cannot-fit-in-the-longer-block",
+  "phase": "salphaseion",
+  "category": "salphaseion :: dbbi / faed — field & number decode",
+  "title": "The puzzle's own instructions promise \"seven intertwined passwords\", and the longer final block is almost exactly seven keys wide — but it is always two bytes too big to be them, and that is arithmetic, not opinion",
+  "who": "this project",
+  "author": "@DaneelOlivaw",
+  "date": "2026-07-29",
+  "source": "Independent research — Hosterjack (@DaneelOlivaw), taking the previous day's bit-counting one step further: from what a block COULD hold to what it actually DOES produce",
+  "sourceQuote": "over twenty-three ciphers, sixteen encryptions and/or seven intertwined passwords — brute forcing might be required",
+  "history": "The puzzle's late text tells the solver, in the creator's own voice, that the ending involves \"seven intertwined passwords\". The endgame also leaves two undecoded blocks written only in the letters a to i: a short one of 91 letters and a long one of 570. Nine possible letters carry about 3.17 bits each, so the long block has room for roughly 225 bytes — and seven encryption keys, at 32 bytes each, come to 224. That is a one-byte-off coincidence that has sat unexamined for years. An earlier attempt tested the long block as ONE key, never as seven. This asks the obvious next question, and then asks a better one: not whether the seven keys fit, but whether the block's own value can ever be small enough to BE them.",
+  "input": "The longer of the two final undecoded blocks — 570 letters, drawn only from a to i — and the three still-locked encrypted files.",
+  "method": "Two independent tests, one proving and one searching. FIRST, the proof. Turning letters into digits and reading the result as a number requires assigning the nine letters to nine digit values, and every such assignment is a one-to-one pairing — nine distinct letters onto nine distinct digits, no repeats. That single constraint is enough to compute, exactly and without trying anything, the smallest and the largest number the block can possibly produce across all 362,880 assignments: pair the heaviest letter position with the smallest digit to get the floor, and the reverse to get the ceiling. SECOND, the search, for the looser reading where seven keys sit inside a slightly larger field with a byte or two of packaging. Testing a candidate key normally means guessing the scrambling seed as well, which multiplies the work. It does not have to. In the mode these files use, whether the final block of decoded output ends in a valid, well-formed tail depends on the KEY ALONE — the seed never touches it. So each candidate key costs a single block decryption, all three files can be checked in one operation, and the whole space becomes affordable: all 362,880 letter assignments, in both reading directions, in both digit ranges, in both byte orders, cut at all three possible alignments into all seven chunks, against all three files.",
+  "provenance": "The block is read from the repository copy of the decrypted puzzle text, not retyped from a write-up. The closed-form floor-and-ceiling calculation is checked against a full brute-force enumeration of all 362,880 assignments on a short stand-in string, and matches exactly. The search carries a live control in the same run: the checker is shown firing on a genuine file encrypted with a known key and refusing a randomly generated one.",
+  "output": "The floor is the finding. The long block's value is never smaller than 2 to the 1800th, no matter which of the 362,880 letter assignments is used, in either direction, in either digit range. Seven 32-byte keys are 2 to the 1792nd. The block's smallest possible value sits eight bits ABOVE the largest number seven keys could be — so the block always occupies 226 bytes, never 224 and not even 225. The reason is visible by eye: to land below the seven-key ceiling the block would have to begin with about four leading zeros, but it begins with four DIFFERENT letters, and a one-to-one pairing can send only ONE letter to zero. The same arithmetic also rules out the block being a single 32-byte key, or a private key in written form — it is far too large for both. The looser reading was then searched anyway: 60,963,840 key tests produced 715,184 well-formed tails, which is 99.7 percent of the number expected from pure chance, and not one of them decoded to anything readable. Chunks of this block are statistically indistinguishable from random keys. Separately, the long block's letter counts were re-measured from scratch: one letter, g, appears 107 times against an expected 63, and by itself accounts for 69 percent of the block's entire departure from evenness — but split into ten equal windows that excess is spread evenly across the whole block, so it is not a divider, a marker, or padding at one end.",
+  "evidence": "Research attempt 0242. The proof is exact integer arithmetic with a brute-force control on a stand-in string. The search: 2,903,040 decoded fields yielding 60,963,840 key tests against the three locked files, 715,184 well-formed tails against 717,222 expected by chance, zero readable, control alive in the same run.",
+  "outcome": "verified-insight",
+  "insight": "Three things worth keeping. First, a correction that matters more than the dead end it closes: how much a block CAN hold and how large the number it DOES produce are different quantities, and the second one is what constrains the answer. The long block was on record as \"about 225 bytes with a little slack\"; it is in fact 226 bytes exactly, always, and any future theory about what it contains has to be a 226-byte structure. Second, an impossibility: the \"seven intertwined passwords\" the puzzle promises are not seven keys packed into this block. The phrase means something else — a process, a sequence, a set assembled from elsewhere — and the tempting 224-versus-225 near-miss that made this look right was a coincidence of counting the wrong quantity. Third, a tool. Because a candidate key can be judged from the last block of a file without ever knowing the scrambling seed, raw-key hypotheses can be tested about a thousand times faster than by the usual route, and without inventing a seed to guess. That method outlives this particular question.",
+  "links": [
+   {
+    "label": "Walkthrough — the SalPhaseion soup and the a–i blocks",
+    "href": "#/walkthrough"
+   },
+   {
+    "label": "Reference — canonical values",
+    "href": "#/reference"
+   }
+  ]
+ },
+ {
   "id": "gsmg-creator-lexicon-referent-supply-closed",
   "phase": "salphaseion",
   "category": "salphaseion :: cosmic duality",
