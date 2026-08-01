@@ -1,5 +1,56 @@
-CC0 1.0 Universal — This work is dedicated to the public domain.
-The author(s) waive all copyright and related rights to the extent allowed by law.
-Puzzle text, images, and the creators' message remain the property of their authors,
-reproduced here for preservation and study. Not affiliated with GSMG.
-Full text: https://creativecommons.org/publicdomain/zero/1.0/
+LICENCE AND RIGHTS NOTICE
+=========================
+
+This repository contains material from more than one author. The public-domain dedication below
+applies ONLY to this project's own original work. It is not, and cannot be, a grant over anyone
+else's copyright. See NOTICE.md for the provenance breakdown.
+
+
+1. WHAT IS DEDICATED TO THE PUBLIC DOMAIN (CC0 1.0)
+---------------------------------------------------
+The original contributions of this project, namely:
+
+  - the site code (assets/js/**, assets/css/**, index.html)
+  - the verification harnesses and scripts written for this project (.github/scripts/**)
+  - the analysis, commentary and editorial prose WRITTEN FOR THIS PROJECT
+  - this project's own data compilations (content/**), to the extent they are original expression
+
+are dedicated to the public domain under CC0 1.0 Universal:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+
+2. WHAT IS NOT COVERED, AND IS NOT OURS TO LICENCE
+---------------------------------------------------
+(a) THIRD-PARTY SOLVER WRITE-UPS AND DOCUMENTATION, vendored into this repository from:
+
+      https://github.com/Naddiseo/gsmgio-5btc-puzzle
+      https://github.com/puzzlehunt/gsmgio-5btc-puzzle
+
+    Neither repository carries a licence file. Under copyright law the absence of a licence means
+    ALL RIGHTS RESERVED by their respective authors. No licence was granted to this project, and
+    this project grants none onward. That material — including the phase write-ups, explanations
+    whose structure and wording derive from them, and the image sets mirroring their phase folders
+    — is reproduced here for reference, preservation and study, with attribution.
+
+    On request from a copyright holder, their material will be removed promptly.
+
+(b) THE PUZZLE CREATOR'S ARTIFACTS: the puzzle images, the published ciphertext blobs, the hint
+    posts and the creators' messages. Copyright remains with their author. This project is not
+    affiliated with GSMG or with the puzzle's anonymous creator.
+
+(c) THIRD-PARTY CODE referenced or used, under its own licence terms.
+
+
+3. WHAT NO ONE OWNS
+--------------------
+Facts are not subject to copyright: the puzzle's key values, hashes, addresses, ciphertext strings
+as data, grid coordinates, transaction ids and dates. Restating a fact infringes nothing. This
+section states law, it does not grant anything — and it does not extend to the expression,
+selection or arrangement in which someone else first published those facts.
+
+
+4. IF YOU REUSE THIS
+---------------------
+Take section 1 freely. For anything in section 2, go to the original authors. NOTICE.md maps which
+is which, and the cleanest route to the upstream work is to FORK the upstream repositories rather
+than copy from here — forking preserves lineage and attribution, which copying does not.

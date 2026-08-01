@@ -11,7 +11,9 @@ Open it here → **https://hosterjackagv.github.io/gsmg-5btc-puzzle/** *(GitHub 
 > negatives documented.
 
 **Author:** researched, built &amp; maintained by **Hosterjack** — [@DaneelOlivaw on Telegram](https://t.me/DaneelOlivaw).
-Independent work, *not affiliated with GSMG* or the puzzle's anonymous creator. Released CC0.
+Independent work, *not affiliated with GSMG* or the puzzle's anonymous creator. **This project's own
+contributions are CC0; vendored third-party write-ups are not** — see [LICENSE](LICENSE) and
+[NOTICE.md](NOTICE.md).
 
 ---
 
@@ -94,4 +96,14 @@ OpenSSL or [CyberChef](https://gchq.github.io/CyberChef/) — no trust required.
 Puzzle by the GSMG team. This is an independent, not-for-profit community archive — not affiliated with
 GSMG. Merged from the [puzzlehunt](https://github.com/puzzlehunt/gsmgio-5btc-puzzle) and
 [Naddiseo](https://github.com/Naddiseo/gsmgio-5btc-puzzle) walkthroughs and the creator's public hints.
-Released into the public domain (**CC0**).
+**This project's own work** — the site code, the verification harness, and the analysis prose written
+here — is released into the public domain (**CC0 1.0**).
+
+**That dedication stops there.** This repository vendors solver write-ups and image sets from
+[Naddiseo/gsmgio-5btc-puzzle](https://github.com/Naddiseo/gsmgio-5btc-puzzle) and
+[puzzlehunt/gsmgio-5btc-puzzle](https://github.com/puzzlehunt/gsmgio-5btc-puzzle). **Neither carries a
+licence, so both are all-rights-reserved by their authors** — no licence was granted to this project
+and none is granted onward. The puzzle images and ciphertexts remain the copyright of the puzzle's
+creator. Want the upstream work? **Fork it upstream** — forking keeps the lineage that copying loses.
+
+Full breakdown: [LICENSE](LICENSE) · [NOTICE.md](NOTICE.md).

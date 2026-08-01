@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "The complete, authoritative, source-merged walkthrough of the unsolved GSMG.io 5 BTC cryptographic puzzle. Static site, no build step, no dependencies.",
-  "license": "CC0-1.0",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "serve": "python3 -m http.server 8000",
     "verify:puzzle": "node .github/scripts/verify.mjs",
