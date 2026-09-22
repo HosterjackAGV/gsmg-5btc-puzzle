@@ -12,12 +12,20 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,rgba(95,140,255,.12),transparent 60%),radial-gradient(900px 500px at 0% 0%,rgba(242,193,74,.08),transparent 55%),var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5}
 a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
-header.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);background:rgba(11,14,22,.82);border-bottom:1px solid var(--line)}
-.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
-.topbar{display:flex;align-items:center;gap:18px;height:58px}
-.brand{font-family:var(--disp);font-weight:700;font-size:18px;color:var(--ink);display:flex;gap:8px;align-items:center}
-.brand .yin{color:var(--blue)}.brand .yang{color:var(--gold)}
-.topbar nav{margin-left:auto;display:flex;gap:16px;font-size:14px}.topbar nav a{color:var(--muted)}.topbar nav a:hover{color:var(--ink);text-decoration:none}
+/* topbar: same rules as assets/css/game.css so the menu matches the rest of the site */
+#topbar{position:sticky;top:0;z-index:60;backdrop-filter:blur(13px);line-height:1.68;background:linear-gradient(180deg,rgba(7,10,17,.94),rgba(7,10,17,.7));border-bottom:1px solid rgba(255,255,255,.075)}
+#topbar .inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 22px}
+#topbar .brand{font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.05em;white-space:nowrap;display:flex;align-items:center;gap:8px;color:var(--blue)}
+#topbar .brand .yin{color:var(--gold)} #topbar .brand .yang{color:var(--blue)}
+#topbar nav{display:flex;gap:2px;white-space:nowrap;overflow-x:auto;scrollbar-width:none;flex:1}
+#topbar nav::-webkit-scrollbar{display:none}
+#topbar nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;color:#8c95ab;padding:6px 10px;border-radius:7px;text-transform:uppercase;transition:all .18s cubic-bezier(.4,0,.2,1)}
+#topbar nav a:hover{color:#e9ecf5;background:#11161f;text-decoration:none}
+#topbar nav a.active{color:var(--blue);background:rgba(95,140,255,.1)}
+#topbar .nav-donate{color:#ff8fb0 !important}
+@media(max-width:760px){#topbar .brand .full{display:none}}
+#scan{height:2px;background:linear-gradient(90deg,var(--gold),var(--blue),#37d6a8);width:0%;transition:width .12s linear;position:sticky;top:53px;z-index:59}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
 .hero{padding:44px 0 18px}
 .hero h1{font-family:var(--disp);font-size:clamp(28px,4.5vw,46px);line-height:1.05;margin:0 0 10px;letter-spacing:-.01em}
 .hero h1 span{color:var(--gold)}
@@ -25,7 +33,7 @@ header.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);backgroun
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:18px 0 8px}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
 .stat b{display:block;font-family:var(--disp);font-size:26px;line-height:1.1}.stat small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
-.controls{position:sticky;top:58px;z-index:15;background:rgba(11,14,22,.9);backdrop-filter:blur(10px);padding:12px 0;border-bottom:1px solid var(--line)}
+.controls{position:sticky;top:55px;z-index:15;background:rgba(11,14,22,.9);backdrop-filter:blur(10px);padding:12px 0;border-bottom:1px solid var(--line)}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .chip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;user-select:none;transition:.15s}
 .chip:hover{color:var(--ink);border-color:#3a4358}.chip.on{color:#0b0e16;font-weight:600}
@@ -63,22 +71,34 @@ img.att{display:block;max-width:360px;max-height:300px;border-radius:10px;border
 footer{border-top:1px solid var(--line);color:var(--faint);font-size:13px;padding:20px 0}
 mark{background:rgba(242,193,74,.35);color:inherit;border-radius:3px}
 .empty{color:var(--faint);padding:40px 0;text-align:center}
-@media(max-width:640px){.hintnav ol{columns:1}.topbar nav{gap:10px;font-size:13px}}
-@media print{header.top,.controls,.hintnav{display:none}.card{break-inside:avoid;box-shadow:none}}
+@media(max-width:640px){.hintnav ol{columns:1}}
+@media print{#topbar,#scan,.controls,.hintnav{display:none}.card{break-inside:avoid;box-shadow:none}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap topbar">
-  <a class="brand" href="index.html"><span>◐</span><span><span class="yin">GSMG</span> <span class="yang">5 BTC</span></span></a>
-  <nav><a href="index.html#/walkthrough">Walkthrough</a><a href="index.html#/tried">What was tried</a><a href="index.html#/intel">The Books</a><a href="docs/CREATOR-LOG.md">Markdown</a><a href="content/sowut-data.js">Data</a></nav>
+<header id="topbar"><div class="inner">
+  <a class="brand" href="index.html#/"><span>◐</span> <span class="full"><span class="yin">GSMG</span>&nbsp;<span class="yang">5&nbsp;BTC</span></span></a>
+  <nav>
+    <a href="index.html#/">Home</a>
+    <a href="index.html#/walkthrough">Walkthrough</a>
+    <a href="index.html#/tried">What was tried</a>
+    <a href="index.html#/insights">Insights</a>
+    <a href="index.html#/reference">Reference</a>
+    <a href="index.html#/lab">🧪 Lab</a>
+    <a href="index.html#/intel">🗝️ The Books</a>
+    <a href="index.html#/games">🎮 Games</a>
+    <a href="sowut.html" class="active">🗣️ Creator log</a>
+    <a href="index.html#/donations" class="nav-donate">♥ Donate</a>
+  </nav>
 </div></header>
+<div id="scan"></div>
 
 <section class="hero wrap">
   <h1>Every word the creator said, <span>annotated</span>.</h1>
   <p>All messages posted by <b>@SoWut</b> (Jrk) in the <i>GSMG Puzzle Solvers</i> Telegram group since April 2019, in order, with the message each one replies to, who replied, and a note on what it is: an actionable hint, a confirmation, puzzle status, Matrix lore, housekeeping, or just banter. Handles only, no names.</p>
   <div class="stats" id="stats"></div>
   <div class="hintnav" id="hintnav"></div>
-  <div class="legend"><span><i style="background:var(--gold)"></i>HINT actionable puzzle hint</span><span><i style="background:var(--cyan)"></i>CONFIRM confirms/denies a solver claim</span><span><i style="background:var(--blue)"></i>META status, prize, history</span><span><i style="background:var(--green)"></i>LORE Matrix &amp; theme</span><span><i style="background:#8b93a7"></i>ADMIN housekeeping</span><span><i style="background:var(--violet)"></i>BANTER</span><span><i style="background:#4a5266"></i>NOISE emoji/stickers</span> · click a category to toggle it, shift-click to isolate it</div>
+  <div class="legend"><span><i style="background:var(--gold)"></i>HINT actionable puzzle hint</span><span><i style="background:var(--cyan)"></i>CONFIRM confirms/denies a solver claim</span><span><i style="background:var(--blue)"></i>META status, prize, history</span><span><i style="background:var(--green)"></i>LORE Matrix &amp; theme</span><span><i style="background:#8b93a7"></i>ADMIN housekeeping</span><span><i style="background:var(--violet)"></i>BANTER</span><span><i style="background:#4a5266"></i>NOISE emoji/stickers</span> · click a chip to show only that category or year, shift-click to add or remove one, All to reset</div>
 </section>
 
 <div class="controls"><div class="wrap">
@@ -87,7 +107,7 @@ mark{background:rgba(242,193,74,.35);color:inherit;border-radius:3px}
 </div></div>
 
 <main class="wrap" id="main"></main>
-<footer><div class="wrap">Source: Telegram export of the solvers' group (message ids are the chat's own). Annotations are the project's reading and can be wrong; open an issue on GitHub to correct one. Generated <span id="gen"></span>.</div></footer>
+<footer><div class="wrap">Source: Telegram export of the solvers' group (message ids are the chat's own). Annotations are the project's reading and can be wrong; open an issue on GitHub to correct one. Also as a <a href="docs/CREATOR-LOG.md">markdown table</a> and <a href="content/sowut-data.js">raw data</a>. Generated <span id="gen"></span>.</div></footer>
 
 <script src="content/sowut-data.js"></script>
 <script>
@@ -107,13 +127,14 @@ document.getElementById('stats').innerHTML=[['Messages',M.length],['Hints',cnt('
 document.getElementById('hintnav').innerHTML='<h2>The hints, in order</h2><ol>'+M.filter(m=>m.cat==='HINT').map(m=>`<li><span>${m.date.slice(0,10)}</span><a href="#m${m.id}">${esc((m.text||'').replace(/\s+/g,' ').slice(0,70)||'[media]')}${(m.text||'').length>70?'…':''}</a></li>`).join('')+'</ol>';
 // chips
 const cats=document.getElementById('cats');cats.innerHTML='<span class="chip on" data-all="1">All</span>'+CATS.map(c=>`<span class="chip on" data-cat="${c}">${c} <small>${cnt(c)}</small></span>`).join('');
-const years=document.getElementById('years');years.innerHTML=YEARS.map(y=>`<span class="chip ychip on" data-year="${y}">${y}</span>`).join('');
-cats.addEventListener('click',e=>{const el=e.target.closest('.chip');if(!el)return;
-  if(el.dataset.all){state.cats=new Set(CATS);}else{const c=el.dataset.cat;const only=e.shiftKey||e.metaKey;if(only){state.cats=new Set([c]);}else if(state.cats.has(c)){state.cats.delete(c)}else state.cats.add(c);}
-  syncChips();render();});
-years.addEventListener('click',e=>{const el=e.target.closest('.chip');if(!el)return;const y=el.dataset.year;if(e.shiftKey||e.metaKey)state.years=new Set([y]);else if(state.years.has(y))state.years.delete(y);else state.years.add(y);syncChips();render();});
+const years=document.getElementById('years');years.innerHTML='<span class="chip ychip on" data-all="1">All</span>'+YEARS.map(y=>`<span class="chip ychip on" data-year="${y}">${y}</span>`).join('');
+// click = show only this one (click again = back to all); shift/ctrl-click = add or remove it
+function pick(set,all,v,e){if(e.shiftKey||e.ctrlKey||e.metaKey){if(set.has(v)){if(set.size>1)set.delete(v);}else set.add(v);return set;}return(set.size===1&&set.has(v))?new Set(all):new Set([v]);}
+function afterPick(){syncChips();render();const top=document.getElementById('main').getBoundingClientRect().top+window.scrollY-150;if(window.scrollY>top)window.scrollTo({top});}
+cats.addEventListener('click',e=>{const el=e.target.closest('.chip');if(!el)return;state.cats=el.dataset.all?new Set(CATS):pick(state.cats,CATS,el.dataset.cat,e);afterPick();});
+years.addEventListener('click',e=>{const el=e.target.closest('.chip');if(!el)return;state.years=el.dataset.all?new Set(YEARS):pick(state.years,YEARS,el.dataset.year,e);afterPick();});
 document.getElementById('q').addEventListener('input',e=>{state.q=e.target.value.trim();render();});
-function syncChips(){cats.querySelectorAll('.chip[data-cat]').forEach(el=>el.classList.toggle('on',state.cats.has(el.dataset.cat)));cats.querySelector('[data-all]').classList.toggle('on',state.cats.size===CATS.length);years.querySelectorAll('.chip').forEach(el=>el.classList.toggle('on',state.years.has(el.dataset.year)));}
+function syncChips(){cats.querySelectorAll('.chip[data-cat]').forEach(el=>el.classList.toggle('on',state.cats.has(el.dataset.cat)));cats.querySelector('[data-all]').classList.toggle('on',state.cats.size===CATS.length);years.querySelectorAll('.chip[data-year]').forEach(el=>el.classList.toggle('on',state.years.has(el.dataset.year)));years.querySelector('[data-all]').classList.toggle('on',state.years.size===YEARS.length);}
 function match(m){if(!state.cats.has(m.cat)||!state.years.has(m.date.slice(0,4)))return false;if(!state.q)return true;const q=state.q.toLowerCase();return [m.text,m.note,m.tags.join(' '),m.reply_to&&m.reply_to.text,m.reply_to&&m.reply_to.handle,String(m.id)].some(s=>s&&String(s).toLowerCase().includes(q));}
 function card(m){const q=state.q;const t=m.text||'';const bin=isBin(t);
   const tags=m.tags.map(t=>`<span class="tag" title="${esc(TAGN[t]||t)}" data-tag="${t}">${t}</span>`).join('');
@@ -129,6 +150,7 @@ function render(){const out=[];let y=null,n=0;for(const m of M){if(!match(m))con
   if(y!==null)out.push('</div>');document.getElementById('main').innerHTML=n?out.join(''):'<div class="empty">Nothing matches.</div>';document.getElementById('count').textContent=n+' / '+M.length;}
 document.getElementById('main').addEventListener('click',e=>{const t=e.target.closest('.tag');if(!t)return;document.getElementById('q').value=t.dataset.tag;state.q=t.dataset.tag;render();window.scrollTo({top:0});});
 render();
+const scan=document.getElementById('scan');window.addEventListener('scroll',()=>{const h=document.documentElement;scan.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100||0)+'%';},{passive:true});
 if(location.hash){const el=document.querySelector(location.hash);if(el)el.scrollIntoView();}
 })();
 </script>
