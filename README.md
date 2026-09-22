@@ -23,6 +23,10 @@ A **modular static site** (native ES modules — no build step, no framework, no
 centerpiece is **[`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md)**: the complete, merged walkthrough of
 every phase, rendered in the browser with all images inline and the real encrypted blobs verbatim.
 
+Companion: the **[Creator log](https://hosterjackagv.github.io/gsmg-5btc-puzzle/sowut.html)** ([`sowut.html`](sowut.html),
+markdown in [`docs/CREATOR-LOG.md`](docs/CREATOR-LOG.md)): every message the creator (@SoWut) posted in the
+solvers' Telegram group since 2019, each one annotated (hint, confirmation, status, lore, banter or noise).
+
 It merges, de-duplicates, and reconciles:
 
 - the **[puzzlehunt](https://github.com/puzzlehunt/gsmgio-5btc-puzzle)** walkthrough,
@@ -64,8 +68,10 @@ On GitHub Pages (HTTPS) it works out of the box. No install, no build, no depend
 
 ```
 index.html               app shell (Home · Walkthrough · Reference)
+sowut.html               Creator log: every @SoWut Telegram message, annotated (data: content/sowut-data.js)
 docs/
   WALKTHROUGH.md          ← THE complete merged walkthrough (the centerpiece)
+  CREATOR-LOG.md          the same creator log as a markdown table
   VERIFIED-SOLUTIONS.md   the value-by-value verification audit (✅/⚠️/❌)
   ENDGAME-ANALYSIS.md     deep cryptanalysis of the open Cosmic Duality endgame
   LOOSE-ENDS.md           inventory of every unused / under-exploited piece
